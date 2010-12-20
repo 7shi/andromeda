@@ -1,0 +1,23 @@
+﻿class Delegate
+{
+	var delg;
+	
+	function dtor
+	{
+		__jit_free(delg);
+	}
+	
+	static function New(d)
+	{
+		var ret = new Delegate;
+		ret.delg = __jit_dup(d);
+		return ret;
+	}
+	
+	function Invoke(arg)
+	{
+		// TODO: delg(arg);
+		var d = delg;
+		d(arg);
+	}
+}

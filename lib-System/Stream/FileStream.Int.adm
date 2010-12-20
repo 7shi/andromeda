@@ -1,0 +1,50 @@
+﻿class FileStream
+{
+	function ReadShort
+	{
+		short ret;
+		if (ReadWithLength(addrof ret, 2) < 2) return 0;
+		return ret;
+	}
+	
+	function ReadUShort
+	{
+		ushort ret;
+		if (ReadWithLength(addrof ret, 2) < 2) return 0;
+		return ret;
+	}
+	
+	function ReadInt
+	{
+		int ret;
+		if (ReadWithLength(addrof ret, 4) < 4) return 0;
+		return ret;
+	}
+	
+	function ReadUInt
+	{
+		uint ret;
+		if (ReadWithLength(addrof ret, 4) < 4) return 0;
+		return ret;
+	}
+	
+	function WriteShort(v : short)
+	{
+		return WriteWithLength(addrof v, 2);
+	}
+	
+	function WriteUShort(v : ushort)
+	{
+		return WriteWithLength(addrof v, 2);
+	}
+	
+	function WriteInt(v : int)
+	{
+		return WriteWithLength(addrof v, 4);
+	}
+	
+	function WriteUInt(v : uint)
+	{
+		return WriteWithLength(addrof v, 4);
+	}
+}

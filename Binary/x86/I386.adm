@@ -10,7 +10,7 @@
 	
 	static function PushD(arg1 : int)
 	{
-		var ret = new OpCodeDW;
+		var ret = new OpCodeD;
 		ret.Name = "push";
 		ret.Set1(0x68);
 		ret.Arg1 = arg1;

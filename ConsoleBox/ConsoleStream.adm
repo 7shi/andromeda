@@ -9,9 +9,9 @@
 		__stdout_func = delg;
 	}
 	
-	function Write(text : string)
+	function Write(text : char*)
 	{
-		sb.Append(text);
+		sb.AppendWithLength(text, -1);
 	}
 	
 	function dtor

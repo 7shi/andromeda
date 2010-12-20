@@ -1,0 +1,83 @@
+﻿class CodeGenerator
+{
+	AddModule("control", this.Control);
+	
+	function Control
+	{
+		if (LineLength < 2)
+		{
+			Error("control: 引数がありません。");
+			return;
+		}
+		
+		var cname = GetColumn(1);
+		var list = new ArrayList;
+		while (ReadLine())
+		{
+			var d = LineToData();
+			if (d == null) break;
+			list.Add(d);
+		}
+		
+		WriteLineFormat("class %s", cname);
+		WriteLine("{");
+		for (int i = 0; i < list.Count; i++)
+		{
+			var d = (Data)list.Get(i);
+			d.Write(this);
+		}
+		WriteLine("}");
+		
+		class Data
+		{
+			var Name = "";
+			var Message = "";
+			var wParam = "";
+			var lParam = "";
+			var Args = new StringList;
+			
+			function Write(cg : CodeGenerator)
+			{
+				cg.Write("\tfunction ");
+				var p = Name.IndexOf(":");
+				if (p < 0)
+					cg.WriteFormat("%s(", Name);
+				else
+					cg.WriteFormat("%s(", Name.Left(p).Trim());
+				for (int i = 0; i < Args.Count; i++)
+				{
+					if (i > 0) cg.Write(", ");
+					var arg = Args.Get(i);
+					var ap = arg.IndexOf(":");
+					if (ap < 0)
+						cg.WriteFormat("%s", arg);
+					else
+						cg.WriteFormat("%s : %s",
+							arg.Left(ap).Trim(),
+							arg.SubstringFrom(ap + 1).Trim());
+				}
+				cg.Write(")");
+				if (p >= 0)
+					cg.WriteFormat(" : %s", Name.SubstringFrom(p + 1).Trim());
+				cg.WriteLineFormat(" { return SendMessage(hWnd, %s, %s, %s); }",
+					Message, wParam, lParam);
+			}
+		}
+		
+		function LineToData
+		{
+			var n = GetColumn(0);
+			if (string.IsNullOrEmpty(n)) return null;
+			
+			var ret = new Data;
+			ret.Name = n;
+			ret.Message = GetColumn(1);
+			ret.wParam = GetColumn(2);
+			ret.lParam = GetColumn(3);
+			var len = LineLength;
+			for (int i = 4; i < len; i++)
+				ret.Args.Add(GetColumn(i));
+			return ret;
+		}
+	}
+}

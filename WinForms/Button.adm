@@ -1,7 +1,0 @@
-﻿class Button : Control
-{
-	function ctor()
-	{
-		lpClassName = "BUTTON";
-	}
-}

@@ -1,0 +1,47 @@
+﻿class OpenFileDialog
+{
+	var Text = "ファイルを開く";
+	var Extension = (string)null;
+	var Filter = "すべてのファイル (*.*)|*.*";
+	var FileName = "";
+	
+	function ShowDialog(f : Form)
+	{
+		char buffer[MAX_PATH];
+		var len = Math.Min(MAX_PATH - 1, FileName.Length);
+		__movsw(buffer, FileName, len);
+		buffer[len] = 0;
+		
+		OPENFILENAME ofn;
+		if (f != null) ofn.hwndOwner = f.hWnd;
+		ofn.lpstrFilter  = Filter.Replace("|", "\0") + "\0";
+		ofn.nFilterIndex = 1;
+		ofn.lpstrFile    = buffer;
+		ofn.nMaxFile     = MAX_PATH;
+		ofn.lpstrTitle   = Text;
+		ofn.lpstrDefExt  = Extension;
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+		
+		var ret = ShowDialogInternal(ofn);
+		if (ret == 0)
+			FileName = "";
+		else
+			FileName = string.FromCharArray(buffer, -1);
+		return ret;
+	}
+	
+	virtual ShowDialogInternal(ofn : OPENFILENAME)
+	{
+		return GetOpenFileName(ofn);
+	}
+}
+
+class SaveFileDialog : OpenFileDialog
+{
+	Text = "名前を付けて保存";
+	
+	override ShowDialogInternal(ofn : OPENFILENAME)
+	{
+		return GetSaveFileName(ofn);
+	}
+}

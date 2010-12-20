@@ -133,7 +133,7 @@
 		Text .Data = text .ToArray();
 		
 		var ret = new byte[RawSize];
-		var bw = new BinaryWriter;
+		var bw = new MemoryWriter;
 		bw.Init(ret, ret.Length);
 		
 		DOSHeader dosh;

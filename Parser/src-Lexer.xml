@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <LastAuthor>Tino</LastAuthor>
+  <LastSaved>2008-12-25T11:13:22Z</LastSaved>
+  <Version>11.9999</Version>
+ </DocumentProperties>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>11640</WindowHeight>
+  <WindowWidth>20520</WindowWidth>
+  <WindowTopX>120</WindowTopX>
+  <WindowTopY>30</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center"/>
+   <Borders/>
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s21">
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s22">
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s23">
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Sheet1">
+  <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="27" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
+   <Column ss:Width="61.5"/>
+   <Column ss:Width="62.25"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s21"><Data ss:Type="String">lexer</Data></Cell>
+    <Cell ss:StyleID="s21"><Data ss:Type="String">Lexer</Data></Cell>
+    <Cell ss:StyleID="s21"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">test1</Data></Cell>
+    <Cell><Data ss:Type="String">&quot;a&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">test2</Data></Cell>
+    <Cell><Data ss:Type="String">&quot;b&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">plus</Data></Cell>
+    <Cell><Data ss:Type="String">&quot;+&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">test3</Data></Cell>
+    <Cell><Data ss:Type="String">test1</Data></Cell>
+    <Cell><Data ss:Type="String">test2</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">add</Data></Cell>
+    <Cell><Data ss:Type="String">&quot;+=&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">separator</Data></Cell>
+    <Cell><Data ss:Type="String">&quot; &quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">&quot;\t&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">&quot;\r&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">&quot;\n&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">alpha</Data></Cell>
+    <Cell><Data ss:Type="String">&quot;A&quot;-&quot;Z&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">&quot;a&quot;-&quot;z&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">num</Data></Cell>
+    <Cell><Data ss:Type="String">&quot;0&quot;-&quot;9&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">wordch1</Data></Cell>
+    <Cell ss:StyleID="s23"><Data ss:Type="String">alpha</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">&quot;_&quot;</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">161-</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">wordch</Data></Cell>
+    <Cell><Data ss:Type="String">wordch1</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2" ss:StyleID="s23"><Data ss:Type="String">num</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">word</Data></Cell>
+    <Cell><Data ss:Type="String">wordch1</Data></Cell>
+    <Cell><Data ss:Type="String">wordch*</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">&quot;1&quot;-&quot;9&quot;</Data></Cell>
+    <Cell><Data ss:Type="String">num*</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">hexch</Data></Cell>
+    <Cell><Data ss:Type="String">num</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">&quot;a&quot;-&quot;f&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">&quot;A&quot;-&quot;F&quot;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">hex</Data></Cell>
+    <Cell><Data ss:Type="String">&quot;0x&quot;</Data></Cell>
+    <Cell><Data ss:Type="String">hexch+</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <Print>
+    <ValidPrinterInfo/>
+    <PaperSizeIndex>9</PaperSizeIndex>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
+   <Selected/>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet2">
+  <Table ss:ExpandedColumnCount="0" ss:ExpandedRowCount="0" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5"/>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet3">
+  <Table ss:ExpandedColumnCount="0" ss:ExpandedRowCount="0" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5"/>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

@@ -55,6 +55,8 @@ class FileStream
 		{
 			CloseHandle(handle);
 			handle = INVALID_HANDLE_VALUE;
+			cache = null;
+			pos = 0;
 		}
 	}
 	
@@ -69,7 +71,7 @@ class FileStream
 	{
 		if (handle == INVALID_HANDLE_VALUE)
 			return -1;
-		return SetFilePointer(handle, pos, null, FILE_BEGIN);
+		this.pos = pos;
 	}
 	
 	function get_Length()
@@ -79,13 +81,33 @@ class FileStream
 		return GetFileSize(handle, null);
 	}
 	
+	const int CacheSize = 4096;
+	int pos, cacheStart, cacheEnd;
+	var cache : byte[];
+	
 	function ReadWithLength(buf, length)
 	{
 		if (handle == INVALID_HANDLE_VALUE) return -1;
-		var len;
-		if (ReadFile(handle, buf, length, addrof(len), null) == 0)
-			return -1;
-		return len;
+		if (length == 0) return 0;
+		if (cache == null || pos < cacheStart || pos >= cacheEnd)
+		{
+			var temp = new byte[CacheSize];
+			var rlen;
+			if (pos != cacheEnd)
+				SetFilePointer(handle, pos, null, FILE_BEGIN);
+			if (ReadFile(handle, temp, CacheSize, addrof rlen, null) == 0 || rlen == 0)
+				return -1;
+			cache = temp;
+			cacheStart = pos;
+			cacheEnd = pos + rlen;
+		}
+		var len = Math.Min(length, cacheEnd - pos);
+		__movsb(buf, addrof cache[pos - cacheStart], len);
+		pos += len;
+		if (len == length) return len;
+		var len2 = ReadWithLength(buf + len, length - len);
+		if (len2 == -1) return len;
+		return len + len2;
 	}
 	
 	function Read(length)
@@ -97,7 +119,7 @@ class FileStream
 		else if (len != length)
 		{
 			var tmp = new byte[len];
-			memcpy(tmp, ret, len);
+			__movsb(tmp, ret, len);
 			ret = tmp;
 		}
 		return ret;
@@ -108,10 +130,10 @@ class FileStream
 		return Read(Length - Position);
 	}
 	
-	function ReadByte()
+	function ReadByte
 	{
 		var ret = 0;
-		if (ReadWithLength(addrof(ret), 1) <= 0) return -1;
+		if (ReadWithLength(addrof ret, 1) < 1) return -1;
 		return ret;
 	}
 	
@@ -119,7 +141,7 @@ class FileStream
 	{
 		if (handle == INVALID_HANDLE_VALUE) return -1;
 		var len;
-		if (WriteFile(handle, data, length, addrof(len), null) == 0)
+		if (WriteFile(handle, data, length, addrof len, null) == 0)
 			return -1;
 		return len;
 	}
@@ -131,6 +153,6 @@ class FileStream
 	
 	function WriteByte(data)
 	{
-		return WriteWithLength(addrof(data), 1);
+		return WriteWithLength(addrof data, 1);
 	}
 }

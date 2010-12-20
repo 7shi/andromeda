@@ -21,7 +21,7 @@
 		return ret;
 	}
 	
-	override WriteInternal(text : string)
+	override Write(text : string)
 	{
 		if (Stream == null) return;
 		Stream.Write(UTF8Encoder.GetBytes(text));

@@ -1,0 +1,66 @@
+﻿class ListBox : Control
+{
+	var items = new StringList;
+	var selectedIndex = -1;
+	
+	function ctor()
+	{
+		lpClassName = "ListBox";
+		ScrollBars = ScrollBars.Vertical;
+		SetExStyle(WS_EX_CLIENTEDGE, true);
+	}
+	
+	override Create
+	{
+		base.Create();
+		for (int i = 0; i < items.Count; i++)
+			AddString(items.Get(i));
+		if (selectedIndex >= 0) SetCurSel(selectedIndex);
+	}
+	
+	function AddItem(s : string)
+	{
+		if (hWnd == null)
+			items.Add(s);
+		else
+			AddString(s);
+	}
+	
+	function get_SelectedIndex
+	{
+		if (hWnd == null) return selectedIndex;
+		return GetCurSel();
+	}
+	
+	function set_SelectedIndex(value)
+	{
+		if (hWnd == null)
+			selectedIndex = value;
+		else
+			SetCurSel(selectedIndex);
+	}
+	
+	function get_IntegralHeight
+	{
+		return (dwStyle & LBS_NOINTEGRALHEIGHT) == 0;
+	}
+	
+	function set_IntegralHeight(b : bool)
+	{
+		SetStyle(LBS_NOINTEGRALHEIGHT, !b);
+	}
+	
+	function GetText(index)
+	{
+		if (index < 0 || index >= Count) return null;
+		var len = GetTextLen(index);
+		var ret = string.Alloc(len);
+		GetTextToArray(index, ret);
+		return ret;
+	}
+	
+	function get_SelectedText
+	{
+		return GetText(SelectedIndex);
+	}
+}

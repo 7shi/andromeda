@@ -1,0 +1,52 @@
+﻿class MemoryWriter
+{
+	var ptr : byte* = null;
+	var current = null, end = null;
+	
+	function get_Position { return current - (var)ptr; }
+	function set_Position(pos) { current = ptr + pos; }
+	
+	function Init(ptr, size)
+	{
+		current = this.ptr = ptr;
+		end = ptr + size;
+	}
+	
+	function WriteWithLength(data, length)
+	{
+		if (current + length > end) return false;
+		if (length > 0) __movsb(current, data, length);
+		current += length;
+		return true;
+	}
+	
+	function Write(data : byte[])
+	{
+		return WriteWithLength(data, data.Length);
+	}
+	
+	function WriteByte(b)
+	{
+		return WriteWithLength(addrof b, 1);
+	}
+	
+	function WriteShort(s)
+	{
+		return WriteWithLength(addrof s, 2);
+	}
+	
+	function WriteInt(v)
+	{
+		return WriteWithLength(addrof v, 4);
+	}
+	
+	function WriteString(s : string)
+	{
+		return WriteWithLength(s, s.Length * sizeof(char));
+	}
+	
+	function WriteByteString(s : string)
+	{
+		return Write(s.ToByteString());
+	}
+}

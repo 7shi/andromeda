@@ -202,4 +202,13 @@
 			.Replace("&amp;", "&")
 			.Replace("&quot;", "\"");
 	}
+	
+	static function EncodeEntity(s : string)
+	{
+		return s
+			.Replace("&", "&amp;")
+			.Replace("<", "&lt;")
+			.Replace(">", "&gt;")
+			.Replace("\"", "&quot;");
+	}
 }

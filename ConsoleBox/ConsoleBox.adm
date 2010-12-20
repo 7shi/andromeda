@@ -40,6 +40,7 @@
 					e.Handled = true;
 					// TODO:SelectionStart += 2;
 					SelectionStart = SelectionStart + 2;
+					ScrollToCaret();
 				}
 			}
 		}

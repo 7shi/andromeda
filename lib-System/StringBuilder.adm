@@ -1,5 +1,6 @@
 ﻿class StringBuilder
 {
+	var NewLine = Environment.NewLine;
 	int Length = 0, Capacity = 16;
 	var buffer = new char[Capacity];
 	
@@ -18,6 +19,7 @@
 	function AppendWithLength(s : char*, length)
 	{
 		if (length == 0) return;
+		if (length == -1) length = lstrlen(s);
 		var cap = Capacity;
 		var size = Length + length - 1;
 		while (size >= Capacity)
@@ -35,22 +37,40 @@
 		Length += length;
 	}
 	
-	function Append(format : string, args : params)
+	function Append(text : string)
 	{
-		var s = string.VFormat(format, args);
-		AppendWithLength(s, s.Length);
+		AppendWithLength(text, text.Length);
 	}
 	
-	function AppendLine(format : string, args : params)
+	function AppendVFormat(format : string, args)
 	{
-		var s = string.VFormat(format, args);
-		AppendWithLength(s, s.Length);
-		AppendLineOnly();
+		Append(string.VFormat(format, args));
+	}
+	
+	function AppendFormat(format : string, args : params)
+	{
+		Append(string.VFormat(format, args));
 	}
 	
 	function AppendLineOnly()
 	{
-		Append(Environment.NewLine);
+		Append(NewLine);
+	}
+	
+	function AppendLine(text : string)
+	{
+		AppendWithLength(text, text.Length);
+		AppendLineOnly();
+	}
+	
+	function AppendLineVFormat(format : string, args)
+	{
+		AppendLine(string.VFormat(format, args));
+	}
+	
+	function AppendLineFormat(format : string, args : params)
+	{
+		AppendLine(string.VFormat(format, args));
 	}
 	
 	function AppendChar(ch : char)

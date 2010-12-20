@@ -1,0 +1,43 @@
+﻿class CodeGenerator
+{
+	AddModule("lexer", this.Lexer);
+	
+	function Lexer
+	{
+		if (LineLength < 2)
+		{
+			Error("lexer: 引数がありません。");
+			return;
+		}
+		
+		var className = GetColumn(1);
+		var names  = new StringList;
+		var values = new StringList;
+		while (ReadLine())
+		{
+			var name = GetColumn(0);
+			var value = GetColumn(1);
+			if (string.IsNullOrEmpty(name)) break;
+			names.Add(name);
+			values.Add(value);
+		}
+		
+		WriteLineFormat("class %s", className);
+		WriteLine("{");
+		WriteLine("\tvar Stream : TextReader;");
+		WriteLine("");
+		WriteLine("\tfunction Read");
+		WriteLine("\t{");
+		WriteLine("\t\tvar ch = Stream.ReadChar();");
+		for (int i = 0; i < names.Count; i++)
+		{
+			var name = names.Get(i);
+			var value = values.Get(i);
+			WriteLineFormat("\t\tif (ch == '%s') return \"%s\";",
+				value.Substring(1, value.Length - 2), name);
+		}
+		WriteLine("\t\treturn \"?\";");
+		WriteLine("\t}");
+		WriteLine("}");
+	}
+}

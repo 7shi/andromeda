@@ -1,0 +1,85 @@
+﻿class TextBox : Control
+{
+	function ctor()
+	{
+		lpClassName = "Edit";
+		SetExStyle(WS_EX_CLIENTEDGE, true);
+		SetStyle(WS_TABSTOP | ES_AUTOHSCROLL, true);
+	}
+	
+	function set_Multiline(b : bool)
+	{
+		SetStyle(ES_MULTILINE | ES_AUTOVSCROLL, b);
+	}
+	
+	function set_WordWrap(b : bool)
+	{
+		SetStyle(ES_AUTOHSCROLL, !b);
+	}
+	
+	function get_SelectionStart
+	{
+		var start, end;
+		GetSelection(addrof start, addrof end);
+		return start;
+	}
+	
+	function set_SelectionStart(start)
+	{
+		SetSelection(start, start);
+	}
+	
+	function get_SelectionLength
+	{
+		var start, end;
+		GetSelection(addrof start, addrof end);
+		return end - start;
+	}
+	
+	function set_SelectionLength(len)
+	{
+		var start = SelectionStart;
+		SetSelection(start, start + len);
+	}
+	
+	function get_SelectedText
+	{
+		var start, end;
+		GetSelection(addrof start, addrof end);
+		// TODO:one line
+		var text = Text;
+		return text.Substring(start, end - start);
+	}
+	
+	function set_SelectedText(text)
+	{
+		ReplaceSelection(true, text);
+	}
+	
+	function GetLine(line)
+	{
+		if (line < 0 || line >= GetLineCount()) return null;
+		var ich = LineIndex(line);
+		var len = LineLength(ich);
+		var ret = string.Alloc(len);
+		((ushort*)ret)[0] = len;
+		GetLineToArray(line, ret);
+		return ret;
+	}
+	
+	function get_CurrentLine
+	{
+		return LineFromChar(SelectionStart);
+	}
+	
+	function AppendText(text : string)
+	{
+		SelectionStart = TextLength;
+		SelectedText = text;
+	}
+	
+	function Clear
+	{
+		Text = "";
+	}
+}

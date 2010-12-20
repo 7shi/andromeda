@@ -267,19 +267,6 @@
 	
 	function Split(s : string)
 	{
-		var list = new StringList;
-		int p = 0;
-		for (;;)
-		{
-			int pp = IndexOfFrom(s, p);
-			if (pp == -1)
-			{
-				list.Add(SubstringFrom(p));
-				break;
-			}
-			list.Add(Substring(p, pp - p));
-			p = pp + s.Length;
-		}
-		return list.ToArray();
+		return SplitArray(s).ToArray();
 	}
 }

@@ -624,7 +624,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s28"><Data ss:Type="String">CALLF</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell><Data ss:Type="String">P/M</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell><Data ss:Type="String">M</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell><Data ss:Type="String">ff</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:Index="5"><Data ss:Type="String">R/M+18</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -898,7 +898,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s28"><Data ss:Type="String">JMPF</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell><Data ss:Type="String">P/M</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell><Data ss:Type="String">M</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell><Data ss:Type="String">ff</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:Index="5"><Data ss:Type="String">R/M+28</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -1440,6 +1440,7 @@
     </Pane>
     <Pane>
      <Number>2</Number>
+     <ActiveRow>0</ActiveRow>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

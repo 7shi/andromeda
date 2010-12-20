@@ -1,0 +1,72 @@
+﻿class CodeGenerator
+{
+	AddModule("struct", this.Struct);
+	AddModule("class", this.Struct);
+	
+	function Struct()
+	{
+		if (LineLength < 2)
+		{
+			Error("struct: 引数がありません。");
+			return;
+		}
+		
+		var type = GetColumn(0);
+		var structName = GetColumn(1);
+		var option = GetColumn(2);
+		var types = new StringList;
+		var names = new StringList;
+		var values = new StringList;
+		int max_type = 0, max_name = 0, max_value = 0;
+		while (ReadLine())
+		{
+			var type = GetColumn(0);
+			var name = GetColumn(1);
+			var value = GetColumn(2);
+			if (string.IsNullOrEmpty(type) || string.IsNullOrEmpty(name))
+				break;
+			types.Add(type);
+			names.Add(name);
+			max_type = Math.Max(max_type, type.Length);
+			max_name = Math.Max(max_name, name.Length);
+			if (!string.IsNullOrEmpty(value))
+			{
+				values.Add(value);
+				max_value = Math.Max(max_value, value.Length);
+			}
+			else
+				values.Add(null);
+		}
+		
+		WriteLineFormat("%s %s", type, structName);
+		WriteLine("{");
+		for (int i = 0; i < types.Count; i++)
+		{
+			if (values.Get(i) == null)
+				WriteLineFormat("\t%s %s;",
+					types.Get(i).PadRight(max_type),
+					names.Get(i));
+			else
+				WriteLineFormat("\t%s %s = %s;",
+					types.Get(i).PadRight(max_type),
+					names.Get(i).PadRight(max_name),
+					values.Get(i).PadLeft(max_value));
+		}
+		if (option == null || option != "0")
+		{
+			WriteLine("");
+			WriteLine("\tfunction Show");
+			WriteLine("\t{");
+			for (int i = 0; i < types.Count; i++)
+			{
+				var name = names.Get(i);
+				var format = typeFormat.Get(types.Get(i));
+				if (!name.EndsWith("]") && format != null)
+					WriteLineFormat("\t\tprintfln(\"%s: %s\", %s);",
+						name.PadRight(max_name), format, name);
+			}
+			WriteLine("\t}");
+		}
+		WriteLine("}");
+	}
+}

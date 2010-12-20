@@ -1,0 +1,28 @@
+﻿class CodeGenerator : ExcelCodeGenerator
+{
+	var modules : Hashtable;
+	
+	function AddModule(n : string, f)
+	{
+		if (modules == null) modules = new Hashtable;
+		modules.Add(n, Delegate.New(f));
+	}
+	
+	override ReadCommand(cmd : string)
+	{
+		if (cmd.StartsWith("//")) return true;
+		if (modules != null)
+		{
+			var delg : Delegate = modules.Get(cmd);
+			if (delg != null)
+			{
+				WriteLine("");
+				delg.Invoke(null);
+				return true;
+			}
+		}
+		if (base.ReadCommand(cmd)) return true;
+		Error("処理できません: %s", cmd);
+		return false;
+	}
+}

@@ -1,0 +1,20 @@
+﻿class Button : Control
+{
+	function ctor()
+	{
+		lpClassName = "Button";
+	}
+	
+	function get_Checked
+	{
+		return GetCheck() == BST_CHECKED;
+	}
+	
+	function set_Checked(value)
+	{
+		if (value)
+			SetCheck(BST_CHECKED);
+		else
+			SetCheck(BST_UNCHECKED);
+	}
+}

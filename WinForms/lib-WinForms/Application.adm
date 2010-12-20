@@ -1,0 +1,46 @@
+﻿extern "kernel32.dll" __stdcall __widecharset
+	GetModuleFileName(hModule, lpFileName : char*, nSize);
+
+class Application
+{
+	static function get_ExecutablePath
+	{
+		char buf[MAX_PATH];
+		int len = GetModuleFileName(null, buf, MAX_PATH);
+		return string.FromCharArray(buf, len);
+	}
+	
+	static function Run(f : Form)
+	{
+		if (f != null)
+		{
+			f.Show();
+			f.Closed.Add(\ => Exit());
+		}
+		MSG uMsg;
+		while (uMsg.GetMessage(null, 0, 0))
+		{
+			uMsg.TranslateMessage();
+			uMsg.DispatchMessage();
+		}
+	}
+
+	static bool alive = true;
+
+	static function DoEvents()
+	{
+		MSG uMsg;
+		while (alive && uMsg.PeekMessage(null, 0, 0, PM_REMOVE))
+		{
+			uMsg.TranslateMessage();
+			uMsg.DispatchMessage();
+		}
+		return alive;
+	}
+
+	static function Exit()
+	{
+		alive = false;
+		PostQuitMessage(0);
+	}
+}

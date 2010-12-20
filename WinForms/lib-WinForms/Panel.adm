@@ -1,0 +1,44 @@
+﻿class Panel : Control
+{
+	override OnResize(e : EventArgs)
+	{
+		RECT r;
+		GetClientRect(hWnd, r);
+		if (r.right - r.left == nWidth && r.bottom - r.top == nHeight)
+			return;
+		
+		nWidth  = r.right - r.left;
+		nHeight = r.bottom - r.top;
+		base.OnResize(e);
+		
+		for (int i = 0; i < controls.Count; i++)
+		{
+			var c = (Control)controls.Get(i);
+			var rw = r.right - r.left, rh = r.bottom - r.top;
+			var cw = Math.Min(c.Width, rw), ch = Math.Min(c.Height, rh);
+			switch (c.Dock)
+			{
+				case DockStyle.Fill:
+					c.SetBoundsWithRect(r);
+					break;
+				case DockStyle.Top:
+					c.SetBounds(r.left, r.top, rw, c.Height);
+					r.top += ch;
+					break;
+				case DockStyle.Bottom:
+					r.bottom -= ch;
+					c.SetBounds(r.left, r.bottom, rw, c.Height);
+					break;
+				case DockStyle.Left:
+					c.SetBounds(r.left, r.top, c.Width, rh);
+					r.left += cw;
+					break;
+				case DockStyle.Right:
+					r.right -= cw;
+					c.SetBounds(r.right, r.top, c.Width, rh);
+					break;
+			}
+			if (c.Dock != DockStyle.None) c.Invalidate(null);
+		}
+	}
+}

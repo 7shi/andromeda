@@ -25,11 +25,29 @@
 	{
 	}
 	
-	var buffer = new StringBuilder;
+	function RewindChar
+	{
+		//TODO: Position--;
+		Position = Position - 1;
+	}
+	
+	function PeekChar
+	{
+		var pos = Position;
+		var ret = ReadChar();
+		Position = pos;
+		return ret;
+	}
+	
+	function ReadCharIf(ch : char)
+	{
+		var c = ReadChar();
+		if (c != -1 && c != ch) RewindChar();
+	}
 	
 	function ReadLine
 	{
-		buffer.Clear();
+		var buffer = new StringBuilder;
 		for (;;)
 		{
 			var ch = ReadChar();
@@ -39,9 +57,7 @@
 				break;
 			else if (ch == '\r')
 			{
-				var pos = Position;
-				var lf = ReadChar();
-				if (lf != '\n') Position = pos;
+				ReadCharIf('\n');
 				break;
 			}
 			buffer.AppendChar(ch);

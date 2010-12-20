@@ -1,0 +1,51 @@
+﻿#pragma subsystem(WINDOWS_GUI)
+
+Application.Run(new Form1);
+
+class Form1 : Form
+{
+	const string message = "Andromeda Test Window";
+	
+	function ctor
+	{
+		Text = Path.GetFileNameWithoutExtension(
+			Application.ExecutablePath)
+			.Replace("-", " ");
+		SetClientSize(256, 256);
+		wcex.hbrBackground = COLOR_WINDOW + 1;
+	}
+	
+	override OnPaint(e : PaintEventArgs)
+	{
+		e.Graphics.TextOut(8, 8, message, message.Length);
+		base.OnPaint(e);
+	}
+	
+	override OnMouseDown(e : MouseEventArgs)
+	{
+		switch (e.Button)
+		{
+			case MouseButtons.Left:
+				MyFillRect(e);
+				break;
+			case MouseButtons.Right:
+				Refresh();
+				break;
+		}
+		base.OnMouseDown(e);
+	}
+	
+	override OnMouseMove(e : MouseEventArgs)
+	{
+		if (e.Button & MouseButtons.Left) MyFillRect(e);
+		base.OnMouseMove(e);
+	}
+	
+	function MyFillRect(e : MouseEventArgs)
+	{
+		var hdc = hWnd.GetDC();
+		var brush = GetSysColorBrush(COLOR_WINDOWTEXT);
+		RECT rect = { e.X - 2, e.Y - 2, e.X + 2, e.Y + 2 };
+		hdc.FillRect(rect, brush);
+	}
+}
