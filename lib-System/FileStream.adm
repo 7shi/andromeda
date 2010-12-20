@@ -11,6 +11,8 @@ extern "kernel32.dll" __stdcall
 
 const int GENERIC_READ  = 0x80000000;
 const int GENERIC_WRITE = 0x40000000;
+const int FILE_SHARE_READ   = 1;
+const int FILE_SHARE_WRITE  = 2;
 const int CREATE_NEW        = 1;
 const int CREATE_ALWAYS     = 2;
 const int OPEN_EXISTING     = 3;
@@ -34,7 +36,8 @@ class FileStream
 	function OpenRead(file : string)
 	{
 		Close();
-		handle = CreateFile(file, GENERIC_READ, 0, null,
+		handle = CreateFile(file, GENERIC_READ,
+			FILE_SHARE_READ | FILE_SHARE_WRITE, null,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null);
 		return handle != INVALID_HANDLE_VALUE;
 	}

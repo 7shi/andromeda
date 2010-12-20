@@ -1,0 +1,14 @@
+﻿class Math
+{
+	static function Max(a, b)
+	{
+		if (a > b) return a;
+		return b;
+	}
+	
+	static function Min(a, b)
+	{
+		if (a < b) return a;
+		return b;
+	}
+}

@@ -1,0 +1,285 @@
+﻿class string
+{
+	function ToLower() : string
+	{
+		var ret = Alloc(this.Length);
+		var p : char* = ret;
+		for (int i = 0; i < this.Length; i++)
+		{
+			char ch = this[i];
+			if ('A' <= ch && ch <= 'Z') ch += 32;
+			p[i] = ch;
+		}
+		return ret;
+	}
+	
+	function ToUpper() : string
+	{
+		var ret = Alloc(this.Length);
+		var p : char* = ret;
+		for (int i = 0; i < this.Length; i++)
+		{
+			char ch = this[i];
+			if ('a' <= ch && ch <= 'z') ch -= 32;
+			p[i] = ch;
+		}
+		return ret;
+	}
+	
+	function TrimStart() : string
+	{
+		int ps = 0;
+		for (int i = 0; i < this.Length; i++)
+		{
+			if (this[i] > ' ') break;
+			ps = i + 1;
+		}
+		return SubstringFrom(ps);
+	}
+	
+	function TrimEnd() : string
+	{
+		int pe = this.Length;
+		for (int i = pe - 1; i >= 0; i--)
+		{
+			if (this[i] > ' ') break;
+			pe = i;
+		}
+		return Substring(0, pe);
+	}
+	
+	function Trim() : string
+	{
+		int ps = 0;
+		for (int i = 0; i < this.Length; i++)
+		{
+			if (this[i] > ' ') break;
+			ps = i + 1;
+		}
+		int pe = this.Length;
+		for (int i = pe - 1; i >= ps; i--)
+		{
+			if (this[i] > ' ') break;
+			pe = i;
+		}
+		//printfln("%s(%s) => %d-%d", __FUNCTION__, this, ps, pe);
+		return Substring(ps, pe - ps);
+	}
+	
+	function Remove(start, length) : string
+	{
+		if (start < 0) return this;
+		int maxlen = this.Length - start;
+		if (length > maxlen) length = maxlen;
+		if (length <= 0) return this;
+		var ret = Alloc(this.Length - length);
+		if (start > 0) __movsw(ret, this, start);
+		var pos = start + length, len = this.Length - pos;
+		if (len > 0) __movsw(addrof ret[start], addrof this[pos], len);
+		return ret;
+	}
+	
+	function RemoveFrom(start) : string
+	{
+		return Remove(start, this.Length - start);
+	}
+	
+	function ToInt() : int
+	{
+		int ret = 0;
+		bool minus = false;
+		bool first = true;
+		for (int i = 0; i < this.Length; i++)
+		{
+			char ch = this[i];
+			if (ch <= ' ')
+				continue;
+			else if (ch == '-' && first)
+				minus = true;
+			else if ('0' <= ch && ch <= '9')
+			{
+				ret *= 10;
+				ret += ch - '0';
+			}
+			else
+				break;
+			first = false;
+		}
+		if (minus) ret = -ret;
+		return ret;
+	}
+	
+	function IndexOfWithLengthFrom(s : char*, length, start)
+	{
+		if (length < 1) return -1;
+		int last = this.Length - length;
+		for (int i = start; i <= last; i++)
+		{
+			if (this[i] == s[0])
+			{
+				var ok = true;
+				for (int j = 1; j < length; j++)
+				{
+					if (this[i + j] != s[j])
+					{
+						ok = false;
+						break;
+					}
+				}
+				if (ok) return i;
+			}
+		}
+		return -1;
+	}
+	
+	function IndexOfFrom(s : string, start)
+	{
+		return IndexOfWithLengthFrom(s, s.Length, start);
+	}
+	
+	function IndexOf(s : string)
+	{
+		return IndexOfWithLengthFrom(s, s.Length, 0);
+	}
+	
+	function IndexOfCharFrom(ch : char, start)
+	{
+		return IndexOfWithLengthFrom(addrof ch, 1, start);
+	}
+	
+	function IndexOfChar(ch : char)
+	{
+		return IndexOfWithLengthFrom(addrof ch, 1, 0);
+	}
+	
+	function LastIndexOfWithLengthFrom(s : char*, length, start)
+	{
+		if (length < 1) return -1;
+		int last = this.Length - length;
+		if (start > last) start = last;
+		for (int i = start; i >= 0; i--)
+		{
+			if (this[i] == s[0])
+			{
+				var ok = true;
+				for (int j = 1; j < length; j++)
+				{
+					if (this[i + j] != s[j])
+					{
+						ok = false;
+						break;
+					}
+				}
+				if (ok) return i;
+			}
+		}
+		return -1;
+	}
+	
+	function LastIndexOfFrom(s : string, start)
+	{
+		return LastIndexOfWithLengthFrom(s, s.Length, start);
+	}
+	
+	function LastIndexOf(s : string)
+	{
+		return LastIndexOfWithLengthFrom(s, s.Length, this.Length);
+	}
+	
+	function LastIndexOfCharFrom(ch : char, start)
+	{
+		return LastIndexOfWithLengthFrom(addrof ch, 1, start);
+	}
+	
+	function LastIndexOfChar(ch : char)
+	{
+		return LastIndexOfWithLengthFrom(addrof ch, 1, this.Length);
+	}
+	
+	function Contains(s : string)
+	{
+		if (s == null) return false;
+		if (s.Length == 0) return true;
+		return IndexOf(s) != -1;
+	}
+	
+	function Replace(before : string, after : string)
+	{
+		var count = Count(before);
+		if (count == 0) return this;
+		
+		var len = this.Length + (after.Length - before.Length) * count;
+		var ret = Alloc(len);
+		var p : char* = ret;
+		int last = this.Length - before.Length;
+		for (int i = 0; i < this.Length; i++)
+		{
+			if (i <= last && this[i] == before[0])
+			{
+				var ok = true;
+				for (int j = 1; j < before.Length; j++)
+				{
+					if (this[i + j] != before[j])
+					{
+						ok = false;
+						break;
+					}
+				}
+				if (ok)
+				{
+					__movsw(p, after, after.Length);
+					p += after.Length;
+					i += before.Length - 1;
+					continue;
+				}
+			}
+			p[0] = this[i];
+			p++;
+		}
+		return ret;
+	}
+	
+	function PadLeft(length)
+	{
+		int len = length - this.Length;
+		if (len < 1) return this;
+		return " " * len + this;
+	}
+	
+	function PadRight(length)
+	{
+		int len = length - this.Length;
+		if (len < 1) return this;
+		return this + " " * len;
+	}
+	
+	function Insert(start, s : string)
+	{
+		if (IsNullOrEmpty(s)) return this;
+		var ret = Alloc(this.Length + s.Length);
+		if (start > 0) __movsw(ret, this, start);
+		__movsw(addrof ret[start], s, s.Length);
+		int len = this.Length - start;
+		if (len > 0)
+			__movsw(addrof ret[start + s.Length], addrof this[start], len);
+		return ret;
+	}
+	
+	function Split(s : string)
+	{
+		var list = new StringList;
+		int p = 0;
+		for (;;)
+		{
+			int pp = IndexOfFrom(s, p);
+			if (pp == -1)
+			{
+				list.Add(SubstringFrom(p));
+				break;
+			}
+			list.Add(Substring(p, pp - p));
+			p = pp + s.Length;
+		}
+		return list.ToArray();
+	}
+}

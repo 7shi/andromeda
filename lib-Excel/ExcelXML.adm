@@ -10,9 +10,12 @@
 	function Open(file : string)
 	{
 		Close();
-		xp = new XMLParser;
-		xp.Open(file);
+		var xp = new XMLParser;
+		if (!xp.Open(file)) return false;
+		
 		((StreamReader)xp.Stream).IsUTF8 = true;
+		this.xp = xp;
+		return true;
 	}
 	
 	function Close()
@@ -57,7 +60,7 @@
 					if (index == null)
 						list.Add(data);
 					else
-						list.Set(index.ToInt32() - 1, data);
+						list.Set(index.ToInt() - 1, data);
 					break;
 				}
 			}

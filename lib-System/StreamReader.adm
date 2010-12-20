@@ -15,24 +15,23 @@
 	function Open(file : string)
 	{
 		Close();
-		Stream = new FileStream;
-		var ret = Stream.OpenRead(file);
-		if (ret)
+		var fs = new FileStream;
+		if (!fs.OpenRead(file)) return false;
+		
+		var bom = UTF8Encoder.BOM;
+		IsUTF8 = true;
+		for (int i = 0; i < bom.Length; i++)
 		{
-			var bom = UTF8Encoder.BOM;
-			IsUTF8 = true;
-			for (int i = 0; i < bom.Length; i++)
+			byte b = fs.ReadByte();
+			if (b != bom[i])
 			{
-				byte b = Stream.ReadByte();
-				if (b != bom[i])
-				{
-					Stream.Position = 0;
-					IsUTF8 = false;
-					break;
-				}
+				fs.Position = 0;
+				IsUTF8 = false;
+				break;
 			}
 		}
-		return ret;
+		Stream = fs;
+		return true;
 	}
 	
 	function GetString(buf : byte[])

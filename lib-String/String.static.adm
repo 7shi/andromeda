@@ -1,0 +1,23 @@
+﻿class string
+{
+	static function IsNullOrEmpty(s : string)
+	{
+		return s == null || s.Length == 0;
+	}
+	
+	static function Join(sep : string, strs : string[])
+	{
+		var sb = new StringBuilder;
+		for (int i = 0; i < strs.Length; i++)
+		{
+			if (i > 0) sb.Append(sep);
+			sb.Append(strs[i]);
+		}
+		return sb.ToString();
+	}
+	
+	static function Concat(strs : string[])
+	{
+		return Join("", strs);
+	}
+}

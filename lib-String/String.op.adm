@@ -1,0 +1,44 @@
+﻿function __string_add_char(a : string, b : char)
+{
+	var ret = string.Alloc(a.Length + 1);
+	if (a.Length > 0) __movsw(ret, a, a.Length);
+	__movsw(addrof ret[a.Length], addrof b, 1);
+	return ret;
+}
+
+function __string_add_int(a : string, b)
+{
+	var bb = string.Format("%d", b);
+	var ret = string.Alloc(a.Length + bb.Length);
+	if (a.Length > 0) __movsw(ret, a, a.Length);
+	__movsw(addrof ret[a.Length], bb, bb.Length);
+	return ret;
+}
+
+function __string_sub(a : string, b : string)
+{
+	return a.Replace(b, "");
+}
+
+function __string_sub_char(a : string, ch : char)
+{
+	return a.Replace(string.FromChar(ch), "");
+}
+
+function __string_sub_int(a : string, n)
+{
+	return a.Substring(0, a.Length - n);
+}
+
+function __string_mul_int(s : string, count)
+{
+	if (count < 1) return "";
+	var ret = string.Alloc(s.Length * count);
+	var p : char* = ret;
+	for (int i = 0; i < count; i++)
+	{
+		__movsw(p, s, s.Length);
+		p += s.Length;
+	}
+	return ret;
+}

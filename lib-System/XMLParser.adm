@@ -9,16 +9,20 @@
 	{
 		Close();
 		var sr = new StreamReader;
-		sr.Open(file);
+		if (!sr.Open(file)) return false;
+		
 		Stream = sr;
+		return true;
 	}
 	
 	function OpenString(source : string)
 	{
 		Close();
 		var sr = new StringReader;
-		sr.Open(source);
+		if (!sr.Open(source)) return false;
+		
 		Stream = sr;
+		return true;
 	}
 	
 	function Close()

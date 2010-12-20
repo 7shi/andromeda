@@ -1,3 +1,4 @@
 syntax: glob
 Test.exe
 Test.xml
+Generator.exe

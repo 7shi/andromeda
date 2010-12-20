@@ -1,0 +1,15 @@
+﻿class Path
+{
+	static function get_PathSeparator
+	{
+		return '\\';
+	}
+	
+	static function Combine(path : string, name : string)
+	{
+		if (string.IsNullOrEmpty(path)) return name;
+		if (path[path.Length - 1] == PathSeparator)
+			return path + name;
+		return path + PathSeparator + name;
+	}
+}

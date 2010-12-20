@@ -1,0 +1,747 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Version>11.9999</Version>
+ </DocumentProperties>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>11640</WindowHeight>
+  <WindowWidth>20520</WindowWidth>
+  <WindowTopX>120</WindowTopX>
+  <WindowTopY>30</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center"/>
+   <Borders/>
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s21">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <NumberFormat/>
+  </Style>
+  <Style ss:ID="s22">
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s23">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+   <NumberFormat/>
+  </Style>
+  <Style ss:ID="s25">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
+    ss:Bold="1"/>
+   <Interior ss:Color="#CCFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s26">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+   <NumberFormat/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Sheet1">
+  <Table ss:ExpandedColumnCount="5" ss:ExpandedRowCount="105" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
+   <Column ss:Width="30.75"/>
+   <Column ss:Width="21.75"/>
+   <Column ss:Width="43.5"/>
+   <Column ss:AutoFitWidth="0" ss:Width="162"/>
+   <Column ss:StyleID="s21" ss:Width="56.25"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">head</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">レツレツムシシジ</PhoneticText><Data
+      ss:Type="String">A列とB列を無視する指示</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">DOSHeader</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="String">byte</Data></Cell>
+    <Cell><Data ss:Type="String">signature1</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">'M'</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="String">byte</Data></Cell>
+    <Cell><Data ss:Type="String">signature2</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">'Z'</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">bytes_in_last_block</Data></Cell>
+    <Cell><Data ss:Type="String">0x90</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">blocks_in_file</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">num_relocs</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">header_paragraphs</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">10</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">min_extra_paragraphs</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">max_extra_paragraphs</Data></Cell>
+    <Cell><Data ss:Type="String">0xffff</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">14</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">ss</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">sp</Data></Cell>
+    <Cell><Data ss:Type="String">0xb8</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">18</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">checksum</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">ip</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">22</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">cs</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">reloc_table_offset</Data></Cell>
+    <Cell><Data ss:Type="String">0x40</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">26</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">overlay_number</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">PEFileHeader</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">Machine</Data></Cell>
+    <Cell><Data ss:Type="String">0x14c</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">NumberOfSections</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">TimeDateStamp</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">PointerToSymbolTable</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">NumberOfSymbols</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">OptionalHeaderSize</Data></Cell>
+    <Cell><Data ss:Type="String">0xe0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">18</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">Characteristics</Data></Cell>
+    <Cell><Data ss:Type="String">0x10e</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">PEHeaderStandardFields</Data></Cell>
+    <Cell ss:StyleID="s26"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">Magic</Data></Cell>
+    <Cell><Data ss:Type="String">0x10b</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="String">byte</Data></Cell>
+    <Cell><Data ss:Type="String">LMajor</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">3</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="String">byte</Data></Cell>
+    <Cell><Data ss:Type="String">LMinor</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">CodeSize</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">InitializedDataSize</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">UninitializedDataSize</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">EntryPoint</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">BaseOfCode</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">BaseOfData</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">PEHeaderWindowsNTSpecificFields</Data></Cell>
+    <Cell ss:StyleID="s26"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">ImageBase</Data></Cell>
+    <Cell><Data ss:Type="String">0x400000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">SectionAlignment</Data></Cell>
+    <Cell><Data ss:Type="String">0x2000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">FileAlignment</Data></Cell>
+    <Cell><Data ss:Type="String">0x200</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">OSMajor</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">14</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">OSMinor</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">UserMajor</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">18</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">UserMinor</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">SubSysMajor</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">22</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">SubSysMinor</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">Reserved</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">ImageSize</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">32</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">HeaderSize</Data></Cell>
+    <Cell><Data ss:Type="String">0x400</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">36</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">FileChecksum</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">40</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">SubSystem</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">42</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">DLLFlags</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">44</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">StackReserveSize</Data></Cell>
+    <Cell><Data ss:Type="String">0x100000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">48</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">StackCommitSize</Data></Cell>
+    <Cell><Data ss:Type="String">0x1000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">52</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">HeapReserveSize</Data></Cell>
+    <Cell><Data ss:Type="String">0x100000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">56</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">HeapCommitSize</Data></Cell>
+    <Cell><Data ss:Type="String">0x1000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">60</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">LoaderFlags</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">64</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">NumberOfDataDirectories</Data></Cell>
+    <Cell><Data ss:Type="String">0x10</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">68</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">PEHeaderDataDirectories</Data></Cell>
+    <Cell ss:StyleID="s26"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">ExportTable</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">ImportTable</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">ResourceTable</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">ExceptionTable</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">32</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">CertificateTable</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">40</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">BaseRelocationTable</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">48</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">Debug</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">56</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">Copyright</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">64</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">GlobalPtr</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">72</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">TLSTable</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">80</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">LoadConfigTable</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">88</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">BoundImport</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">96</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">IAT</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">104</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">DelayImportDescriptor</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">112</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">CLIHeader</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">120</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">Reserved</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">128</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">SectionHeader</Data></Cell>
+    <Cell ss:StyleID="s26"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="String">byte</Data></Cell>
+    <Cell><Data ss:Type="String">Name[8]</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">VirtualSize</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">VirtualAddress</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">SizeOfRawData</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">PointerToRawData</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">PointerToRelocations</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">PointerToLinenumbers</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">32</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">NumberOfRelocations</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">34</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">NumberOfLinenumbers</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">36</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">Characteristics</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">40</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">ImportTable</Data></Cell>
+    <Cell ss:StyleID="s26"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">ImportLookupTable</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">DateTimeStamp</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">ForwarderChain</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">Name</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">ImportAddressTable</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <Print>
+    <ValidPrinterInfo/>
+    <PaperSizeIndex>9</PaperSizeIndex>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
+   <Selected/>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>1</ActiveRow>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet2">
+  <Table ss:ExpandedColumnCount="0" ss:ExpandedRowCount="0" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5"/>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet3">
+  <Table ss:ExpandedColumnCount="0" ss:ExpandedRowCount="0" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5"/>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>
