@@ -1,5 +1,7 @@
-﻿printfln("*** PE Test ***");
-_Finish _finish;
+﻿#pragma subsystem(WINDOWS_GUI)
+ConsoleBox consoleBox;
+
+printfln("*** PE Test ***");
 
 var args = Environment.GetCommandLineArgs();
 if (args.Length > 1)
@@ -73,25 +75,22 @@ dll2.WinNT.ImageBase = 0x10000000;
 dll2.WinNT.SubSystem = IMAGE_SUBSYSTEM_WINDOWS_CE_GUI;
 
 var dll2t = new Block;
-dll2t.AddInt(0xe1a0c00d); // 00: mov ip, sp
-dll2t.AddInt(0xe92dd800); // 04: stmfd sp!, {fp, ip, lr, pc}
-dll2t.AddInt(0xe24cb004); // 08: sub fp, ip, #4
-dll2t.AddInt(0xe89da800); // 0c: ldmfd sp, {fp, sp, pc}
+dll2t.AddInt(0xe1a0f00e); // 00: mov pc, lr
 dll2.Export("ShowMessage", dll2t.CurrentAddress);
-dll2t.AddInt(0xe1a0c00d); // 10: mov ip, sp
-dll2t.AddInt(0xe92dd800); // 14: stmfd sp!, {fp, ip, lr, pc}
-dll2t.AddInt(0xe24cb004); // 18: sub fp, ip, #4
-dll2t.AddInt(0xe3a00000); // 1c: mov r0, #0
-dll2t.AddInt(0xe59f100c); // 20: ldr r1, [pc, #12] ; 0x34
-dll2t.AddInt(0xe59f200c); // 24: ldr r2, [pc, #12] ; 0x38
-dll2t.AddInt(0xe3a03001); // 28: mov r3, #1
-dll2t.AddInt(0xeb000002); // 2c: bl 8 ; 0x3c
-dll2t.AddInt(0xe89da800); // 30: ldmfd sp, {fp, sp, pc}
-dll2t.AddAddress(dll2.GetString("こんにちは、世界！")); // 34
-dll2t.AddAddress(dll2.GetString("だいあろぐ")); // 38
-dll2t.AddInt(0xe59fc000); // 3c: ldr ip, [pc, #0] ; 0x44
-dll2t.AddInt(0xe59cf000); // 40: ldr pc, [ip]
-dll2t.AddAddress(dll2.Import("COREDLL.DLL", "MessageBoxW")); // 44
+dll2t.AddInt(0xe1a0c00d); // 04: mov ip, sp
+dll2t.AddInt(0xe92dd800); // 08: stmfd sp!, {fp, ip, lr, pc}
+dll2t.AddInt(0xe24cb004); // 0c: sub fp, ip, #4
+dll2t.AddInt(0xe3a00000); // 10: mov r0, #0
+dll2t.AddInt(0xe59f100c); // 14: ldr r1, [pc, #12] ; 0x28
+dll2t.AddInt(0xe59f200c); // 18: ldr r2, [pc, #12] ; 0x2c
+dll2t.AddInt(0xe3a03001); // 1c: mov r3, #1
+dll2t.AddInt(0xeb000002); // 20: bl 8 ; 0x30
+dll2t.AddInt(0xe89da800); // 24: ldmfd sp, {fp, sp, pc}
+dll2t.AddAddress(dll2.GetString("こんにちは、世界！")); // 28
+dll2t.AddAddress(dll2.GetString("だいあろぐ")); // 2c
+dll2t.AddInt(0xe59fc000); // 30: ldr ip, [pc, #0] ; 0x38
+dll2t.AddInt(0xe59cf000); // 34: ldr pc, [ip]
+dll2t.AddAddress(dll2.Import("COREDLL.DLL", "MessageBoxW")); // 38
 
 println();
 dll2.WriteFile("a.arm.dll", dll2t, true);

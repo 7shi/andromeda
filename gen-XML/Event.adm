@@ -1,0 +1,48 @@
+﻿class CodeGenerator
+{
+	function Event()
+	{
+		if (LineLength < 2)
+		{
+			Error("event: 引数がありません。");
+			return;
+		}
+		
+		var structName = GetColumn(1);
+		var types = new StringList;
+		var names = new StringList;
+		var funcs = new VarList;
+		int max_type = 0, max_name = 0;
+		while (ReadLine())
+		{
+			var name = GetColumn(0);
+			var type = GetColumn(1);
+			var func = GetColumn(2);
+			if (string.IsNullOrEmpty(type) || string.IsNullOrEmpty(name))
+				break;
+			types.Add(type);
+			names.Add(name);
+			max_type = Math.Max(max_type, type.Length);
+			max_name = Math.Max(max_name, name.Length);
+			if (func == null || func != "0")
+				funcs.Add(1);
+			else
+				funcs.Add(0);
+		}
+		
+		WriteLine("%s", structName);
+		WriteLine("{");
+		for (int i = 0; i < types.Count; i++)
+			WriteLine("\tvar %s = new Event;", names.Get(i).PadRight(max_name));
+		WriteLine("");
+		for (int i = 0; i < types.Count; i++)
+		{
+			if (funcs.Get(i) == 0) continue;
+			var type = types.Get(i).PadRight(max_type);
+			var name = names.Get(i).PadRight(max_name);
+			WriteLine("\tvirtual On%s(e : %s) { %s.Invoke(this, e); }",
+				name, type, name);
+		}
+		WriteLine("}");
+	}
+}

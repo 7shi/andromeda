@@ -8,11 +8,12 @@
 
 	function ctor
 	{
+		typeFormat.Add("var",    "%08x");
+		typeFormat.Add("int",    "%08x");
 		typeFormat.Add("uint",   "%08x");
+		typeFormat.Add("short",  "%04x");
 		typeFormat.Add("ushort", "%04x");
 		typeFormat.Add("byte",   "%02x");
-		typeFormat.Add("int",    "%08x");
-		typeFormat.Add("short",  "%04x");
 		typeFormat.Add("char",   "'%c'");
 		xx.WorksheetClosed.Add(\(sender, e) => head = 0);
 	}

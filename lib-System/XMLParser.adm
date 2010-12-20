@@ -199,6 +199,7 @@
 		return s
 			.Replace("&lt;", "<")
 			.Replace("&gt;", ">")
-			.Replace("&amp;", "&");
+			.Replace("&amp;", "&")
+			.Replace("&quot;", "\"");
 	}
 }

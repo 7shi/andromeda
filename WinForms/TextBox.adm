@@ -1,0 +1,19 @@
+﻿class TextBox : Control
+{
+	function ctor()
+	{
+		lpClassName = "EDIT";
+		SetExStyle(WS_EX_CLIENTEDGE, true);
+		SetStyle(WS_TABSTOP | ES_AUTOHSCROLL, true);
+	}
+	
+	function set_Multiline(b : bool)
+	{
+		SetStyle(ES_MULTILINE | ES_AUTOVSCROLL, b);
+	}
+	
+	function set_WordWrap(b : bool)
+	{
+		SetStyle(ES_AUTOHSCROLL, !b);
+	}
+}

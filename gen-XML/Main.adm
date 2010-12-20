@@ -19,11 +19,23 @@ class CodeGenerator : ExcelCodeGenerator
 			case "class":
 			case "struct":
 				WriteLine("");
-				Struct(cmd);
+				Struct();
 				break;
 			case "const":
 				WriteLine("");
 				Const();
+				break;
+			case "enum":
+				WriteLine("");
+				Enum();
+				break;
+			case "event":
+				WriteLine("");
+				Event();
+				break;
+			case "extern":
+				WriteLine("");
+				Extern();
 				break;
 		}
 	}

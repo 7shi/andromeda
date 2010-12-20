@@ -1,0 +1,324 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Version>11.9999</Version>
+ </DocumentProperties>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>11640</WindowHeight>
+  <WindowWidth>20520</WindowWidth>
+  <WindowTopX>120</WindowTopX>
+  <WindowTopY>30</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center"/>
+   <Borders/>
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s21">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+  </Style>
+  <Style ss:ID="s22">
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s23">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="enum">
+  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="61" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
+   <Column ss:Index="3" ss:StyleID="s21" ss:AutoFitWidth="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">enum</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">Reg32</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">EAX</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">ECX</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">EDX</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">EBX</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">ESP</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">EBP</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">ESI</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">EDI</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">enum</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">Reg16</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">AX</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">CX</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">DX</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">BX</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">SP</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">BP</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">SI</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">DI</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">enum</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">Reg8</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">AL</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">CL</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">DL</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">BL</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">AH</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">CH</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">DH</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">BH</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">enum</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">Cc</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">O</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NO</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">C</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">B</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">uint &lt;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NAE</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">! uint &gt;=</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NC</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">AE</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+    <Cell><Data ss:Type="String">uint &gt;=</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NB</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+    <Cell><Data ss:Type="String">! uint &lt;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">Z</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">E</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">==</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NZ</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NE</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">!=</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">BE</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">uint &lt;=</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NA</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">! uint &gt;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NBE</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">! uint &lt;=</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">A</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">uint &gt;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">S</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NS</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">P</Data></Cell>
+    <Cell><Data ss:Type="Number">10</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">PE</Data></Cell>
+    <Cell><Data ss:Type="Number">10</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NP</Data></Cell>
+    <Cell><Data ss:Type="Number">11</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">PO</Data></Cell>
+    <Cell><Data ss:Type="Number">11</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">L</Data></Cell>
+    <Cell><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="String">int &lt;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NGE</Data></Cell>
+    <Cell><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="String">! int &gt;=</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NL</Data></Cell>
+    <Cell><Data ss:Type="Number">13</Data></Cell>
+    <Cell><Data ss:Type="String">! int &lt;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">GE</Data></Cell>
+    <Cell><Data ss:Type="Number">13</Data></Cell>
+    <Cell><Data ss:Type="String">int &gt;=</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">LE</Data></Cell>
+    <Cell><Data ss:Type="Number">14</Data></Cell>
+    <Cell><Data ss:Type="String">int &lt;=</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NG</Data></Cell>
+    <Cell><Data ss:Type="Number">14</Data></Cell>
+    <Cell><Data ss:Type="String">! int &gt;</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">NLE</Data></Cell>
+    <Cell><Data ss:Type="Number">15</Data></Cell>
+    <Cell><Data ss:Type="String">! int &lt;=</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">G</Data></Cell>
+    <Cell><Data ss:Type="Number">15</Data></Cell>
+    <Cell><Data ss:Type="String">int &gt;</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <Selected/>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet2">
+  <Table ss:ExpandedColumnCount="0" ss:ExpandedRowCount="0" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5"/>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet3">
+  <Table ss:ExpandedColumnCount="0" ss:ExpandedRowCount="0" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5"/>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

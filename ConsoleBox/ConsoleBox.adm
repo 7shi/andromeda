@@ -1,0 +1,25 @@
+﻿struct ConsoleBox
+{
+	var cs = new ConsoleStream;
+	
+	function dtor
+	{
+		var f = new Form;
+		f.Text = "Andromeda Console";
+		var tb = new TextBox;
+		tb.Font = DefaultFont;
+		tb.Text = cs.ToString();
+		tb.Multiline = true;
+		tb.ScrollBars = ScrollBars_Both;
+		tb.Dock = DockStyle_Fill;
+		f.AddControl(tb);
+		f.SetClientSize(400, 400);
+		cs.Dispose();
+		Application.Run(f);
+	}
+	
+	static function get_DefaultFont
+	{
+		return Font.FromFaceHeight("ＭＳ ゴシック", 12);
+	}
+}

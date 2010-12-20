@@ -1,0 +1,39 @@
+﻿class PaintEventArgs : EventArgs
+{
+	PAINTSTRUCT ps;
+	var hDC;
+}
+
+class MouseEventArgs : EventArgs
+{
+	int Button, X, Y;
+	
+	static function FromMessage(uMsg, wParam, lParam)
+	{
+		var ret = new MouseEventArgs;
+		switch (uMsg)
+		{
+			case WM_LBUTTONDOWN:
+			case WM_LBUTTONUP:
+			case WM_LBUTTONDBLCLK:
+				ret.Button = MK_LBUTTON;
+				break;
+			case WM_RBUTTONDOWN:
+			case WM_RBUTTONUP:
+			case WM_RBUTTONDBLCLK:
+				ret.Button = MK_RBUTTON;
+				break;
+			case WM_MBUTTONDOWN:
+			case WM_MBUTTONUP:
+			case WM_MBUTTONDBLCLK:
+				ret.Button = MK_MBUTTON;
+				break;
+			case WM_MOUSEMOVE:
+				ret.Button = wParam;
+				break;
+		}
+		ret.X = GET_X_LPARAM(lParam);
+		ret.Y = GET_Y_LPARAM(lParam);
+		return ret;
+	}
+}

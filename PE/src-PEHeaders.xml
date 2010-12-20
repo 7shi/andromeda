@@ -87,188 +87,188 @@
   <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="38" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="41.25"/>
-   <Column ss:Width="240"/>
+   <Column ss:Width="173.25"/>
    <Column ss:StyleID="s21" ss:Width="44.25"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
-    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">IMAGE_FILE_</Data></Cell>
     <Cell ss:StyleID="s23"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_RELOCS_STRIPPED</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">RELOCS_STRIPPED</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0001</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_EXECUTABLE_IMAGE</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">EXECUTABLE_IMAGE</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0002</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_LINE_NUMS_STRIPPED</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">LINE_NUMS_STRIPPED</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0004</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_LOCAL_SYMS_STRIPPED</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">LOCAL_SYMS_STRIPPED</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0008</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_AGGRESSIVE_WS_TRIM</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">AGGRESSIVE_WS_TRIM</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0010</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_LARGE_ADDRESS_AWARE</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">LARGE_ADDRESS_AWARE</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0020</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_16BIT_MACHINE</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">16BIT_MACHINE</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0040</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_BYTES_REVERSED_LO</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">BYTES_REVERSED_LO</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0080</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_32BIT_MACHINE</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">32BIT_MACHINE</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0100</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_DEBUG_STRIPPED</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">DEBUG_STRIPPED</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0200</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">REMOVABLE_RUN_FROM_SWAP</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0400</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_SYSTEM</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">SYSTEM</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x1000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_DLL</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">DLL</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x2000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_UP_SYSTEM_ONLY</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">UP_SYSTEM_ONLY</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x4000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_BYTES_REVERSED_HI</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">BYTES_REVERSED_HI</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x8000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
-    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">IMAGE_FILE_MACHINE_</Data></Cell>
     <Cell ss:StyleID="s23"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_UNKNOWN</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">UNKNOWN</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_ALPHA</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">ALPHA</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x184</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_AMD64</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">AMD64</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x8664</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_ARM</Data></Cell>
-    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1c0</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">ARM</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1C0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_I386</Data></Cell>
-    <Cell ss:StyleID="s25"><Data ss:Type="String">0x14c</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">I386</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x14C</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_M68K</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">M68K</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x268</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_POWERPC</Data></Cell>
-    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1f0</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">POWERPC</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1F0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_R10000</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">R10000</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x168</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_R3000</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">R3000</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x162</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_R4000</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">R4000</Data></Cell>
     <Cell ss:StyleID="s25"><Data ss:Type="String">0x166</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_SH3</Data></Cell>
-    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1a2</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">SH3</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1A2</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_SH4</Data></Cell>
-    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1a6</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">SH4</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1A6</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
-    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">IMAGE_SUBSYSTEM_</Data></Cell>
     <Cell ss:StyleID="s23"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_UNKNOWN</Data></Cell>
+    <Cell><Data ss:Type="String">UNKNOWN</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_NATIVE</Data></Cell>
+    <Cell><Data ss:Type="String">NATIVE</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_WINDOWS_GUI</Data></Cell>
+    <Cell><Data ss:Type="String">WINDOWS_GUI</Data></Cell>
     <Cell><Data ss:Type="Number">2</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_WINDOWS_CUI</Data></Cell>
+    <Cell><Data ss:Type="String">WINDOWS_CUI</Data></Cell>
     <Cell><Data ss:Type="Number">3</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_POSIX_CUI</Data></Cell>
+    <Cell><Data ss:Type="String">POSIX_CUI</Data></Cell>
     <Cell><Data ss:Type="Number">7</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_WINDOWS_CE_GUI</Data></Cell>
+    <Cell><Data ss:Type="String">WINDOWS_CE_GUI</Data></Cell>
     <Cell><Data ss:Type="Number">9</Data></Cell>
    </Row>
   </Table>
@@ -363,7 +363,7 @@
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">max_extra_paragraphs</Data></Cell>
-    <Cell><Data ss:Type="String">0xffff</Data></Cell>
+    <Cell><Data ss:Type="String">0xFFFF</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">14</Data></Cell>
@@ -377,7 +377,7 @@
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">sp</Data></Cell>
-    <Cell><Data ss:Type="String">0xb8</Data></Cell>
+    <Cell><Data ss:Type="String">0xB8</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">18</Data></Cell>
@@ -428,8 +428,8 @@
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">Machine</Data></Cell>
-    <Cell ss:StyleID="s29"><Data ss:Type="String">0x14c</Data></Cell>
-    <Cell><Data ss:Type="String">0x1c0(ARM), 0x8664(AMD64)</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">0x14C</Data></Cell>
+    <Cell><Data ss:Type="String">0x1C0(ARM), 0x8664(AMD64)</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">2</Data></Cell>
@@ -469,14 +469,14 @@
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">OptionalHeaderSize</Data></Cell>
-    <Cell><Data ss:Type="String">0xe0</Data></Cell>
+    <Cell><Data ss:Type="String">0xE0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">18</Data></Cell>
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">Characteristics</Data></Cell>
-    <Cell><Data ss:Type="String">0x10e</Data></Cell>
+    <Cell><Data ss:Type="String">0x10E</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s28" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
@@ -492,8 +492,8 @@
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">Magic</Data></Cell>
-    <Cell ss:StyleID="s29"><Data ss:Type="String">0x10b</Data></Cell>
-    <Cell><Data ss:Type="String">0x20b(PE32+)</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">0x10B</Data></Cell>
+    <Cell><Data ss:Type="String">0x20B(PE32+)</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">2</Data></Cell>

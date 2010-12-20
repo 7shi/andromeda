@@ -1,0 +1,177 @@
+﻿class Control
+{
+	var controls = new ArrayList;
+	var Dock;
+	var font : Font;
+	
+	function dtor()
+	{
+		Dispose();
+	}
+	
+	virtual Dispose()
+	{
+		Hide();
+		for (int i = 0; i < controls.Count; i++)
+		{
+			var c = (Control)controls.Get(i);
+			c.Dispose();
+		}
+		controls.Clear();
+		hWnd.DestroyWindow();
+	}
+	
+	virtual Create()
+	{
+		if (hWnd != null) return;
+		hWnd = CreateWindowEx(
+			dwExStyle, lpClassName, lpWindowName,
+			dwStyle, X, Y, nWidth, nHeight,
+			hWndParent, hMenu, hInstance, lpParam);
+		if (font != null)
+		{
+			var h = font.Handle;
+			if (h != null) SendMessage(hWnd, WM_SETFONT, h, 0);
+		}
+		var focused = false;
+		for (int i = 0; i < controls.Count; i++)
+		{
+			var c = (Control)controls.Get(i);
+			c.hWndParent = hWnd;
+			c.Create();
+			if (!focused && (c.dwStyle & WS_TABSTOP) != 0)
+			{
+				c.Focus();
+				focused = true;
+			}
+		}
+	}
+	
+	function Show()
+	{
+		if (hWnd == null) Create();
+		hWnd.ShowWindow(SW_SHOWNORMAL);
+		hWnd.UpdateWindow();
+	}
+	
+	function Hide()
+	{
+		if (hWnd == null) Create();
+		hWnd.ShowWindow(SW_HIDE);
+	}
+	
+	function Close()
+	{
+		if (hWnd == null) return;
+		Dispose();
+	}
+	
+	function Invalidate()
+	{
+		if (hWnd == null) Create();
+		hWnd.InvalidateRect(null, false);
+	}
+	
+	function set_Text(text)
+	{
+		lpWindowName = text;
+		return text;
+	}
+	
+	virtual WndProc(hWnd, uMsg, wParam, lParam)
+	{
+		switch (uMsg)
+		{
+			case WM_PAINT:
+			{
+				var e = new PaintEventArgs;
+				e.hDC = hWnd.BeginPaint(e.ps);
+				OnPaint(e);
+				hWnd.EndPaint(e.ps);
+				return 0;
+			}
+			case WM_LBUTTONDOWN:
+			case WM_RBUTTONDOWN:
+			case WM_MBUTTONDOWN:
+				OnMouseDown(MouseEventArgs.FromMessage(uMsg, wParam, lParam));
+				return 0;
+			case WM_LBUTTONUP:
+			case WM_RBUTTONUP:
+			case WM_MBUTTONUP:
+				OnMouseUp(MouseEventArgs.FromMessage(uMsg, wParam, lParam));
+				return 0;
+			case WM_MOUSEMOVE:
+				OnMouseMove(MouseEventArgs.FromMessage(uMsg, wParam, lParam));
+				return 0;
+			case WM_DESTROY:
+				OnClosed(EventArgs.Empty);
+				return 0;
+			case WM_SIZE:
+				OnResize(EventArgs.Empty);
+				return 0;
+		}
+		return hWnd.DefWindowProc(uMsg, wParam, lParam);
+	}
+	
+	function SetStyle(flag, value)
+	{
+		if (value)
+			dwStyle |= flag;
+		else
+			dwStyle &= ~flag;
+	}
+	
+	function SetExStyle(flag, value)
+	{
+		if (value)
+			dwExStyle |= flag;
+		else
+			dwExStyle &= ~flag;
+	}
+	
+	function set_ScrollBars(value)
+	{
+		switch (value)
+		{
+			case ScrollBars_None:
+				SetStyle(WS_HSCROLL | WS_VSCROLL, false);
+				break;
+			case ScrollBars_Horizontal:
+				SetStyle(WS_VSCROLL, false);
+				SetStyle(WS_HSCROLL, true);
+				break;
+			case ScrollBars_Vertical:
+				SetStyle(WS_HSCROLL, false);
+				SetStyle(WS_VSCROLL, true);
+				break;
+			case ScrollBars_Both:
+				SetStyle(WS_HSCROLL | WS_VSCROLL, true);
+				break;
+		}
+	}
+	
+	function AddControl(c : Control)
+	{
+		c.SetStyle(WS_CHILD | WS_VISIBLE, true);
+		controls.Add(c);
+		if (hWnd == null) return;
+		
+		c.hWndParent = hWnd;
+		c.Create();
+	}
+	
+	function Focus()
+	{
+		if (hWnd != null) SetFocus(hWnd);
+	}
+	
+	function set_Font(f : Font)
+	{
+		if (font == f) return;
+		font = f;
+		if (hWnd == null) return;
+		var h = f.Handle;
+		if (h == null) return;
+		SendMessage(hWnd, WM_SETFONT, h, 0);
+	}
+}

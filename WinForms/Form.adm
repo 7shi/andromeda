@@ -1,0 +1,67 @@
+﻿var g_hInstance;
+function winforms_get_instance()
+{
+	if (g_hInstance == null)
+		g_hInstance = GetModuleHandle(null);
+	return g_hInstance;
+}
+
+var g_nAutoID;
+function winforms_get_auto_id()
+{
+	if (g_nAutoID == 0) g_nAutoID = 0x2000;
+	return g_nAutoID++;
+}
+
+class Form : Control
+{
+	WNDCLASSEX wcex;
+	delegate wndProc;
+	var className : string;
+	var mainMenu : MainMenu;
+	
+	function ctor()
+	{
+		wndProc = delegate((stdcall))(this, WndProc);
+		className = string.Format("WinForm_%x", winforms_get_auto_id());
+		lpClassName = className;
+		dwStyle     = WS_OVERLAPPEDWINDOW;
+		
+		__stosb(wcex, 0, sizeof WNDCLASSEX);
+		wcex.cbSize        = sizeof WNDCLASSEX;
+		wcex.style         = CS_VREDRAW | CS_HREDRAW;
+		wcex.lpfnWndProc   = wndProc;
+		wcex.hInstance     = winforms_get_instance();
+		wcex.hCursor       = LoadCursor(null, IDC_ARROW);
+		wcex.hbrBackground = COLOR_WINDOW + 1;
+		wcex.lpszClassName = className;
+	}
+	
+	override Create()
+	{
+		if (hWnd != null) return;
+		wcex.RegisterClassEx();
+		base.Create();
+	}
+	
+	override OnClosed(e : EventArgs)
+	{
+		Application.Exit();
+		base.OnClosed(e);
+	}
+	
+	override WndProc(hWnd, uMsg, wParam, lParam)
+	{
+		switch (uMsg)
+		{
+			case WM_COMMAND:
+				if (mainMenu != null)
+				{
+					var mi : MenuItem = mainMenu.FindMenuItem(LOWORD(wParam));
+					if (mi != null) mi.OnClick(EventArgs.Empty);
+				}
+				return 0;
+		}
+		return base.WndProc(hWnd, uMsg, wParam, lParam);
+	}
+}

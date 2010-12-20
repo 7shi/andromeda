@@ -1,0 +1,33 @@
+﻿class Font
+{
+	var hFont;
+	
+	function dtor
+	{
+		if (hFont != null) DeleteObject(hFont);
+	}
+	
+	function get_Handle
+	{
+		Create();
+		return hFont;
+	}
+	
+	function Create
+	{
+		if (hFont != null) return;
+		hFont = CreateFont(
+			nHeight, nWidth, nEscapement, nOrientation,
+			fnWeight, fdwItalic, fdwUnderline, fdwStrikeOut,
+			fdwCharSet, fdwOutputPrecision, fdwClipPrecision,
+			fdwQuality, fdwPitchAndFamily, lpszFace);
+	}
+	
+	static function FromFaceHeight(face : string, height)
+	{
+		var ret = new Font;
+		ret.nHeight = height;
+		ret.lpszFace = face;
+		return ret;
+	}
+}

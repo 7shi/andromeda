@@ -40,6 +40,9 @@
 				case ".bss":
 					ret.Header.Characteristics = 0xc0000080;
 					break;
+				case ".rsrc":
+					ret.Header.Characteristics = 0x40000040;
+					break;
 				case ".reloc":
 					ret.Header.Characteristics = 0x42000040;
 					break;

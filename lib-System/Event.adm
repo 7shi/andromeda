@@ -1,6 +1,6 @@
 ﻿class EventArgs
 {
-	static var Empty : EventArgs = null;
+	static var Empty : EventArgs;
 }
 
 class Event : VarList
