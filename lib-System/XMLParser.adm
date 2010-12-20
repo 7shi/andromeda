@@ -1,0 +1,181 @@
+﻿class XMLParser
+{
+	var Stream : TextReader;
+	var Element = "", Name = "", Data = "";
+	var Attributes = new StringDictionary();
+	bool Letter = true;  // 大文字小文字の区別の有無
+
+	function Open(file : string)
+	{
+		Close();
+		var sr = new StreamReader;
+		sr.Open(file);
+		Stream = sr;
+	}
+	
+	function OpenString(source : string)
+	{
+		Close();
+		var sr = new StringReader;
+		sr.Open(source);
+		Stream = sr;
+	}
+	
+	function Close()
+	{
+		if (Stream != null)
+		{
+			Stream.Close();
+			Stream = null;
+		}
+	}
+
+	function Read()
+	{
+		if (Stream == null) return false;
+		
+		var data = new StringBuilder();
+		var element = new StringBuilder();
+		int state = 0, ch;
+		while ((ch = Stream.ReadChar()) != -1)
+		{
+			if ((state == 1 || state == 4) && ch == (int)'>')
+				break;
+			else if (ch == (int)'<')
+			{
+				if (state == 1)
+				{
+					data.AppendChar((byte)ch);
+					data.Append(element.ToString());
+					element.Clear();
+				}
+				else
+					state = 1;
+			}
+			else if (state >= 1)
+			{
+				element.AppendChar(ch);
+				if (element.Length == 3)
+				{
+					var e = element.ToString();
+					if (e[0] == '!' && e[1] == '-' && e[2] == '-')
+						state = 2;
+				}
+				if ((state == 2 || state == 3) && ch == '-')
+					state++;
+				else if (state > 2)
+					state = 2;
+			}
+			else
+				data.AppendChar(ch);
+		}
+		Element = element.ToString();
+		Name = "";
+		Attributes.Clear();
+		Data = data.ToString();
+		if (Element.Length < 1) return false;
+		
+		Parse();
+		return true;
+	}
+
+	function Parse()
+	{
+		if (Element.StartsWith("!--"))
+		{
+			Name = "!--";
+			var ad = Element.SubstringFrom(3);
+			if (ad.EndsWith("--")) ad = ad.Substring(0, ad.Length - 2);
+			if (ad.Length > 0) Attributes.Add("value", ad);
+			return;
+		}
+		
+		int xmlState, len, state;
+		char ch, quot;
+		var aname = new StringBuilder();
+		var adata = new StringBuilder();
+		xmlState = state = 0;
+		len = Element.Length;
+		quot = '\0';
+		for (int i = 0; i <= len; i++)
+		{
+			ch = '\0';
+			if (i < len) ch = Element[i];
+			if (i == len || (quot == '\0' && (ch == ' ' || ch == '\r' || ch == '\n' || ch == '\t')) || (state == 4 && ch == quot))
+			{
+				if (state == 1)
+					state = 2;
+				else if (state == 3 && aname.Length == 0)
+					state = 2;
+				else if (state == 4 && adata.Length > 0)
+				{
+					quot = '\0';
+					if (aname.Length > 0 && adata.Length > 0)
+					{
+						var an = aname.ToString();
+						if (!Letter) an = an.ToLower();
+						Attributes.Add(an, adata.ToString());
+					}
+					if (aname.Length > 0) aname.Clear();
+					if (adata.Length > 0) adata.Clear();
+					state = 2;
+				}
+				continue;
+			}
+			if (state == 0)
+				state = 1;
+			else if (state == 2)
+				state = 3;
+			if (ch == '/')
+			{
+				if (state == 1)
+				{
+					if (Name.Length < 1)
+						xmlState = 1;
+					else
+						xmlState = 2;
+					continue;
+				}
+				else if (state == 3)
+				{
+					xmlState = 2;
+					continue;
+				}
+			}
+			if (ch == '?' && (state == 1 || state == 3))
+			{
+				xmlState = 3;
+				continue;
+			}
+			if (state == 1)
+				Name += ch;
+			else if (state == 3)
+			{
+				if (ch == '=')
+					state = 4;
+				else
+					aname.AppendChar(ch);
+			}
+			else if (state == 4)
+			{
+				if (quot == '\0' && (ch == '"' || ch == '\''))
+					quot = ch;
+				else
+					adata.AppendChar(ch);
+			}
+		}
+		if (!Letter) Name = Name.ToLower();
+		switch (xmlState)
+		{
+			case 1:
+				Name = "/" + Name;
+				break;
+			case 2:
+				Name += "/";
+				break;
+			case 3:
+				Name = "?" + Name;
+				break;
+		}
+	}
+}

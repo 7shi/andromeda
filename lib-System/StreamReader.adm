@@ -1,14 +1,9 @@
-﻿class StreamReader
+﻿class StreamReader : TextReader
 {
 	var Stream : FileStream;
 	bool IsUTF8 = false;
 	
-	function dtor()
-	{
-		Close();
-	}
-	
-	function Close()
+	override Close()
 	{
 		if (Stream != null)
 		{
@@ -19,6 +14,7 @@
 	
 	function Open(file : string)
 	{
+		Close();
 		Stream = new FileStream;
 		var ret = Stream.OpenRead(file);
 		if (ret)
@@ -39,47 +35,128 @@
 		return ret;
 	}
 	
-	function GetString(buf)
+	function GetString(buf : byte[])
 	{
 		if (IsUTF8)
 			return UTF8Decoder.GetString(buf);
 		return wstr(buf);
 	}
 	
-	function ReadToEnd()
+	override ReadToEnd : string
 	{
-		if (Stream == null) return;
+		if (Stream == null) return null;
 		return GetString(Stream.ReadToEnd());
 	}
 	
-	var buffer = new ByteList;
+	int surrogate = -1;
 	
-	function ReadLine()
+	override ReadChar : int
 	{
-		buffer.Clear();
+		if (Stream == null) return -1;
+		if (surrogate != -1)
+		{
+			int ret = surrogate;
+			surrogate = -1;
+			return ret;
+		}
+		if (IsUTF8) return ReadUtf8Char();
+		
+		var ms = new MemoryStream();
 		for (;;)
 		{
 			var b = Stream.ReadByte();
-			if (b == -1)
-				break;
-			else if (b == '\n')
-				break;
-			else if (b == '\r')
+			if (b == -1) break;
+			ms.WriteByte(Stream.ReadByte());
+			var s = wstr(ms.ToArray());
+			if (s.Length > 1)
 			{
-				var pos = Stream.Position;
-				var lf = Stream.ReadByte();
-				if (lf != '\n')
-					Stream.Position = pos;
-				break;
+				if (s.Length == 2 && 0xd800 <= s[0] && s[0] < 0xdc00)
+				{
+					surrogate = s[1];
+					return s[0];
+				}
+				Position = Position - 1;
+				return s[0];
 			}
-			buffer.Add(b);
 		}
-		if (buffer.Count == 0) return null;
-		return GetString(buffer.ToArray());
+		if (ms.Length == 0) return -1;
+		var ws = wstr(ms.ToArray());
+		return ws[0];
 	}
 	
-	function ReadByte()
+	function ReadUtf8Char() : var
 	{
-		return Stream.ReadByte();
+		var pos = Position;
+		var b1 = Stream.ReadByte();
+		if (b1 == -1)
+			return -1;
+		else if (b1 < 0x80)
+			return b1;
+		else if (b1 < 0xc2)
+		{
+		}
+		else if (b1 < 0xe0)
+		{
+			var b2 = Stream.ReadByte();
+			if (b2 == -1) return '?';
+			if ((b2 & 0xc0) == 0x80)
+				return ((b1 & 0x1f) << 6) + (b2 & 0x3f);
+			Position = pos + 1;
+		}
+		else if (b1 < 0xf0)
+		{
+			var b2 = Stream.ReadByte();
+			if (b2 == -1) return '?';
+			var b3 = Stream.ReadByte();
+			if (b3 != -1
+				&& (b2 & 0xc0) == 0x80
+				&& (b3 & 0xc0) == 0x80)
+			{
+				char c = ((b1 & 0xf) << 12)
+					+ ((b2 & 0x3f) << 6)
+					+  (b3 & 0x3f);
+				if (0x800 <= c && !(0xd800 <= c && c < 0xe000))
+					return c;
+			}
+			Position = pos + 1;
+		}
+		else if (b1 < 0xf8)
+		{
+			var b2 = Stream.ReadByte();
+			if (b2 == -1) return '?';
+			var b3 = Stream.ReadByte();
+			if (b3 != -1)
+			{
+				var b4 = Stream.ReadByte();
+				if (b4 != -1
+					&& (b2 & 0xc0) == 0x80
+					&& (b3 & 0xc0) == 0x80
+					&& (b4 & 0xc0) == 0x80)
+				{
+					int ch = ((b1 & 7) << 18)
+						+ ((b2 & 0x3f) << 12)
+						+ ((b3 & 0x3f) <<  6)
+						+  (b4 & 0x3f);
+					if (ch >= 0x10000)
+					{
+						ch -= 0x10000;
+						surrogate = 0xdc00 + (ch & 0x3ff);
+						return 0xd800 + (ch >> 10);
+					}
+				}
+			}
+			Position = pos + 1;
+		}
+		return '?';
+	}
+	
+	override get_Position
+	{
+		return Stream.Position;
+	}
+	
+	override set_Position(pos)
+	{
+		Stream.Position = pos;
 	}
 }

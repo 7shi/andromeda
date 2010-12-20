@@ -1,0 +1,52 @@
+﻿class TextReader
+{
+	function dtor
+	{
+		Close();
+	}
+	
+	virtual Close
+	{
+	}
+	
+	virtual ReadToEnd : string
+	{
+	}
+	
+	virtual ReadChar : int
+	{
+	}
+	
+	virtual get_Position
+	{
+	}
+	
+	virtual set_Position(pos)
+	{
+	}
+	
+	var buffer = new StringBuilder;
+	
+	function ReadLine
+	{
+		buffer.Clear();
+		for (;;)
+		{
+			var ch = ReadChar();
+			if (ch == -1)
+				break;
+			else if (ch == '\n')
+				break;
+			else if (ch == '\r')
+			{
+				var pos = Position;
+				var lf = ReadChar();
+				if (lf != '\n') Position = pos;
+				break;
+			}
+			buffer.AppendChar(ch);
+		}
+		if (buffer.Length == 0) return null;
+		return buffer.ToString();
+	}
+}

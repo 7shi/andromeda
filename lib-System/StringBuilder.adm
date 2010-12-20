@@ -1,55 +1,63 @@
 ﻿class StringBuilder
 {
 	var Ptr : char[];
-	int Count, Capacity;
+	int Length, Capacity;
 	
 	function ctor()
 	{
 		Capacity = 16;
 		Ptr = new char[Capacity];
-		Count = 0;
+		Length = 0;
 	}
 	
 	function Clear()
 	{
-		Count = 0;
+		Length = 0;
 	}
 	
-	function ToString()
+	function ToString() : string
 	{
-		var ret = new char[Count];
-		__movsw(ret, Ptr, Count);
+		var ret = string.Alloc(Length);
+		__movsw(ret, Ptr, Length);
 		return ret;
 	}
 	
 	function AppendWithLength(s, length)
 	{
 		var cap = Capacity;
-		var size = Count + length - 1;
+		var size = Length + length - 1;
 		while (size >= Capacity)
 			Capacity += Capacity;
 		if (Capacity != cap)
 		{
 			var tmp = new char[Capacity];
-			__movsw(tmp, Ptr, Count);
+			__movsw(tmp, Ptr, Length);
 			Ptr = tmp;
 		}
-		__movsw(addrof Ptr[Count], s, length);
-		Count += length;
+		__movsw(addrof Ptr[Length], s, length);
+		Length += length;
 	}
 	
-	function Append(s : string)
+	function Append(format : string, args : params)
 	{
+		var s = string.VFormat(format, args);
 		AppendWithLength(s, s.Length);
+	}
+	
+	function AppendLine(format : string, args : params)
+	{
+		var s = string.VFormat(format, args);
+		AppendWithLength(s, s.Length);
+		AppendLineOnly();
+	}
+	
+	function AppendLineOnly()
+	{
+		Append("\r\n");
 	}
 	
 	function AppendChar(ch)
 	{
 		AppendWithLength(addrof ch, 1);
-	}
-	
-	function AppendFormat(format : string, args : params)
-	{
-		Append(string.VFormat(format, args));
 	}
 }

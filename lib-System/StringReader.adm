@@ -1,0 +1,29 @@
+﻿class StringReader : TextReader
+{
+	var Source : string;
+	
+	var pos;
+	override get_Position { return pos; }
+	override set_Position(pos) { this.pos = pos; }
+	
+	function Open(source : string)
+	{
+		Source = source;
+		pos = 0;
+		return true;
+	}
+	
+	override ReadToEnd : string
+	{
+		if (Source == null || pos >= Source.Length) return null;
+		var ret = Source.SubstringFrom(pos);
+		pos = Source.Length;
+		return ret;
+	}
+	
+	override ReadChar : int
+	{
+		if (Source == null || pos >= Source.Length) return -1;
+		return Source[pos++];
+	}
+}

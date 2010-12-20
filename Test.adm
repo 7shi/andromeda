@@ -1,0 +1,110 @@
+﻿#pragma output("Test.exe")
+
+printfln("Library Test");
+_Finish _finish;
+
+// --------------------------------
+
+println();
+printfln("*** UTF-8 Test ***");
+
+var surrogate = new char[4];
+surrogate[0] = 0xd800;
+surrogate[1] = 0xdc00;
+surrogate[2] = 0xdbff;
+surrogate[3] = 0xdfff;
+for (int i = 0; i < surrogate.Length; i++)
+	printfln("surrogate[%d]: %04x", i, surrogate[i]);
+
+var utf8 = UTF8Encoder.GetBytes(surrogate);
+for (int i = 0; i < utf8.Length; i++)
+	printfln("utf8[%d]: %02x", i, utf8[i]);
+
+var utf16 = UTF8Decoder.GetString(utf8);
+for (int i = 0; i < utf16.Length; i++)
+	printfln("utf16[%d]: %04x", i, utf16[i]);
+
+// --------------------------------
+
+println();
+printfln("*** Dictionary Test ***");
+
+var dict = new StringDictionary;
+dict.Add("cat", "猫");
+dict.Add("dog", "犬");
+dict.Add("cow", "牛");
+dict.Add("horse", "馬");
+
+var keys = dict.Keys;
+for (int i = 0; i < keys.Length; i++)
+{
+	var key = keys[i];
+	printfln("%s: %s", key, dict.Get(key));
+}
+
+// --------------------------------
+
+println();
+printfln("*** StringBuilder Test ***");
+
+var sb = new StringBuilder;
+sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+sb.AppendLine("<root>");
+sb.AppendLine("<node>こんにちは、世界！</node>");
+sb.AppendLine("<node expr=\"1 + 1\" value=\"%d\" />", 1 + 1);
+sb.AppendLine("</root>");
+var xml = sb.ToString();
+print(xml);
+
+// --------------------------------
+
+println();
+printfln("*** File I/O Test ***");
+
+var sw = new StreamWriter;
+if (sw.Open("Test.xml"))
+{
+	var sr1 = new StringReader;
+	sr1.Open(xml);
+	var line : string;
+	while ((line = sr1.ReadLine()) != null)
+		sw.WriteLine(line);
+	sw.Close();
+}
+
+var sr2 = new StreamReader;
+if (sr2.Open("Test.xml"))
+{
+	printfln("sr2.IsUTF8 = %d", sr2.IsUTF8);
+	printfln("sr2.Stream.Length = %d", sr2.Stream.Length);
+	
+	int ln = 1;
+	var line : string;
+	while ((line = sr2.ReadLine()) != null)
+		printfln("%d: %s", ln++, line);
+	sr2.Close();
+}
+
+// --------------------------------
+
+println();
+printfln("*** XML Test ***");
+
+var xp = new XMLParser;
+xp.Open("Test.xml");
+while (xp.Read())
+{
+	var d = xp.Data.Trim();
+	if (d != "") printfln("   Data = %s", d);
+	printfln("xp.Name = %s", xp.Name);
+	if (xp.Attributes.Count > 0)
+	{
+		var keys = xp.Attributes.Keys;
+		for (int i = 0; i < keys.Length; i++)
+		{
+			var key = keys[i];
+			var v = xp.Attributes.Get(key);
+			printfln("   %s = \"%s\"", key, v);
+		}
+	}
+}
