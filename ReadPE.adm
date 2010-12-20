@@ -1,0 +1,107 @@
+﻿function ReadPE(fn : string)
+{
+	var fs = new FileStream;
+	if (!fs.OpenRead(fn)) return false;
+
+	var exe = fs.ReadToEnd();
+	fs.Close();
+
+	println();
+	printfln("%s", fn);
+	printfln("Length: %d", exe.Length);
+	if (exe.Length < 0x400)
+	{
+		printfln("Too small!");
+		return false;
+	}
+
+	var dosh : DOSHeader = exe;
+	println();
+	printfln("%p: [DOSHeader]", 0);
+	dosh.Show();
+
+	var pesign_ad = ReadUInt(addrof exe[0x3c]);
+	println();
+	printfln("PE signature offset: %08x", pesign_ad);
+	if (pesign_ad >= 0x400)
+	{
+		printfln("Invalid offset!");
+		return false;
+	}
+
+	var pesign = new byte[5];
+	memcpy(pesign, addrof exe[pesign_ad], 4);
+	printfln("PE signature: %s", wstr(pesign));
+
+	var pefh : PEFileHeader* = addrof exe[pesign_ad + 4];
+	println();
+	printfln("%p: [%s]", ((var)pefh) - ((var)exe), typeof(pefh[0]).Name);
+	pefh.Show();
+
+	var pehsf : PEHeaderStandardFields* = pefh + 1;
+	println();
+	printfln("%p: [%s]", ((var)pehsf) - ((var)exe), typeof(pehsf[0]).Name);
+	pehsf.Show();
+
+	var pehwnt : PEHeaderWindowsNTSpecificFields* = pehsf + 1;
+	println();
+	printfln("%p: [%s]", ((var)pehwnt) - ((var)exe), typeof(pehwnt[0]).Name);
+	pehwnt.Show();
+
+	var pehdd : PEHeaderDataDirectories* = pehwnt + 1;
+	println();
+	printfln("%p: [%s]", ((var)pehdd) - ((var)exe), typeof(pehdd[0]).Name);
+	pehdd.Show();
+
+	var sects : SectionHeader* = pehdd + 1;
+	var idata : SectionHeader = null;
+	for (int i = 0; i < pefh.NumberOfSections; i++)
+	{
+		var sect : SectionHeader = sects + i;
+		var offset = ((var)sect) - ((var)exe);
+		println();
+		printfln("%p: [%s]", offset, typeof(sect).Name);
+		if (offset + sizeof(SectionHeader) > exe.Length)
+		{
+			printfln("Too small!");
+			return false;
+		}
+		var namebuf = new byte[9];
+		memcpy(namebuf, sect, 8);
+		var name = wstr(namebuf);
+		printfln("Name: %s", name);
+		sect.Show();
+		if (name == ".idata") idata = sect;
+	}
+	if (idata == null) return true;
+	if (idata.PointerToRawData + idata.SizeOfRawData > exe.Length)
+	{
+		printfln("Too small!");
+		return false;
+	}
+	
+	var itbl : ImportTable* = addrof exe[idata.PointerToRawData];
+	// FIX:
+	//var rawaddr = \(v : uint)
+	//	=> addrof(exe[v - idata.VirtualAddress + idata.PointerToRawData]);
+	function rawaddr(v : uint)
+	{
+		return addrof(exe[v - idata.VirtualAddress + idata.PointerToRawData]);
+	}
+	for (int i = 0; itbl[i].ImportLookupTable != 0; i++)
+	{
+		println();
+		printfln("%p: [%s]", ((var)itbl[i]) - ((var)exe), typeof(itbl[0]).Name);
+		itbl[i].Show();
+		var name = wstr(rawaddr(itbl[i].Name));
+		printfln("=> %s", name);
+		var ilt : var* = rawaddr(itbl[i].ImportLookupTable);
+		for (int j = 0; ilt[j] != 0; j++)
+		{
+			var ad : ushort* = rawaddr(ilt[j]);
+			printfln("(%04x): %s", ad[0], wstr(addrof ad[1]));
+		}
+	}
+	
+	return true;
+}

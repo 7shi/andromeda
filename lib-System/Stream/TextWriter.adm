@@ -1,0 +1,42 @@
+﻿class TextWriter
+{
+	function dtor()
+	{
+		Close();
+	}
+	
+	virtual Close()
+	{
+	}
+	
+	virtual WriteInternal(text : string)
+	{
+	}
+	
+	function VWrite(format : string, args)
+	{
+		WriteInternal(string.VFormat(format, args));
+	}
+	
+	function Write(format : string, args : params)
+	{
+		WriteInternal(string.VFormat(format, args));
+	}
+	
+	function WriteLineOnly()
+	{
+		WriteInternal(Environment.NewLine);
+	}
+	
+	function VWriteLine(format : string, args)
+	{
+		WriteInternal(string.VFormat(format, args));
+		WriteLineOnly();
+	}
+	
+	function WriteLine(format : string, args : params)
+	{
+		WriteInternal(string.VFormat(format, args));
+		WriteLineOnly();
+	}
+}

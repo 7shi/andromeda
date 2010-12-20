@@ -12,6 +12,14 @@
 		return ret;
 	}
 	
+	static function FromCharArray(s : char*, length)
+	{
+		if (length == -1) length = lstrlen(s);
+		var ret = Alloc(length);
+		if (length > 0) __movsw(ret, s, length);
+		return ret;
+	}
+	
 	function Swap(start, length, s : string)
 	{
 		return Remove(start, length).Insert(start, s);

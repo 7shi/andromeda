@@ -1,0 +1,51 @@
+﻿extern "kernel32.dll" __stdcall __widecharset GetCommandLine();
+
+static function __get_main_args()
+{
+	var args = Environment.GetCommandLineArgs();
+	var ret = new string[args.Length - 1];
+	for (int i = 0; i < ret.Length; i++)
+		ret[i] = args[i + 1];
+	return ret;
+}
+
+class Environment
+{
+	const string NewLine = "\r\n";
+	
+	static function get_CommandLine
+	{
+		return string.FromCharArray(GetCommandLine(), -1);
+	}
+	
+	static function GetCommandLineArgs
+	{
+		var args = new StringList;
+		var sb = new StringBuilder;
+		var cl = CommandLine;
+		var quot = false;
+		for (int i = 0; i < cl.Length; i++)
+		{
+			char ch = cl[i];
+			if (ch == '"')
+			{
+				if (cl.Substring(i, 4) == "\"\"\"\"")
+					sb.AppendChar('"');
+				else
+					quot = !quot;
+			}
+			else if (!quot && ch <= ' ')
+			{
+				if (sb.Length > 0)
+				{
+					args.Add(sb.ToString());
+					sb.Clear();
+				}
+			}
+			else
+				sb.AppendChar(ch);
+		}
+		if (sb.Length > 0) args.Add(sb.ToString());
+		return args.ToArray();
+	}
+}

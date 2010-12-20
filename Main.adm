@@ -1,0 +1,133 @@
+﻿_Finish _finish;
+
+printfln("*** PE Test ***");
+
+var args = __get_main_args();
+if (args.Length > 0)
+{
+	for (int i = 0; i < args.Length; i++)
+		ReadPE(args[i]);
+	return 0;
+}
+
+// ----------------
+
+DOSHeader dosh;
+PEFileHeader pefh;
+PEHeaderStandardFields pehsf;
+PEHeaderWindowsNTSpecificFields pehwnt;
+PEHeaderDataDirectories pehdd;
+SectionHeader stext;
+SectionHeader sdata;
+SectionHeader sidata;
+ImportTable user32;
+
+stext.WriteName(".text");
+stext.VirtualAddress   = 0x2000;
+stext.SizeOfRawData    = 0x200;
+stext.PointerToRawData = 0x400;
+stext.Characteristics  = 0x60000060;
+
+sdata.WriteName(".data");
+sdata.VirtualAddress   = 0x4000;
+sdata.SizeOfRawData    = 0x200;
+sdata.PointerToRawData = 0x600;
+sdata.Characteristics  = 0xc0000040;
+
+sidata.WriteName(".idata");
+sidata.VirtualAddress   = 0x6000;
+sidata.SizeOfRawData    = 0x200;
+sidata.PointerToRawData = 0x800;
+sidata.Characteristics  = 0xc0000040;
+
+user32.ImportLookupTable = sidata.VirtualAddress + sizeof(ImportTable) * 2;
+user32.ImportAddressTable = user32.ImportLookupTable + 8;
+user32.Name = user32.ImportAddressTable + 8;
+var ms = new MemoryStream;
+ms.WriteUInt(user32.Name + 12);
+ms.WriteInt(0);
+ms.WriteUInt(user32.Name + 12);
+ms.WriteInt(0);
+var user32_dll = cstr("user32.dll");
+ms.Write(user32_dll);
+ms.WriteShort(0);
+ms.WriteShort(0);
+ms.Write(cstr("MessageBoxA"));
+ms.WriteByte(0);
+var idata = ms.ToArray();
+sidata.VirtualSize = sizeof(ImportTable) * 2 + idata.Length;
+
+var bin = new MemoryStream;
+bin.WriteByte(0x68); // push dword
+bin.WriteInt(0);
+bin.WriteByte(0x68); // push dword
+bin.WriteUInt(pehwnt.ImageBase + sdata.VirtualAddress);
+bin.WriteByte(0x68); // push dword
+bin.WriteUInt(pehwnt.ImageBase + sdata.VirtualAddress);
+bin.WriteByte(0x68); // push dword
+bin.WriteInt(0);
+bin.WriteByte(0xb8); // mov eax, dword
+bin.WriteUInt(pehwnt.ImageBase + user32.ImportAddressTable);
+bin.WriteByte(0xff); // call [eax]
+bin.WriteByte(0x10);
+bin.WriteByte(0xc3); // ret
+var text = bin.ToArray();
+stext.VirtualSize = text.Length;
+
+var data = cstr("Hello, World!");
+sdata.VirtualSize = data.Length;
+
+pefh.NumberOfSections = 3;
+pehsf.CodeSize = text.Length;
+pehsf.InitializedDataSize = data.Length;
+pehsf.EntryPoint = stext.VirtualAddress;
+pehsf.BaseOfCode = stext.VirtualAddress;
+pehsf.BaseOfData = sdata.VirtualAddress;
+pehwnt.ImageSize = 0x8000;
+pehwnt.SubSystem = 2; // WIN32_GUI
+pehdd.ImportTable_Address = sidata.VirtualAddress;
+pehdd.ImportTable_Size    = sidata.VirtualSize;
+
+var buf = new byte[0xa00];
+BinaryWriter bw;
+bw.Init(buf, buf.Length);
+bw.Write(dosh, sizeof dosh);
+bw.Position = 0x3c;
+var pesign_ad = 0x80;
+bw.WriteInt(pesign_ad);
+var dos_stub = BinHex("0e1fba0e00b409cd21b8014ccd21");
+bw.Write(dos_stub, dos_stub.Length);
+var dos_stub_str = cstr("This program cannot be run in DOS mode.\r\n$");
+bw.Write(dos_stub_str, dos_stub_str.Length);
+bw.Position = pesign_ad;
+bw.WriteByte('P');
+bw.WriteByte('E');
+bw.WriteShort(0);
+bw.Write(pefh  , sizeof pefh);
+bw.Write(pehsf , sizeof pehsf);
+bw.Write(pehwnt, sizeof pehwnt);
+bw.Write(pehdd , sizeof pehdd);
+bw.Write(stext , sizeof stext);
+bw.Write(sdata , sizeof sdata);
+bw.Write(sidata, sizeof sidata);
+bw.Position = (var)stext.PointerToRawData;
+bw.Write(text, text.Length);
+bw.Position = (var)sdata.PointerToRawData;
+bw.Write(data, data.Length);
+bw.Position = (var)sidata.PointerToRawData;
+bw.Write(user32, sizeof user32);
+bw.Position = (var)sidata.PointerToRawData + sizeof(ImportTable) * 2;
+bw.Write(idata, idata.Length);
+
+var exe = "a.exe";
+var fs = new FileStream;
+if (!fs.OpenWrite(exe))
+{
+	printfln("書き込めません。");
+	return 1;
+}
+fs.Write(buf);
+fs.Close();
+
+// 結果表示
+ReadPE(exe);

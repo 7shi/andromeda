@@ -1,6 +1,9 @@
 ﻿printfln("Library Test");
 _Finish _finish;
 
+const string test_dir = "exe-Test";
+var test_xml = Path.Combine(test_dir, "Test.xml");
+
 // --------------------------------
 
 println();
@@ -60,7 +63,7 @@ println();
 printfln("*** File I/O Test ***");
 
 var sw = new StreamWriter;
-if (sw.Open("Test.xml"))
+if (sw.Open(test_xml))
 {
 	var sr1 = new StringReader;
 	sr1.Open(xml);
@@ -71,7 +74,7 @@ if (sw.Open("Test.xml"))
 }
 
 var sr2 = new StreamReader;
-if (sr2.Open("Test.xml"))
+if (sr2.Open(test_xml))
 {
 	printfln("sr2.IsUTF8 = %d", sr2.IsUTF8);
 	printfln("sr2.Stream.Length = %d", sr2.Stream.Length);
@@ -89,7 +92,7 @@ println();
 printfln("*** XML Test ***");
 
 var xp = new XMLParser;
-if (xp.Open("Test.xml"))
+if (xp.Open(test_xml))
 {
 	while (xp.Read())
 	{
@@ -116,7 +119,7 @@ println();
 printfln("*** Excel XML Test ***");
 
 var xx = new ExcelXML;
-if (xx.Open(Path.Combine("exe-Test", "Book1.xml")))
+if (xx.Open(Path.Combine(test_dir, "Book1.xml")))
 {
 	var line : string[];
 	while ((line = xx.ReadLine()) != null)

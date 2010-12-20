@@ -63,6 +63,9 @@
 						list.Set(index.ToInt() - 1, data);
 					break;
 				}
+				case "Cell/":
+					list.Add(null);
+					break;
 			}
 		}
 		return list.ToArray();

@@ -9,6 +9,7 @@ extern "kernel32.dll" __stdcall
 	SetFilePointer(handle, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
 }
 
+const int MAX_PATH = 260;
 const int GENERIC_READ  = 0x80000000;
 const int GENERIC_WRITE = 0x40000000;
 const int FILE_SHARE_READ   = 1;

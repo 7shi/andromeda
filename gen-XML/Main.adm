@@ -1,0 +1,25 @@
+﻿function main(args : string[])
+{
+	for (int i = 0; i < args.Length; i++)
+	{
+		var cg = new CodeGenerator;
+		if (cg.Open(args[i])) cg.Generate();
+	}
+}
+
+class CodeGenerator : ExcelCodeGenerator
+{
+	override ReadCommand(cmd : string)
+	{
+		switch (cmd)
+		{
+			default:
+				base.ReadCommand(cmd);
+				break;
+			case "struct":
+				WriteLine("");
+				Struct();
+				break;
+		}
+	}
+}

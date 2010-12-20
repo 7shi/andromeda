@@ -1,0 +1,7 @@
+﻿class ConsoleWriter : TextWriter
+{
+	override WriteInternal(text : string)
+	{
+		print(text);
+	}
+}

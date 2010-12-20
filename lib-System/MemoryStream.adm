@@ -44,4 +44,19 @@
 	{
 		WriteWithLength(addrof b, 1);
 	}
+	
+	function WriteShort(s)
+	{
+		WriteWithLength(addrof s, 2);
+	}
+	
+	function WriteInt(i)
+	{
+		WriteWithLength(addrof i, 4);
+	}
+	
+	function WriteUInt(ui : uint)
+	{
+		WriteWithLength(addrof ui, 4);
+	}
 }

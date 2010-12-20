@@ -12,4 +12,41 @@
 			return path + name;
 		return path + PathSeparator + name;
 	}
+	
+	static function GetDirectoryName(path : string)
+	{
+		int p = path.LastIndexOfChar(PathSeparator);
+		if (p < 0) return "";
+		return path.Left(p);
+	}
+	
+	static function GetFileName(path : string)
+	{
+		int p = path.LastIndexOfChar(PathSeparator);
+		if (p < 0) return path;
+		return path.SubstringFrom(p + 1);
+	}
+	
+	static function GetFileNameWithoutExtension(path : string)
+	{
+		var fn = GetFileName(path);
+		int p = fn.LastIndexOf(".");
+		if (p < 0) return fn;
+		return fn.Left(p);
+	}
+	
+	static function GetExtension(path : string)
+	{
+		int p = path.LastIndexOf(".");
+		if (p < 0) return path;
+		return path.SubstringFrom(p);
+	}
+	
+	static function ChangeExtension(path : string, ext : string)
+	{
+		int p = path.LastIndexOf(".");
+		if (ext == null) ext = "";
+		if (p < 0) return path + ext;
+		return path.Left(p) + ext;
+	}
 }

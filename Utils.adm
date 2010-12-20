@@ -1,0 +1,35 @@
+﻿function ReadUInt(p)
+{
+	return ((uint*)p)[0];
+}
+
+function BinHex(hex : string)
+{
+	var ret = new byte[hex.Length >> 1];
+	for (int i = 0; i < ret.Length; i++)
+		ret[i] = ParseHexChar(hex[i * 2]) * 16
+			+ ParseHexChar(hex[i * 2 + 1]);
+	return ret;
+}
+
+function ParseHexChar(ch : char)
+{
+	if ('0' <= ch && ch <= '9') return ch - '0';
+	if ('A' <= ch && ch <= 'F') return ch - 'A' + 10;
+	if ('a' <= ch && ch <= 'f') return ch - 'a' + 10;
+	return 0;
+}
+
+struct SectionHeader
+{
+	function WriteName(s : string)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			if (i < s.Length)
+				Name[i] = s[i];
+			else
+				Name[i] = 0;
+		}
+	}
+}

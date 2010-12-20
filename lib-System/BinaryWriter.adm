@@ -1,0 +1,37 @@
+﻿struct BinaryWriter
+{
+	var ptr : byte* = null;
+	var current = null, end = null;
+	
+	function get_Position { return current - (var)ptr; }
+	function set_Position(pos) { current = ptr + pos; }
+	
+	function Init(ptr, size)
+	{
+		current = this.ptr = ptr;
+		end = ptr + size;
+	}
+	
+	function Write(data, length)
+	{
+		if (current + length > end) return false;
+		if (length > 0) __movsb(current, data, length);
+		current += length;
+		return true;
+	}
+	
+	function WriteByte(b)
+	{
+		return Write(addrof b, 1);
+	}
+	
+	function WriteShort(s)
+	{
+		return Write(addrof s, 2);
+	}
+	
+	function WriteInt(v)
+	{
+		return Write(addrof v, 4);
+	}
+}

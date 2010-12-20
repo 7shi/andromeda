@@ -1,4 +1,7 @@
 syntax: glob
+_cleanup.bat
+gen-XML.exe
+src-*.adm
+output.exe
 Test.exe
-Test.xml
-Generator.exe
+a.exe

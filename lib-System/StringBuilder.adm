@@ -50,7 +50,7 @@
 	
 	function AppendLineOnly()
 	{
-		Append("\r\n");
+		Append(Environment.NewLine);
 	}
 	
 	function AppendChar(ch : char)
