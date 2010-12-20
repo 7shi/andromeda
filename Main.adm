@@ -2,77 +2,63 @@
 
 printfln("*** PE Test ***");
 
-var args = __get_main_args();
-if (args.Length > 0)
+var args = Environment.GetCommandLineArgs();
+if (args.Length > 1)
 {
-	for (int i = 0; i < args.Length; i++)
+	for (int i = 1; i < args.Length; i++)
 		ReadPE(args[i]);
 	return 0;
 }
 
 // ----------------
 
-var ms = new MemoryStream;
-ms.WriteString("こんにちは、世界！");
-ms.WriteShort(0);
-var text2 = ms.Length;
-ms.WriteString("だいあろぐ");
-ms.WriteShort(0);
-var rdata = ms.ToArray();
+var m1 = new PEModule;
+m1.WinNT.SubSystem = WINDOWS_GUI;
 
-PEModule pem;
-pem.WinNT.SubSystem = WINDOWS_GUI;
+var text1 = new Block;
+text1.AddByte(0x68); // push dword
+text1.AddInt(0);
+text1.AddByte(0x68); // push dword
+text1.AddAddress(m1.GetString("だいあろぐ"));
+text1.AddByte(0x68); // push dword
+text1.AddAddress(m1.GetString("こんにちは、世界！"));
+text1.AddByte(0x68); // push dword
+text1.AddInt(0);
+text1.AddByte(0xb8); // mov eax, dword
+text1.AddAddress(m1.Import("USER32.DLL", "MessageBoxW"));
+text1.AddByte(0xff); // call [eax]
+text1.AddByte(0x10);
+text1.AddByte(0xc3); // ret
 
-var isec = new ImportSection;
-isec.DLL = "user32.dll";
-isec.Add("MessageBoxW");
-isec.SetAddress(pem);
-
-ms = new MemoryStream;
-ms.WriteByte(0x68); // push dword
-ms.WriteInt(0);
-ms.WriteByte(0x68); // push dword
-ms.WriteInt(pem.WinNT.ImageBase + pem.RData.VirtualAddress + text2);
-ms.WriteByte(0x68); // push dword
-ms.WriteInt(pem.WinNT.ImageBase + pem.RData.VirtualAddress);
-ms.WriteByte(0x68); // push dword
-ms.WriteInt(0);
-ms.WriteByte(0xb8); // mov eax, dword
-ms.WriteInt(pem.WinNT.ImageBase + isec.table.ImportAddressTable);
-ms.WriteByte(0xff); // call [eax]
-ms.WriteByte(0x10);
-ms.WriteByte(0xc3); // ret
-
-WriteExe("a.i386.exe", pem.Link(ms.ToArray(), rdata, isec));
+WriteExe("a.i386.exe", m1.Link(text1));
 
 // ----------------
 
 println();
 printfln("-" * 32);
 
-pem.File.Machine = MACHINE_ARM;
-pem.WinNT.SubSystem = WINCE_GUI;
-pem.WinNT.ImageBase = 0x10000;
-pem.SetAddress();
-isec.DLL = "coredll.dll";
+var m2 = new PEModule;
+m2.File.Machine = MACHINE_ARM;
+m2.WinNT.SubSystem = WINCE_GUI;
+m2.WinNT.ImageBase = 0x10000;
 
-ms = new MemoryStream;
-ms.WriteInt(0xe1a0c00d); // 00: mov ip, sp
-ms.WriteInt(0xe92dd800); // 04: stmfd sp!, {fp, ip, lr, pc}
-ms.WriteInt(0xe24cb004); // 08: sub fp, ip, #4
-ms.WriteInt(0xe3a00000); // 0c: mov r0, #0
-ms.WriteInt(0xe59f100c); // 10: ldr r1, [pc, #12] ; 0x24
-ms.WriteInt(0xe59f200c); // 14: ldr r2, [pc, #12] ; 0x28
-ms.WriteInt(0xe3a03001); // 18: mov r3, #1
-ms.WriteInt(0xeb000002); // 1c: bl 8 ; 0x2c
-ms.WriteInt(0xe89da800); // 20: ldmfd sp, {fp, sp, pc}
-ms.WriteInt(pem.WinNT.ImageBase + pem.RData.VirtualAddress); // 24
-ms.WriteInt(pem.WinNT.ImageBase + pem.RData.VirtualAddress + text2); // 28
-ms.WriteInt(0xe59fc000); // 2c: ldr ip, [pc, #0] ; 0x34
-ms.WriteInt(0xe59cf000); // 30: ldr pc, [ip]
-ms.WriteInt(pem.WinNT.ImageBase + isec.table.ImportAddressTable); // 34
+var text2 = new Block;
+text2.AddInt(0xe1a0c00d); // 00: mov ip, sp
+text2.AddInt(0xe92dd800); // 04: stmfd sp!, {fp, ip, lr, pc}
+text2.AddInt(0xe24cb004); // 08: sub fp, ip, #4
+text2.AddInt(0xe3a00000); // 0c: mov r0, #0
+text2.AddInt(0xe59f100c); // 10: ldr r1, [pc, #12] ; 0x24
+text2.AddInt(0xe59f200c); // 14: ldr r2, [pc, #12] ; 0x28
+text2.AddInt(0xe3a03001); // 18: mov r3, #1
+text2.AddInt(0xeb000002); // 1c: bl 8 ; 0x2c
+text2.AddInt(0xe89da800); // 20: ldmfd sp, {fp, sp, pc}
+text2.AddAddress(m2.GetString("こんにちは、世界！")); // 24
+text2.AddAddress(m2.GetString("だいあろぐ")); // 28
+text2.AddInt(0xe59fc000); // 2c: ldr ip, [pc, #0] ; 0x34
+text2.AddInt(0xe59cf000); // 30: ldr pc, [ip]
+text2.AddAddress(m2.Import("COREDLL.DLL", "MessageBoxW")); // 34
 
-WriteExe("a.arm.exe", pem.Link(ms.ToArray(), rdata, isec));
+WriteExe("a.arm.exe", m2.Link(text2));
 
 function WriteExe(exe : string, image : byte[])
 {

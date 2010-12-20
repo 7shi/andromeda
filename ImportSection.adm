@@ -1,0 +1,75 @@
+﻿class ImportSection
+{
+	var libraries = new Hashtable;
+	
+	function Add(libname : string, symbol : string)
+	{
+		return Get(libname).Add(symbol);
+	}
+	
+	function Get(libname : string)
+	{
+		var ret = (Library)libraries.Get(libname);
+		if (ret == null)
+		{
+			ret = new Library;
+			ret.Name = libname;
+			libraries.Add(libname, ret);
+		}
+		return ret;
+	}
+	
+	function get_Length
+	{
+		var libv = libraries.Values;
+		var libs = libv.Length;
+		int ret = sizeof(ImportTable) * (libs + 1);
+		for (int i = 0; i < libs; i++)
+		{
+			var lib = (Library)libv[i];
+			ret += lib.TableSize * 2 + lib.StringSize;
+		}
+		return ret;
+	}
+	
+	function Create(m : PEModule)
+	{
+		var ms = new MemoryStream;
+		var libv = libraries.Values;
+		var libs = libv.Length;
+		int size = 0;
+		for (int i = 0; i < libs; i++)
+		{
+			var lib = (Library)libv[i];
+			size += lib.TableSize;
+		}
+		m.Dir.ImportTable_Size = sizeof(ImportTable) * (libs + 1);
+		var ad1 = m.IData.VirtualAddress + m.Dir.ImportTable_Size;
+		var ad2 = ad1 + size * 2;
+		m.Dir.IAT_Address = ad1 + size;
+		m.Dir.IAT_Size = size;
+		for (int i = 0; i < libs; i++)
+		{
+			var lib = (Library)libv[i];
+			lib.SetAddress(m, size, ad1, ad2);
+			ms.WriteWithLength(lib.table, sizeof ImportTable);
+			ad1 += lib.TableSize;
+			ad2 += lib.StringSize;
+		}
+		ms.Write(new byte[sizeof ImportTable]);
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < libs; j++)
+			{
+				var lib = (Library)libv[j];
+				lib.WriteTable(ms);
+			}
+		}
+		for (int i = 0; i < libs; i++)
+		{
+			var lib = (Library)libv[i];
+			lib.WriteString(ms);
+		}
+		return ms.ToArray();
+	}
+}

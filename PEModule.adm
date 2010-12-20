@@ -5,12 +5,8 @@ const int MACHINE_I386  = 0x014c;
 const int MACHINE_X8664 = 0x8664;
 const int MACHINE_ARM   = 0x01c0;
 
-struct PEModule
+class PEModule
 {
-	byte signature_1 = 'P';
-	byte signature_2 = 'E';
-	byte signature_3 = 0;
-	byte signature_4 = 0;
 	PEFileHeader File;
 	PEHeaderStandardFields Std;
 	PEHeaderWindowsNTSpecificFields WinNT;
@@ -18,6 +14,9 @@ struct PEModule
 	SectionHeader Text;
 	SectionHeader RData;
 	SectionHeader IData;
+	
+	var rdata = new Block;
+	var imports = new ImportSection;
 	
 	function ctor
 	{
@@ -28,8 +27,6 @@ struct PEModule
 		Text .Characteristics = 0x60000060;
 		RData.Characteristics = 0x40000040;
 		IData.Characteristics = 0xc0000040;
-		SetAddress();
-		Std.EntryPoint = Text.VirtualAddress;
 	}
 	
 	function SetAddress
@@ -52,7 +49,12 @@ struct PEModule
 		Std.BaseOfData = RData.VirtualAddress;
 		Std.InitializedDataSize = RData.VirtualSize;
 		Dir.ImportTable_Address = IData.VirtualAddress;
-		Dir.ImportTable_Size    = IData.VirtualSize;
+		
+		if (Std.EntryPoint < Text.VirtualAddress
+			|| Std.EntryPoint >= Text.VirtualAddress + Text.VirtualSize)
+		{
+			Std.EntryPoint = Text.VirtualAddress;
+		}
 	}
 	
 	function get_RawSize
@@ -60,13 +62,15 @@ struct PEModule
 		return IData.PointerToRawData + IData.SizeOfRawData;
 	}
 	
-	function Link(text : byte[], rdata : byte[], isec : ImportSection)
+	function Link(text : Block)
 	{
-		var idata = isec.Create();
 		Text .VirtualSize = text .Length;
 		RData.VirtualSize = rdata.Length;
-		IData.VirtualSize = idata.Length;
+		IData.VirtualSize = imports.Length;
 		SetAddress();
+		text .Address = WinNT.ImageBase + Text .VirtualAddress;
+		rdata.Address = WinNT.ImageBase + RData.VirtualAddress;
+		var idata = imports.Create(this);
 		
 		var ret = new byte[RawSize];
 		var bw = new BinaryWriter;
@@ -80,15 +84,44 @@ struct PEModule
 		bw.Write(HexBin("0e1fba0e00b409cd21b8014ccd21"));
 		bw.WriteByteString("This program cannot be run in DOS mode.\r\n$");
 		bw.Position = peh_ad;
-		bw.WriteWithLength(this, sizeof PEModule);
+		bw.WriteByte('P');
+		bw.WriteByte('E');
+		bw.WriteShort(0);
+		bw.WriteWithLength(File , sizeof File );
+		bw.WriteWithLength(Std  , sizeof Std  );
+		bw.WriteWithLength(WinNT, sizeof WinNT);
+		bw.WriteWithLength(Dir  , sizeof Dir  );
+		bw.WriteWithLength(Text , sizeof Text );
+		bw.WriteWithLength(RData, sizeof RData);
+		bw.WriteWithLength(IData, sizeof IData);
 		
 		bw.Position = Text.PointerToRawData;
-		bw.Write(text);
+		bw.Write(text.ToArray());
 		bw.Position = RData.PointerToRawData;
-		bw.Write(rdata);
+		bw.Write(rdata.ToArray());
 		bw.Position = IData.PointerToRawData;
 		bw.Write(idata);
 		
+		return ret;
+	}
+	
+	function Import(lib : string, sym : string)
+	{
+		return imports.Add(lib, sym);
+	}
+	
+	var strings = new Hashtable;
+	
+	function GetString(s : string)
+	{
+		var ret = (Addr32)strings.Get(s);
+		if (ret == null)
+		{
+			ret = rdata.CurrentAddress;
+			rdata.AddString(s);
+			rdata.AddShort(0);
+			strings.Add(s, ret);
+		}
 		return ret;
 	}
 }
@@ -99,7 +132,7 @@ struct SectionHeader
 	{
 		var buf = new byte[9];
 		__movsb(buf, name, 8);
-		return cstr(buf);
+		return wstr(buf);
 	}
 	
 	function set_Name(s : string)
@@ -111,48 +144,6 @@ struct SectionHeader
 			else
 				name[i] = 0;
 		}
-	}
-}
-
-class ImportSection
-{
-	ImportTable table;
-	var DLL : string;
-	var symbols = new StringList;
-	
-	function Add(symbol : string)
-	{
-		symbols.Add(symbol);
-	}
-	
-	function SetAddress(pem : PEModule)
-	{
-		var size = (symbols.Count + 1) * sizeof(var);
-		table.ImportLookupTable = pem.IData.VirtualAddress + sizeof(ImportTable) * 2;
-		table.ImportAddressTable = table.ImportLookupTable + size;
-		table.Name = table.ImportAddressTable + size;
-	}
-	
-	function Create
-	{
-		var ms = new MemoryStream;
-		ms.WriteWithLength(table, sizeof table);
-		ms.Write(new byte[sizeof table]);
-		var dll = cstr(DLL);
-		var padlen = Align(dll.Length + 1, 2);
-		ms.WriteInt(table.Name + padlen);
-		ms.WriteInt(0);
-		ms.WriteInt(table.Name + padlen);
-		ms.WriteInt(0);
-		ms.Write(dll);
-		ms.Write(new byte[padlen - dll.Length]);
-		ms.WriteShort(0);
-		for (int i = 0; i < symbols.Count; i++)
-		{
-			ms.WriteByteString(symbols.Get(i));
-			ms.WriteByte(0);
-		}
-		return ms.ToArray();
 	}
 }
 
