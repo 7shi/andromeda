@@ -1,6 +1,6 @@
-﻿class UTF8Encoder
+﻿class UTF8
 {
-	static function GetLengthWithLength(s : char*, length)
+	static function GetByteLengthWithLength(s : char*, length)
 	{
 		int ret = 0;
 		for (int i = 0; i < length; i++)
@@ -36,14 +36,14 @@
 		return ret;
 	}
 	
-	static function GetLength(s : string)
+	static function GetByteLength(s : string)
 	{
-		return GetLengthWithLength(s, s.Length);
+		return GetByteLengthWithLength(s, s.Length);
 	}
 	
 	static function GetBytesWithLength(s : char*, length)
 	{
-		int len = GetLengthWithLength(s, length);
+		int len = GetByteLengthWithLength(s, length);
 		var ret = new byte[len];
 		int p = 0;
 		for (int i = 0; i < length; i++)

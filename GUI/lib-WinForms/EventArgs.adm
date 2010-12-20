@@ -1,18 +1,21 @@
 ﻿class EventArgs
 {
+	static var Empty : EventArgs;
+	var wndProc, hWnd, uMsg, wParam, lParam;
+	
 	function SetMessage(wndProc, hWnd, uMsg, wParam, lParam)
 	{
-		args[0] = wndProc;
-		args[1] = hWnd;
-		args[2] = uMsg;
-		args[3] = wParam;
-		args[4] = lParam;
+		this.wndProc = wndProc;
+		this.hWnd    = hWnd;
+		this.uMsg    = uMsg;
+		this.wParam  = wParam;
+		this.lParam  = lParam;
 	}
 	
 	virtual Default()
 	{
-		if (args[0] != null)
-			CallWindowProc(args[0], args[1], args[2], args[3], args[4]);
+		if (wndProc != null)
+			CallWindowProc(wndProc, hWnd, uMsg, wParam, lParam);
 	}
 	
 	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
@@ -26,18 +29,26 @@
 class PaintEventArgs : EventArgs
 {
 	PAINTSTRUCT lpPaint;
+	var graphics : Graphics;
 	
 	function get_Graphics
 	{
-		if (lpPaint.hdc == null)
-			BeginPaint(args[1], lpPaint);
-		return lpPaint.hdc;
+		if (graphics == null)
+		{
+			graphics = new Graphics;
+			graphics.Handle = BeginPaint(hWnd, lpPaint);
+		}
+		return graphics;
 	}
 	
 	function dtor
 	{
-		if (lpPaint.hdc != null)
-			EndPaint(args[1], lpPaint);
+		if (graphics != null)
+		{
+			graphics.Reset();
+			EndPaint(hWnd, lpPaint);
+			graphics.Dispose();
+		}
 	}
 	
 	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)

@@ -5,7 +5,16 @@
 	
 	function dtor
 	{
-		if (hFont != null) DeleteObject(hFont);
+		Dispose();
+	}
+	
+	function Dispose
+	{
+		if (hFont != null)
+		{
+			DeleteObject(hFont);
+			hFont = null;
+		}
 	}
 	
 	function get_Handle
@@ -37,6 +46,17 @@
 	{
 		if (hFont != null) return;
 		hFont = CreateFontIndirect(lf);
+	}
+	
+	function get_Height
+	{
+		if (hFont == null) Create();
+		var hdc = CreateCompatibleDC(null);
+		TEXTMETRIC tm;
+		GetTextMetrics(hdc, tm);
+		var ret = MulDiv(tm.tmHeight, 72, GetDeviceCaps(hdc, LOGPIXELSY));
+		DeleteDC(hdc);
+		return ret;
 	}
 	
 	static function FromFaceHeight(name : string, size)

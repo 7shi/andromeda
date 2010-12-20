@@ -1,0 +1,39 @@
+﻿struct Color
+{
+	byte B, G, R, A;
+	
+	function ToArgb : int { return this; }
+	
+	function SetArgb(a, r, g, b)
+	{
+		A = a;
+		R = r;
+		G = g;
+		B = b;
+	}
+	
+	function ToColorRef
+	{
+		int ret = 0;
+		var p = (ColorRef)addrof ret;
+		p.R = R;
+		p.G = G;
+		p.B = B;
+		return ret;
+	}
+	
+	static function get_Black   : Color { static int ret = 0xff000000; return addrof ret; }
+	static function get_Blue    : Color { static int ret = 0xff0000ff; return addrof ret; }
+	static function get_Green   : Color { static int ret = 0xff00ff00; return addrof ret; }
+	static function get_Cyan    : Color { static int ret = 0xff00ffff; return addrof ret; }
+	static function get_Red     : Color { static int ret = 0xffff0000; return addrof ret; }
+	static function get_Magenta : Color { static int ret = 0xffff00ff; return addrof ret; }
+	static function get_Yellow  : Color { static int ret = 0xffffff00; return addrof ret; }
+	static function get_White   : Color { static int ret = 0xffffffff; return addrof ret; }
+	static function get_Gray    : Color { static int ret = 0xff808080; return addrof ret; }
+}
+
+struct ColorRef
+{
+	byte R, G, B, A;
+}

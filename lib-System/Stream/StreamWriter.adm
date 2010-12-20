@@ -16,14 +16,13 @@
 	{
 		Stream = new FileStream;
 		var ret = Stream.OpenWrite(file);
-		if (ret && UseBOM)
-			Stream.Write(UTF8Encoder.BOM);
+		if (ret && UseBOM) Stream.Write(UTF8.BOM);
 		return ret;
 	}
 	
 	override Write(text : string)
 	{
 		if (Stream == null) return;
-		Stream.Write(UTF8Encoder.GetBytes(text));
+		Stream.Write(UTF8.GetBytes(text));
 	}
 }

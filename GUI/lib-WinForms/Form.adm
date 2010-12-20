@@ -1,6 +1,6 @@
 ﻿class Form : Panel
 {
-	var MainMenu : MainMenu;
+	var Menu : MainMenu;
 	
 	function ctor()
 	{
@@ -12,14 +12,14 @@
 	override Create
 	{
 		if (hWnd != null) return;
-		if (MainMenu != null) hMenu = MainMenu.hMenu;
+		if (Menu != null) hMenu = Menu.hMenu;
 		base.Create();
 	}
 	
 	override SetClientSize(w, h)
 	{
 		RECT r = { 0, 0, w, h };
-		r.AdjustWindowRectEx(dwStyle, MainMenu != null, 0);
+		r.AdjustWindowRectEx(dwStyle, Menu != null, 0);
 		SetSize(r.right - r.left, r.bottom - r.top);
 	}
 	
@@ -28,9 +28,9 @@
 		switch (uMsg)
 		{
 			case WM_COMMAND:
-				if (lParam == 0 && MainMenu != null)
+				if (lParam == 0 && Menu != null)
 				{
-					var mi = MainMenu.FindMenuItem(LOWORD(wParam));
+					var mi = Menu.FindMenuItem(LOWORD(wParam));
 					if (mi != null)
 					{
 						mi.OnClick(EventArgs.Empty);

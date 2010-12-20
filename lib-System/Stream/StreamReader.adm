@@ -18,7 +18,7 @@
 		var fs = new FileStream;
 		if (!fs.OpenRead(file)) return false;
 		
-		var bom = UTF8Encoder.BOM;
+		var bom = UTF8.BOM;
 		IsUTF8 = true;
 		for (int i = 0; i < bom.Length; i++)
 		{
@@ -37,7 +37,7 @@
 	function GetString(buf : byte[])
 	{
 		if (IsUTF8)
-			return UTF8Decoder.GetString(buf);
+			return UTF8.GetString(buf);
 		return wstr(buf);
 	}
 	

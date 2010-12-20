@@ -13,7 +13,7 @@
   <WindowWidth>12000</WindowWidth>
   <WindowTopX>11955</WindowTopX>
   <WindowTopY>-15</WindowTopY>
-  <ActiveSheet>3</ActiveSheet>
+  <ActiveSheet>5</ActiveSheet>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>
@@ -51,7 +51,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="const">
-  <Table ss:ExpandedColumnCount="256" ss:ExpandedRowCount="343" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="256" ss:ExpandedRowCount="345" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="41.25"/>
    <Column ss:Width="210"/>
@@ -1625,41 +1625,6 @@
     <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
     <Cell ss:StyleID="s22"/>
     <Cell ss:StyleID="s23"/>
-    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">タ</PhoneticText><Data
-      ss:Type="String">その他</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">BI_RGB</Data></Cell>
-    <Cell><Data ss:Type="Number">0</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">CW_USEDEFAULT</Data></Cell>
-    <Cell><Data ss:Type="String">0x80000000</Data></Cell>
-    <Cell><Data ss:Type="String">CreateWindow</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">DIB_RGB_COLORS</Data></Cell>
-    <Cell><Data ss:Type="Number">0</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">LF_FACESIZE</Data></Cell>
-    <Cell><Data ss:Type="Number">32</Data></Cell>
-    <Cell><Data ss:Type="String">LOGFONT</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">LOGPIXELSY</Data></Cell>
-    <Cell><Data ss:Type="Number">90</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0"/>
-   <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s23"/>
     <Cell><Data ss:Type="String">RedrawWindow</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
@@ -1721,6 +1686,53 @@
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">RDW_NOFRAME</Data></Cell>
     <Cell><Data ss:Type="String">0x800</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">タ</PhoneticText><Data
+      ss:Type="String">その他</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">BI_RGB</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">CW_USEDEFAULT</Data></Cell>
+    <Cell><Data ss:Type="String">0x80000000</Data></Cell>
+    <Cell><Data ss:Type="String">CreateWindow</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">DIB_RGB_COLORS</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">LF_FACESIZE</Data></Cell>
+    <Cell><Data ss:Type="Number">32</Data></Cell>
+    <Cell><Data ss:Type="String">LOGFONT</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">LOGPIXELSY</Data></Cell>
+    <Cell><Data ss:Type="Number">90</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">TRANSPARENT</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="String">BkMode</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OPAQUE</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">BkMode</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -5269,7 +5281,6 @@
      x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
    </PageSetup>
    <Unsynced/>
-   <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
@@ -5278,7 +5289,7 @@
   </Sorting>
  </Worksheet>
  <Worksheet ss:Name="struct">
-  <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="134" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="156" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="119.25"/>
    <Column ss:Width="144.75"/>
@@ -5822,6 +5833,92 @@
     <Cell><Data ss:Type="String">LOGFONT</Data></Cell>
     <Cell><Data ss:Type="String">lfMessageFont</Data></Cell>
    </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">TEXTMETRIC</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmHeight</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmAscent</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmDescent</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmInternalLeading</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmExternalLeading</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmAveCharWidth</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmMaxCharWidth</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmWeight</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmOverhang</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmDigitizedAspectX</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">tmDigitizedAspectY</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">char</Data></Cell>
+    <Cell><Data ss:Type="String">tmFirstChar</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">char</Data></Cell>
+    <Cell><Data ss:Type="String">tmLastChar</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">char</Data></Cell>
+    <Cell><Data ss:Type="String">tmDefaultChar</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">char</Data></Cell>
+    <Cell><Data ss:Type="String">tmBreakChar</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">byte</Data></Cell>
+    <Cell><Data ss:Type="String">tmItalic</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">byte</Data></Cell>
+    <Cell><Data ss:Type="String">tmUnderlined</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">byte</Data></Cell>
+    <Cell><Data ss:Type="String">tmStruckOut</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">byte</Data></Cell>
+    <Cell><Data ss:Type="String">tmPitchAndFamily</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">byte</Data></Cell>
+    <Cell><Data ss:Type="String">tmCharSet</Data></Cell>
+   </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
    <PageSetup>
@@ -5836,7 +5933,7 @@
   </WorksheetOptions>
  </Worksheet>
  <Worksheet ss:Name="extern">
-  <Table ss:ExpandedColumnCount="17" ss:ExpandedRowCount="69" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="17" ss:ExpandedRowCount="74" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="45.75"/>
    <Column ss:Width="30"/>
@@ -6239,6 +6336,11 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">CreateSolidBrush</Data></Cell>
+    <Cell><Data ss:Type="String">crColor</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
     <Cell ss:Index="3"><Data ss:Type="String">DeleteDC</Data></Cell>
     <Cell><Data ss:Type="String">hdc</Data></Cell>
    </Row>
@@ -6255,6 +6357,25 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell><Data ss:Type="String">wide</Data></Cell>
+    <Cell><Data ss:Type="String">GetTextMetrics</Data></Cell>
+    <Cell><Data ss:Type="String">hdc</Data></Cell>
+    <Cell><Data ss:Type="String">lptm:TEXTMETRIC</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">SelectObject</Data></Cell>
+    <Cell><Data ss:Type="String">hdc</Data></Cell>
+    <Cell><Data ss:Type="String">hgdiobj</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">SetBkMode</Data></Cell>
+    <Cell><Data ss:Type="String">hdc</Data></Cell>
+    <Cell><Data ss:Type="String">iBkMode</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
     <Cell ss:Index="3"><Data ss:Type="String">SetDIBitsToDevice</Data></Cell>
     <Cell><Data ss:Type="String">hdc</Data></Cell>
     <Cell><Data ss:Type="String">XDest</Data></Cell>
@@ -6268,6 +6389,12 @@
     <Cell><Data ss:Type="String">lpvBits</Data></Cell>
     <Cell><Data ss:Type="String">lpbmi</Data></Cell>
     <Cell><Data ss:Type="String">fuColorUse</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">SetTextColor</Data></Cell>
+    <Cell><Data ss:Type="String">hdc</Data></Cell>
+    <Cell><Data ss:Type="String">crColor</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">stdcall</Data></Cell>
@@ -6305,6 +6432,7 @@
      x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
    </PageSetup>
    <Unsynced/>
+   <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>

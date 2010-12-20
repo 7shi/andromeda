@@ -1,0 +1,65 @@
+﻿class Graphics
+{
+	var Handle, oldBrush, oldFont;
+	var brush : Brush;
+	var font : Font;
+	
+	function dtor
+	{
+		Dispose();
+	}
+	
+	virtual Dispose
+	{
+		Handle = null;
+	}
+	
+	function Reset
+	{
+		if (oldBrush != null)
+		{
+			SelectObject(Handle, oldBrush);
+			oldBrush = null;
+		}
+		if (oldFont  != null)
+		{
+			SelectObject(Handle, oldFont);
+			oldFont = null;
+		}
+		brush = null;
+		font = null;
+	}
+	
+	function SelectBrush(brush : Brush)
+	{
+		if (this.brush == brush) return;
+		this.brush = brush;
+		var b = SelectObject(Handle, brush.Handle);
+		if (oldBrush == null) oldBrush = b;
+		var sb = brush as SolidBrush;
+		if (sb != null) SetTextColor(Handle, sb.Color.ToColorRef());
+	}
+	
+	function SelectFont(font : Font)
+	{
+		if (this.font == font) return;
+		this.font = font;
+		var f = SelectObject(Handle, font.Handle);
+		if (oldFont == null) oldFont = f;
+	}
+	
+	function DrawString(text : string, f : Font, b : Brush, x, y)
+	{
+		SelectBrush(b);
+		SelectFont(f);
+		SetBkMode(Handle, TRANSPARENT);
+		TextOut(Handle, x, y, text, text.Length);
+	}
+	
+	function DrawBuffer(buffer : PixelBuffer, x, y)
+	{
+		SetDIBitsToDevice(
+			Handle, x, y, buffer.Width, buffer.Height, 0, 0, 0, buffer.Height,
+			buffer.Buffer, buffer, DIB_RGB_COLORS);
+	}
+}

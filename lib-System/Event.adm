@@ -1,11 +1,4 @@
-﻿class EventArgs
-{
-	static var Empty : EventArgs;
-	
-	var args[8];
-}
-
-class Event : VarList
+﻿class Event : VarList
 {
 	function dtor()
 	{
@@ -24,7 +17,7 @@ class Event : VarList
 		base.Add(__jit_dup(delg));
 	}
 	
-	function Invoke(sender : object, e : EventArgs)
+	function Invoke(sender : object, e : object)
 	{
 		for (int i = 0; i < Count; i++)
 			buffer[i](sender, e);

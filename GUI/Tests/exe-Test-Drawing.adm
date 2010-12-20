@@ -17,7 +17,7 @@ class Form1 : Form
 	
 	override OnPaint(e : PaintEventArgs)
 	{
-		e.Graphics.TextOut(8, 8, message, message.Length);
+		e.Graphics.DrawString(message, Font, Brushes.Red, 8, 8);
 		base.OnPaint(e);
 	}
 	
@@ -43,9 +43,9 @@ class Form1 : Form
 	
 	function MyFillRect(e : MouseEventArgs)
 	{
-		var hdc = hWnd.GetDC();
+		var g = CreateGraphics();
 		var brush = GetSysColorBrush(COLOR_WINDOWTEXT);
 		RECT rect = { e.X - 2, e.Y - 2, e.X + 2, e.Y + 2 };
-		hdc.FillRect(rect, brush);
+		FillRect(g.Handle, rect, brush);
 	}
 }

@@ -111,6 +111,6 @@
 	var WorksheetClosed = new Event;
 	virtual OnWorksheetClosed()
 	{
-		WorksheetClosed.Invoke(this, EventArgs.Empty);
+		WorksheetClosed.Invoke(this, null);
 	}
 }

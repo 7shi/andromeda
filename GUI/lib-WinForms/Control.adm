@@ -208,6 +208,8 @@
 		if (hWnd != null) SetFocus(hWnd);
 	}
 	
+	function get_Font { return font; }
+	
 	function set_Font(f : Font)
 	{
 		if (font == f) return;
@@ -262,5 +264,18 @@
 			}
 		}
 		capture = cap;
+	}
+	
+	function CreateGraphics
+	{
+		if (hWnd == null) Create();
+		var ret = new Graphics
+		{
+			var hWnd;
+			override Dispose { Reset(); ReleaseDC(hWnd, Handle); base.Dispose(); }
+		};
+		ret.hWnd = hWnd;
+		ret.Handle = GetDC(hWnd);
+		return ret;
 	}
 }

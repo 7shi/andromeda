@@ -1,6 +1,6 @@
 ﻿#pragma subsystem(WINDOWS_GUI)
 
-const string VERSION = "Andromeda ver.0.2.2008.1207";
+const string VERSION = "Andromeda ver.0.2.2009.0115";
 
 Application.Run(new Form1);
 
@@ -14,7 +14,7 @@ class Form1 : Form
 	function ctor
 	{
 		Text = "Andromeda Test";
-		MainMenu = new MainMenu;
+		Menu = new MainMenu;
 		SetClientSize(600, 400);
 		
 		var sp1 = new SplitContainer;
@@ -45,39 +45,38 @@ class Form1 : Form
 		
 		ofd.Filter = "PE モジュール (*.exe;*.dll)|*.exe;*.dll|" + ofd.Filter;
 		
-		var miFile = new MenuItem;
-		miFile.Text = "ファイル(&F)";
-		miFile.AppendItem("開く(&O)", \(sender, e) =>
+		var miFile = new MenuItem { Text = "ファイル(&F)"; };
+		miFile.AppendItem("開く(&O)", \ =>
 		{
 			if (ofd.ShowDialog(this)) OpenPE(ofd.FileName);
 			tb1.Focus();
 		});
 		miFile.AppendItem("-", null);
-		miFile.AppendItem("終了(&X)", \(sender, e) => Close());
-		MainMenu.Append(miFile);
-		var miBuild = new MenuItem;
-		miBuild.Text = "ビルド(&B)";
-		miBuild.AppendItem("&i386 実行ファイル", \(sender, e) =>
+		miFile.AppendItem("終了(&X)", \ => Close());
+		Menu.Append(miFile);
+		
+		var miBuild = new MenuItem { Text = "ビルド(&B)"; };
+		miBuild.AppendItem("&i386 実行ファイル", \ =>
 		{
 			var cs = new ConsoleStream;
 			BuildI386();
 			tb1.Text = cs.ToString();
 		});
-		miBuild.AppendItem("&ARM 実行ファイル", \(sender, e) =>
+		miBuild.AppendItem("&ARM 実行ファイル", \ =>
 		{
 			var cs = new ConsoleStream;
 			BuildARM();
 			tb1.Text = cs.ToString();
 		});
-		MainMenu.Append(miBuild);
-		var miHelp = new MenuItem;
-		miHelp.Text = "ヘルプ(&H)";
-		miHelp.AppendItem("バージョン情報(&A)", \(sender, e) =>
+		Menu.Append(miBuild);
+		
+		var miHelp = new MenuItem { Text = "ヘルプ(&H)"; };
+		miHelp.AppendItem("バージョン情報(&A)", \ =>
 		{
 			MessageBox(hWnd, VERSION, "バージョン情報", MB_OK);
 			tb1.Focus();
 		});
-		MainMenu.Append(miHelp);
+		Menu.Append(miHelp);
 		
 		var args = Environment.GetCommandLineArgs();
 		if (args.Length > 1) OpenPE(args[1]);
