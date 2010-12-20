@@ -4,4 +4,5 @@ gen-XML.exe
 src-*.adm
 output.exe
 Test.exe
-a.exe
+a.arm.exe
+a.i386.exe

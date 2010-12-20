@@ -1,4 +1,11 @@
-﻿struct PEModule
+﻿const int WINDOWS_GUI   = 2;
+const int WINDOWS_CUI   = 3;
+const int WINCE_GUI     = 9;
+const int MACHINE_I386  = 0x014c;
+const int MACHINE_X8664 = 0x8664;
+const int MACHINE_ARM   = 0x01c0;
+
+struct PEModule
 {
 	byte signature_1 = 'P';
 	byte signature_2 = 'E';
@@ -9,17 +16,17 @@
 	PEHeaderWindowsNTSpecificFields WinNT;
 	PEHeaderDataDirectories Dir;
 	SectionHeader Text;
-	SectionHeader Data;
+	SectionHeader RData;
 	SectionHeader IData;
 	
 	function ctor
 	{
 		File.NumberOfSections = 3;
 		Text .Name = ".text";
-		Data .Name = ".data";
+		RData.Name = ".rdata";
 		IData.Name = ".idata";
 		Text .Characteristics = 0x60000060;
-		Data .Characteristics = 0xc0000040;
+		RData.Characteristics = 0x40000040;
 		IData.Characteristics = 0xc0000040;
 		SetAddress();
 		Std.EntryPoint = Text.VirtualAddress;
@@ -28,22 +35,22 @@
 	function SetAddress
 	{
 		Text .SizeOfRawData = Align(Text .VirtualSize, WinNT.FileAlignment);
-		Data .SizeOfRawData = Align(Data .VirtualSize, WinNT.FileAlignment);
+		RData.SizeOfRawData = Align(RData.VirtualSize, WinNT.FileAlignment);
 		IData.SizeOfRawData = Align(IData.VirtualSize, WinNT.FileAlignment);
 		
 		Text .PointerToRawData = Align(0x80 + sizeof(PEModule), WinNT.FileAlignment);
-		Data .PointerToRawData = Text.PointerToRawData + Text.SizeOfRawData;
-		IData.PointerToRawData = Data.PointerToRawData + Data.SizeOfRawData;
+		RData.PointerToRawData = Text .PointerToRawData + Text .SizeOfRawData;
+		IData.PointerToRawData = RData.PointerToRawData + RData.SizeOfRawData;
 		
 		Text .VirtualAddress = WinNT.SectionAlignment;
-		Data .VirtualAddress = Text.VirtualAddress + Align(Text.VirtualSize, WinNT.SectionAlignment);
-		IData.VirtualAddress = Data.VirtualAddress + Align(Data.VirtualSize, WinNT.SectionAlignment);
+		RData.VirtualAddress = Text .VirtualAddress + Align(Text .VirtualSize, WinNT.SectionAlignment);
+		IData.VirtualAddress = RData.VirtualAddress + Align(RData.VirtualSize, WinNT.SectionAlignment);
 		WinNT.ImageSize = IData.VirtualAddress + Align(IData.VirtualSize, WinNT.SectionAlignment);
 		
 		Std.BaseOfCode = Text.VirtualAddress;
 		Std.CodeSize   = Text.VirtualSize;
-		Std.BaseOfData = Data.VirtualAddress;
-		Std.InitializedDataSize = Data.VirtualSize;
+		Std.BaseOfData = RData.VirtualAddress;
+		Std.InitializedDataSize = RData.VirtualSize;
 		Dir.ImportTable_Address = IData.VirtualAddress;
 		Dir.ImportTable_Size    = IData.VirtualSize;
 	}
@@ -53,10 +60,11 @@
 		return IData.PointerToRawData + IData.SizeOfRawData;
 	}
 	
-	function Link(text : byte[], data : byte[], idata : byte[])
+	function Link(text : byte[], rdata : byte[], isec : ImportSection)
 	{
+		var idata = isec.Create();
 		Text .VirtualSize = text .Length;
-		Data .VirtualSize = data .Length;
+		RData.VirtualSize = rdata.Length;
 		IData.VirtualSize = idata.Length;
 		SetAddress();
 		
@@ -76,8 +84,8 @@
 		
 		bw.Position = Text.PointerToRawData;
 		bw.Write(text);
-		bw.Position = Data.PointerToRawData;
-		bw.Write(data);
+		bw.Position = RData.PointerToRawData;
+		bw.Write(rdata);
 		bw.Position = IData.PointerToRawData;
 		bw.Write(idata);
 		
@@ -103,6 +111,48 @@ struct SectionHeader
 			else
 				name[i] = 0;
 		}
+	}
+}
+
+class ImportSection
+{
+	ImportTable table;
+	var DLL : string;
+	var symbols = new StringList;
+	
+	function Add(symbol : string)
+	{
+		symbols.Add(symbol);
+	}
+	
+	function SetAddress(pem : PEModule)
+	{
+		var size = (symbols.Count + 1) * sizeof(var);
+		table.ImportLookupTable = pem.IData.VirtualAddress + sizeof(ImportTable) * 2;
+		table.ImportAddressTable = table.ImportLookupTable + size;
+		table.Name = table.ImportAddressTable + size;
+	}
+	
+	function Create
+	{
+		var ms = new MemoryStream;
+		ms.WriteWithLength(table, sizeof table);
+		ms.Write(new byte[sizeof table]);
+		var dll = cstr(DLL);
+		var padlen = Align(dll.Length + 1, 2);
+		ms.WriteInt(table.Name + padlen);
+		ms.WriteInt(0);
+		ms.WriteInt(table.Name + padlen);
+		ms.WriteInt(0);
+		ms.Write(dll);
+		ms.Write(new byte[padlen - dll.Length]);
+		ms.WriteShort(0);
+		for (int i = 0; i < symbols.Count; i++)
+		{
+			ms.WriteByteString(symbols.Get(i));
+			ms.WriteByte(0);
+		}
+		return ms.ToArray();
 	}
 }
 

@@ -366,7 +366,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">SectionAlignment</Data></Cell>
-    <Cell><Data ss:Type="String">0x2000</Data></Cell>
+    <Cell><Data ss:Type="String">0x1000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
@@ -454,7 +454,7 @@
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">SubSystem</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="Number">3</Data></Cell>
-    <Cell><Data ss:Type="String">WIN32_GUI=2</Data></Cell>
+    <Cell><Data ss:Type="String">WINDOWS_GUI=2</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">42</Data></Cell>

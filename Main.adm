@@ -12,64 +12,77 @@ if (args.Length > 0)
 
 // ----------------
 
-PEModule pem;
-pem.WinNT.SubSystem = 2; // WIN32_GUI
-
-ImportTable user32;
-user32.ImportLookupTable = pem.IData.VirtualAddress + sizeof(ImportTable) * 2;
-user32.ImportAddressTable = user32.ImportLookupTable + 8;
-user32.Name = user32.ImportAddressTable + 8;
-
 var ms = new MemoryStream;
-ms.WriteWithLength(user32, sizeof user32);
-ms.Write(new byte[sizeof user32]);
-var dll = cstr("user32.dll");
-var padlen = Align(dll.Length + 1, 2);
-ms.WriteInt(user32.Name + padlen);
-ms.WriteInt(0);
-ms.WriteInt(user32.Name + padlen);
-ms.WriteInt(0);
-ms.Write(dll);
-ms.Write(new byte[padlen - dll.Length]);
-ms.WriteShort(0);
-ms.WriteByteString("MessageBoxW");
-ms.WriteByte(0);
-var idata = ms.ToArray();
-
-ms = new MemoryStream;
 ms.WriteString("こんにちは、世界！");
 ms.WriteShort(0);
 var text2 = ms.Length;
 ms.WriteString("だいあろぐ");
 ms.WriteShort(0);
-var data = ms.ToArray();
+var rdata = ms.ToArray();
+
+PEModule pem;
+pem.WinNT.SubSystem = WINDOWS_GUI;
+
+var isec = new ImportSection;
+isec.DLL = "user32.dll";
+isec.Add("MessageBoxW");
+isec.SetAddress(pem);
 
 ms = new MemoryStream;
 ms.WriteByte(0x68); // push dword
 ms.WriteInt(0);
 ms.WriteByte(0x68); // push dword
-ms.WriteInt(pem.WinNT.ImageBase + pem.Data.VirtualAddress + text2);
+ms.WriteInt(pem.WinNT.ImageBase + pem.RData.VirtualAddress + text2);
 ms.WriteByte(0x68); // push dword
-ms.WriteInt(pem.WinNT.ImageBase + pem.Data.VirtualAddress);
+ms.WriteInt(pem.WinNT.ImageBase + pem.RData.VirtualAddress);
 ms.WriteByte(0x68); // push dword
 ms.WriteInt(0);
 ms.WriteByte(0xb8); // mov eax, dword
-ms.WriteInt(pem.WinNT.ImageBase + user32.ImportAddressTable);
+ms.WriteInt(pem.WinNT.ImageBase + isec.table.ImportAddressTable);
 ms.WriteByte(0xff); // call [eax]
 ms.WriteByte(0x10);
 ms.WriteByte(0xc3); // ret
-var text = ms.ToArray();
 
-var buf = pem.Link(text, data, idata);
-var exe = "a.exe";
-var fs = new FileStream;
-if (!fs.OpenWrite(exe))
+WriteExe("a.i386.exe", pem.Link(ms.ToArray(), rdata, isec));
+
+// ----------------
+
+println();
+printfln("-" * 32);
+
+pem.File.Machine = MACHINE_ARM;
+pem.WinNT.SubSystem = WINCE_GUI;
+pem.WinNT.ImageBase = 0x10000;
+pem.SetAddress();
+isec.DLL = "coredll.dll";
+
+ms = new MemoryStream;
+ms.WriteInt(0xe1a0c00d); // 00: mov ip, sp
+ms.WriteInt(0xe92dd800); // 04: stmfd sp!, {fp, ip, lr, pc}
+ms.WriteInt(0xe24cb004); // 08: sub fp, ip, #4
+ms.WriteInt(0xe3a00000); // 0c: mov r0, #0
+ms.WriteInt(0xe59f100c); // 10: ldr r1, [pc, #12] ; 0x24
+ms.WriteInt(0xe59f200c); // 14: ldr r2, [pc, #12] ; 0x28
+ms.WriteInt(0xe3a03001); // 18: mov r3, #1
+ms.WriteInt(0xeb000002); // 1c: bl 8 ; 0x2c
+ms.WriteInt(0xe89da800); // 20: ldmfd sp, {fp, sp, pc}
+ms.WriteInt(pem.WinNT.ImageBase + pem.RData.VirtualAddress); // 24
+ms.WriteInt(pem.WinNT.ImageBase + pem.RData.VirtualAddress + text2); // 28
+ms.WriteInt(0xe59fc000); // 2c: ldr ip, [pc, #0] ; 0x34
+ms.WriteInt(0xe59cf000); // 30: ldr pc, [ip]
+ms.WriteInt(pem.WinNT.ImageBase + isec.table.ImportAddressTable); // 34
+
+WriteExe("a.arm.exe", pem.Link(ms.ToArray(), rdata, isec));
+
+function WriteExe(exe : string, image : byte[])
 {
-	printfln("書き込めません: %s", exe);
-	return 1;
+	var fs = new FileStream;
+	if (fs.OpenWrite(exe))
+	{
+		fs.Write(image);
+		fs.Close();
+		ReadPE(exe);
+	}
+	else
+		printfln("書き込めません: %s", exe);
 }
-fs.Write(buf);
-fs.Close();
-
-// 結果表示
-ReadPE(exe);
