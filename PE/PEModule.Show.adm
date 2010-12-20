@@ -1,0 +1,46 @@
+﻿class PEModule
+{
+	function Show
+	{
+		DOS.Show();
+		var p = PESignatureAddress + 4;
+		
+		println();
+		printfln("%p: [PEFileHeader]", p);
+		File.Show();
+		p += sizeof PEFileHeader;
+		
+		println();
+		printfln("%p: [PEHeaderStandardFields]", p);
+		Std.Show();
+		p += sizeof PEHeaderStandardFields;
+		
+		println();
+		printfln("%p: [PEHeaderWindowsNTSpecificFields]", p);
+		WinNT.Show();
+		p += sizeof PEHeaderWindowsNTSpecificFields;
+		
+		println();
+		printfln("%p: [PEHeaderDataDirectories]", p);
+		Dir.Show();
+		p += sizeof PEHeaderDataDirectories;
+		
+		var sects = sections.Values;
+		for (int i = 0; i < sects.Length; i++)
+		{
+			var csect : CSectionHeader = sects[i];
+			if (csect.Data != null)
+			{
+				var sect = csect.Header;
+				println();
+				printfln("%p: [SectionHeader]", p);
+				printfln("Name: %s", sect.Name);
+				sect.Show();
+				p += sizeof(SectionHeader);
+			}
+		}
+		
+		ImportSection.Parse(this);
+		return true;
+	}
+}

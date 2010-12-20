@@ -1,6 +1,6 @@
 ﻿class CodeGenerator
 {
-	function Struct()
+	function Struct(type : string)
 	{
 		if (LineLength < 2)
 		{
@@ -32,7 +32,7 @@
 				values.Add(null);
 		}
 		
-		WriteLine("struct %s", structName);
+		WriteLine("%s %s", type, structName);
 		WriteLine("{");
 		for (int i = 0; i < types.Count; i++)
 		{

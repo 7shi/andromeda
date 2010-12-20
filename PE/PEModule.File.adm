@@ -1,0 +1,51 @@
+﻿class PEModule
+{
+	function WriteFile(path : string, text : Block, msgout : bool)
+	{
+		var fs = new FileStream;
+		if (!fs.OpenWrite(path))
+		{
+			if (msgout) printfln("書き込めません: %s", path);
+			return;
+		}
+		var image = Link(text);
+		fs.Write(image);
+		fs.Close();
+		if (!msgout) return;
+		
+		printfln("書き込みました: %s", path);
+		printfln("ファイルサイズ: %d", image.Length);
+		println();
+		Show();
+	}
+
+	static function ReadFile(path : string, msgout : bool)
+	{
+		var fs = new FileStream;
+		if (!fs.OpenRead(path))
+		{
+			if (msgout) printfln("ファイルが開けません: %s", path);
+			return null;
+		}
+		
+		var image = fs.ReadToEnd();
+		fs.Close();
+		if (msgout)
+		{
+			printfln("読み込みました: %s", path);
+			printfln("ファイルサイズ: %d", image.Length);
+			println();
+		}
+		
+		var m = new PEModule;
+		var error = m.Read(image);
+		if (error != null)
+		{
+			if (msgout) printfln("%s", error);
+			return null;
+		}
+		
+		if (msgout) m.Show();
+		return m;
+	}
+}

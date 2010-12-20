@@ -44,7 +44,8 @@
 			size += lib.TableSize;
 		}
 		m.Dir.ImportTable_Size = sizeof(ImportTable) * (libs + 1);
-		var ad1 = m.IData.VirtualAddress + m.Dir.ImportTable_Size;
+		var idata = m.GetSection(".idata").Header;
+		var ad1 = idata.VirtualAddress + m.Dir.ImportTable_Size;
 		var ad2 = ad1 + size * 2;
 		m.Dir.IAT_Address = ad1 + size;
 		m.Dir.IAT_Size = size;

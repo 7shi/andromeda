@@ -1,12 +1,19 @@
-﻿_Finish _finish;
-
-printfln("*** PE Test ***");
+﻿printfln("*** PE Test ***");
+_Finish _finish;
 
 var args = Environment.GetCommandLineArgs();
 if (args.Length > 1)
 {
 	for (int i = 1; i < args.Length; i++)
-		ReadPE(args[i]);
+	{
+		println();
+		if (i > 2)
+		{
+			println();
+			printfln("-" * 32);
+		}
+		PEModule.ReadFile(args[i], true);
+	}
 	return 0;
 }
 
@@ -30,9 +37,8 @@ text1.AddByte(0xff); // call [eax]
 text1.AddByte(0x10);
 text1.AddByte(0xc3); // ret
 
-WriteExe("a.i386.exe", m1.Link(text1));
-
-// ----------------
+println();
+m1.WriteFile("a.i386.exe", text1, true);
 
 println();
 printfln("-" * 32);
@@ -58,17 +64,5 @@ text2.AddInt(0xe59fc000); // 2c: ldr ip, [pc, #0] ; 0x34
 text2.AddInt(0xe59cf000); // 30: ldr pc, [ip]
 text2.AddAddress(m2.Import("COREDLL.DLL", "MessageBoxW")); // 34
 
-WriteExe("a.arm.exe", m2.Link(text2));
-
-function WriteExe(exe : string, image : byte[])
-{
-	var fs = new FileStream;
-	if (fs.OpenWrite(exe))
-	{
-		fs.Write(image);
-		fs.Close();
-		ReadPE(exe);
-	}
-	else
-		printfln("書き込めません: %s", exe);
-}
+println();
+m2.WriteFile("a.arm.exe", text2, true);

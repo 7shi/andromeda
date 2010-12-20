@@ -16,9 +16,10 @@ class CodeGenerator : ExcelCodeGenerator
 			default:
 				base.ReadCommand(cmd);
 				break;
+			case "class":
 			case "struct":
 				WriteLine("");
-				Struct();
+				Struct(cmd);
 				break;
 		}
 	}

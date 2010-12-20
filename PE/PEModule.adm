@@ -1,0 +1,181 @@
+﻿const int WINDOWS_GUI   = 2;
+const int WINDOWS_CUI   = 3;
+const int WINCE_GUI     = 9;
+const int MACHINE_I386  = 0x014c;
+const int MACHINE_X8664 = 0x8664;
+const int MACHINE_ARM   = 0x01c0;
+
+class PEModule
+{
+	DOSHeader DOS;
+	int PESignatureAddress = 0x80;
+	PEFileHeader File;
+	PEHeaderStandardFields Std;
+	PEHeaderWindowsNTSpecificFields WinNT;
+	PEHeaderDataDirectories Dir;
+	
+	var sections = new Hashtable;
+	var rdata = new Block;
+	var idata = new ImportSection;
+	int RawSize;
+	
+	function get_HeaderSize
+	{
+		return 0x84
+			+ sizeof(File) + sizeof(Std) + sizeof(WinNT) + sizeof(Dir)
+			+ sizeof(SectionHeader) * sections.Count;
+	}
+	
+	function GetSection(name : string)
+	{
+		var ret = (CSectionHeader)sections.Get(name);
+		if (ret == null)
+		{
+			ret = new CSectionHeader;
+			ret.Header.Name = name;
+			switch (name)
+			{
+				case ".text":
+					ret.Header.Characteristics = 0x60000060;
+					break;
+				case ".rdata":
+					ret.Header.Characteristics = 0x40000040;
+					break;
+				case ".bss":
+					ret.Header.Characteristics = 0xc0000080;
+					break;
+				default:
+					ret.Header.Characteristics = 0xc0000040;
+					break;
+			}
+			sections.Add(name, ret);
+		}
+		return ret;
+	}
+	
+	function SetAddress
+	{
+		var Text  = GetSection(".text") .Header;
+		var IData = GetSection(".idata").Header;
+		
+		var hs = HeaderSize;
+		var raw  = Align(hs, WinNT.FileAlignment);
+		var virt = Align(hs, WinNT.SectionAlignment);
+		WinNT.HeaderSize = raw;
+		File.NumberOfSections = 0;
+		var sects = sections.Values;
+		for (int i = 0; i < sects.Length; i++)
+		{
+			var sect = ((CSectionHeader)sects[i]).Header;
+			if (sect.VirtualSize > 0)
+			{
+				sect.SizeOfRawData = Align(sect.VirtualSize, WinNT.FileAlignment);
+				sect.PointerToRawData = raw;
+				raw += sect.SizeOfRawData;
+				sect.VirtualAddress = virt;
+				virt += Align(sect.VirtualSize, WinNT.SectionAlignment);
+				File.NumberOfSections++;
+			}
+		}
+		WinNT.ImageSize = virt;
+		RawSize = raw;
+		
+		Std.BaseOfCode = Text.VirtualAddress;
+		Std.CodeSize   = Text.VirtualSize;
+		if (sections.ContainsKey(".data"))
+		{
+			var data = GetSection(".data").Header;
+			Std.BaseOfData = data.VirtualAddress;
+			Std.InitializedDataSize = data.VirtualSize;
+		}
+		else
+		{
+			Std.BaseOfData = 0;
+			Std.InitializedDataSize = 0;
+		}
+		Dir.ImportTable_Address = IData.VirtualAddress;
+		
+		if (Std.EntryPoint < Text.VirtualAddress
+			|| Std.EntryPoint >= Text.VirtualAddress + Text.VirtualSize)
+		{
+			Std.EntryPoint = Text.VirtualAddress;
+		}
+	}
+	
+	function Link(text : Block)
+	{
+		var Text  = GetSection(".text");
+		var RData = GetSection(".rdata");
+		var IData = GetSection(".idata");
+		
+		Text .Header.VirtualSize = text .Length;
+		RData.Header.VirtualSize = rdata.Length;
+		IData.Header.VirtualSize = idata.Length;
+			
+		SetAddress();
+		text .Address = WinNT.ImageBase + Text .Header.VirtualAddress;
+		rdata.Address = WinNT.ImageBase + RData.Header.VirtualAddress;
+		
+		IData.Data = idata.Create(this);
+		RData.Data = rdata.ToArray();
+		Text .Data = text .ToArray();
+		
+		var ret = new byte[RawSize];
+		var bw = new BinaryWriter;
+		bw.Init(ret, ret.Length);
+		
+		DOSHeader dosh;
+		bw.WriteWithLength(dosh, sizeof dosh);
+		bw.Position = 0x3c;
+		bw.WriteInt(PESignatureAddress);
+		bw.Write(HexBin("0e1fba0e00b409cd21b8014ccd21"));
+		bw.WriteByteString("This program cannot be run in DOS mode.\r\n$");
+		bw.Position = PESignatureAddress;
+		bw.WriteByte('P');
+		bw.WriteByte('E');
+		bw.WriteShort(0);
+		bw.WriteWithLength(File , sizeof File );
+		bw.WriteWithLength(Std  , sizeof Std  );
+		bw.WriteWithLength(WinNT, sizeof WinNT);
+		bw.WriteWithLength(Dir  , sizeof Dir  );
+		
+		var sects = sections.Values;
+		for (int i = 0; i < sects.Length; i++)
+		{
+			var sect = ((CSectionHeader)sects[i]).Header;
+			if (sect.VirtualSize > 0)
+				bw.WriteWithLength(sect, sizeof SectionHeader);
+		}
+		for (int i = 0; i < sects.Length; i++)
+		{
+			var sect = (CSectionHeader)sects[i];
+			if (sect.Header.VirtualSize > 0)
+			{
+				bw.Position = sect.Header.PointerToRawData;
+				bw.Write(sect.Data);
+			}
+		}
+		
+		return ret;
+	}
+	
+	var strings = new Hashtable;
+	
+	function GetString(s : string)
+	{
+		var ret = (Addr32)strings.Get(s);
+		if (ret == null)
+		{
+			ret = rdata.CurrentAddress;
+			rdata.AddString(s);
+			rdata.AddShort(0);
+			strings.Add(s, ret);
+		}
+		return ret;
+	}
+	
+	function Import(lib : string, sym : string)
+	{
+		return idata.Add(lib, sym);
+	}
+}

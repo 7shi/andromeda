@@ -1,0 +1,61 @@
+﻿class PEModule
+{
+	function Read(exe : byte[]) : string
+	{
+		sections.Clear();
+		
+		var size = HeaderSize;
+		if (exe.Length < size)
+			return string.Format(
+				"ファイルが小さすぎます: %d < %d", exe.Length, size);
+		
+		var dosh : DOSHeader = exe;
+		if (dosh.signature1 != 'M' || dosh.signature2 != 'Z')
+			return "DOS signature が \"MZ\" ではありません。";
+		memcpy(DOS, dosh, sizeof(DOS));
+		
+		PESignatureAddress = ReadInt(addrof exe[0x3c]);
+		if (PESignatureAddress >= size)
+			return string.Format(
+				"PE signature のアドレスが無効です: %08x",
+				PESignatureAddress);
+		
+		var pesignbuf = new byte[5];
+		memcpy(pesignbuf, addrof exe[PESignatureAddress], 4);
+		var pesign = wstr(pesignbuf);
+		if (pesign != "PE")
+			return "PE signature が \"PE\" ではありません。";
+		
+		var pefh   : PEFileHeader* = addrof exe[PESignatureAddress + 4];
+		var pehsf  : PEHeaderStandardFields* = pefh + 1;
+		var pehwnt : PEHeaderWindowsNTSpecificFields* = pehsf + 1;
+		var pehdd  : PEHeaderDataDirectories* = pehwnt + 1;
+		memcpy(File , pefh  , sizeof File);
+		memcpy(Std  , pehsf , sizeof Std);
+		memcpy(WinNT, pehwnt, sizeof WinNT);
+		memcpy(Dir  , pehdd , sizeof Dir);
+		
+		size += pefh.NumberOfSections * sizeof(SectionHeader);
+		if (exe.Length < size)
+			return string.Format(
+				"ファイルが小さすぎます: %d < %d", exe.Length, size);
+		
+		var sects : SectionHeader* = pehdd + 1;
+		var idata : SectionHeader = null;
+		for (int i = 0; i < pefh.NumberOfSections; i++)
+		{
+			var sect : SectionHeader = sects + i;
+			var csect = GetSection(sect.Name);
+			memcpy(csect.Header, sect, sizeof SectionHeader);
+			var last = sect.PointerToRawData + sect.SizeOfRawData;
+			if (exe.Length < last)
+				return string.Format(
+					"ファイルが小さすぎます: %d < %d", exe.Length, last);
+			var len = Math.Min(sect.SizeOfRawData, sect.VirtualSize);
+			csect.Data = new byte[len];
+			memcpy(csect.Data, addrof exe[sect.PointerToRawData], len);
+		}
+		
+		return null;
+	}
+}

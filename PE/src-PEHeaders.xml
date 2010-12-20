@@ -323,7 +323,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
-    <Cell><Data ss:Type="String">0x2000</Data></Cell>
+    <Cell><Data ss:Type="String">0x1000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
@@ -333,7 +333,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
-    <Cell><Data ss:Type="String">0x2000</Data></Cell>
+    <Cell><Data ss:Type="String">0x1000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
@@ -343,7 +343,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
-    <Cell><Data ss:Type="String">0x4000</Data></Cell>
+    <Cell><Data ss:Type="String">0x2000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
@@ -432,14 +432,17 @@
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
-    <Cell><Data ss:Type="String">0x6000</Data></Cell>
+    <Cell><Data ss:Type="String">0x4000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">HeaderSize</Data></Cell>
-    <Cell><Data ss:Type="String">0x400</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
+      ss:Type="String">設定必要</Data></Cell>
+    <Cell><Data ss:Type="String">0x200</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">36</Data></Cell>

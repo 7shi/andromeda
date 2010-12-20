@@ -1,0 +1,37 @@
+﻿class ImportSection
+{
+	static function Parse(m : PEModule)
+	{
+		var ad = m.Dir.ImportTable_Address;
+		var csect = m.GetSectionVirtual(ad);
+		if (csect == null)
+		{
+			printfln("ImportTable が見付かりません。");
+			return;
+		}
+		
+		var offset = ad - csect.Header.VirtualAddress;
+		var itbl : ImportTable* = addrof csect.Data[offset];
+		var p = csect.Header.PointerToRawData + offset;
+		for (int i = 0; itbl[i].ImportLookupTable != 0; i++)
+		{
+			println();
+			printfln("%p: [ImportTable]", p);
+			itbl[i].Show();
+			var name = wstr(m.GetDataVirtual(itbl[i].Name));
+			printfln("=> %s", name);
+			var ilt : var* = m.GetDataVirtual(itbl[i].ImportLookupTable);
+			for (int j = 0; ilt[j] != 0; j++)
+			{
+				if (ilt[j] < 0)
+					printfln("(%d)", ilt[j] & 0x7fffffff);
+				else
+				{
+					var imp : ushort* = m.GetDataVirtual(ilt[j]);
+					printfln("(%d): %s", imp[0], wstr(addrof imp[1]));
+				}
+			}
+			p += sizeof(ImportTable);
+		}
+	}
+}

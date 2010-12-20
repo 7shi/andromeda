@@ -31,7 +31,7 @@
 			__movsb(tmp, buffer, Length);
 			buffer = tmp;
 		}
-		__movsw(addrof buffer[Length], data, length);
+		__movsb(addrof buffer[Length], data, length);
 		Length += length;
 	}
 	
