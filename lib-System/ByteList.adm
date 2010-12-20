@@ -1,0 +1,38 @@
+﻿class ByteList
+{
+	var Ptr : byte[];
+	int Count, Capacity;
+	
+	function ctor()
+	{
+		Capacity = 16;
+		Ptr = new byte[Capacity];
+		Count = 0;
+	}
+	
+	function Clear()
+	{
+		Count = 0;
+	}
+	
+	function ToArray()
+	{
+		var ret = new byte[Count];
+		__movsb(ret, Ptr, Count);
+		return ret;
+	}
+	
+	function Add(b)
+	{
+		var cap = Capacity;
+		while (Count >= Capacity)
+			Capacity += Capacity;
+		if (Capacity != cap)
+		{
+			var tmp = new byte[Capacity];
+			__movsb(tmp, Ptr, Count);
+			Ptr = tmp;
+		}
+		Ptr[Count++] = b;
+	}
+}

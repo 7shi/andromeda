@@ -1,0 +1,134 @@
+﻿extern "kernel32.dll" __stdcall __widecharset
+	CreateFile(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+extern "kernel32.dll" __stdcall
+{
+	WriteFile(handle, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
+	ReadFile(handle, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
+	CloseHandle(hObject);
+	GetFileSize(handle, lpFileSizeHigh);
+	SetFilePointer(handle, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
+}
+
+const int GENERIC_READ  = 0x80000000;
+const int GENERIC_WRITE = 0x40000000;
+const int CREATE_NEW        = 1;
+const int CREATE_ALWAYS     = 2;
+const int OPEN_EXISTING     = 3;
+const int OPEN_ALWAYS       = 4;
+const int TRUNCATE_EXISTING = 5;
+const int FILE_BEGIN   = 0;
+const int FILE_CURRENT = 1;
+const int FILE_END     = 2;
+const int FILE_ATTRIBUTE_NORMAL = 0x80;
+const int INVALID_HANDLE_VALUE = -1;
+
+class FileStream
+{
+	var handle = INVALID_HANDLE_VALUE;
+	
+	function dtor()
+	{
+		Close();
+	}
+	
+	function OpenRead(file : string)
+	{
+		Close();
+		handle = CreateFile(file, GENERIC_READ, 0, null,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null);
+		return handle != INVALID_HANDLE_VALUE;
+	}
+	
+	function OpenWrite(file : string)
+	{
+		Close();
+		handle = CreateFile(file, GENERIC_WRITE, 0, null,
+			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, null);
+		return handle != INVALID_HANDLE_VALUE;
+	}
+	
+	function Close()
+	{
+		if (handle != INVALID_HANDLE_VALUE)
+		{
+			CloseHandle(handle);
+			handle = INVALID_HANDLE_VALUE;
+		}
+	}
+	
+	function get_Position()
+	{
+		if (handle == INVALID_HANDLE_VALUE)
+			return -1;
+		return SetFilePointer(handle, 0, null, FILE_CURRENT);
+	}
+	
+	function set_Position(pos)
+	{
+		if (handle == INVALID_HANDLE_VALUE)
+			return -1;
+		return SetFilePointer(handle, pos, null, FILE_BEGIN);
+	}
+	
+	function get_Length()
+	{
+		if (handle == INVALID_HANDLE_VALUE)
+			return -1;
+		return GetFileSize(handle, null);
+	}
+	
+	function ReadWithLength(buf, length)
+	{
+		if (handle == INVALID_HANDLE_VALUE) return -1;
+		var len;
+		if (ReadFile(handle, buf, length, addrof(len), null) == 0)
+			return -1;
+		return len;
+	}
+	
+	function Read(length)
+	{
+		var ret = new byte[length];
+		var len = ReadWithLength(ret, length);
+		if (len < 0)
+			return null;
+		else if (len != length)
+		{
+			var tmp = new byte[len];
+			memcpy(tmp, ret, len);
+			ret = tmp;
+		}
+		return ret;
+	}
+	
+	function ReadToEnd()
+	{
+		return Read(Length - Position);
+	}
+	
+	function ReadByte()
+	{
+		var ret = 0;
+		if (ReadWithLength(addrof(ret), 1) <= 0) return -1;
+		return ret;
+	}
+	
+	function WriteWithLength(data, length)
+	{
+		if (handle == INVALID_HANDLE_VALUE) return -1;
+		var len;
+		if (WriteFile(handle, data, length, addrof(len), null) == 0)
+			return -1;
+		return len;
+	}
+	
+	function Write(data : byte[])
+	{
+		return WriteWithLength(data, data.Length);
+	}
+	
+	function WriteByte(data)
+	{
+		return WriteWithLength(addrof(data), 1);
+	}
+}

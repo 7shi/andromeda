@@ -1,0 +1,18 @@
+﻿printfln("*** UTF-8 Test ***");
+_Finish _finish;
+
+var surrogate = new char[4];
+surrogate[0] = 0xd800;
+surrogate[1] = 0xdc00;
+surrogate[2] = 0xdbff;
+surrogate[3] = 0xdfff;
+for (int i = 0; i < surrogate.Length; i++)
+	printfln("surrogate[%d]: %04x", i, surrogate[i]);
+
+var utf8 = UTF8Encoder.GetBytes(surrogate);
+for (int i = 0; i < utf8.Length; i++)
+	printfln("utf8[%d]: %02x", i, utf8[i]);
+
+var utf16 = UTF8Decoder.GetString(utf8);
+for (int i = 0; i < utf16.Length; i++)
+	printfln("utf16[%d]: %04x", i, utf16[i]);

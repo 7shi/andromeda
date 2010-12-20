@@ -1,0 +1,85 @@
+﻿class StreamReader
+{
+	var Stream : FileStream;
+	bool IsUTF8 = false;
+	
+	function dtor()
+	{
+		Close();
+	}
+	
+	function Close()
+	{
+		if (Stream != null)
+		{
+			Stream.Close();
+			Stream = null;
+		}
+	}
+	
+	function Open(file : string)
+	{
+		Stream = new FileStream;
+		var ret = Stream.OpenRead(file);
+		if (ret)
+		{
+			var bom = UTF8Encoder.BOM;
+			IsUTF8 = true;
+			for (int i = 0; i < bom.Length; i++)
+			{
+				byte b = Stream.ReadByte();
+				if (b != bom[i])
+				{
+					Stream.Position = 0;
+					IsUTF8 = false;
+					break;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	function GetString(buf)
+	{
+		if (IsUTF8)
+			return UTF8Decoder.GetString(buf);
+		return wstr(buf);
+	}
+	
+	function ReadToEnd()
+	{
+		if (Stream == null) return;
+		return GetString(Stream.ReadToEnd());
+	}
+	
+	var buffer = new ByteList;
+	
+	function ReadLine()
+	{
+		buffer.Clear();
+		for (;;)
+		{
+			var b = Stream.ReadByte();
+			if (b == -1)
+				break;
+			else if (b == '\n')
+				break;
+			else if (b == '\r')
+			{
+				var pos = Stream.Position;
+				var lf = Stream.ReadByte();
+				if (lf != '\n')
+					Stream.Position = pos;
+				break;
+			}
+			buffer.Add(b);
+		}
+		if (buffer.Count == 0) return null;
+		return GetString(buffer.ToArray());
+	}
+	
+	function ReadByte()
+	{
+		return Stream.ReadByte();
+	}
+}

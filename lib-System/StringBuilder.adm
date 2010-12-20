@@ -1,0 +1,55 @@
+﻿class StringBuilder
+{
+	var Ptr : char[];
+	int Count, Capacity;
+	
+	function ctor()
+	{
+		Capacity = 16;
+		Ptr = new char[Capacity];
+		Count = 0;
+	}
+	
+	function Clear()
+	{
+		Count = 0;
+	}
+	
+	function ToString()
+	{
+		var ret = new char[Count];
+		__movsw(ret, Ptr, Count);
+		return ret;
+	}
+	
+	function AppendWithLength(s, length)
+	{
+		var cap = Capacity;
+		var size = Count + length - 1;
+		while (size >= Capacity)
+			Capacity += Capacity;
+		if (Capacity != cap)
+		{
+			var tmp = new char[Capacity];
+			__movsw(tmp, Ptr, Count);
+			Ptr = tmp;
+		}
+		__movsw(addrof Ptr[Count], s, length);
+		Count += length;
+	}
+	
+	function Append(s : string)
+	{
+		AppendWithLength(s, s.Length);
+	}
+	
+	function AppendChar(ch)
+	{
+		AppendWithLength(addrof ch, 1);
+	}
+	
+	function AppendFormat(format : string, args : params)
+	{
+		Append(string.VFormat(format, args));
+	}
+}

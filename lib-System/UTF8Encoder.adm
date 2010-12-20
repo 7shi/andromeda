@@ -1,0 +1,107 @@
+﻿class UTF8Encoder
+{
+	static function GetLengthWithLength(s : char*, length)
+	{
+		int ret = 0;
+		for (int i = 0; i < length; i++)
+		{
+			char c = s[0];
+			s++;
+			if (c < 0x80)
+				ret++;
+			else if (c < 0x800)
+				ret += 2;
+			else if (0xd800 <= c && c < 0xdc00)
+			{
+				if (i + 1 < length)
+				{
+					char d = s[0];
+					if (0xdc00 <= d && d < 0xe000)
+					{
+						s++;
+						i++;
+						ret += 4;
+					}
+					else
+						ret++;
+				}
+				else
+					ret++;
+			}
+			else if (0xdc00 <= c && c < 0xe000)
+				ret++;
+			else
+				ret += 3;
+		}
+		return ret;
+	}
+	
+	static function GetLength(s : string)
+	{
+		return GetLengthWithLength(s, s.Length);
+	}
+	
+	static function GetBytesWithLength(s : char*, length)
+	{
+		int len = GetLengthWithLength(s, length);
+		var ret = new byte[len];
+		int p = 0;
+		for (int i = 0; i < length; i++)
+		{
+			int after = length - i;
+			char c = s[0];
+			s++;
+			if (c < 0x80)
+				ret[p++] = c;
+			else if (c < 0x800)
+			{
+				ret[p++] = 0xc0 + (c >> 6);
+				ret[p++] = 0x80 + (c & 0x3f);
+			}
+			else if (0xd800 <= c && c < 0xdc00)
+			{
+				if (i + 1 < length)
+				{
+					char d = s[0];
+					if (0xdc00 <= d && d < 0xe000)
+					{
+						s++;
+						i++;
+						int ch = 0x10000 + ((c - 0xd800) << 10) + (d - 0xdc00);
+						ret[p++] = 0xf0 +  (ch >> 18);
+						ret[p++] = 0x80 + ((ch >> 12) & 0x3f);
+						ret[p++] = 0x80 + ((ch >>  6) & 0x3f);
+						ret[p++] = 0x80 + (ch & 0x3f);
+					}
+					else
+						ret[p++] = '?';
+				}
+				else
+					ret[p++] = '?';
+			}
+			else if (0xdc00 <= c && c < 0xe000)
+				ret[p++] = '?';
+			else
+			{
+				ret[p++] = 0xe0 + (c >> 12);
+				ret[p++] = 0x80 + ((c >> 6) & 0x3f);
+				ret[p++] = 0x80 + (c & 0x3f);
+			}
+		}
+		return ret;
+	}
+	
+	static function GetBytes(s : string)
+	{
+		return GetBytesWithLength(s, s.Length);
+	}
+	
+	static function get_BOM()
+	{
+		var ret = new byte[3];
+		ret[0] = 0xef;
+		ret[1] = 0xbb;
+		ret[2] = 0xbf;
+		return ret;
+	}
+}
