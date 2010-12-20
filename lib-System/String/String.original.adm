@@ -20,6 +20,14 @@
 		return ret;
 	}
 	
+	function ToByteString()
+	{
+		var len = WideCharToMultiByte(0, 0, this, this.Length, null, null, null, null);
+		var ret = new byte[len];
+		WideCharToMultiByte(0, 0, this, this.Length, ret, ret.Length, null, null);
+		return ret;
+	}
+	
 	function Swap(start, length, s : string)
 	{
 		return Remove(start, length).Insert(start, s);

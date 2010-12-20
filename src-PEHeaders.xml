@@ -57,14 +57,14 @@
   </Style>
   <Style ss:ID="s27">
    <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
-   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
-    ss:Bold="1"/>
-   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+   <Interior ss:Color="#CCFFFF" ss:Pattern="Solid"/>
    <NumberFormat/>
   </Style>
   <Style ss:ID="s28">
    <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
-   <Interior ss:Color="#CCFFFF" ss:Pattern="Solid"/>
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
    <NumberFormat/>
   </Style>
  </Styles>
@@ -224,23 +224,23 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">TimeDateStamp</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイノゾ</PhoneticText><Data
       ss:Type="String">設定することが望ましい</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">PointerToSymbolTable</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">NumberOfSymbols</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
@@ -265,7 +265,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">PEHeaderStandardFields</Data></Cell>
-    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
@@ -291,7 +291,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">CodeSize</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -300,7 +300,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">InitializedDataSize</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -309,7 +309,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">UninitializedDataSize</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -318,7 +318,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">EntryPoint</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -328,7 +328,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">BaseOfCode</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -338,7 +338,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">BaseOfData</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -352,26 +352,26 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">PEHeaderWindowsNTSpecificFields</Data></Cell>
-    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImageBase</Data></Cell>
     <Cell><Data ss:Type="String">0x400000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">SectionAlignment</Data></Cell>
     <Cell><Data ss:Type="String">0x2000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">FileAlignment</Data></Cell>
     <Cell><Data ss:Type="String">0x200</Data></Cell>
    </Row>
@@ -420,14 +420,14 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Reserved</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImageSize</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -437,14 +437,14 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">HeaderSize</Data></Cell>
     <Cell><Data ss:Type="String">0x400</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">36</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">FileChecksum</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
@@ -453,7 +453,7 @@
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">SubSystem</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="Number">3</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="Number">3</Data></Cell>
     <Cell><Data ss:Type="String">WIN32_GUI=2</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
@@ -466,42 +466,42 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">44</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">StackReserveSize</Data></Cell>
     <Cell><Data ss:Type="String">0x100000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">48</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">StackCommitSize</Data></Cell>
     <Cell><Data ss:Type="String">0x1000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">52</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">HeapReserveSize</Data></Cell>
     <Cell><Data ss:Type="String">0x100000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">56</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">HeapCommitSize</Data></Cell>
     <Cell><Data ss:Type="String">0x1000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">60</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">LoaderFlags</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">64</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">NumberOfDataDirectories</Data></Cell>
     <Cell><Data ss:Type="String">0x10</Data></Cell>
    </Row>
@@ -512,26 +512,26 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">PEHeaderDataDirectories</Data></Cell>
-    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ExportTable_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ExportTable_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImportTable_Address</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -540,7 +540,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImportTable_Size</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -549,196 +549,196 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ResourceTable_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ResourceTable_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ExceptionTable_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ExceptionTable_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">CertificateTable_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">36</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">CertificateTable_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">40</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">BaseRelocationTable_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">44</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">BaseRelocationTable_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">48</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Debug_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">52</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Debug_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">56</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Copyright_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">60</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Copyright_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">64</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">GlobalPtr_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">68</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">GlobalPtr_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">72</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">TLSTable_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">76</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">TLSTable_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">80</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">LoadConfigTable_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">84</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">LoadConfigTable_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">88</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">BoundImport_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">92</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">BoundImport_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">96</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">IAT_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">100</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">IAT_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">104</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">DelayImportDescriptor_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">108</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">DelayImportDescriptor_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">112</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">CLIHeader_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">116</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">CLIHeader_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">120</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Reserved_Address</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">124</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Reserved_Size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
@@ -749,13 +749,13 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">SectionHeader</Data></Cell>
-    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="Number">8</Data></Cell>
     <Cell><Data ss:Type="String">byte</Data></Cell>
-    <Cell><Data ss:Type="String">Name[8]</Data></Cell>
+    <Cell><Data ss:Type="String">name[8]</Data></Cell>
     <Cell ss:StyleID="s26"/>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
@@ -763,7 +763,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">VirtualSize</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -772,7 +772,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">VirtualAddress</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -781,7 +781,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">SizeOfRawData</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -790,7 +790,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">PointerToRawData</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -799,14 +799,14 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">PointerToRelocations</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">PointerToLinenumbers</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
@@ -827,7 +827,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">36</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Characteristics</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -840,12 +840,12 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">ImportTable</Data></Cell>
-    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImportLookupTable</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -854,21 +854,21 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">DateTimeStamp</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ForwarderChain</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Name</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
@@ -877,7 +877,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
-    <Cell><Data ss:Type="String">uint</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImportAddressTable</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data

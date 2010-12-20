@@ -11,9 +11,9 @@
 		typeFormat.Add("uint",   "%08x");
 		typeFormat.Add("ushort", "%04x");
 		typeFormat.Add("byte",   "%02x");
-		typeFormat.Add("int",    "%d");
-		typeFormat.Add("short",  "%d");
-		typeFormat.Add("char",   "%c");
+		typeFormat.Add("int",    "%08x");
+		typeFormat.Add("short",  "%04x");
+		typeFormat.Add("char",   "'%c'");
 	}
 	
 	function dtor

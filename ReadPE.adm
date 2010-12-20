@@ -20,7 +20,7 @@
 	printfln("%p: [DOSHeader]", 0);
 	dosh.Show();
 
-	var pesign_ad = ReadUInt(addrof exe[0x3c]);
+	var pesign_ad = ReadInt(addrof exe[0x3c]);
 	println();
 	printfln("PE signature offset: %08x", pesign_ad);
 	if (pesign_ad >= 0x400)
@@ -82,9 +82,9 @@
 	
 	var itbl : ImportTable* = addrof exe[idata.PointerToRawData];
 	// FIX:
-	//var rawaddr = \(v : uint)
+	//var rawaddr = \v
 	//	=> addrof(exe[v - idata.VirtualAddress + idata.PointerToRawData]);
-	function rawaddr(v : uint)
+	function rawaddr(v)
 	{
 		return addrof(exe[v - idata.VirtualAddress + idata.PointerToRawData]);
 	}

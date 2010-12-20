@@ -55,8 +55,13 @@
 		WriteWithLength(addrof i, 4);
 	}
 	
-	function WriteUInt(ui : uint)
+	function WriteString(s : string)
 	{
-		WriteWithLength(addrof ui, 4);
+		return WriteWithLength(s, s.Length * sizeof(char));
+	}
+	
+	function WriteByteString(s : string)
+	{
+		return Write(s.ToByteString());
 	}
 }
