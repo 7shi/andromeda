@@ -1,0 +1,28 @@
+﻿class VarList
+{
+	function Sort
+	{
+		SortBy(\(a, b) => a - b);
+	}
+	
+	function SortBy(cond)
+	{
+		var dest = new VarList;
+		SortInternal(dest, cond);
+		__movsd(buffer, dest.buffer, Count);
+	}
+	
+	function SortInternal(dest : VarList, cond)
+	{
+		if (Count == 0) return;
+		
+		var x = Get(0);
+		var lt = new VarList;
+		var ge = new VarList;
+		lt |< this.FindPartial(1, \n => cond(n, x) < 0);
+		ge |< this.FindPartial(1, \n => cond(n, x) >= 0);
+		dest |< lt.SortInternal(cond);
+		dest |< Add(x);
+		dest |< ge.SortInternal(cond);
+	}
+}

@@ -1,11 +1,4 @@
-﻿const int WINDOWS_GUI   = 2;
-const int WINDOWS_CUI   = 3;
-const int WINCE_GUI     = 9;
-const int MACHINE_I386  = 0x014c;
-const int MACHINE_X8664 = 0x8664;
-const int MACHINE_ARM   = 0x01c0;
-
-class PEModule
+﻿class PEModule
 {
 	DOSHeader DOS;
 	int PESignatureAddress = 0x80;
@@ -14,9 +7,11 @@ class PEModule
 	PEHeaderWindowsNTSpecificFields WinNT;
 	PEHeaderDataDirectories Dir;
 	
+	var name : string;
 	var sections = new Hashtable;
 	var rdata = new Block;
-	var idata = new ImportSection;
+	var idata = new ImportData;
+	var edata = new ExportData;
 	int RawSize;
 	
 	function get_HeaderSize
@@ -39,10 +34,14 @@ class PEModule
 					ret.Header.Characteristics = 0x60000060;
 					break;
 				case ".rdata":
+				case ".edata":
 					ret.Header.Characteristics = 0x40000040;
 					break;
 				case ".bss":
 					ret.Header.Characteristics = 0xc0000080;
+					break;
+				case ".reloc":
+					ret.Header.Characteristics = 0x42000040;
 					break;
 				default:
 					ret.Header.Characteristics = 0xc0000040;
@@ -55,8 +54,10 @@ class PEModule
 	
 	function SetAddress
 	{
-		var Text  = GetSection(".text") .Header;
+		var Text  = GetSection(".text" ).Header;
 		var IData = GetSection(".idata").Header;
+		var EData = GetSection(".edata").Header;
+		var Reloc = GetSection(".reloc").Header;
 		
 		var hs = HeaderSize;
 		var raw  = Align(hs, WinNT.FileAlignment);
@@ -82,18 +83,17 @@ class PEModule
 		
 		Std.BaseOfCode = Text.VirtualAddress;
 		Std.CodeSize   = Text.VirtualSize;
+		Std.BaseOfData = 0;
+		Std.InitializedDataSize = 0;
 		if (sections.ContainsKey(".data"))
 		{
 			var data = GetSection(".data").Header;
-			Std.BaseOfData = data.VirtualAddress;
-			Std.InitializedDataSize = data.VirtualSize;
+			if (data.VirtualSize > 0)
+			{
+				Std.BaseOfData = data.VirtualAddress;
+				Std.InitializedDataSize = data.VirtualSize;
+			}
 		}
-		else
-		{
-			Std.BaseOfData = 0;
-			Std.InitializedDataSize = 0;
-		}
-		Dir.ImportTable_Address = IData.VirtualAddress;
 		
 		if (Std.EntryPoint < Text.VirtualAddress
 			|| Std.EntryPoint >= Text.VirtualAddress + Text.VirtualSize)
@@ -107,15 +107,24 @@ class PEModule
 		var Text  = GetSection(".text");
 		var RData = GetSection(".rdata");
 		var IData = GetSection(".idata");
+		var EData = GetSection(".edata");
+		var Reloc = GetSection(".reloc");
+		
+		var reloc = new RelocData;
+		reloc.Add(text);
 		
 		Text .Header.VirtualSize = text .Length;
 		RData.Header.VirtualSize = rdata.Length;
 		IData.Header.VirtualSize = idata.Length;
-			
+		EData.Header.VirtualSize = edata.Length;
+		Reloc.Header.VirtualSize = reloc.GetLength();
+		
 		SetAddress();
 		text .Address = WinNT.ImageBase + Text .Header.VirtualAddress;
 		rdata.Address = WinNT.ImageBase + RData.Header.VirtualAddress;
 		
+		Reloc.Data = reloc.Create(this);
+		EData.Data = edata.Create(this);
 		IData.Data = idata.Create(this);
 		RData.Data = rdata.ToArray();
 		Text .Data = text .ToArray();
@@ -149,7 +158,7 @@ class PEModule
 		for (int i = 0; i < sects.Length; i++)
 		{
 			var sect = (CSectionHeader)sects[i];
-			if (sect.Header.VirtualSize > 0)
+			if (sect.Data != null)
 			{
 				bw.Position = sect.Header.PointerToRawData;
 				bw.Write(sect.Data);
@@ -177,5 +186,10 @@ class PEModule
 	function Import(lib : string, sym : string)
 	{
 		return idata.Add(lib, sym);
+	}
+	
+	function Export(name : string, ad : Addr32)
+	{
+		return edata.Add(name, ad);
 	}
 }

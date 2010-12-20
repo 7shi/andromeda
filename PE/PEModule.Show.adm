@@ -2,6 +2,7 @@
 {
 	function Show
 	{
+		printfln("%p: [DOSHeader]", 0);
 		DOS.Show();
 		var p = PESignatureAddress + 4;
 		
@@ -28,10 +29,9 @@
 		var sects = sections.Values;
 		for (int i = 0; i < sects.Length; i++)
 		{
-			var csect : CSectionHeader = sects[i];
-			if (csect.Data != null)
+			var sect = ((CSectionHeader)sects[i]).Header;
+			if (sect.VirtualSize > 0)
 			{
-				var sect = csect.Header;
 				println();
 				printfln("%p: [SectionHeader]", p);
 				printfln("Name: %s", sect.Name);
@@ -40,7 +40,10 @@
 			}
 		}
 		
-		ImportSection.Parse(this);
+		ParseImport();
+		ParseExport();
+		ParseReloc();
+		
 		return true;
 	}
 }

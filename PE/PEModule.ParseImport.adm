@@ -1,0 +1,42 @@
+﻿class PEModule
+{
+	function ParseImport
+	{
+		var vad = Dir.ImportTable_Address;
+		if (vad == 0) return;
+		
+		var csect = GetSectionVirtual(vad);
+		if (csect == null)
+		{
+			println();
+			printfln("ImportTable が見付かりません。");
+			return;
+		}
+		
+		var offset = vad - csect.Header.VirtualAddress;
+		var itbl : ImportTable* = addrof csect.Data[offset];
+		var p = csect.Header.PointerToRawData + offset;
+		for (int i = 0; itbl[i].ImportLookupTable != 0; i++)
+		{
+			println();
+			printfln("%p(V:%p): [ImportTable]", p, csect.Header.RawToVirtual(p));
+			itbl[i].Show();
+			var name = wstr(GetDataVirtual(itbl[i].Name));
+			printfln("Name => %s", name);
+			printfln("ImportLookupTable =>");
+			var ilt : var* = GetDataVirtual(itbl[i].ImportLookupTable);
+			for (int j = 0; ilt[j] != 0; j++)
+			{
+				var ilt_v = ilt[j];
+				if (ilt_v < 0)
+					printfln("(%d)", ilt_v & 0x7fffffff);
+				else
+				{
+					var imp : ushort* = GetDataVirtual(ilt[j]);
+					printfln("(%d) %s", imp[0], wstr(addrof imp[1]));
+				}
+			}
+			p += sizeof(ImportTable);
+		}
+	}
+}

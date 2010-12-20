@@ -2,6 +2,12 @@
 {
 	SectionHeader Header;
 	var Data : byte[];
+	
+	function GetDataVirtual(vad)
+	{
+		if (!Header.ContainsVirtual(vad)) return null;
+		return addrof Data[vad - Header.VirtualAddress];
+	}
 }
 
 struct SectionHeader
@@ -46,5 +52,31 @@ struct SectionHeader
 	{
 		if (!ContainsVirtual(vad)) return 0;
 		return vad - VirtualAddress + PointerToRawData;
+	}
+}
+
+struct PEHeaderDataDirectories
+{
+	function IsInExportTable(vad)
+	{
+		return ExportTable_Address <= vad
+			&& vad < ExportTable_Address + ExportTable_Size;
+	}
+	
+	function IsInImportTable(vad)
+	{
+		return ImportTable_Address <= vad
+			&& vad < ImportTable_Address + ImportTable_Size;
+	}
+	
+	function IsInRelocationTable(vad)
+	{
+		return BaseRelocationTable_Address <= vad
+			&& vad < BaseRelocationTable_Address + BaseRelocationTable_Size;
+	}
+	
+	function IsInIAT(vad)
+	{
+		return IAT_Address <= vad && vad < IAT_Address + IAT_Size;
 	}
 }

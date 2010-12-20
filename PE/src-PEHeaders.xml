@@ -13,6 +13,7 @@
   <WindowWidth>20520</WindowWidth>
   <WindowTopX>120</WindowTopX>
   <WindowTopY>30</WindowTopY>
+  <ActiveSheet>1</ActiveSheet>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>
@@ -27,7 +28,6 @@
   </Style>
   <Style ss:ID="s21">
    <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
-   <NumberFormat/>
   </Style>
   <Style ss:ID="s22">
    <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
@@ -39,7 +39,17 @@
    <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
    <NumberFormat/>
   </Style>
+  <Style ss:ID="s24">
+   <Alignment ss:Vertical="Center" ss:WrapText="1"/>
+  </Style>
   <Style ss:ID="s25">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center" ss:WrapText="1"/>
+  </Style>
+  <Style ss:ID="s26">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <NumberFormat/>
+  </Style>
+  <Style ss:ID="s28">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -50,17 +60,22 @@
     ss:Bold="1"/>
    <Interior ss:Color="#CCFFFF" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s26">
+  <Style ss:ID="s29">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Interior ss:Color="#CCFFCC" ss:Pattern="Solid"/>
+   <NumberFormat/>
+  </Style>
+  <Style ss:ID="s30">
    <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
    <Interior ss:Color="#FF99CC" ss:Pattern="Solid"/>
    <NumberFormat/>
   </Style>
-  <Style ss:ID="s27">
+  <Style ss:ID="s31">
    <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
    <Interior ss:Color="#CCFFFF" ss:Pattern="Solid"/>
    <NumberFormat/>
   </Style>
-  <Style ss:ID="s28">
+  <Style ss:ID="s32">
    <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
    <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
     ss:Bold="1"/>
@@ -68,15 +83,219 @@
    <NumberFormat/>
   </Style>
  </Styles>
- <Worksheet ss:Name="Sheet1">
-  <Table ss:ExpandedColumnCount="7" ss:ExpandedRowCount="123" x:FullColumns="1"
+ <Worksheet ss:Name="const">
+  <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="38" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
+   <Column ss:Width="41.25"/>
+   <Column ss:Width="240"/>
+   <Column ss:StyleID="s21" ss:Width="44.25"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_RELOCS_STRIPPED</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0001</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_EXECUTABLE_IMAGE</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0002</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_LINE_NUMS_STRIPPED</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0004</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_LOCAL_SYMS_STRIPPED</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0008</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_AGGRESSIVE_WS_TRIM</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0010</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_LARGE_ADDRESS_AWARE</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0020</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_16BIT_MACHINE</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0040</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_BYTES_REVERSED_LO</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0080</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_32BIT_MACHINE</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0100</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_DEBUG_STRIPPED</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0200</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0400</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_SYSTEM</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_DLL</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x2000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_UP_SYSTEM_ONLY</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x4000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_BYTES_REVERSED_HI</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x8000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_UNKNOWN</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_ALPHA</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x184</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_AMD64</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x8664</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_ARM</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1c0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_I386</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x14c</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_M68K</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x268</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_POWERPC</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1f0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_R10000</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x168</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_R3000</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x162</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_R4000</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x166</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_SH3</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1a2</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell ss:StyleID="s24"><Data ss:Type="String">IMAGE_FILE_MACHINE_SH4</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">0x1a6</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_UNKNOWN</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_NATIVE</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_WINDOWS_GUI</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_WINDOWS_CUI</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_POSIX_CUI</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">IMAGE_SUBSYSTEM_WINDOWS_CE_GUI</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+  <Sorting xmlns="urn:schemas-microsoft-com:office:excel">
+   <Sort>列 B</Sort>
+  </Sorting>
+ </Worksheet>
+ <Worksheet ss:Name="struct">
+  <Table ss:ExpandedColumnCount="7" ss:ExpandedRowCount="140" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="31.5"/>
    <Column ss:Width="15"/>
    <Column ss:Width="43.5"/>
    <Column ss:AutoFitWidth="0" ss:Width="153.75"/>
-   <Column ss:StyleID="s21" ss:Width="56.25"/>
-   <Column ss:Width="135.75"/>
+   <Column ss:StyleID="s26" ss:Width="56.25"/>
+   <Column ss:Width="160.5"/>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">head</Data></Cell>
     <Cell><Data ss:Type="Number">2</Data></Cell>
@@ -196,7 +415,7 @@
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
+    <Cell ss:StyleID="s28" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
@@ -209,14 +428,15 @@
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">Machine</Data></Cell>
-    <Cell><Data ss:Type="String">0x14c</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">0x14c</Data></Cell>
+    <Cell><Data ss:Type="String">0x1c0(ARM), 0x8664(AMD64)</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">NumberOfSections</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
     <Cell><Data ss:Type="Number">2</Data></Cell>
@@ -226,7 +446,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">TimeDateStamp</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイノゾ</PhoneticText><Data
       ss:Type="String">設定することが望ましい</Data></Cell>
    </Row>
@@ -259,20 +479,21 @@
     <Cell><Data ss:Type="String">0x10e</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
+    <Cell ss:StyleID="s28" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">PEHeaderStandardFields</Data></Cell>
-    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s32"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">Magic</Data></Cell>
-    <Cell><Data ss:Type="String">0x10b</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">0x10b</Data></Cell>
+    <Cell><Data ss:Type="String">0x20b(PE32+)</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">2</Data></Cell>
@@ -293,7 +514,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">CodeSize</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -302,7 +523,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">InitializedDataSize</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -311,7 +532,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">UninitializedDataSize</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -320,7 +541,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">EntryPoint</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
     <Cell><Data ss:Type="String">0x1000</Data></Cell>
@@ -330,7 +551,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">BaseOfCode</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
     <Cell><Data ss:Type="String">0x1000</Data></Cell>
@@ -340,26 +561,28 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">BaseOfData</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
     <Cell><Data ss:Type="String">0x2000</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
+    <Cell ss:StyleID="s28" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">PEHeaderWindowsNTSpecificFields</Data></Cell>
-    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s32"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImageBase</Data></Cell>
-    <Cell><Data ss:Type="String">0x400000</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">0x400000</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイ</PhoneticText><Data
+      ss:Type="String">アーキテクチャにより設定</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
@@ -429,7 +652,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImageSize</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
     <Cell><Data ss:Type="String">0x4000</Data></Cell>
@@ -439,7 +662,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">HeaderSize</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
     <Cell><Data ss:Type="String">0x200</Data></Cell>
@@ -449,14 +672,16 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">FileChecksum</Data></Cell>
-    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイノゾ</PhoneticText><Data
+      ss:Type="String">設定することが望ましい</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">40</Data></Cell>
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">ushort</Data></Cell>
     <Cell><Data ss:Type="String">SubSystem</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="Number">3</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="Number">3</Data></Cell>
     <Cell><Data ss:Type="String">WINDOWS_GUI=2</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
@@ -509,13 +734,13 @@
     <Cell><Data ss:Type="String">0x10</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">68</Data></Cell>
+    <Cell ss:StyleID="s28" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">68</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">PEHeaderDataDirectories</Data></Cell>
-    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s32"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
@@ -536,7 +761,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImportTable_Address</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -545,7 +770,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImportTable_Size</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -746,20 +971,20 @@
     <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">128</Data></Cell>
+    <Cell ss:StyleID="s28" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">128</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">SectionHeader</Data></Cell>
-    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s32"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="Number">8</Data></Cell>
     <Cell><Data ss:Type="String">byte</Data></Cell>
     <Cell><Data ss:Type="String">name[8]</Data></Cell>
-    <Cell ss:StyleID="s26"/>
+    <Cell ss:StyleID="s30"/>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -768,7 +993,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">VirtualSize</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -777,7 +1002,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">VirtualAddress</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -786,7 +1011,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">SizeOfRawData</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -795,7 +1020,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">PointerToRawData</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -832,25 +1057,25 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Characteristics</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">40</Data></Cell>
+    <Cell ss:StyleID="s28" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">40</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">ImportTable</Data></Cell>
-    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s32"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImportLookupTable</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -859,7 +1084,9 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">DateTimeStamp</Data></Cell>
-    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイノゾ</PhoneticText><Data
+      ss:Type="String">設定することが望ましい</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
@@ -873,7 +1100,7 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">Name</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
@@ -882,20 +1109,143 @@
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">ImportAddressTable</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
       ss:Type="String">設定必要</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s25" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
+    <Cell ss:StyleID="s28" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:Index="3"><Data ss:Type="String">head</Data></Cell>
-    <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:Index="6"><PhoneticText
-      xmlns="urn:schemas-microsoft-com:office:excel">レツモド</PhoneticText><Data
-      ss:Type="String">列オフセットを戻す</Data></Cell>
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">ExportTable</Data></Cell>
+    <Cell ss:StyleID="s32"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">ExportFlags</Data></Cell>
+    <Cell ss:StyleID="Default"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">ツネ</PhoneticText><Data
+      ss:Type="String">常に0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">TimeDateStamp</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイノゾ</PhoneticText><Data
+      ss:Type="String">設定することが望ましい</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">MajorVersion</Data></Cell>
+    <Cell ss:StyleID="Default"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">10</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">MinorVersion</Data></Cell>
+    <Cell ss:StyleID="Default"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">Name</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
+      ss:Type="String">設定必要</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">16</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OrdinalBase</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">1</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
+      ss:Type="String">設定必要</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">20</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">AddressTableEntries</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
+      ss:Type="String">設定必要</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">24</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">NumberOfNamePointers</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
+      ss:Type="String">設定必要</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">28</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">ExportAddressTable</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
+      ss:Type="String">設定必要</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">32</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">NamePointer</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
+      ss:Type="String">設定必要</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">36</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OrdinalTable</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
+      ss:Type="String">設定必要</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s28" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">40</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">FixupHeader</Data></Cell>
+    <Cell ss:StyleID="s32"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">Page</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
+      ss:Type="String">設定必要</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">BlockSize</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">セッテイヒツヨウ</PhoneticText><Data
+      ss:Type="String">設定必要</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s28" ss:Formula="=R[-1]C+R[-1]C[1]"><Data ss:Type="Number">8</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -913,21 +1263,6 @@
     <VerticalResolution>600</VerticalResolution>
    </Print>
    <Selected/>
-   <ProtectObjects>False</ProtectObjects>
-   <ProtectScenarios>False</ProtectScenarios>
-  </WorksheetOptions>
- </Worksheet>
- <Worksheet ss:Name="Sheet2">
-  <Table ss:ExpandedColumnCount="0" ss:ExpandedRowCount="0" x:FullColumns="1"
-   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5"/>
-  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
-   <PageSetup>
-    <Header x:Margin="0.51200000000000001"/>
-    <Footer x:Margin="0.51200000000000001"/>
-    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
-     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
-   </PageSetup>
-   <Unsynced/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>

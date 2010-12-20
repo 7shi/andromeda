@@ -21,6 +21,10 @@ class CodeGenerator : ExcelCodeGenerator
 				WriteLine("");
 				Struct(cmd);
 				break;
+			case "const":
+				WriteLine("");
+				Const();
+				break;
 		}
 	}
 }

@@ -1,0 +1,30 @@
+﻿class EventArgs
+{
+	static var Empty : EventArgs = null;
+}
+
+class Event : VarList
+{
+	function dtor()
+	{
+		Clear();
+	}
+	
+	function Clear()
+	{
+		for (int i = 0; i < Count; i++)
+			__jit_free(buffer[i]);
+		Count = 0;
+	}
+	
+	function Add(delg)
+	{
+		base.Add(__jit_dup(delg));
+	}
+	
+	function Invoke(sender : object, e : EventArgs)
+	{
+		for (int i = 0; i < Count; i++)
+			buffer[i](sender, e);
+	}
+}

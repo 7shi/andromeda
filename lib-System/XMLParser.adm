@@ -33,10 +33,21 @@
 			Stream = null;
 		}
 	}
-
+	
+	var cache : string;
+	
 	function Read()
 	{
 		if (Stream == null) return false;
+		if (cache != null)
+		{
+			Element = cache;
+			Name = cache;
+			Attributes.Clear();
+			Data = "";
+			cache = null;
+			return true;
+		}
 		
 		var data = new StringBuilder();
 		var element = new StringBuilder();
@@ -175,7 +186,7 @@
 				Name = "/" + Name;
 				break;
 			case 2:
-				Name += "/";
+				cache = "/" + Name;
 				break;
 			case 3:
 				Name = "?" + Name;

@@ -3,9 +3,9 @@
 	var xx = new ExcelXML;
 	var tw : TextWriter;
 	var line : string[];
-	int lnum;
+	int lnum, head;
 	var typeFormat = new StringDictionary;
-	
+
 	function ctor
 	{
 		typeFormat.Add("uint",   "%08x");
@@ -14,6 +14,7 @@
 		typeFormat.Add("int",    "%08x");
 		typeFormat.Add("short",  "%04x");
 		typeFormat.Add("char",   "'%c'");
+		xx.WorksheetClosed.Add(\(sender, e) => head = 0);
 	}
 	
 	function dtor
@@ -41,7 +42,8 @@
 			this.tw = tw;
 			//printfln("%s => %s", path, adm);
 		}
-		WriteLine("// generated from %s", Path.GetFileName(path));
+		WriteLine("// このファイルは %s から生成されました。", Path.GetFileName(path));
+		WriteLine("// 再生成で変更内容が失われるため直接編集しないでください。");
 		return true;
 	}
 	
@@ -80,8 +82,6 @@
 	{
 		if (tw != null) tw.WriteLineOnly();
 	}
-	
-	int head;
 	
 	function GetColumn(n)
 	{

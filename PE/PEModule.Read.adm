@@ -38,7 +38,8 @@
 		size += pefh.NumberOfSections * sizeof(SectionHeader);
 		if (exe.Length < size)
 			return string.Format(
-				"ファイルが小さすぎます: %d < %d", exe.Length, size);
+				"SectionHeader: ファイルが小さすぎます: %d < %d",
+				exe.Length, size);
 		
 		var sects : SectionHeader* = pehdd + 1;
 		var idata : SectionHeader = null;
@@ -48,9 +49,9 @@
 			var csect = GetSection(sect.Name);
 			memcpy(csect.Header, sect, sizeof SectionHeader);
 			var last = sect.PointerToRawData + sect.SizeOfRawData;
-			if (exe.Length < last)
+			if (last > exe.Length)
 				return string.Format(
-					"ファイルが小さすぎます: %d < %d", exe.Length, last);
+					"セクションが読み込めません: %p > %p", last, exe.Length);
 			var len = Math.Min(sect.SizeOfRawData, sect.VirtualSize);
 			csect.Data = new byte[len];
 			memcpy(csect.Data, addrof exe[sect.PointerToRawData], len);

@@ -1,6 +1,7 @@
 ﻿class ExcelXML
 {
 	var xp : XMLParser;
+	var WorksheetClosed = new Event;
 	
 	function dtor()
 	{
@@ -36,7 +37,8 @@
 			{
 				case "Row":
 					return ReadRow();
-				case "Row/":
+				case "/Worksheet":
+					WorksheetClosed.Invoke(this, EventArgs.Empty);
 					return new string[0];
 			}
 		}
@@ -63,9 +65,6 @@
 						list.Set(index.ToInt() - 1, data);
 					break;
 				}
-				case "Cell/":
-					list.Add(null);
-					break;
 			}
 		}
 		return list.ToArray();

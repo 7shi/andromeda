@@ -66,4 +66,17 @@
 		Write(ms);
 		return ms.ToArray();
 	}
+	
+	function GetRelocs()
+	{
+		var list = new VarList;
+		int pos = 0;
+		for (int i = 0; i < values.Count; i++)
+		{
+			var obj = objs.Get(i);
+			if (obj is Addr32) list.Add(pos);
+			pos += sizes.Get(i);
+		}
+		return list.ToArray();
+	}
 }

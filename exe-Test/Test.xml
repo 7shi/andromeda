@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<root>
-<node>こんにちは、世界！</node>
-<node expr="1 + 1" value="2" />
-</root>

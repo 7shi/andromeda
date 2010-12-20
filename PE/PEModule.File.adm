@@ -8,6 +8,7 @@
 			if (msgout) printfln("書き込めません: %s", path);
 			return;
 		}
+		edata.Name = Path.GetFileName(path);
 		var image = Link(text);
 		fs.Write(image);
 		fs.Close();
@@ -39,13 +40,17 @@
 		
 		var m = new PEModule;
 		var error = m.Read(image);
+		if (msgout) m.Show();
 		if (error != null)
 		{
-			if (msgout) printfln("%s", error);
+			if (msgout)
+			{
+				println();
+				printfln("%s", error);
+			}
 			return null;
 		}
 		
-		if (msgout) m.Show();
 		return m;
 	}
 }

@@ -22,6 +22,11 @@
 	
 	function ContainsValue(v : string)
 	{
-		return values.Contains(v);
+		for (int i = 0; i < pairs.Count; i++)
+		{
+			var pair : Pair = pairs.Get(i);
+			if (v == (string)pair.Data) return true;
+		}
+		return false;
 	}
 }

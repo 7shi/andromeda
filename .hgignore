@@ -3,6 +3,7 @@ _cleanup.bat
 gen-XML.exe
 src-*.adm
 output.exe
-Test.exe
 a.arm.exe
 a.i386.exe
+a.arm.dll
+a.i386.dll

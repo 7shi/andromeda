@@ -2,8 +2,6 @@
 	CreateFile(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
 extern "kernel32.dll" __stdcall
 {
-	WriteFile(handle, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
-	ReadFile(handle, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
 	CloseHandle(hObject);
 	GetFileSize(handle, lpFileSizeHigh);
 	SetFilePointer(handle, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
