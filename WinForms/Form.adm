@@ -18,7 +18,7 @@ class Form : Control
 	WNDCLASSEX wcex;
 	delegate wndProc;
 	var className : string;
-	var mainMenu : MainMenu;
+	var MainMenu : MainMenu;
 	
 	function ctor()
 	{
@@ -27,8 +27,6 @@ class Form : Control
 		lpClassName = className;
 		dwStyle     = WS_OVERLAPPEDWINDOW;
 		
-		__stosb(wcex, 0, sizeof WNDCLASSEX);
-		wcex.cbSize        = sizeof WNDCLASSEX;
 		wcex.style         = CS_VREDRAW | CS_HREDRAW;
 		wcex.lpfnWndProc   = wndProc;
 		wcex.hInstance     = winforms_get_instance();
@@ -37,9 +35,10 @@ class Form : Control
 		wcex.lpszClassName = className;
 	}
 	
-	override Create()
+	override Create
 	{
 		if (hWnd != null) return;
+		if (MainMenu != null) hMenu = MainMenu.hMenu;
 		wcex.RegisterClassEx();
 		base.Create();
 	}
@@ -55,12 +54,16 @@ class Form : Control
 		switch (uMsg)
 		{
 			case WM_COMMAND:
-				if (mainMenu != null)
+				if (MainMenu != null)
 				{
-					var mi : MenuItem = mainMenu.FindMenuItem(LOWORD(wParam));
-					if (mi != null) mi.OnClick(EventArgs.Empty);
+					var mi = MainMenu.FindMenuItem(LOWORD(wParam));
+					if (mi != null)
+					{
+						mi.OnClick(EventArgs.Empty);
+						return 0;
+					}
 				}
-				return 0;
+				break;
 		}
 		return base.WndProc(hWnd, uMsg, wParam, lParam);
 	}

@@ -5,5 +5,3 @@ src-*.adm
 output.exe
 a.arm.exe
 a.i386.exe
-a.arm.dll
-a.i386.dll

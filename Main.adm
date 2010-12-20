@@ -1,117 +1,124 @@
 ﻿#pragma subsystem(WINDOWS_GUI)
-ConsoleBox consoleBox;
 
-printfln("*** PE Test ***");
+const string VERSION = "Andromeda ver.0.2.2008.1030";
 
-var args = Environment.GetCommandLineArgs();
-if (args.Length > 1)
+Application.Run(new Form1);
+
+class Form1 : Form
 {
-	for (int i = 1; i < args.Length; i++)
+	var tb = new TextBox;
+	var ofd = new OpenFileDialog;
+	
+	function ctor
 	{
-		println();
-		if (i > 2)
+		Text = "Andromeda Test";
+		SetClientSize(400, 400);
+		
+		tb.Font = ConsoleBox.DefaultFont;
+		tb.Multiline = true;
+		tb.ScrollBars = ScrollBars_Both;
+		tb.Dock = DockStyle_Fill;
+		AddControl(tb);
+		
+		ofd.Filter = "PE モジュール (*.exe;*.dll)|*.exe;*.dll|" + ofd.Filter;
+		
+		MainMenu = new MainMenu;
+		var miFile = new MenuItem;
+		miFile.Text = "ファイル(&F)";
+		miFile.AppendItem("開く(&O)", \(sender, e) =>
 		{
-			println();
-			printfln("-" * 32);
-		}
-		PEModule.ReadFile(args[i], true);
+			if (ofd.ShowDialog(this)) OpenPE(ofd.FileName);
+			tb.Focus();
+		});
+		miFile.AppendItem("-", null);
+		miFile.AppendItem("終了(&X)", \(sender, e) => Close());
+		MainMenu.Append(miFile);
+		var miBuild = new MenuItem;
+		miBuild.Text = "ビルド(&B)";
+		miBuild.AppendItem("&i386 実行ファイル", \(sender, e) =>
+		{
+			var cs = new ConsoleStream;
+			BuildI386();
+			tb.Text = cs.ToString();
+			cs.Dispose();
+		});
+		miBuild.AppendItem("&ARM 実行ファイル", \(sender, e) =>
+		{
+			var cs = new ConsoleStream;
+			BuildARM();
+			tb.Text = cs.ToString();
+			cs.Dispose();
+		});
+		MainMenu.Append(miBuild);
+		var miHelp = new MenuItem;
+		miHelp.Text = "ヘルプ(&H)";
+		miHelp.AppendItem("バージョン情報(&A)", \(sender, e) =>
+		{
+			MessageBox(hWnd, VERSION, "バージョン情報", MB_OK);
+			tb.Focus();
+		});
+		MainMenu.Append(miHelp);
+		
+		var args = Environment.GetCommandLineArgs();
+		if (args.Length > 1) OpenPE(args[1]);
 	}
-	return 0;
+	
+	function OpenPE(path : string)
+	{
+		var cs = new ConsoleStream;
+		PEModule.ReadFile(path, true);
+		tb.Text = cs.ToString();
+		cs.Dispose();
+	}
 }
 
+function BuildI386
+{
+	var exe = new PEModule;
+	exe.WinNT.SubSystem = IMAGE_SUBSYSTEM_WINDOWS_GUI;
 
-// i386
+	var text = new Block;
+	exe.Export("main", text.CurrentAddress);
+	text.AddByte(0x68); // push dword
+	text.AddInt(1);
+	text.AddByte(0x68); // push dword
+	text.AddAddress(exe.GetString("だいあろぐ"));
+	text.AddByte(0x68); // push dword
+	text.AddAddress(exe.GetString("こんにちは、世界！"));
+	text.AddByte(0x68); // push dword
+	text.AddInt(0);
+	text.AddByte(0xb8); // mov eax, dword
+	text.AddAddress(exe.Import("USER32.DLL", "MessageBoxW"));
+	text.AddByte(0xff); // call [eax]
+	text.AddByte(0x10);
+	text.AddByte(0xc3); // ret
+	
+	exe.WriteFile("a.i386.exe", text, true);
+}
 
-var dll1 = new PEModule;
-dll1.File.Characteristics |= IMAGE_FILE_DLL;
-dll1.WinNT.ImageBase = 0x10000000;
+function BuildARM
+{
+	var exe = new PEModule;
+	exe.File.Machine = IMAGE_FILE_MACHINE_ARM;
+	exe.WinNT.SubSystem = IMAGE_SUBSYSTEM_WINDOWS_CE_GUI;
+	exe.WinNT.ImageBase = 0x10000;
 
-var dll1t = new Block;
-dll1t.AddByte(0xc3); // ret
-dll1.Export("ShowMessage", dll1t.CurrentAddress);
-dll1t.AddByte(0x68); // push dword
-dll1t.AddInt(0);
-dll1t.AddByte(0x68); // push dword
-dll1t.AddAddress(dll1.GetString("だいあろぐ"));
-dll1t.AddByte(0x68); // push dword
-dll1t.AddAddress(dll1.GetString("こんにちは、世界！"));
-dll1t.AddByte(0x68); // push dword
-dll1t.AddInt(0);
-dll1t.AddByte(0xb8); // mov eax, dword
-dll1t.AddAddress(dll1.Import("USER32.DLL", "MessageBoxW"));
-dll1t.AddByte(0xff); // call [eax]
-dll1t.AddByte(0x10);
-dll1t.AddByte(0xc3); // ret
-
-println();
-dll1.WriteFile("a.i386.dll", dll1t, true);
-
-println();
-printfln("-" * 32);
-
-var exe1 = new PEModule;
-exe1.WinNT.SubSystem = IMAGE_SUBSYSTEM_WINDOWS_GUI;
-
-var exe1t = new Block;
-exe1t.AddByte(0xb8); // mov eax, dword
-exe1t.AddAddress(exe1.Import("a.i386.dll", "ShowMessage"));
-exe1t.AddByte(0xff); // call [eax]
-exe1t.AddByte(0x10);
-exe1t.AddByte(0xc3); // ret
-
-println();
-exe1.WriteFile("a.i386.exe", exe1t, true);
-
-println();
-printfln("-" * 32);
-
-
-// ARM
-
-var dll2 = new PEModule;
-dll2.File.Machine = IMAGE_FILE_MACHINE_ARM;
-dll2.File.Characteristics = dll2.File.Characteristics | IMAGE_FILE_DLL;
-dll2.WinNT.ImageBase = 0x10000000;
-dll2.WinNT.SubSystem = IMAGE_SUBSYSTEM_WINDOWS_CE_GUI;
-
-var dll2t = new Block;
-dll2t.AddInt(0xe1a0f00e); // 00: mov pc, lr
-dll2.Export("ShowMessage", dll2t.CurrentAddress);
-dll2t.AddInt(0xe1a0c00d); // 04: mov ip, sp
-dll2t.AddInt(0xe92dd800); // 08: stmfd sp!, {fp, ip, lr, pc}
-dll2t.AddInt(0xe24cb004); // 0c: sub fp, ip, #4
-dll2t.AddInt(0xe3a00000); // 10: mov r0, #0
-dll2t.AddInt(0xe59f100c); // 14: ldr r1, [pc, #12] ; 0x28
-dll2t.AddInt(0xe59f200c); // 18: ldr r2, [pc, #12] ; 0x2c
-dll2t.AddInt(0xe3a03001); // 1c: mov r3, #1
-dll2t.AddInt(0xeb000002); // 20: bl 8 ; 0x30
-dll2t.AddInt(0xe89da800); // 24: ldmfd sp, {fp, sp, pc}
-dll2t.AddAddress(dll2.GetString("こんにちは、世界！")); // 28
-dll2t.AddAddress(dll2.GetString("だいあろぐ")); // 2c
-dll2t.AddInt(0xe59fc000); // 30: ldr ip, [pc, #0] ; 0x38
-dll2t.AddInt(0xe59cf000); // 34: ldr pc, [ip]
-dll2t.AddAddress(dll2.Import("COREDLL.DLL", "MessageBoxW")); // 38
-
-println();
-dll2.WriteFile("a.arm.dll", dll2t, true);
-
-println();
-printfln("-" * 32);
-
-var exe2 = new PEModule;
-exe2.File.Machine = IMAGE_FILE_MACHINE_ARM;
-exe2.WinNT.SubSystem = IMAGE_SUBSYSTEM_WINDOWS_CE_GUI;
-exe2.WinNT.ImageBase = 0x10000;
-
-var exe2t = new Block;
-exe2t.AddInt(0xe1a0c00d); // 00: mov ip, sp
-exe2t.AddInt(0xe92dd800); // 04: stmfd sp!, {fp, ip, lr, pc}
-exe2t.AddInt(0xe24cb004); // 08: sub fp, ip, #4
-exe2t.AddInt(0xeb000000); // 0c: bl 0 ; 0x14
-exe2t.AddInt(0xe89da800); // 10: ldmfd sp, {fp, sp, pc}
-exe2t.AddInt(0xe59fc000); // 14: ldr ip, [pc, #0] ; 0x1c
-exe2t.AddInt(0xe59cf000); // 18: ldr pc, [ip]
-exe2t.AddAddress(exe2.Import("a.arm.dll", "ShowMessage")); // 1c
-
-println();
-exe2.WriteFile("a.arm.exe", exe2t, true);
+	var text = new Block;
+	exe.Export("main", text.CurrentAddress);
+	text.AddInt(0xe1a0c00d); // 00: mov ip, sp
+	text.AddInt(0xe92dd800); // 04: stmfd sp!, {fp, ip, lr, pc}
+	text.AddInt(0xe24cb004); // 08: sub fp, ip, #4
+	text.AddInt(0xe3a00000); // 0c: mov r0, #0
+	text.AddInt(0xe59f100c); // 10: ldr r1, [pc, #12] ; 0x24
+	text.AddInt(0xe59f200c); // 14: ldr r2, [pc, #12] ; 0x28
+	text.AddInt(0xe3a03001); // 18: mov r3, #1
+	text.AddInt(0xeb000002); // 1c: bl 8 ; 0x2c
+	text.AddInt(0xe89da800); // 20: ldmfd sp, {fp, sp, pc}
+	text.AddAddress(exe.GetString("こんにちは、世界！")); // 24
+	text.AddAddress(exe.GetString("だいあろぐ")); // 28
+	text.AddInt(0xe59fc000); // 2c: ldr ip, [pc, #0] ; 0x34
+	text.AddInt(0xe59cf000); // 30: ldr pc, [ip]
+	text.AddAddress(exe.Import("COREDLL.DLL", "MessageBoxW")); // 34
+	
+	exe.WriteFile("a.arm.exe", text, true);
+}

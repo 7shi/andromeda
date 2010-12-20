@@ -11,6 +11,7 @@
 	
 	virtual Dispose()
 	{
+		if (hWnd == null) return;
 		Hide();
 		for (int i = 0; i < controls.Count; i++)
 		{
@@ -72,9 +73,19 @@
 		hWnd.InvalidateRect(null, false);
 	}
 	
+	function get_Text
+	{
+		var len = GetWindowTextLength(hWnd);
+		var buf = new char[len];
+		GetWindowText(hWnd, buf, len);
+		lpWindowName = string.FromCharArray(buf, len);
+		return lpWindowName;
+	}
+	
 	function set_Text(text)
 	{
 		lpWindowName = text;
+		if (hWnd != null) SetWindowText(hWnd, text);
 		return text;
 	}
 	

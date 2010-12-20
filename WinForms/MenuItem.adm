@@ -2,8 +2,9 @@
 {
 	MENUITEMINFO inf;
 	var hMenu = null;
-	var MenuItems = new VarList;
+	var MenuItems = new ArrayList;
 	var Click = new Event;
+	var text = (string)null;
 	
 	function ctor()
 	{
@@ -21,8 +22,19 @@
 	
 	function set_Text(text)
 	{
-		inf.fMask |= MIIM_STRING;
-		inf.dwTypeData = text;
+		if (text == "-")
+		{
+			inf.fMask &= ~MIIM_STRING;
+			inf.fType |= MFT_SEPARATOR;
+			inf.dwTypeData = 0;
+			this.text = null;
+		}
+		else
+		{
+			inf.fMask |= MIIM_STRING;
+			inf.dwTypeData = text;
+			this.text = text;
+		}
 		Refresh();
 		return text;
 	}
@@ -84,9 +96,18 @@
 		for (int i = 0; i < MenuItems.Count; i++)
 		{
 			var mi : MenuItem = MenuItems.Get(i);
-			var ret : MenuItem = mi.FindMenuItem(id);
+			var ret = mi.FindMenuItem(id);
 			if (ret != null) return ret;
 		}
 		return null;
+	}
+	
+	function AppendItem(text : string, func)
+	{
+		var ret = new MenuItem;
+		ret.Text = text;
+		if (func != null) ret.Click.Add(func);
+		Append(ret);
+		return ret;
 	}
 }

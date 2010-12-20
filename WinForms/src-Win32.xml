@@ -9,13 +9,11 @@
   <Version>11.9999</Version>
  </DocumentProperties>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
-  <SupBook>
-   <Dll/>
-  </SupBook>
   <WindowHeight>11640</WindowHeight>
   <WindowWidth>20520</WindowWidth>
   <WindowTopX>120</WindowTopX>
   <WindowTopY>30</WindowTopY>
+  <ActiveSheet>2</ActiveSheet>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>
@@ -50,7 +48,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="const">
-  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="475" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="505" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="41.25"/>
    <Column ss:Width="170.25"/>
@@ -2362,6 +2360,153 @@
     <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
     <Cell ss:StyleID="s22"/>
     <Cell ss:StyleID="s23"/>
+    <Cell><Data ss:Type="String">OPENFILENAME</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_SHAREWARN</Data></Cell>
+    <Cell><Data ss:Type="String">0x0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_READONLY</Data></Cell>
+    <Cell><Data ss:Type="String">0x1</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_SHARENOWARN</Data></Cell>
+    <Cell><Data ss:Type="String">0x1</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_OVERWRITEPROMPT</Data></Cell>
+    <Cell><Data ss:Type="String">0x2</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_SHAREFALLTHROUGH</Data></Cell>
+    <Cell><Data ss:Type="String">0x2</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_HIDEREADONLY</Data></Cell>
+    <Cell><Data ss:Type="String">0x4</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_NOCHANGEDIR</Data></Cell>
+    <Cell><Data ss:Type="String">0x8</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_SHOWHELP</Data></Cell>
+    <Cell><Data ss:Type="String">0x10</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_ENABLEHOOK</Data></Cell>
+    <Cell><Data ss:Type="String">0x20</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_ENABLETEMPLATE</Data></Cell>
+    <Cell><Data ss:Type="String">0x40</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_ENABLETEMPLATEHANDLE</Data></Cell>
+    <Cell><Data ss:Type="String">0x80</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_NOVALIDATE</Data></Cell>
+    <Cell><Data ss:Type="String">0x100</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_ALLOWMULTISELECT</Data></Cell>
+    <Cell><Data ss:Type="String">0x200</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_EXTENSIONDIFFERENT</Data></Cell>
+    <Cell><Data ss:Type="String">0x400</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_PATHMUSTEXIST</Data></Cell>
+    <Cell><Data ss:Type="String">0x800</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_FILEMUSTEXIST</Data></Cell>
+    <Cell><Data ss:Type="String">0x1000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_CREATEPROMPT</Data></Cell>
+    <Cell><Data ss:Type="String">0x2000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_SHAREAWARE</Data></Cell>
+    <Cell><Data ss:Type="String">0x4000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_NOREADONLYRETURN</Data></Cell>
+    <Cell><Data ss:Type="String">0x8000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_NOTESTFILECREATE</Data></Cell>
+    <Cell><Data ss:Type="String">0x10000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_NONETWORKBUTTON</Data></Cell>
+    <Cell><Data ss:Type="String">0x20000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_NOLONGNAMES</Data></Cell>
+    <Cell><Data ss:Type="String">0x40000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_EXPLORER</Data></Cell>
+    <Cell><Data ss:Type="String">0x80000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_NODEREFERENCELINKS</Data></Cell>
+    <Cell><Data ss:Type="String">0x100000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_NODEREFERENCELINKS</Data></Cell>
+    <Cell><Data ss:Type="String">0x100000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_LONGNAMES</Data></Cell>
+    <Cell><Data ss:Type="String">0x200000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_ENABLESIZING</Data></Cell>
+    <Cell><Data ss:Type="String">0x800000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">OFN_DONTADDTORECENT</Data></Cell>
+    <Cell><Data ss:Type="String">0x2000000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s23"/>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">タ</PhoneticText><Data
       ss:Type="String">その他</Data></Cell>
    </Row>
@@ -2396,20 +2541,19 @@
      x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
    </PageSetup>
    <Unsynced/>
-   <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
   <Sorting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Sort>列 C</Sort>
+   <Sort>列 D</Sort>
   </Sorting>
  </Worksheet>
  <Worksheet ss:Name="struct">
-  <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="92" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="117" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="119.25"/>
-   <Column ss:Width="133.5"/>
-   <Column ss:StyleID="s21" ss:AutoFitWidth="0"/>
+   <Column ss:Width="144.75"/>
+   <Column ss:StyleID="s21" ss:Width="126"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">WNDCLASSEX</Data></Cell>
@@ -2418,6 +2562,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">cbSize</Data></Cell>
+    <Cell><Data ss:Type="String">sizeof WNDCLASSEX</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
@@ -2761,6 +2906,113 @@
     <Cell><Data ss:Type="String">char</Data></Cell>
     <Cell><Data ss:Type="String">lfFaceName[LF_FACESIZE]</Data></Cell>
    </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">struct</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">OPENFILENAME</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">lStructSize</Data></Cell>
+    <Cell><Data ss:Type="String">sizeof OPENFILENAME</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">hwndOwner</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">hInstance</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">lpstrFilter</Data></Cell>
+    <Cell><Data ss:Type="String">(string)null</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">lpstrCustomFilter</Data></Cell>
+    <Cell><Data ss:Type="String">(char*)null</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">nMaxCustFilter</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">nFilterIndex</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">lpstrFile</Data></Cell>
+    <Cell><Data ss:Type="String">(char*)null</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">nMaxFile</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">lpstrFileTitle</Data></Cell>
+    <Cell><Data ss:Type="String">(char*)null</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">nMaxFileTitle</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">lpstrInitialDir</Data></Cell>
+    <Cell><Data ss:Type="String">(string)null</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">lpstrTitle</Data></Cell>
+    <Cell><Data ss:Type="String">(string)null</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">Flags</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">nFileOffset</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">ushort</Data></Cell>
+    <Cell><Data ss:Type="String">nFileExtension</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">lpstrDefExt</Data></Cell>
+    <Cell><Data ss:Type="String">(string)null</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">lCustData</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">lpfnHook</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">lpTemplateName</Data></Cell>
+    <Cell><Data ss:Type="String">(string)null</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">var</Data></Cell>
+    <Cell><Data ss:Type="String">pvReserved</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">dwReserved</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">FlagsEx</Data></Cell>
+   </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
    <PageSetup>
@@ -2775,7 +3027,7 @@
   </WorksheetOptions>
  </Worksheet>
  <Worksheet ss:Name="extern">
-  <Table ss:ExpandedColumnCount="17" ss:ExpandedRowCount="45" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="17" ss:ExpandedRowCount="52" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="45.75"/>
    <Column ss:Width="30"/>
@@ -2934,6 +3186,20 @@
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">stdcall</Data></Cell>
     <Cell><Data ss:Type="String">wide</Data></Cell>
+    <Cell><Data ss:Type="String">GetWindowText</Data></Cell>
+    <Cell><Data ss:Type="String">hWnd</Data></Cell>
+    <Cell><Data ss:Type="String">lpString</Data></Cell>
+    <Cell><Data ss:Type="String">nMaxCount</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell><Data ss:Type="String">wide</Data></Cell>
+    <Cell><Data ss:Type="String">GetWindowTextLength</Data></Cell>
+    <Cell><Data ss:Type="String">hWnd</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell><Data ss:Type="String">wide</Data></Cell>
     <Cell><Data ss:Type="String">InsertMenuItem</Data></Cell>
     <Cell><Data ss:Type="String">hMenu</Data></Cell>
     <Cell><Data ss:Type="String">uItem</Data></Cell>
@@ -3026,6 +3292,13 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell><Data ss:Type="String">wide</Data></Cell>
+    <Cell><Data ss:Type="String">SetWindowText</Data></Cell>
+    <Cell><Data ss:Type="String">hWnd</Data></Cell>
+    <Cell><Data ss:Type="String">lpString</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
     <Cell ss:Index="3"><Data ss:Type="String">ShowWindow</Data></Cell>
     <Cell><Data ss:Type="String">hWnd</Data></Cell>
     <Cell><Data ss:Type="String">nCmdShow</Data></Cell>
@@ -3101,6 +3374,23 @@
     <Cell><Data ss:Type="String">lpString</Data></Cell>
     <Cell><Data ss:Type="String">cbString</Data></Cell>
    </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s24"><Data ss:Type="String">extern</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="s24"><Data ss:Type="String">comdlg32.dll</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell><Data ss:Type="String">wide</Data></Cell>
+    <Cell><Data ss:Type="String">GetOpenFileName</Data></Cell>
+    <Cell><Data ss:Type="String">lpofn</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell><Data ss:Type="String">wide</Data></Cell>
+    <Cell><Data ss:Type="String">GetSaveFileName</Data></Cell>
+    <Cell><Data ss:Type="String">lpofn</Data></Cell>
+   </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
    <PageSetup>
@@ -3110,6 +3400,7 @@
      x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
    </PageSetup>
    <Unsynced/>
+   <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
