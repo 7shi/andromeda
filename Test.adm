@@ -48,7 +48,7 @@ println();
 printfln("*** StringBuilder Test ***");
 
 var sb = new StringBuilder;
-sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
 sb.AppendLine("<root>");
 sb.AppendLine("<node>こんにちは、世界！</node>");
 sb.AppendLine("<node expr=\"1 + 1\" value=\"%d\" />", 1 + 1);
@@ -95,8 +95,8 @@ xp.Open("Test.xml");
 while (xp.Read())
 {
 	var d = xp.Data.Trim();
-	if (d != "") printfln("   Data = %s", d);
-	printfln("xp.Name = %s", xp.Name);
+	if (d != "") printfln("Data = %s", d);
+	printfln("Name = %s", xp.Name);
 	if (xp.Attributes.Count > 0)
 	{
 		var keys = xp.Attributes.Keys;
@@ -104,7 +104,26 @@ while (xp.Read())
 		{
 			var key = keys[i];
 			var v = xp.Attributes.Get(key);
-			printfln("   %s = \"%s\"", key, v);
+			printfln("  %s = \"%s\"", key, v);
 		}
 	}
+}
+
+// --------------------------------
+
+println();
+printfln("*** Excel XML Test ***");
+
+var xx = new ExcelXML;
+xx.Open("Book1.xml");
+var row : string[];
+while ((row = xx.ReadLine()) != null)
+{
+	for (int i = 0; i < row.Length; i++)
+	{
+		if (i > 0) print("\t");
+		var data = row[i];
+		if (data != null) print(data);
+	}
+	println();
 }

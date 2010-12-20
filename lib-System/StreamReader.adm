@@ -61,12 +61,10 @@
 		}
 		if (IsUTF8) return ReadUtf8Char();
 		
-		var ms = new MemoryStream();
-		for (;;)
+		var ms = new MemoryStream(), b;
+		while ((b = Stream.ReadByte()) != -1)
 		{
-			var b = Stream.ReadByte();
-			if (b == -1) break;
-			ms.WriteByte(Stream.ReadByte());
+			ms.WriteByte(b);
 			var s = wstr(ms.ToArray());
 			if (s.Length > 1)
 			{

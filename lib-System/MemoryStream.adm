@@ -1,40 +1,37 @@
 ﻿class MemoryStream
 {
-	var Ptr : byte[];
-	int Length, Capacity;
+	int Length = 0, Capacity = 16;
+	var buffer = new byte[Capacity];
 	
-	function ctor()
-	{
-		Capacity = 16;
-		Ptr = new byte[Capacity];
-		Length = 0;
-	}
-	
-	function Clear()
+	function Clear
 	{
 		Length = 0;
 	}
 	
-	function ToArray()
+	function ToArray
 	{
 		var ret = new byte[Length];
-		__movsb(ret, Ptr, Length);
+		__movsb(ret, buffer, Length);
 		return ret;
 	}
 	
 	function WriteWithLength(data, length)
 	{
+		if (length == 0) return;
 		var cap = Capacity;
 		var size = Length + length - 1;
 		while (size >= Capacity)
+		{
 			Capacity += Capacity;
+			Capacity += Capacity;
+		}
 		if (Capacity != cap)
 		{
 			var tmp = new byte[Capacity];
-			__movsb(tmp, Ptr, Length);
-			Ptr = tmp;
+			__movsb(tmp, buffer, Length);
+			buffer = tmp;
 		}
-		__movsw(addrof Ptr[Length], data, length);
+		__movsw(addrof buffer[Length], data, length);
 		Length += length;
 	}
 	

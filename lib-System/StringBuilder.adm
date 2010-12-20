@@ -1,40 +1,37 @@
 ﻿class StringBuilder
 {
-	var Ptr : char[];
-	int Length, Capacity;
+	int Length = 0, Capacity = 16;
+	var buffer = new char[Capacity];
 	
-	function ctor()
-	{
-		Capacity = 16;
-		Ptr = new char[Capacity];
-		Length = 0;
-	}
-	
-	function Clear()
+	function Clear
 	{
 		Length = 0;
 	}
 	
-	function ToString() : string
+	function ToString
 	{
 		var ret = string.Alloc(Length);
-		__movsw(ret, Ptr, Length);
+		__movsw(ret, buffer, Length);
 		return ret;
 	}
 	
-	function AppendWithLength(s, length)
+	function AppendWithLength(s : char*, length)
 	{
+		if (length == 0) return;
 		var cap = Capacity;
 		var size = Length + length - 1;
 		while (size >= Capacity)
+		{
 			Capacity += Capacity;
+			Capacity += Capacity;
+		}
 		if (Capacity != cap)
 		{
 			var tmp = new char[Capacity];
-			__movsw(tmp, Ptr, Length);
-			Ptr = tmp;
+			__movsw(tmp, buffer, Length);
+			buffer = tmp;
 		}
-		__movsw(addrof Ptr[Length], s, length);
+		__movsw(addrof buffer[Length], s, length);
 		Length += length;
 	}
 	
@@ -56,7 +53,7 @@
 		Append("\r\n");
 	}
 	
-	function AppendChar(ch)
+	function AppendChar(ch : char)
 	{
 		AppendWithLength(addrof ch, 1);
 	}

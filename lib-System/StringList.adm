@@ -1,0 +1,65 @@
+﻿class StringList : VarList
+{
+	override Clear
+	{
+		ForEachRev(\s => __dereference(s));
+		base.Clear();
+	}
+	
+	function ToArray
+	{
+		var ret = new string[Count];
+		for (int i = 0; i < Count; i++)
+			ret[i] = buffer[i];
+		return ret;
+	}
+	
+	function Get(order)
+	{
+		return (string)base.Get(order);
+	}
+	
+	function Set(order, s : string)
+	{
+		if (0 <= order && order < Count)
+			__dereference(buffer[order]);
+		__reference(s);
+		base.Set(order, s);
+	}
+	
+	function Add(s : string)
+	{
+		__reference(s);
+		base.Add(s);
+	}
+	
+	function Remove(s : string)
+	{
+		__dereference(s);
+		return base.Remove(s);
+	}
+	
+	function RemoveAt(order)
+	{
+		return (string)base.RemoveAt(order);
+	}
+	
+	function IndexOf(s : string)
+	{
+		for (int i = 0; i < Count; i++)
+			if (s == buffer[i]) return i;
+		return -1;
+	}
+	
+	function LastIndexOf(s : string)
+	{
+		for (int i = Count - 1; i >= 0; i--)
+			if (s == buffer[i]) return i;
+		return -1;
+	}
+	
+	function Contains(s : string)
+	{
+		return IndexOf(s) != -1;
+	}
+}

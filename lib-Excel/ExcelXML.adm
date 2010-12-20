@@ -1,0 +1,98 @@
+﻿class ExcelXML
+{
+	var xp : XMLParser;
+	
+	function dtor()
+	{
+		Close();
+	}
+	
+	function Open(file : string)
+	{
+		Close();
+		xp = new XMLParser;
+		xp.Open(file);
+		((StreamReader)xp.Stream).IsUTF8 = true;
+	}
+	
+	function Close()
+	{
+		if (xp != null)
+		{
+			xp.Close();
+			xp = null;
+		}
+	}
+	
+	function ReadLine()
+	{
+		if (xp == null) return null;
+		while (xp.Read())
+		{
+			switch (xp.Name)
+			{
+				case "Row":
+					return ReadRow();
+				case "Row/":
+					return new string[0];
+			}
+		}
+		return null;
+	}
+	
+	function ReadRow()
+	{
+		if (xp == null) return null;
+		var end = "/" + xp.Name;
+		var list = new StringList;
+		while (xp.Read())
+		{
+			if (xp.Name == end) break;
+			switch (xp.Name)
+			{
+				case "Cell":
+				{
+					var index = xp.Attributes.Get("ss:Index");
+					var data = ReadCell();
+					if (index == null)
+						list.Add(data);
+					else
+						list.Set(index.ToInt32() - 1, data);
+					break;
+				}
+			}
+		}
+		return list.ToArray();
+	}
+	
+	function ReadCell()
+	{
+		if (xp == null) return null;
+		var end = "/" + xp.Name;
+		var ret : string = "";
+		while (xp.Read())
+		{
+			if (xp.Name == end) break;
+			switch (xp.Name)
+			{
+				case "Data":
+				case "ss:Data":
+					ret = ReadData();
+					break;
+			}
+		}
+		return ret;
+		
+		function ReadData()
+		{
+			var end = "/" + xp.Name;
+			var sb = new StringBuilder;
+			while (xp.Read())
+			{
+				sb.Append(xp.Data);
+				if (xp.Name == end) break;
+			}
+			return sb.ToString();
+		}
+	}
+}

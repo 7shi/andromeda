@@ -1,0 +1,75 @@
+﻿class Hashtable
+{
+	var keys = new StringList;
+	var values = new ArrayList;
+	
+	function get_Count
+	{
+		return keys.Count;
+	}
+	
+	function get_Keys
+	{
+		return keys.ToArray();
+	}
+	
+	function get_Values
+	{
+		return values.ToArray();
+	}
+	
+	function Clear
+	{
+		keys.Clear();
+		values.Clear();
+	}
+	
+	function Add(key : string, v : object)
+	{
+		for (int i = 0; i < keys.Count; i++)
+		{
+			if (key == keys.Get(i))
+			{
+				values.Set(i, v);
+				return;
+			}
+		}
+		keys.Add(key);
+		values.Add(v);
+	}
+	
+	function Remove(key : string)
+	{
+		for (int i = 0; i < keys.Count; i++)
+		{
+			if (key == keys.Get(i))
+			{
+				var ret = values.Get(i);
+				keys.RemoveAt(i);
+				values.RemoveAt(i);
+				return ret;
+			}
+		}
+		return null;
+	}
+	
+	function Get(key : string)
+	{
+		for (int i = 0; i < keys.Count; i++)
+		{
+			if (key == keys.Get(i))
+				return values.Get(i);
+		}
+		return null;
+	}
+	
+	function ContainsKey(key : string)
+	{
+		return keys.Contains(key);
+	}
+	
+	function ContainsValue(v : object)
+	{
+		return values.Contains(v);
+	}
+}

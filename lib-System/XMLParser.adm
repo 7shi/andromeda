@@ -72,7 +72,7 @@
 		Element = element.ToString();
 		Name = "";
 		Attributes.Clear();
-		Data = data.ToString();
+		Data = DecodeEntity(data.ToString());
 		if (Element.Length < 1) return false;
 		
 		Parse();
@@ -177,5 +177,13 @@
 				Name = "?" + Name;
 				break;
 		}
+	}
+	
+	static function DecodeEntity(s : string)
+	{
+		return s
+			.Replace("&lt;", "<")
+			.Replace("&gt;", ">")
+			.Replace("&amp;", "&");
 	}
 }

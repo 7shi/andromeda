@@ -1,71 +1,27 @@
-﻿class StringDictionary
+﻿class StringDictionary : Hashtable
 {
-	var keys = new GCList;
-	var values = new GCList;
-	
-	function get_Count
-	{
-		return keys.Count;
-	}
-	
-	function get_Keys
-	{
-		var ret = new string[keys.Count];
-		for (int i = 0; i < keys.Count; i++)
-			ret[i] = keys.Ptr[i];
-		return ret;
-	}
-	
 	function get_Values
 	{
-		var ret = new string[values.Count];
-		for (int i = 0; i < values.Count; i++)
-			ret[i] = values.Ptr[i];
-		return ret;
+		return (string[])base.Values;
 	}
 	
-	function Clear
+	function Add(key : string, v : string)
 	{
-		keys.Clear();
-		values.Clear();
-	}
-	
-	function Add(key : string, value : string)
-	{
-		for (int i = 0; i < keys.Count; i++)
-		{
-			if (key == keys.Ptr[i])
-			{
-				values.Ptr[i] = value;
-				return;
-			}
-		}
-		keys.Add(key);
-		values.Add(value);
+		base.Add(key, v);
 	}
 	
 	function Remove(key : string)
 	{
-		for (int i = 0; i < keys.Count; i++)
-		{
-			if (key == keys.Ptr[i])
-			{
-				var ret : string = values.Ptr[i];
-				keys.RemoveAt(i);
-				values.RemoveAt(i);
-				return ret;
-			}
-		}
-		return null;
+		return (string)base.Remove(key);
 	}
 	
 	function Get(key : string)
 	{
-		for (int i = 0; i < keys.Count; i++)
-		{
-			if (key == keys.Ptr[i])
-				return (string)values.Ptr[i];
-		}
-		return null;
+		return (string)base.Get(key);
+	}
+	
+	function ContainsValue(v : string)
+	{
+		return values.Contains(v);
 	}
 }
