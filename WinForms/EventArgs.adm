@@ -9,7 +9,7 @@
 		args[4] = lParam;
 	}
 	
-	function Default()
+	virtual Default()
 	{
 		if (args[0] != null)
 			CallWindowProc(args[0], args[1], args[2], args[3], args[4]);
@@ -67,6 +67,35 @@ class MouseEventArgs : EventArgs
 		}
 		ret.X = GET_X_LPARAM(lParam);
 		ret.Y = GET_Y_LPARAM(lParam);
+		return ret;
+	}
+}
+
+class KeyEventArgs : EventArgs
+{
+	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		var ret = new KeyEventArgs;
+		ret.SetMessage(wndProc, hWnd, uMsg, wParam, lParam);
+		return ret;
+	}
+}
+
+class KeyPressEventArgs : EventArgs
+{
+	bool Handled;
+	char KeyChar;
+	
+	override Default()
+	{
+		if (!Handled) base.Default();
+	}
+	
+	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		var ret = new KeyPressEventArgs;
+		ret.SetMessage(wndProc, hWnd, uMsg, wParam, lParam);
+		ret.KeyChar = wParam;
 		return ret;
 	}
 }

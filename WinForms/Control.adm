@@ -1,14 +1,19 @@
 ﻿class Control
 {
+	WNDCLASSEX wcex;
 	var controls = new ArrayList;
 	var Dock;
-	var font : Font;
+	var font = DefaultFont;
 	delegate wndProc;
 	var prevWndProc;
 	
 	function ctor
 	{
-		lpClassName = winforms_get_class();
+		wcex.style         = CS_VREDRAW | CS_HREDRAW;
+		wcex.lpfnWndProc   = DefWindowProc;
+		wcex.hInstance     = _get_instance();
+		wcex.hCursor       = LoadCursor(null, IDC_ARROW);
+		wcex.hbrBackground = COLOR_3DFACE + 1;
 	}
 	
 	function dtor
@@ -19,6 +24,7 @@
 	virtual Dispose
 	{
 		if (hWnd == null) return;
+		Capture = false;
 		Hide();
 		for (int i = 0; i < controls.Count; i++)
 		{
@@ -28,11 +34,20 @@
 		controls.Clear();
 		hWnd.DestroyWindow();
 		hWnd = null;
+		if (wcex.lpszClassName != null)
+			UnregisterClass(wcex.lpszClassName, _get_instance());
 	}
 	
 	virtual Create()
 	{
 		if (hWnd != null) return;
+		
+		if (lpClassName == null)
+		{
+			lpClassName = string.Format("Andromeda-%s-%p", typeof(this).Name, this);
+			wcex.lpszClassName = lpClassName;
+			RegisterClassEx(wcex);
+		}
 		
 		hWnd = CreateWindowEx(
 			dwExStyle, lpClassName, lpWindowName,
@@ -66,6 +81,31 @@
 		}
 	}
 	
+	virtual CmdProc(wNotifyCode)
+	{
+		//printfln("%p:%s:%s(0x%x)", this, typeof(this).Name, __FUNCTION__, wNotifyCode);
+	}
+	
+	virtual WndProc(uMsg, wParam, lParam)
+	{
+		if (OnWndProc(uMsg, wParam, lParam) == 0) return 0;
+		switch (uMsg)
+		{
+			case WM_COMMAND:
+				for (int i = 0; i < controls.Count; i++)
+				{
+					var c = (Control)controls.Get(i);
+					if (c.hWnd == lParam)
+					{
+						c.CmdProc(HIWORD(wParam));
+						return 0;
+					}
+				}
+				break;
+		}
+		return CallWindowProc(prevWndProc, hWnd, uMsg, wParam, lParam);
+	}
+	
 	function Show()
 	{
 		if (hWnd == null) Create();
@@ -91,12 +131,21 @@
 		hWnd.InvalidateRect(null, false);
 	}
 	
+	function get_TextLength
+	{
+		if (hWnd == null) return lpWindowName.Length;
+		return GetWindowTextLength(hWnd);
+	}
+	
 	function get_Text
 	{
-		var len = GetWindowTextLength(hWnd);
-		var buf = new char[len];
-		GetWindowText(hWnd, buf, len);
-		lpWindowName = string.FromCharArray(buf, len);
+		if (hWnd != null)
+		{
+			var len = TextLength;
+			var buf = new char[len];
+			GetWindowText(hWnd, buf, len);
+			lpWindowName = string.FromCharArray(buf, len);
+		}
 		return lpWindowName;
 	}
 	
@@ -105,36 +154,6 @@
 		lpWindowName = text;
 		if (hWnd != null) SetWindowText(hWnd, text);
 		return text;
-	}
-	
-	virtual WndProc(uMsg, wParam, lParam)
-	{
-		switch (uMsg)
-		{
-			case WM_PAINT:
-				OnPaint(PaintEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
-				return 0;
-			case WM_LBUTTONDOWN:
-			case WM_RBUTTONDOWN:
-			case WM_MBUTTONDOWN:
-				OnMouseDown(MouseEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
-				return 0;
-			case WM_LBUTTONUP:
-			case WM_RBUTTONUP:
-			case WM_MBUTTONUP:
-				OnMouseUp(MouseEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
-				return 0;
-			case WM_MOUSEMOVE:
-				OnMouseMove(MouseEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
-				return 0;
-			case WM_DESTROY:
-				OnClosed(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
-				return 0;
-			case WM_SIZE:
-				OnResize(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
-				return 0;
-		}
-		return CallWindowProc(prevWndProc, hWnd, uMsg, wParam, lParam);
 	}
 	
 	function SetStyle(flag, value)
@@ -157,18 +176,18 @@
 	{
 		switch (value)
 		{
-			case ScrollBars_None:
+			case ScrollBars.None:
 				SetStyle(WS_HSCROLL | WS_VSCROLL, false);
 				break;
-			case ScrollBars_Horizontal:
+			case ScrollBars.Horizontal:
 				SetStyle(WS_VSCROLL, false);
 				SetStyle(WS_HSCROLL, true);
 				break;
-			case ScrollBars_Vertical:
+			case ScrollBars.Vertical:
 				SetStyle(WS_HSCROLL, false);
 				SetStyle(WS_VSCROLL, true);
 				break;
-			case ScrollBars_Both:
+			case ScrollBars.Both:
 				SetStyle(WS_HSCROLL | WS_VSCROLL, true);
 				break;
 		}
@@ -197,5 +216,48 @@
 		var h = f.Handle;
 		if (h == null) return;
 		SendMessage(hWnd, WM_SETFONT, h, 0);
+	}
+	
+	static var defaultFont : Font;
+	
+	static function get_DefaultFont
+	{
+		if (defaultFont == null)
+		{
+			// TODO:check SystemParametersInfo
+			defaultFont = Font.FromFaceHeight("MS UI Gothic", 9);
+		}
+		return defaultFont;
+	}
+	
+	static var captures : ArrayList;
+	var capture = false;
+	
+	function get_Capture { return capture; }
+	function set_Capture(cap : bool)
+	{
+		if (capture == cap || hWnd == null) return;
+		if (captures == null) captures = new ArrayList;
+		if (cap)
+		{
+			SetCapture(hWnd);
+			captures.Add(this);
+		}
+		else
+		{
+			int last = captures.Count - 1;
+			int p = captures.Remove(this);
+			if (p >= 0 && p == last)
+			{
+				if (p == 0)
+					ReleaseCapture();
+				else
+				{
+					var c : Control = captures.Get(p - 1);
+					SetCapture(c.hWnd);
+				}
+			}
+		}
+		capture = cap;
 	}
 }

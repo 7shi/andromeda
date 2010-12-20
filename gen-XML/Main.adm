@@ -37,6 +37,10 @@ class CodeGenerator : ExcelCodeGenerator
 				WriteLine("");
 				Extern();
 				break;
+			case "control":
+				WriteLine("");
+				Control();
+				break;
 		}
 	}
 }

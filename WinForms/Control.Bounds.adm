@@ -2,26 +2,28 @@
 {
 	function get_Width
 	{
-		RECT r;
-		GetWindowRect(hWnd, r);
-		return r.right - r.left;
+		if (nWidth == CW_USEDEFAULT) return 0;
+		return nWidth;
 	}
+	function set_Width (width ) { SetSize(width, nHeight); }
 	
-	function get_Height
-	{
-		RECT r;
-		GetWindowRect(hWnd, r);
-		return r.bottom - r.top;
-	}
+	function get_Height { return nHeight; }
+	function set_Height(height) { SetSize(nWidth, height); }
 	
 	function SetBounds(x, y, w, h)
 	{
 		X = x;
 		Y = y;
-		nWidth  = w;
-		nHeight = h;
-		if (hWnd != null)
+		if (hWnd == null)
+		{
+			nWidth  = w;
+			nHeight = h;
+		}
+		else
+		{
 			SetWindowPos(hWnd, null, x, y, w, h, SWP_NOZORDER);
+			if (nWidth != w || nHeight != h) OnResize(EventArgs.Empty);
+		}
 	}
 	
 	function SetBoundsWithRect(r : RECT)
@@ -39,10 +41,16 @@
 	
 	function SetSize(w, h)
 	{
-		nWidth  = w;
-		nHeight = h;
-		if (hWnd != null)
+		if (hWnd == null)
+		{
+			nWidth  = w;
+			nHeight = h;
+		}
+		else
+		{
 			SetWindowPos(hWnd, null, 0, 0, w, h, SWP_NOMOVE | SWP_NOZORDER);
+			if (nWidth != w || nHeight != h) OnResize(EventArgs.Empty);
+		}
 	}
 	
 	function SetClientSize(w, h)
@@ -50,47 +58,5 @@
 		RECT r = { 0, 0, w, h };
 		r.AdjustWindowRectEx(dwStyle, false, 0);
 		SetSize(r.right - r.left, r.bottom - r.top);
-	}
-	
-	virtual OnResize(e : EventArgs)
-	{
-		Resize.Invoke(this, e);
-		e.Default();
-		
-		RECT r;
-		GetClientRect(hWnd, r);
-		if (r.right - r.left == nWidth && r.bottom - r.top == nHeight)
-			return;
-		
-		nWidth  = r.right - r.left;
-		nHeight = r.bottom - r.top;
-		for (int i = 0; i < controls.Count; i++)
-		{
-			var c = (Control)controls.Get(i);
-			var rw = r.right - r.left, rh = r.bottom - r.top;
-			var cw = Math.Min(c.Width , rw), ch = Math.Min(c.Height, rh);
-			switch (c.Dock)
-			{
-				case DockStyle_Fill:
-					c.SetBoundsWithRect(r);
-					break;
-				case DockStyle_Top:
-					c.SetBounds(r.left, r.top, rw, ch);
-					r.top += ch;
-					break;
-				case DockStyle_Bottom:
-					r.bottom -= ch;
-					c.SetBounds(r.left, r.bottom, rw, ch);
-					break;
-				case DockStyle_Left:
-					c.SetBounds(r.left, r.top, cw, rh);
-					r.left += cw;
-					break;
-				case DockStyle_Right:
-					r.right -= cw;
-					c.SetBounds(r.right, r.top, cw, rh);
-					break;
-			}
-		}
 	}
 }

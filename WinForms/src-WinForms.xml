@@ -10,9 +10,9 @@
  </DocumentProperties>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
   <WindowHeight>11640</WindowHeight>
-  <WindowWidth>20520</WindowWidth>
-  <WindowTopX>120</WindowTopX>
-  <WindowTopY>30</WindowTopY>
+  <WindowWidth>11970</WindowWidth>
+  <WindowTopX>-15</WindowTopX>
+  <WindowTopY>-15</WindowTopY>
   <ActiveSheet>1</ActiveSheet>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
@@ -52,73 +52,74 @@
   <Style ss:ID="s28">
    <Alignment ss:Vertical="Center" ss:WrapText="1"/>
   </Style>
+  <Style ss:ID="s29">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Font ss:FontName="ＭＳ Ｐゴシック" x:CharSet="128" x:Family="Modern" ss:Size="11"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s30">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+  </Style>
  </Styles>
- <Worksheet ss:Name="const">
-  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="13" x:FullColumns="1"
+ <Worksheet ss:Name="enum">
+  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="17" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
-   <Column ss:Index="2" ss:Width="72"/>
+   <Column ss:Index="2" ss:Width="72.75"/>
    <Column ss:StyleID="s21" ss:AutoFitWidth="0"/>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
-    <Cell ss:StyleID="s22"><Data ss:Type="String">ScrollBars_</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">enum</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">ScrollBars</Data></Cell>
     <Cell ss:StyleID="s23"/>
     <Cell><Data ss:Type="String">スクロール バーの表示状態</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">None</Data></Cell>
-    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:Index="2"><Data ss:Type="String">None</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">Horizontal</Data></Cell>
-    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:Index="2"><Data ss:Type="String">Horizontal</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">Vertical</Data></Cell>
-    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell ss:Index="2"><Data ss:Type="String">Vertical</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">Both</Data></Cell>
-    <Cell><Data ss:Type="Number">3</Data></Cell>
+    <Cell ss:Index="2"><Data ss:Type="String">Both</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
-    <Cell ss:StyleID="s22"><Data ss:Type="String">DockStyle_</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">enum</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">DockStyle</Data></Cell>
     <Cell ss:StyleID="s23"/>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">None</Data></Cell>
-    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:Index="2"><Data ss:Type="String">None</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">Top</Data></Cell>
-    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:Index="2"><Data ss:Type="String">Top</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">Bottom</Data></Cell>
-    <Cell><Data ss:Type="Number">2</Data></Cell>
+    <Cell ss:Index="2"><Data ss:Type="String">Bottom</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">Left</Data></Cell>
-    <Cell><Data ss:Type="Number">3</Data></Cell>
+    <Cell ss:Index="2"><Data ss:Type="String">Left</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">Right</Data></Cell>
-    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell ss:Index="2"><Data ss:Type="String">Right</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">int</Data></Cell>
-    <Cell><Data ss:Type="String">Fill</Data></Cell>
-    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell ss:Index="2"><Data ss:Type="String">Fill</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">enum</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">Orientation</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">Horizontal</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="2"><Data ss:Type="String">Vertical</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -133,12 +134,12 @@
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
  </Worksheet>
- <Worksheet ss:Name="struct">
+ <Worksheet ss:Name="class">
   <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="30" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="38.25"/>
    <Column ss:Width="107.25"/>
-   <Column ss:StyleID="s21" ss:Width="129"/>
+   <Column ss:StyleID="s21" ss:Width="81.75"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s22"><Data ss:Type="String">class</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">Control</Data></Cell>
@@ -168,7 +169,6 @@
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">X</Data></Cell>
-    <Cell><Data ss:Type="String">CW_USEDEFAULT</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
@@ -177,11 +177,12 @@
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">nWidth</Data></Cell>
-    <Cell><Data ss:Type="String">CW_USEDEFAULT</Data></Cell>
+    <Cell><Data ss:Type="Number">16</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">nHeight</Data></Cell>
+    <Cell><Data ss:Type="Number">16</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
@@ -194,7 +195,7 @@
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
     <Cell><Data ss:Type="String">hInstance</Data></Cell>
-    <Cell><Data ss:Type="String">winforms_get_instance()</Data></Cell>
+    <Cell><Data ss:Type="String">_get_instance()</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
@@ -282,41 +283,77 @@
   </WorksheetOptions>
  </Worksheet>
  <Worksheet ss:Name="event">
-  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="7" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="256" ss:ExpandedRowCount="14" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="68.25"/>
-   <Column ss:Width="91.5"/>
+   <Column ss:Width="106.5"/>
+   <Column ss:Width="119.25"/>
+   <Column ss:Width="75"/>
+   <Column ss:Width="84"/>
+   <Column ss:AutoFitWidth="0" ss:Width="67.5" ss:Span="250"/>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s22"><Data ss:Type="String">event</Data></Cell>
     <Cell ss:StyleID="s22"><Data ss:Type="String">class Control</Data></Cell>
-    <Cell ss:StyleID="s22"/>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">Paint</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">PaintEventArgs</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">MouseDown</Data></Cell>
-    <Cell><Data ss:Type="String">MouseEventArgs</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">MouseUp</Data></Cell>
-    <Cell><Data ss:Type="String">MouseEventArgs</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">MouseMove</Data></Cell>
-    <Cell><Data ss:Type="String">MouseEventArgs</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">uMsg</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">OnWndProc</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">Closed</Data></Cell>
     <Cell><Data ss:Type="String">EventArgs</Data></Cell>
+    <Cell><Data ss:Type="String">WM_DESTROY</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">Resize</Data></Cell>
     <Cell><Data ss:Type="String">EventArgs</Data></Cell>
-    <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">カンスウツク</PhoneticText><Data
-      ss:Type="String">関数を作らない</Data></Cell>
+    <Cell><Data ss:Type="String">WM_SIZE</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">Paint</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">PaintEventArgs</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">WM_PAINT</Data></Cell>
+    <Cell ss:StyleID="s28"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">MouseDown</Data></Cell>
+    <Cell><Data ss:Type="String">MouseEventArgs</Data></Cell>
+    <Cell><Data ss:Type="String">WM_LBUTTONDOWN</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3"><Data ss:Type="String">WM_RBUTTONDOWN</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3"><Data ss:Type="String">WM_MBUTTONDOWN</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">MouseUp</Data></Cell>
+    <Cell><Data ss:Type="String">MouseEventArgs</Data></Cell>
+    <Cell><Data ss:Type="String">WM_LBUTTONUP</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3"><Data ss:Type="String">WM_RBUTTONUP</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:Index="3"><Data ss:Type="String">WM_MBUTTONUP</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">MouseMove</Data></Cell>
+    <Cell><Data ss:Type="String">MouseEventArgs</Data></Cell>
+    <Cell><Data ss:Type="String">WM_MOUSEMOVE</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">KeyDown</Data></Cell>
+    <Cell><Data ss:Type="String">KeyEventArgs</Data></Cell>
+    <Cell><Data ss:Type="String">WM_KEYDOWN</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">KeyUp</Data></Cell>
+    <Cell><Data ss:Type="String">KeyEventArgs</Data></Cell>
+    <Cell><Data ss:Type="String">WM_KEYUP</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">KeyPress</Data></Cell>
+    <Cell><Data ss:Type="String">KeyPressEventArgs</Data></Cell>
+    <Cell><Data ss:Type="String">WM_CHAR</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -327,6 +364,303 @@
      x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
    </PageSetup>
    <Unsynced/>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+  <Sorting xmlns="urn:schemas-microsoft-com:office:excel">
+   <Sort>列 B</Sort>
+  </Sorting>
+ </Worksheet>
+ <Worksheet ss:Name="control">
+  <Table ss:ExpandedColumnCount="256" ss:ExpandedRowCount="38" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
+   <Column ss:Width="104.25"/>
+   <Column ss:Width="150"/>
+   <Column ss:Width="57.75"/>
+   <Column ss:Width="146.25"/>
+   <Column ss:Width="81.75"/>
+   <Column ss:Width="96.75"/>
+   <Column ss:Width="40.5"/>
+   <Column ss:AutoFitWidth="0" ss:Width="42" ss:Span="248"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">control</Data></Cell>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">TextBox</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">wParam</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">lParam</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">arguments</Data></Cell>
+    <Cell ss:StyleID="s29"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">CanUndo</Data></Cell>
+    <Cell><Data ss:Type="String">EM_CANUNDO</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">CharFromPos</Data></Cell>
+    <Cell><Data ss:Type="String">EM_CHARFROMPOS</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">MAKELPARAM(x, y) </Data></Cell>
+    <Cell><Data ss:Type="String">x</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">y</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">EmptyUndoBuffer</Data></Cell>
+    <Cell><Data ss:Type="String">EM_EMPTYUNDOBUFFER</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">FormatLines</Data></Cell>
+    <Cell><Data ss:Type="String">EM_FMTLINES</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">fAddEOL</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="String">fAddEOL:bool</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetFirstVisibleLine</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETFIRSTVISIBLELINE</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetHandle</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETHANDLE</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetLimitText</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETLIMITTEXT</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetLineWithArray</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETLINE</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">line</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpch</Data></Cell>
+    <Cell><Data ss:Type="String">line</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpch:char*</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetLineCount</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETLINECOUNT</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetMargins</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETMARGINS</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetModify</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETMODIFY</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetPasswordChar</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETPASSWORDCHAR</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetRect</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETRECT</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lprc</Data></Cell>
+    <Cell><Data ss:Type="String">lprc:RECT</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetSelection</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETSEL</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpdwStart</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpdwEnd</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpdwStart:var*</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpdwEnd:var*</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetThumb</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETTHUMB</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">GetWordBreakProc</Data></Cell>
+    <Cell><Data ss:Type="String">EM_GETWORDBREAKPROC</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">LimitText</Data></Cell>
+    <Cell><Data ss:Type="String">EM_LIMITTEXT</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">cchMax</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">cchMax</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">LineFromChar</Data></Cell>
+    <Cell><Data ss:Type="String">EM_LINEFROMCHAR</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">ich</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">ich</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">LineIndex</Data></Cell>
+    <Cell><Data ss:Type="String">EM_LINEINDEX</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">line</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">line</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">LineLength</Data></Cell>
+    <Cell><Data ss:Type="String">EM_LINELENGTH</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">ich</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">ich</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">LineScroll</Data></Cell>
+    <Cell><Data ss:Type="String">EM_LINESCROLL</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">cxScroll</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">cyScroll</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">cxScroll</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">cyScroll</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">PosFromChar</Data></Cell>
+    <Cell><Data ss:Type="String">EM_POSFROMCHAR</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpPoint</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">wCharIndex</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpPoint:POINT</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">wCharIndex</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">ReplaceSelection</Data></Cell>
+    <Cell><Data ss:Type="String">EM_REPLACESEL</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">fCanUndo</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpszReplace</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">fCanUndo:bool</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpszReplace:string</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">Scroll</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SCROLL</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">nScroll</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">nScroll</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">ScrollCaret</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SCROLLCARET</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetHandle</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETHANDLE</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">hloc</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">hloc</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetLimitText</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETLIMITTEXT</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">cbMax</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">cbMax</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetMargins</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETMARGINS</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">fwMargin</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">MAKELONG(wLeft, wRight)</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">fwMargin</Data></Cell>
+    <Cell><Data ss:Type="String">wLeft</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">wRight</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetModify</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETMODIFY</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">fModified</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">fModified:bool</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetPasswordChar</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETPASSWORDCHAR</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">ch</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">ch:char</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetReadOnly</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETREADONLY</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">fReadOnly</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">fReadOnly:bool</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetRect</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETRECT</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lprc</Data></Cell>
+    <Cell><Data ss:Type="String">lprc:RECT</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetRectNP</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETRECTNP</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lprc</Data></Cell>
+    <Cell><Data ss:Type="String">lprc:RECT</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetSelection</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETSEL</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">nStart</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">nEnd</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">nStart</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">nEnd</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetTabStops</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETTABSTOPS</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">cTabs</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpdwTabs</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">cTabs</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">lpdwTabs</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SetWordBreakProc</Data></Cell>
+    <Cell><Data ss:Type="String">EM_SETWORDBREAKPROC</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">ewbprc</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">ewbprc</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">Undo</Data></Cell>
+    <Cell><Data ss:Type="String">EM_UNDO</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.51200000000000001"/>
+    <Footer x:Margin="0.51200000000000001"/>
+    <PageMargins x:Bottom="0.98399999999999999" x:Left="0.78700000000000003"
+     x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
+   </PageSetup>
+   <Unsynced/>
+   <Print>
+    <ValidPrinterInfo/>
+    <PaperSizeIndex>9</PaperSizeIndex>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>

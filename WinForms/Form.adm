@@ -1,10 +1,12 @@
-﻿class Form : Control
+﻿class Form : Panel
 {
 	var MainMenu : MainMenu;
 	
 	function ctor()
 	{
 		dwStyle = WS_OVERLAPPEDWINDOW;
+		X = CW_USEDEFAULT;
+		nWidth = CW_USEDEFAULT;
 	}
 	
 	override Create
@@ -25,7 +27,7 @@
 		switch (uMsg)
 		{
 			case WM_COMMAND:
-				if (MainMenu != null)
+				if (lParam == 0 && MainMenu != null)
 				{
 					var mi = MainMenu.FindMenuItem(LOWORD(wParam));
 					if (mi != null)

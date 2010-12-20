@@ -37,6 +37,21 @@
 				enumName, values.Get(i).PadLeft(max_value));
 		}
 		WriteLine("");
+		WriteLine("\tstatic function Parse(s : string) : %s", enumName);
+		WriteLine("\t{");
+		WriteLine("\t\tswitch (s)");
+		WriteLine("\t\t{");
+		for (int i = 0; i < names.Count; i++)
+		{
+			var name = "\"" + names.Get(i) + "\"";
+			WriteLine("\t\t\tcase %s: return %s;",
+				name.PadRight(max_name + 2),
+				values.Get(i).PadLeft(max_value));
+		}
+		WriteLine("\t\t}");
+		WriteLine("\t\treturn -1;");
+		WriteLine("\t}");
+		WriteLine("");
 		WriteLine("\tfunction ToString");
 		WriteLine("\t{");
 		WriteLine("\t\tswitch (this)");

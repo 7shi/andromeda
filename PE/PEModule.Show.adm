@@ -5,6 +5,7 @@
 		printfln("%p: [DOSHeader]", 0);
 		DOS.Show();
 		var p = PESignatureAddress + 4;
+		if (p == 4) return;
 		
 		println();
 		printfln("%p: [PEFileHeader]", p);

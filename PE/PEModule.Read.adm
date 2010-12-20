@@ -14,19 +14,20 @@
 			return "DOS signature が \"MZ\" ではありません。";
 		memcpy(DOS, dosh, sizeof(DOS));
 		
-		PESignatureAddress = ReadInt(addrof exe[0x3c]);
-		if (PESignatureAddress >= size)
+		PESignatureAddress = 0;
+		var pesignad = ReadInt(addrof exe[0x3c]);
+		if (pesignad < sizeof(DOSHeader) || pesignad >= size)
 			return string.Format(
-				"PE signature のアドレスが無効です: %08x",
-				PESignatureAddress);
+				"PE signature のアドレスが無効です: %08x", pesignad);
 		
 		var pesignbuf = new byte[5];
-		memcpy(pesignbuf, addrof exe[PESignatureAddress], 4);
+		memcpy(pesignbuf, addrof exe[pesignad], 4);
 		var pesign = wstr(pesignbuf);
 		if (pesign != "PE")
 			return "PE signature が \"PE\" ではありません。";
 		
-		var pefh   : PEFileHeader* = addrof exe[PESignatureAddress + 4];
+		PESignatureAddress = pesignad;
+		var pefh   : PEFileHeader* = addrof exe[pesignad + 4];
 		var pehsf  : PEHeaderStandardFields* = pefh + 1;
 		var pehwnt : PEHeaderWindowsNTSpecificFields* = pehsf + 1;
 		var pehdd  : PEHeaderDataDirectories* = pehwnt + 1;

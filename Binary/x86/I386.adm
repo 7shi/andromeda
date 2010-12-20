@@ -8,7 +8,7 @@
 		return ret;
 	}
 	
-	static function PushDW(arg1 : int)
+	static function PushD(arg1 : int)
 	{
 		var ret = new OpCodeDW;
 		ret.Name = "push";

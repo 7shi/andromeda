@@ -1,25 +1,48 @@
-﻿struct ConsoleBox
+﻿class ConsoleBox : TextBox
 {
-	var cs = new ConsoleStream;
-	
-	function dtor
-	{
-		var f = new Form;
-		f.Text = "Andromeda Console";
-		var tb = new TextBox;
-		tb.Font = DefaultFont;
-		tb.Text = cs.ToString();
-		tb.Multiline = true;
-		tb.ScrollBars = ScrollBars_Both;
-		tb.Dock = DockStyle_Fill;
-		f.AddControl(tb);
-		f.SetClientSize(400, 400);
-		cs.Dispose();
-		Application.Run(f);
-	}
+	static var defaultFont : Font;
 	
 	static function get_DefaultFont
 	{
-		return Font.FromFaceHeight("ＭＳ ゴシック", 12);
+		if (defaultFont == null)
+		{
+			// TODO:check fixedsys
+			defaultFont = Font.FromFaceHeight("ＭＳ ゴシック", 9);
+		}
+		return defaultFont;
+	}
+	
+	function ctor
+	{
+		Font = DefaultFont;
+		Multiline = true;
+		ScrollBars = ScrollBars.Both;
+	}
+	
+	virtual Evaluate(cmd : string) : string
+	{
+		return null;
+	}
+	
+	override OnKeyPress(e : KeyPressEventArgs)
+	{
+		if (e.KeyChar == 13)
+		{
+			var cur = CurrentLine;
+			var line = GetLine(cur);
+			var eval = Evaluate(line);
+			if (eval != null)
+			{
+				SelectionStart = LineIndex(cur) + line.Length;
+				SelectedText = "\r\n" + eval;
+				if (SelectionStart < TextLength)
+				{
+					e.Handled = true;
+					// TODO:SelectionStart += 2;
+					SelectionStart = SelectionStart + 2;
+				}
+			}
+		}
+		base.OnKeyPress(e);
 	}
 }

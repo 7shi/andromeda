@@ -34,6 +34,23 @@
 		}
 		if (prefix == "") return;
 		
+		WriteLine("");
+		WriteLine("function %sParse(s : string)", prefix);
+		WriteLine("{");
+		WriteLine("\tswitch (s)");
+		WriteLine("\t{");
+		for (int i = 0; i < types.Count; i++)
+		{
+			var n = names.Get(i);
+			WriteLine("\t\tcase %s: return %s%s;",
+				("\"" + n + "\"").PadRight(max_name + 2),
+				prefix, n);
+		}
+		WriteLine("\t}");
+		WriteLine("\treturn -1;");
+		WriteLine("}");
+		
+		WriteLine("");
 		WriteLine("function %sToString(value)", prefix);
 		WriteLine("{");
 		WriteLine("\tswitch (value)");

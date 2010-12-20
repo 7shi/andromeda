@@ -26,7 +26,7 @@
 	static function FromFaceHeight(face : string, height)
 	{
 		var ret = new Font;
-		ret.nHeight = height;
+		ret.nHeight = height * 4 / 3;
 		ret.lpszFace = face;
 		return ret;
 	}
