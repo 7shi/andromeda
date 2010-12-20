@@ -1,45 +1,16 @@
-﻿var g_hInstance;
-function winforms_get_instance()
+﻿class Form : Control
 {
-	if (g_hInstance == null)
-		g_hInstance = GetModuleHandle(null);
-	return g_hInstance;
-}
-
-var g_nAutoID;
-function winforms_get_auto_id()
-{
-	if (g_nAutoID == 0) g_nAutoID = 0x2000;
-	return g_nAutoID++;
-}
-
-class Form : Control
-{
-	WNDCLASSEX wcex;
-	delegate wndProc;
-	var className : string;
 	var MainMenu : MainMenu;
 	
 	function ctor()
 	{
-		wndProc = delegate((stdcall))(this, WndProc);
-		className = string.Format("WinForm_%x", winforms_get_auto_id());
-		lpClassName = className;
-		dwStyle     = WS_OVERLAPPEDWINDOW;
-		
-		wcex.style         = CS_VREDRAW | CS_HREDRAW;
-		wcex.lpfnWndProc   = wndProc;
-		wcex.hInstance     = winforms_get_instance();
-		wcex.hCursor       = LoadCursor(null, IDC_ARROW);
-		wcex.hbrBackground = COLOR_WINDOW + 1;
-		wcex.lpszClassName = className;
+		dwStyle = WS_OVERLAPPEDWINDOW;
 	}
 	
 	override Create
 	{
 		if (hWnd != null) return;
 		if (MainMenu != null) hMenu = MainMenu.hMenu;
-		wcex.RegisterClassEx();
 		base.Create();
 	}
 	
@@ -49,7 +20,7 @@ class Form : Control
 		base.OnClosed(e);
 	}
 	
-	override WndProc(hWnd, uMsg, wParam, lParam)
+	override WndProc(uMsg, wParam, lParam)
 	{
 		switch (uMsg)
 		{
@@ -65,6 +36,6 @@ class Form : Control
 				}
 				break;
 		}
-		return base.WndProc(hWnd, uMsg, wParam, lParam);
+		return base.WndProc(uMsg, wParam, lParam);
 	}
 }

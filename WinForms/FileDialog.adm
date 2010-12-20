@@ -38,6 +38,8 @@
 
 class SaveFileDialog : OpenFileDialog
 {
+	Text = "名前を付けて保存";
+	
 	override ShowDialogInternal(ofn : OPENFILENAME)
 	{
 		return GetSaveFileName(ofn);

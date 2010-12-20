@@ -3,13 +3,20 @@
 	var controls = new ArrayList;
 	var Dock;
 	var font : Font;
+	delegate wndProc;
+	var prevWndProc;
 	
-	function dtor()
+	function ctor
+	{
+		lpClassName = winforms_get_class();
+	}
+	
+	function dtor
 	{
 		Dispose();
 	}
 	
-	virtual Dispose()
+	virtual Dispose
 	{
 		if (hWnd == null) return;
 		Hide();
@@ -20,15 +27,26 @@
 		}
 		controls.Clear();
 		hWnd.DestroyWindow();
+		hWnd = null;
 	}
 	
 	virtual Create()
 	{
 		if (hWnd != null) return;
+		
 		hWnd = CreateWindowEx(
 			dwExStyle, lpClassName, lpWindowName,
 			dwStyle, X, Y, nWidth, nHeight,
 			hWndParent, hMenu, hInstance, lpParam);
+		if (hWnd == null) return;
+		
+		wndProc = function __stdcall(hWnd, uMsg, wParam, lParam)
+		{
+			if (this.hWnd == null) this.hWnd = hWnd;
+			return WndProc(uMsg, wParam, lParam);
+		};
+		prevWndProc = SetWindowLong(hWnd, GWL_WNDPROC, wndProc);
+		
 		if (font != null)
 		{
 			var h = font.Handle;
@@ -89,39 +107,34 @@
 		return text;
 	}
 	
-	virtual WndProc(hWnd, uMsg, wParam, lParam)
+	virtual WndProc(uMsg, wParam, lParam)
 	{
 		switch (uMsg)
 		{
 			case WM_PAINT:
-			{
-				var e = new PaintEventArgs;
-				e.hDC = hWnd.BeginPaint(e.ps);
-				OnPaint(e);
-				hWnd.EndPaint(e.ps);
+				OnPaint(PaintEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
 				return 0;
-			}
 			case WM_LBUTTONDOWN:
 			case WM_RBUTTONDOWN:
 			case WM_MBUTTONDOWN:
-				OnMouseDown(MouseEventArgs.FromMessage(uMsg, wParam, lParam));
+				OnMouseDown(MouseEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
 				return 0;
 			case WM_LBUTTONUP:
 			case WM_RBUTTONUP:
 			case WM_MBUTTONUP:
-				OnMouseUp(MouseEventArgs.FromMessage(uMsg, wParam, lParam));
+				OnMouseUp(MouseEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
 				return 0;
 			case WM_MOUSEMOVE:
-				OnMouseMove(MouseEventArgs.FromMessage(uMsg, wParam, lParam));
+				OnMouseMove(MouseEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
 				return 0;
 			case WM_DESTROY:
-				OnClosed(EventArgs.Empty);
+				OnClosed(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
 				return 0;
 			case WM_SIZE:
-				OnResize(EventArgs.Empty);
+				OnResize(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
 				return 0;
 		}
-		return hWnd.DefWindowProc(uMsg, wParam, lParam);
+		return CallWindowProc(prevWndProc, hWnd, uMsg, wParam, lParam);
 	}
 	
 	function SetStyle(flag, value)

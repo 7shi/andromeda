@@ -1,6 +1,6 @@
 ﻿#pragma subsystem(WINDOWS_GUI)
 
-const string VERSION = "Andromeda ver.0.2.2008.1030";
+const string VERSION = "Andromeda ver.0.2.2008.1111";
 
 Application.Run(new Form1);
 
@@ -78,20 +78,16 @@ function BuildI386
 	exe.WinNT.SubSystem = IMAGE_SUBSYSTEM_WINDOWS_GUI;
 
 	var text = new Block;
+	var MessageBoxW = new OpCode;
 	exe.Export("main", text.CurrentAddress);
-	text.AddByte(0x68); // push dword
-	text.AddInt(1);
-	text.AddByte(0x68); // push dword
-	text.AddAddress(exe.GetString("だいあろぐ"));
-	text.AddByte(0x68); // push dword
-	text.AddAddress(exe.GetString("こんにちは、世界！"));
-	text.AddByte(0x68); // push dword
-	text.AddInt(0);
-	text.AddByte(0xb8); // mov eax, dword
-	text.AddAddress(exe.Import("USER32.DLL", "MessageBoxW"));
-	text.AddByte(0xff); // call [eax]
-	text.AddByte(0x10);
-	text.AddByte(0xc3); // ret
+	text.AddOpCode(I386.PushDW(1));
+	text.AddOpCode(I386.PushAd(exe.GetString("だいあろぐ")));
+	text.AddOpCode(I386.PushAd(exe.GetString("こんにちは、世界！")));
+	text.AddOpCode(I386.PushDW(0));
+	text.AddOpCode(I386.Call(MessageBoxW));
+	text.AddOpCode(I386.Ret);
+	text.AddOpCode(MessageBoxW);
+	text.AddOpCode(I386.JmpAd(exe.Import("USER32.DLL", "MessageBoxW")));
 	
 	exe.WriteFile("a.i386.exe", text, true);
 }
@@ -114,11 +110,11 @@ function BuildARM
 	text.AddInt(0xe3a03001); // 18: mov r3, #1
 	text.AddInt(0xeb000002); // 1c: bl 8 ; 0x2c
 	text.AddInt(0xe89da800); // 20: ldmfd sp, {fp, sp, pc}
-	text.AddAddress(exe.GetString("こんにちは、世界！")); // 24
-	text.AddAddress(exe.GetString("だいあろぐ")); // 28
+	text.AddAddress(exe.GetString("こんにちは、世界！")); // 24:
+	text.AddAddress(exe.GetString("だいあろぐ")); // 28:
 	text.AddInt(0xe59fc000); // 2c: ldr ip, [pc, #0] ; 0x34
 	text.AddInt(0xe59cf000); // 30: ldr pc, [ip]
-	text.AddAddress(exe.Import("COREDLL.DLL", "MessageBoxW")); // 34
+	text.AddAddress(exe.Import("COREDLL.DLL", "MessageBoxW")); // 34:
 	
 	exe.WriteFile("a.arm.exe", text, true);
 }

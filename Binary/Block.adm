@@ -31,6 +31,12 @@
 	function AddString(v : string) { Add(0, v.Length * 2, v); }
 	function AddBytes (v : byte[]) { Add(0, v.Length, (object)v); }
 	function AddAddress(v : Addr32) { Add(0, 4, v); }
+	function AddOpCode(v : OpCode)
+	{
+		v.address = addrof Address;
+		v.position = Length;
+		Add(0, v.Length, v);
+	}
 	
 	function Write(ms : MemoryStream)
 	{
@@ -51,6 +57,11 @@
 			{
 				var ad = (Addr32)obj;
 				ms.WriteInt(ad.Value);
+			}
+			else if (obj is OpCode)
+			{
+				var op = (OpCode)obj;
+				op.Write(ms);
 			}
 			else
 			{
@@ -74,7 +85,10 @@
 		for (int i = 0; i < values.Count; i++)
 		{
 			var obj = objs.Get(i);
-			if (obj is Addr32) list.Add(pos);
+			if (obj is Addr32)
+				list.Add(pos);
+			else if (obj is OpCode)
+				((OpCode)obj).AddRelocs(list);
 			pos += sizes.Get(i);
 		}
 		return list.ToArray();

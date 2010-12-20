@@ -1,0 +1,46 @@
+﻿class I386
+{
+	static function get_Ret
+	{
+		var ret = new OpCode;
+		ret.Name = "ret";
+		ret.Set1(0xc3);
+		return ret;
+	}
+	
+	static function PushDW(arg1 : int)
+	{
+		var ret = new OpCodeDW;
+		ret.Name = "push";
+		ret.Set1(0x68);
+		ret.Arg1 = arg1;
+		return ret;
+	}
+	
+	static function PushAd(arg1 : Addr32)
+	{
+		var ret = new OpCodeAd;
+		ret.Name = "push";
+		ret.Set1(0x68);
+		ret.Arg1 = arg1;
+		return ret;
+	}
+	
+	static function Call(arg1 : OpCode)
+	{
+		var ret = new I386Relative;
+		ret.Name = "call";
+		ret.Set1(0xe8);
+		ret.Arg1 = arg1;
+		return ret;
+	}
+	
+	static function JmpAd(arg1 : Addr32)
+	{
+		var ret = new OpCodeAd;
+		ret.Name = "jmp";
+		ret.Set2(0xff, 0x25);
+		ret.Arg1 = arg1;
+		return ret;
+	}
+}

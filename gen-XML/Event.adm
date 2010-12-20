@@ -40,7 +40,7 @@
 			if (funcs.Get(i) == 0) continue;
 			var type = types.Get(i).PadRight(max_type);
 			var name = names.Get(i).PadRight(max_name);
-			WriteLine("\tvirtual On%s(e : %s) { %s.Invoke(this, e); }",
+			WriteLine("\tvirtual On%s(e : %s) { %s.Invoke(this, e); e.Default(); }",
 				name, type, name);
 		}
 		WriteLine("}");

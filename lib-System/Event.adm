@@ -1,6 +1,8 @@
 ﻿class EventArgs
 {
 	static var Empty : EventArgs;
+	
+	var args[8];
 }
 
 class Event : VarList

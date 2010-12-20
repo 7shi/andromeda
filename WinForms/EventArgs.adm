@@ -1,16 +1,49 @@
-﻿class PaintEventArgs : EventArgs
+﻿class EventArgs
 {
-	PAINTSTRUCT ps;
+	function SetMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		args[0] = wndProc;
+		args[1] = hWnd;
+		args[2] = uMsg;
+		args[3] = wParam;
+		args[4] = lParam;
+	}
+	
+	function Default()
+	{
+		if (args[0] != null)
+			CallWindowProc(args[0], args[1], args[2], args[3], args[4]);
+	}
+	
+	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		var ret = new EventArgs;
+		ret.SetMessage(wndProc, hWnd, uMsg, wParam, lParam);
+		return ret;
+	}
+}
+
+class PaintEventArgs : EventArgs
+{
 	var hDC;
+	
+	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		var ret = new PaintEventArgs;
+		ret.SetMessage(wndProc, hWnd, uMsg, wParam, lParam);
+		ret.hDC = GetDC(hWnd);
+		return ret;
+	}
 }
 
 class MouseEventArgs : EventArgs
 {
 	int Button, X, Y;
 	
-	static function FromMessage(uMsg, wParam, lParam)
+	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
 	{
 		var ret = new MouseEventArgs;
+		ret.SetMessage(wndProc, hWnd, uMsg, wParam, lParam);
 		switch (uMsg)
 		{
 			case WM_LBUTTONDOWN:

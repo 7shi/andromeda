@@ -13,7 +13,7 @@
   <WindowWidth>20520</WindowWidth>
   <WindowTopX>120</WindowTopX>
   <WindowTopY>30</WindowTopY>
-  <ActiveSheet>2</ActiveSheet>
+  <ActiveSheet>1</ActiveSheet>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>
@@ -48,7 +48,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="const">
-  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="505" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="517" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="41.25"/>
    <Column ss:Width="170.25"/>
@@ -2507,6 +2507,64 @@
     <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
     <Cell ss:StyleID="s22"/>
     <Cell ss:StyleID="s23"/>
+    <Cell><Data ss:Type="String">GetWindowLong</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">GWL_WNDPROC</Data></Cell>
+    <Cell><Data ss:Type="Number">-4</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">GWL_HINSTANCE</Data></Cell>
+    <Cell><Data ss:Type="Number">-6</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">GWL_HWNDPARENT</Data></Cell>
+    <Cell><Data ss:Type="Number">-8</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">GWL_ID</Data></Cell>
+    <Cell><Data ss:Type="Number">-12</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">GWL_STYLE</Data></Cell>
+    <Cell><Data ss:Type="Number">-16</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">GWL_EXSTYLE</Data></Cell>
+    <Cell><Data ss:Type="Number">-20</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">GWL_USERDATA</Data></Cell>
+    <Cell><Data ss:Type="Number">-21</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">DWL_MSGRESULT</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="String">Dialog</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">DWL_DLGPROC</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">DWL_USER</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">const</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s23"/>
     <Cell><PhoneticText xmlns="urn:schemas-microsoft-com:office:excel">タ</PhoneticText><Data
       ss:Type="String">その他</Data></Cell>
    </Row>
@@ -2545,7 +2603,8 @@
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
   <Sorting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Sort>列 D</Sort>
+   <Sort>列 C</Sort>
+   <Descending/>
   </Sorting>
  </Worksheet>
  <Worksheet ss:Name="struct">
@@ -2567,46 +2626,57 @@
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">style</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
     <Cell><Data ss:Type="String">lpfnWndProc</Data></Cell>
+    <Cell><Data ss:Type="String">null</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">cbClsExtra</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">cbWndExtra</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
     <Cell><Data ss:Type="String">hInstance</Data></Cell>
+    <Cell><Data ss:Type="String">null</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
     <Cell><Data ss:Type="String">hIcon</Data></Cell>
+    <Cell><Data ss:Type="String">null</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
     <Cell><Data ss:Type="String">hCursor</Data></Cell>
+    <Cell><Data ss:Type="String">null</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
     <Cell><Data ss:Type="String">hbrBackground</Data></Cell>
+    <Cell><Data ss:Type="String">null</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
     <Cell><Data ss:Type="String">lpszMenuName</Data></Cell>
+    <Cell><Data ss:Type="String">(string)null</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
     <Cell><Data ss:Type="String">lpszClassName</Data></Cell>
+    <Cell><Data ss:Type="String">(string)null</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">var</Data></Cell>
     <Cell><Data ss:Type="String">hIconSm</Data></Cell>
+    <Cell><Data ss:Type="String">null</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
@@ -3022,12 +3092,13 @@
      x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
    </PageSetup>
    <Unsynced/>
+   <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
  </Worksheet>
  <Worksheet ss:Name="extern">
-  <Table ss:ExpandedColumnCount="17" ss:ExpandedRowCount="52" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="17" ss:ExpandedRowCount="56" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
    <Column ss:Width="45.75"/>
    <Column ss:Width="30"/>
@@ -3083,6 +3154,16 @@
     <Cell ss:Index="3"><Data ss:Type="String">BeginPaint</Data></Cell>
     <Cell><Data ss:Type="String">hWnd</Data></Cell>
     <Cell><Data ss:Type="String">lpPaint</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell><Data ss:Type="String">wide</Data></Cell>
+    <Cell><Data ss:Type="String">CallWindowProc</Data></Cell>
+    <Cell><Data ss:Type="String">lpPrevWndFunc</Data></Cell>
+    <Cell><Data ss:Type="String">hWnd</Data></Cell>
+    <Cell><Data ss:Type="String">uMsg</Data></Cell>
+    <Cell><Data ss:Type="String">wParam</Data></Cell>
+    <Cell><Data ss:Type="String">lParam</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">stdcall</Data></Cell>
@@ -3175,6 +3256,13 @@
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">stdcall</Data></Cell>
     <Cell ss:Index="3"><Data ss:Type="String">GetSysColorBrush</Data></Cell>
+    <Cell><Data ss:Type="String">nIndex</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell><Data ss:Type="String">wide</Data></Cell>
+    <Cell><Data ss:Type="String">GetWindowLong</Data></Cell>
+    <Cell><Data ss:Type="String">hWnd</Data></Cell>
     <Cell><Data ss:Type="String">nIndex</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
@@ -3281,6 +3369,14 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell><Data ss:Type="String">wide</Data></Cell>
+    <Cell><Data ss:Type="String">SetWindowLong</Data></Cell>
+    <Cell><Data ss:Type="String">hWnd</Data></Cell>
+    <Cell><Data ss:Type="String">nIndex</Data></Cell>
+    <Cell><Data ss:Type="String">dwNewLong</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
     <Cell ss:Index="3"><Data ss:Type="String">SetWindowPos</Data></Cell>
     <Cell><Data ss:Type="String">hWnd</Data></Cell>
     <Cell><Data ss:Type="String">hWndInsertAfter</Data></Cell>
@@ -3307,6 +3403,13 @@
     <Cell><Data ss:Type="String">stdcall</Data></Cell>
     <Cell ss:Index="3"><Data ss:Type="String">TranslateMessage</Data></Cell>
     <Cell><Data ss:Type="String">lpMsg</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">stdcall</Data></Cell>
+    <Cell><Data ss:Type="String">wide</Data></Cell>
+    <Cell><Data ss:Type="String">UnregisterClass</Data></Cell>
+    <Cell><Data ss:Type="String">lpClassName</Data></Cell>
+    <Cell><Data ss:Type="String">hInstance</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">stdcall</Data></Cell>
@@ -3400,7 +3503,6 @@
      x:Right="0.78700000000000003" x:Top="0.98399999999999999"/>
    </PageSetup>
    <Unsynced/>
-   <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>

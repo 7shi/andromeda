@@ -11,7 +11,7 @@
 		inf.cbSize = sizeof MENUITEMINFO;
 		inf.fMask  = MIIM_STATE | MIIM_ID;
 		inf.fState = MFS_ENABLED;
-		inf.wID    = winforms_get_auto_id();
+		inf.wID    = (((var)this) >> 4) & 0xffff;
 	}
 	
 	function dtor()
