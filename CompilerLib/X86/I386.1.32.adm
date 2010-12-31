@@ -1,0 +1,170 @@
+class I386
+{
+    static function PushD(op1 : Val32) : OpCode
+    {
+        return OpCode.NewD(Util.GetBytes1(0x68), op1);
+    }
+
+    static function Push(op1 : Reg32) : OpCode
+    {
+        return FromName1("push", op1);
+    }
+
+    static function PushA(op1 : Addr32) : OpCode
+    {
+        return FromName1A("push", op1);
+    }
+
+    static function Pop(op1 : Reg32) : OpCode
+    {
+        return FromName1("pop", op1);
+    }
+
+    static function PopA(op1 : Addr32) : OpCode
+    {
+        return FromName1A("pop", op1);
+    }
+
+    static function Inc(op1 : Reg32) : OpCode
+    {
+        return FromName1("inc", op1);
+    }
+
+    static function IncA(op1 : Addr32) : OpCode
+    {
+        return FromName1A("inc", op1);
+    }
+
+    static function Dec(op1 : Reg32) : OpCode
+    {
+        return FromName1("dec", op1);
+    }
+
+    static function DecA(op1 : Addr32) : OpCode
+    {
+        return FromName1A("dec", op1);
+    }
+
+    static function Not(op1 : Reg32) : OpCode
+    {
+        return FromName1("not", op1);
+    }
+
+    static function NotA(op1 : Addr32) : OpCode
+    {
+        return FromName1A("not", op1);
+    }
+
+    static function Neg(op1 : Reg32) : OpCode
+    {
+        return FromName1("neg", op1);
+    }
+
+    static function NegA(op1 : Addr32) : OpCode
+    {
+        return FromName1A("neg", op1);
+    }
+
+    static function Mul(op1 : Reg32) : OpCode
+    {
+        return FromName1("mul", op1);
+    }
+
+    static function MulA(op1 : Addr32) : OpCode
+    {
+        return FromName1A("mul", op1);
+    }
+
+    static function Imul(op1 : Reg32) : OpCode
+    {
+        return FromName1("imul", op1);
+    }
+
+    static function ImulA(op1 : Addr32) : OpCode
+    {
+        return FromName1A("imul", op1);
+    }
+
+    static function Div(op1 : Reg32) : OpCode
+    {
+        return FromName1("div", op1);
+    }
+
+    static function DivA(op1 : Addr32) : OpCode
+    {
+        return FromName1A("div", op1);
+    }
+
+    static function Idiv(op1 : Reg32) : OpCode
+    {
+        return FromName1("idiv", op1);
+    }
+
+    static function IdivA(op1 : Addr32) : OpCode
+    {
+        return FromName1A("idiv", op1);
+    }
+
+    static function IsOneOperand(op : string) : bool
+    {
+        return op == "push" || op == "pop" || op == "inc" || op == "dec" || op == "not" || op == "neg" || op == "mul" || op == "imul" || op == "div" || op == "idiv";
+    }
+
+    static function FromName1(op : string, op1 : Reg32) : OpCode
+    {
+        switch (op)
+        {
+        case "push":
+            return OpCode.NewBytes(Util.GetBytes1((byte)(0x50 + op1)));
+        case "pop":
+            return OpCode.NewBytes(Util.GetBytes1((byte)(0x58 + op1)));
+        case "inc":
+            return OpCode.NewBytes(Util.GetBytes1((byte)(0x40 + op1)));
+        case "dec":
+            return OpCode.NewBytes(Util.GetBytes1((byte)(0x48 + op1)));
+        case "not":
+            return OpCode.NewBytes(Util.GetBytes2(0xf7, (byte)(0xd0 + op1)));
+        case "neg":
+            return OpCode.NewBytes(Util.GetBytes2(0xf7, (byte)(0xd8 + op1)));
+        case "mul":
+            return OpCode.NewBytes(Util.GetBytes2(0xf7, (byte)(0xe0 + op1)));
+        case "imul":
+            return OpCode.NewBytes(Util.GetBytes2(0xf7, (byte)(0xe8 + op1)));
+        case "div":
+            return OpCode.NewBytes(Util.GetBytes2(0xf7, (byte)(0xf0 + op1)));
+        case "idiv":
+            return OpCode.NewBytes(Util.GetBytes2(0xf7, (byte)(0xf8 + op1)));
+        default:
+            raise("invalid operator: " + op);
+        }
+    }
+
+    static function FromName1A(op : string, op1 : Addr32) : OpCode
+    {
+        switch (op)
+        {
+        case "push":
+            return OpCode.NewA(Util.GetBytes1(0xff), Addr32.NewAdM(op1, 6));
+        case "pop":
+            return OpCode.NewA(Util.GetBytes1(0x8f), op1);
+        case "inc":
+            return OpCode.NewA(Util.GetBytes1(0xff), op1);
+        case "dec":
+            return OpCode.NewA(Util.GetBytes1(0xff), Addr32.NewAdM(op1, 1));
+        case "not":
+            return OpCode.NewA(Util.GetBytes1(0xf7), Addr32.NewAdM(op1, 2));
+        case "neg":
+            return OpCode.NewA(Util.GetBytes1(0xf7), Addr32.NewAdM(op1, 3));
+        case "mul":
+            return OpCode.NewA(Util.GetBytes1(0xf7), Addr32.NewAdM(op1, 4));
+        case "imul":
+            return OpCode.NewA(Util.GetBytes1(0xf7), Addr32.NewAdM(op1, 5));
+        case "div":
+            return OpCode.NewA(Util.GetBytes1(0xf7), Addr32.NewAdM(op1, 6));
+        case "idiv":
+            return OpCode.NewA(Util.GetBytes1(0xf7), Addr32.NewAdM(op1, 7));
+        default:
+            raise("invalid operator: " + op);
+        }
+    }
+}

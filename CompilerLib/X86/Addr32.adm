@@ -56,6 +56,11 @@ class Addr32
         return ret;
     }
 
+    static function NewInt(ad : int) : Addr32
+    {
+        return NewD(Val32.New((uint)ad));
+    }
+
     static function NewUInt(ad : uint) : Addr32
     {
         return NewD(Val32.New(ad));
