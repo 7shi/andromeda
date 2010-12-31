@@ -48,7 +48,7 @@ class Addr32
         return ret;
     }
 
-    static function NewV(ad : Val32) : Addr32
+    static function NewD(ad : Val32) : Addr32
     {
         var ret = new Addr32();
         ret.isInitialized = true;
@@ -58,7 +58,7 @@ class Addr32
 
     static function NewUInt(ad : uint) : Addr32
     {
-        return NewV(Val32.New(ad));
+        return NewD(Val32.New(ad));
     }
 
     static function NewAd(src : Addr32) : Addr32

@@ -1,0 +1,158 @@
+class I386
+{
+    static function Jmp(op1 : Addr32) : OpCode
+    {
+        return OpCode.NewA(Util.GetBytes1(0xff), Addr32.NewAdM(op1, 4));
+    }
+
+    static function JmpD(op1 : Val32) : OpCode
+    {
+        return OpCode.NewDRel(Util.GetBytes1(0xe9), op1, true);
+    }
+
+    static function Jcc(c : Cc, op1 : Val32) : OpCode
+    {
+        return OpCode.NewDRel(Util.GetBytes2(0x0f, (byte)(0x80 + c)), op1, true);
+    }
+
+    static function RetW(op1 : ushort) : OpCode
+    {
+        return OpCode.NewW(Util.GetBytes1(0xc2), op1);
+    }
+
+    static function Loop(op1 : Val32) : OpCode
+    {
+        var ret = OpCode.NewDRel(Util.GetBytes1(0xe2), op1, true);
+        ret.ByteRelative = true;
+        return ret;
+    }
+
+    static function Lea(op1 : Reg32, op2 : Addr32) : OpCode
+    {
+        return OpCode.NewA(Util.GetBytes1(0x8d), Addr32.NewAdM(op2, (byte)op1));
+    }
+
+    static function Setcc(c : Cc, op1 : Reg8) : OpCode
+    {
+        return OpCode.NewBytes(Util.GetBytes3(0x0f, (byte)(0x90 + c), (byte)(0xc0 + op1)));
+    }
+
+    static function Enter(op1 : ushort, op2 : byte) : OpCode
+    {
+        return OpCode.NewWB(Util.GetBytes1(0xc8), op1, op2);
+    }
+
+    static function Nop() : OpCode
+    {
+        return FromName("nop");
+    }
+
+    static function Ret() : OpCode
+    {
+        return FromName("ret");
+    }
+
+    static function Cdq() : OpCode
+    {
+        return FromName("cdq");
+    }
+
+    static function Cld() : OpCode
+    {
+        return FromName("cld");
+    }
+
+    static function Std() : OpCode
+    {
+        return FromName("std");
+    }
+
+    static function Rep() : OpCode
+    {
+        return FromName("rep");
+    }
+
+    static function Leave() : OpCode
+    {
+        return FromName("leave");
+    }
+
+    static function Movsb() : OpCode
+    {
+        return FromName("movsb");
+    }
+
+    static function Movsw() : OpCode
+    {
+        return FromName("movsw");
+    }
+
+    static function Movsd() : OpCode
+    {
+        return FromName("movsd");
+    }
+
+    static function Stosb() : OpCode
+    {
+        return FromName("stosb");
+    }
+
+    static function Stosw() : OpCode
+    {
+        return FromName("stosw");
+    }
+
+    static function Stosd() : OpCode
+    {
+        return FromName("stosd");
+    }
+
+    static function Pushf() : OpCode
+    {
+        return FromName("pushf");
+    }
+
+    static function Popf() : OpCode
+    {
+        return FromName("popf");
+    }
+
+    static function FromName(op : string) : OpCode
+    {
+        switch (op)
+        {
+        case "nop":
+            return OpCode.NewBytes(Util.GetBytes1(0x90));
+        case "ret":
+            return OpCode.NewBytes(Util.GetBytes1(0xc3));
+        case "cdq":
+            return OpCode.NewBytes(Util.GetBytes1(0x99));
+        case "cld":
+            return OpCode.NewBytes(Util.GetBytes1(0xfc));
+        case "std":
+            return OpCode.NewBytes(Util.GetBytes1(0xfd));
+        case "rep":
+            return OpCode.NewBytes(Util.GetBytes1(0xf3));
+        case "leave":
+            return OpCode.NewBytes(Util.GetBytes1(0xc9));
+        case "movsb":
+            return OpCode.NewBytes(Util.GetBytes1(0xa4));
+        case "movsw":
+            return OpCode.NewBytes(Util.GetBytes2(0x66, 0xa5));
+        case "movsd":
+            return OpCode.NewBytes(Util.GetBytes1(0xa5));
+        case "stosb":
+            return OpCode.NewBytes(Util.GetBytes1(0xaa));
+        case "stosw":
+            return OpCode.NewBytes(Util.GetBytes2(0x66, 0xab));
+        case "stosd":
+            return OpCode.NewBytes(Util.GetBytes1(0xab));
+        case "pushf":
+            return OpCode.NewBytes(Util.GetBytes1(0x9c));
+        case "popf":
+            return OpCode.NewBytes(Util.GetBytes1(0x9d));
+        default:
+            raise("invalid operator: " + op);
+        }
+    }
+}

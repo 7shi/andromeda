@@ -24,7 +24,23 @@ class OpCode
         return ret;
     }
 
-    static function New(d : byte[], op : object) : OpCode
+    static function NewB(d : byte[], op : byte) : OpCode
+    {
+        var ret = new OpCode();
+        ret.data = d;
+        ret.op1 = Byte.New(op);
+        return ret;
+    }
+
+    static function NewW(d : byte[], op : ushort) : OpCode
+    {
+        var ret = new OpCode();
+        ret.data = d;
+        ret.op1 = UShort.New(op);
+        return ret;
+    }
+
+    static function NewD(d : byte[], op : Val32) : OpCode
     {
         var ret = new OpCode();
         ret.data = d;
@@ -32,7 +48,33 @@ class OpCode
         return ret;
     }
 
-    static function NewA(d : byte[], op : object, mem : Addr32) : OpCode
+    static function NewA(d : byte[], mem : Addr32) : OpCode
+    {
+        var ret = new OpCode();
+        ret.data = d;
+        ret.op2 = mem;
+        return ret;
+    }
+
+    static function NewBA(d : byte[], op : byte, mem : Addr32) : OpCode
+    {
+        var ret = new OpCode();
+        ret.data = d;
+        ret.op1 = Byte.New(op);
+        ret.op2 = mem;
+        return ret;
+    }
+
+    static function NewWA(d : byte[], op : ushort, mem : Addr32) : OpCode
+    {
+        var ret = new OpCode();
+        ret.data = d;
+        ret.op1 = UShort.New(op);
+        ret.op2 = mem;
+        return ret;
+    }
+
+    static function NewDA(d : byte[], op : Val32, mem : Addr32) : OpCode
     {
         var ret = new OpCode();
         ret.data = d;
@@ -41,16 +83,16 @@ class OpCode
         return ret;
     }
 
-    static function NewB(d : byte[], op1 : object, op2 : byte) : OpCode
+    static function NewWB(d : byte[], op1 : ushort, op2 : byte) : OpCode
     {
         var ret = new OpCode();
         ret.data = d;
-        ret.op1 = op1;
-        ret.op2 = op2;
+        ret.op1 = UShort.New(op1);
+        ret.op2 = Byte.New(op2);
         return ret;
     }
 
-    static function NewV(d : byte[], op : Val32, rel : bool) : OpCode
+    static function NewDRel(d : byte[], op : Val32, rel : bool) : OpCode
     {
         var ret = new OpCode();
         ret.data = d;
@@ -72,15 +114,15 @@ class OpCode
         var data = this.data;
         if (this.op2 is Addr32)
             data = Util.Concat(data, (op2 as Addr32).GetCodes());
-        if (this.op1 == null)
+        if (op1 == null)
             return data;
-        if (this.op1 is byte)
-            data = Util.AddByteToBytes(data, (byte)op1);
-        else if (this.op1 is ushort)
-            data = Util.AddUShortToBytes(data, (ushort)op1);
+        if (this.op1 is Byte)
+            data = Util.AddByteToBytes(data, (op1 as Byte).Value);
+        else if (this.op1 is UShort)
+            data = Util.AddUShortToBytes(data, (op1 as UShort).Value);
         else if (this.op1 is Val32)
         {
-            uint val = ((Val32)op1).Value;
+            var val = (op1 as Val32).Value;
             if (ByteRelative)
             {
                 val -= Address.Value + (uint)data.Length + 1;
@@ -97,8 +139,8 @@ class OpCode
         {
             raise("The method or operation is not implemented.");
         }
-        if (this.op2 is byte)
-            data = Util.Concat(data, Util.GetBytes1((byte)op2));
+        if (this.op2 is Byte)
+            data = Util.Concat(data, Util.GetBytes1((op2 as Byte).Value));
         return data;
     }
 
@@ -115,17 +157,17 @@ class OpCode
                 (op2 as Addr32).Write(block);
             if (op1 != null)
             {
-                if (this.op1 is byte)
-                    block.AddByte((byte)op1);
-                else if (this.op1 is ushort)
-                    block.AddUShort((ushort)op1);
+                if (this.op1 is Byte)
+                    block.AddByte2(op1 as Byte);
+                else if (this.op1 is UShort)
+                    block.AddUShort2(op1 as UShort);
                 else if (this.op1 is Val32)
-                    block.AddVal32((Val32)op1);
+                    block.AddVal32(op1 as Val32);
                 else
                     raise("The method or operation is not implemented.");
             }
-            if (this.op2 is byte)
-                block.AddByte((byte)op2);
+            if (this.op2 is Byte)
+                block.AddByte2(op2 as Byte);
         }
     }
 
