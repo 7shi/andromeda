@@ -1,0 +1,110 @@
+class I386
+{
+    static function MovzxB(op1 : Reg32, op2 : Reg8) : OpCode
+    {
+        return FromNameB("movzx", op1, op2);
+    }
+
+    static function MovzxBA(op1 : Reg32, op2 : Addr32) : OpCode
+    {
+        return FromNameBA("movzx", op1, op2);
+    }
+
+    static function MovzxWB(op1 : Reg16, op2 : Reg8) : OpCode
+    {
+        return FromNameWB("movzx", op1, op2);
+    }
+
+    static function MovzxWBA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromNameWBA("movzx", op1, op2);
+    }
+
+    static function MovsxB(op1 : Reg32, op2 : Reg8) : OpCode
+    {
+        return FromNameB("movsx", op1, op2);
+    }
+
+    static function MovsxBA(op1 : Reg32, op2 : Addr32) : OpCode
+    {
+        return FromNameBA("movsx", op1, op2);
+    }
+
+    static function MovsxWB(op1 : Reg16, op2 : Reg8) : OpCode
+    {
+        return FromNameWB("movsx", op1, op2);
+    }
+
+    static function MovsxWBA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromNameWBA("movsx", op1, op2);
+    }
+
+    static function FromNameB(op : string, op1 : Reg32, op2 : Reg8) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "movzx":
+            b = 0xb6;
+            break;
+        case "movsx":
+            b = 0xbe;
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        return OpCode.NewBytes(Util.GetBytes3(0x0f, b, (byte)(0xc0 + (((int )op1) << 3) + op2)));
+    }
+
+    static function FromNameWB(op : string, op1 : Reg16, op2 : Reg8) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "movzx":
+            b = 0xb6;
+            break;
+        case "movsx":
+            b = 0xbe;
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        return OpCode.NewBytes(Util.GetBytes4(0x66, 0x0f, b, (byte)(0xc0 + (((int )op1) << 3) + op2)));
+    }
+
+    static function FromNameBA(op : string, op1 : Reg32, op2 : Addr32) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "movzx":
+            b = 0xb6;
+            break;
+        case "movsx":
+            b = 0xbe;
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        return OpCode.NewA(Util.GetBytes2(0x0f, b), Addr32.NewAdM(op2, (byte)op1));
+    }
+
+    static function FromNameWBA(op : string, op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "movzx":
+            b = 0xb6;
+            break;
+        case "movsx":
+            b = 0xbe;
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        return OpCode.NewA(Util.GetBytes3(0x66, 0x0f, b), Addr32.NewAdM(op2, (byte)op1));
+    }
+}
