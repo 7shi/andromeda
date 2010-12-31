@@ -5,9 +5,9 @@ class I386
         return FromName2("mov", op1, op2);
     }
 
-    static function MovRD(op1 : Reg32, op2 : Val32) : OpCode
+    static function MovR(op1 : Reg32, op2 : Val32) : OpCode
     {
-        return FromName2RD("mov", op1, op2);
+        return FromName2R("mov", op1, op2);
     }
 
     static function MovRA(op1 : Reg32, op2 : Addr32) : OpCode
@@ -20,9 +20,9 @@ class I386
         return FromName2AR("mov", op1, op2);
     }
 
-    static function MovAD(op1 : Addr32, op2 : Val32) : OpCode
+    static function MovA(op1 : Addr32, op2 : Val32) : OpCode
     {
-        return FromName2AD("mov", op1, op2);
+        return FromName2A("mov", op1, op2);
     }
 
     static function Add(op1 : Reg32, op2 : Reg32) : OpCode
@@ -30,9 +30,9 @@ class I386
         return FromName2("add", op1, op2);
     }
 
-    static function AddRD(op1 : Reg32, op2 : Val32) : OpCode
+    static function AddR(op1 : Reg32, op2 : Val32) : OpCode
     {
-        return FromName2RD("add", op1, op2);
+        return FromName2R("add", op1, op2);
     }
 
     static function AddRA(op1 : Reg32, op2 : Addr32) : OpCode
@@ -45,9 +45,9 @@ class I386
         return FromName2AR("add", op1, op2);
     }
 
-    static function AddAD(op1 : Addr32, op2 : Val32) : OpCode
+    static function AddA(op1 : Addr32, op2 : Val32) : OpCode
     {
-        return FromName2AD("add", op1, op2);
+        return FromName2A("add", op1, op2);
     }
 
     static function Or(op1 : Reg32, op2 : Reg32) : OpCode
@@ -55,9 +55,9 @@ class I386
         return FromName2("or", op1, op2);
     }
 
-    static function OrRD(op1 : Reg32, op2 : Val32) : OpCode
+    static function OrR(op1 : Reg32, op2 : Val32) : OpCode
     {
-        return FromName2RD("or", op1, op2);
+        return FromName2R("or", op1, op2);
     }
 
     static function OrRA(op1 : Reg32, op2 : Addr32) : OpCode
@@ -70,9 +70,9 @@ class I386
         return FromName2AR("or", op1, op2);
     }
 
-    static function OrAD(op1 : Addr32, op2 : Val32) : OpCode
+    static function OrA(op1 : Addr32, op2 : Val32) : OpCode
     {
-        return FromName2AD("or", op1, op2);
+        return FromName2A("or", op1, op2);
     }
 
     static function Adc(op1 : Reg32, op2 : Reg32) : OpCode
@@ -80,9 +80,9 @@ class I386
         return FromName2("adc", op1, op2);
     }
 
-    static function AdcRD(op1 : Reg32, op2 : Val32) : OpCode
+    static function AdcR(op1 : Reg32, op2 : Val32) : OpCode
     {
-        return FromName2RD("adc", op1, op2);
+        return FromName2R("adc", op1, op2);
     }
 
     static function AdcRA(op1 : Reg32, op2 : Addr32) : OpCode
@@ -95,9 +95,9 @@ class I386
         return FromName2AR("adc", op1, op2);
     }
 
-    static function AdcAD(op1 : Addr32, op2 : Val32) : OpCode
+    static function AdcA(op1 : Addr32, op2 : Val32) : OpCode
     {
-        return FromName2AD("adc", op1, op2);
+        return FromName2A("adc", op1, op2);
     }
 
     static function Sbb(op1 : Reg32, op2 : Reg32) : OpCode
@@ -105,9 +105,9 @@ class I386
         return FromName2("sbb", op1, op2);
     }
 
-    static function SbbRD(op1 : Reg32, op2 : Val32) : OpCode
+    static function SbbR(op1 : Reg32, op2 : Val32) : OpCode
     {
-        return FromName2RD("sbb", op1, op2);
+        return FromName2R("sbb", op1, op2);
     }
 
     static function SbbRA(op1 : Reg32, op2 : Addr32) : OpCode
@@ -120,9 +120,9 @@ class I386
         return FromName2AR("sbb", op1, op2);
     }
 
-    static function SbbAD(op1 : Addr32, op2 : Val32) : OpCode
+    static function SbbA(op1 : Addr32, op2 : Val32) : OpCode
     {
-        return FromName2AD("sbb", op1, op2);
+        return FromName2A("sbb", op1, op2);
     }
 
     static function And(op1 : Reg32, op2 : Reg32) : OpCode
@@ -130,9 +130,9 @@ class I386
         return FromName2("and", op1, op2);
     }
 
-    static function AndRD(op1 : Reg32, op2 : Val32) : OpCode
+    static function AndR(op1 : Reg32, op2 : Val32) : OpCode
     {
-        return FromName2RD("and", op1, op2);
+        return FromName2R("and", op1, op2);
     }
 
     static function AndRA(op1 : Reg32, op2 : Addr32) : OpCode
@@ -145,9 +145,9 @@ class I386
         return FromName2AR("and", op1, op2);
     }
 
-    static function AndAD(op1 : Addr32, op2 : Val32) : OpCode
+    static function AndA(op1 : Addr32, op2 : Val32) : OpCode
     {
-        return FromName2AD("and", op1, op2);
+        return FromName2A("and", op1, op2);
     }
 
     static function Sub(op1 : Reg32, op2 : Reg32) : OpCode
@@ -155,9 +155,9 @@ class I386
         return FromName2("sub", op1, op2);
     }
 
-    static function SubRD(op1 : Reg32, op2 : Val32) : OpCode
+    static function SubR(op1 : Reg32, op2 : Val32) : OpCode
     {
-        return FromName2RD("sub", op1, op2);
+        return FromName2R("sub", op1, op2);
     }
 
     static function SubRA(op1 : Reg32, op2 : Addr32) : OpCode
@@ -170,9 +170,9 @@ class I386
         return FromName2AR("sub", op1, op2);
     }
 
-    static function SubAD(op1 : Addr32, op2 : Val32) : OpCode
+    static function SubA(op1 : Addr32, op2 : Val32) : OpCode
     {
-        return FromName2AD("sub", op1, op2);
+        return FromName2A("sub", op1, op2);
     }
 
     static function Xor(op1 : Reg32, op2 : Reg32) : OpCode
@@ -180,9 +180,9 @@ class I386
         return FromName2("xor", op1, op2);
     }
 
-    static function XorRD(op1 : Reg32, op2 : Val32) : OpCode
+    static function XorR(op1 : Reg32, op2 : Val32) : OpCode
     {
-        return FromName2RD("xor", op1, op2);
+        return FromName2R("xor", op1, op2);
     }
 
     static function XorRA(op1 : Reg32, op2 : Addr32) : OpCode
@@ -195,9 +195,9 @@ class I386
         return FromName2AR("xor", op1, op2);
     }
 
-    static function XorAD(op1 : Addr32, op2 : Val32) : OpCode
+    static function XorA(op1 : Addr32, op2 : Val32) : OpCode
     {
-        return FromName2AD("xor", op1, op2);
+        return FromName2A("xor", op1, op2);
     }
 
     static function Cmp(op1 : Reg32, op2 : Reg32) : OpCode
@@ -205,9 +205,9 @@ class I386
         return FromName2("cmp", op1, op2);
     }
 
-    static function CmpRD(op1 : Reg32, op2 : Val32) : OpCode
+    static function CmpR(op1 : Reg32, op2 : Val32) : OpCode
     {
-        return FromName2RD("cmp", op1, op2);
+        return FromName2R("cmp", op1, op2);
     }
 
     static function CmpRA(op1 : Reg32, op2 : Addr32) : OpCode
@@ -220,9 +220,9 @@ class I386
         return FromName2AR("cmp", op1, op2);
     }
 
-    static function CmpAD(op1 : Addr32, op2 : Val32) : OpCode
+    static function CmpA(op1 : Addr32, op2 : Val32) : OpCode
     {
-        return FromName2AD("cmp", op1, op2);
+        return FromName2A("cmp", op1, op2);
     }
 
     static function Test(op1 : Reg32, op2 : Reg32) : OpCode
@@ -230,9 +230,9 @@ class I386
         return FromName2("test", op1, op2);
     }
 
-    static function TestRD(op1 : Reg32, op2 : Val32) : OpCode
+    static function TestR(op1 : Reg32, op2 : Val32) : OpCode
     {
-        return FromName2RD("test", op1, op2);
+        return FromName2R("test", op1, op2);
     }
 
     static function TestRA(op1 : Reg32, op2 : Addr32) : OpCode
@@ -245,9 +245,9 @@ class I386
         return FromName2AR("test", op1, op2);
     }
 
-    static function TestAD(op1 : Addr32, op2 : Val32) : OpCode
+    static function TestA(op1 : Addr32, op2 : Val32) : OpCode
     {
-        return FromName2AD("test", op1, op2);
+        return FromName2A("test", op1, op2);
     }
 
     static function Xchg(op1 : Reg32, op2 : Reg32) : OpCode
@@ -318,7 +318,7 @@ class I386
         return OpCode.NewBytes(Util.GetBytes2(b, (byte)(0xc0 + (((int )op2) << 3) + op1)));
     }
 
-    static function FromName2RD(op : string, op1 : Reg32, op2 : Val32) : OpCode
+    static function FromName2R(op : string, op1 : Reg32, op2 : Val32) : OpCode
     {
         var bytes : byte[];
         switch (op)
@@ -391,7 +391,7 @@ class I386
         return OpCode.NewA(Util.GetBytes1(b), Addr32.NewAdM(op1, (byte)op2));
     }
 
-    static function FromName2AD(op : string, op1 : Addr32, op2 : Val32) : OpCode
+    static function FromName2A(op : string, op1 : Addr32, op2 : Val32) : OpCode
     {
         switch (op)
         {

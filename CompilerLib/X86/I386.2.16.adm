@@ -1,0 +1,385 @@
+class I386
+{
+    static function MovW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("mov", op1, op2);
+    }
+
+    static function MovWR(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return FromName2WR("mov", op1, op2);
+    }
+
+    static function MovWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromName2WRA("mov", op1, op2);
+    }
+
+    static function MovWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return FromName2WAR("mov", op1, op2);
+    }
+
+    static function MovWA(op1 : Addr32, op2 : ushort) : OpCode
+    {
+        return FromName2WA("mov", op1, op2);
+    }
+
+    static function AddW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("add", op1, op2);
+    }
+
+    static function AddWR(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return FromName2WR("add", op1, op2);
+    }
+
+    static function AddWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromName2WRA("add", op1, op2);
+    }
+
+    static function AddWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return FromName2WAR("add", op1, op2);
+    }
+
+    static function AddWA(op1 : Addr32, op2 : ushort) : OpCode
+    {
+        return FromName2WA("add", op1, op2);
+    }
+
+    static function OrW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("or", op1, op2);
+    }
+
+    static function OrWR(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return FromName2WR("or", op1, op2);
+    }
+
+    static function OrWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromName2WRA("or", op1, op2);
+    }
+
+    static function OrWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return FromName2WAR("or", op1, op2);
+    }
+
+    static function OrWA(op1 : Addr32, op2 : ushort) : OpCode
+    {
+        return FromName2WA("or", op1, op2);
+    }
+
+    static function AdcW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("adc", op1, op2);
+    }
+
+    static function AdcWR(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return FromName2WR("adc", op1, op2);
+    }
+
+    static function AdcWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromName2WRA("adc", op1, op2);
+    }
+
+    static function AdcWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return FromName2WAR("adc", op1, op2);
+    }
+
+    static function AdcWA(op1 : Addr32, op2 : ushort) : OpCode
+    {
+        return FromName2WA("adc", op1, op2);
+    }
+
+    static function SbbW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("sbb", op1, op2);
+    }
+
+    static function SbbWR(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return FromName2WR("sbb", op1, op2);
+    }
+
+    static function SbbWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromName2WRA("sbb", op1, op2);
+    }
+
+    static function SbbWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return FromName2WAR("sbb", op1, op2);
+    }
+
+    static function SbbWA(op1 : Addr32, op2 : ushort) : OpCode
+    {
+        return FromName2WA("sbb", op1, op2);
+    }
+
+    static function AndW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("and", op1, op2);
+    }
+
+    static function AndWR(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return FromName2WR("and", op1, op2);
+    }
+
+    static function AndWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromName2WRA("and", op1, op2);
+    }
+
+    static function AndWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return FromName2WAR("and", op1, op2);
+    }
+
+    static function AndWA(op1 : Addr32, op2 : ushort) : OpCode
+    {
+        return FromName2WA("and", op1, op2);
+    }
+
+    static function SubW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("sub", op1, op2);
+    }
+
+    static function SubWR(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return FromName2WR("sub", op1, op2);
+    }
+
+    static function SubWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromName2WRA("sub", op1, op2);
+    }
+
+    static function SubWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return FromName2WAR("sub", op1, op2);
+    }
+
+    static function SubWA(op1 : Addr32, op2 : ushort) : OpCode
+    {
+        return FromName2WA("sub", op1, op2);
+    }
+
+    static function XorW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("xor", op1, op2);
+    }
+
+    static function XorWR(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return FromName2WR("xor", op1, op2);
+    }
+
+    static function XorWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromName2WRA("xor", op1, op2);
+    }
+
+    static function XorWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return FromName2WAR("xor", op1, op2);
+    }
+
+    static function XorWA(op1 : Addr32, op2 : ushort) : OpCode
+    {
+        return FromName2WA("xor", op1, op2);
+    }
+
+    static function CmpW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("cmp", op1, op2);
+    }
+
+    static function CmpWR(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return FromName2WR("cmp", op1, op2);
+    }
+
+    static function CmpWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromName2WRA("cmp", op1, op2);
+    }
+
+    static function CmpWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return FromName2WAR("cmp", op1, op2);
+    }
+
+    static function CmpWA(op1 : Addr32, op2 : ushort) : OpCode
+    {
+        return FromName2WA("cmp", op1, op2);
+    }
+
+    static function TestW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("test", op1, op2);
+    }
+
+    static function TestWR(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return FromName2WR("test", op1, op2);
+    }
+
+    static function TestWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return TestWAR(op2, op1);
+    }
+
+    static function TestWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return FromName2WAR("test", op1, op2);
+    }
+
+    static function TestWA(op1 : Addr32, op2 : ushort) : OpCode
+    {
+        return FromName2WA("test", op1, op2);
+    }
+
+    static function XchgW(op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        return FromName2W("xchg", op1, op2);
+    }
+
+    static function XchgWRA(op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        return FromName2WRA("xchg", op1, op2);
+    }
+
+    static function XchgWAR(op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        return XchgWRA(op2, op1);
+    }
+
+    static function FromName2W(op : string, op1 : Reg16, op2 : Reg16) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "mov":
+            b = 0x89;
+            break;
+        case "test":
+            b = 0x85;
+            break;
+        case "xchg":
+            if (op1 == Reg16.AX)
+                return OpCode.NewBytes(Util.GetBytes2(0x66, (byte)(0x90 + op2)));
+            else if (op2 == Reg16.AX)
+                return OpCode.NewBytes(Util.GetBytes2(0x66, (byte)(0x90 + op1)));
+            else
+                b = 0x87;
+            break;
+        default:
+            int code = GetOperatorCode(op);
+            if (code < 0)
+                raise("invalid operator: " + op);
+            b = (byte)(code * 8 + 1);
+            break;
+        }
+        return OpCode.NewBytes(Util.GetBytes3(0x66, b, (byte)(0xc0 + (((int )op2) << 3) + op1)));
+    }
+
+    static function FromName2WR(op : string, op1 : Reg16, op2 : ushort) : OpCode
+    {
+        var bytes : byte[];
+        switch (op)
+        {
+        case "mov":
+            bytes = Util.GetBytes2(0x66, (byte)(0xb8 + op1));
+            break;
+        case "test":
+            if (op1 == Reg16.AX)
+                bytes = Util.GetBytes2(0x66, 0xa9);
+            else
+                bytes = Util.GetBytes3(0x66, 0xf7, (byte)(0xc0 + op1));
+            break;
+        default:
+            int code = GetOperatorCode(op);
+            if (code < 0)
+                raise("invalid operator: " + op);
+            if (op1 == Reg16.AX)
+                bytes = Util.GetBytes2(0x66, (byte)(code * 8 + 5));
+            else
+                bytes = Util.GetBytes3(0x66, 0x81, (byte)(code * 8 + 0xc0 + op1));
+            break;
+        }
+        return OpCode.NewW(bytes, op2);
+    }
+
+    static function FromName2WRA(op : string, op1 : Reg16, op2 : Addr32) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "mov":
+            if (op1 == Reg16.AX && op2.IsAddress)
+                return OpCode.NewD(Util.GetBytes2(0x66, 0xa1), op2.Address);
+            b = 0x8b;
+            break;
+        case "xchg":
+            b = 0x87;
+            break;
+        default:
+            int code = GetOperatorCode(op);
+            if (code < 0)
+                raise("invalid operator: " + op);
+            b = (byte)(code * 8 + 3);
+            break;
+        }
+        return OpCode.NewA(Util.GetBytes2(0x66, b), Addr32.NewAdM(op2, (byte)op1));
+    }
+
+    static function FromName2WAR(op : string, op1 : Addr32, op2 : Reg16) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "mov":
+            if (op2 == Reg16.AX && op1.IsAddress)
+                return OpCode.NewD(Util.GetBytes2(0x66, 0xa3), op1.Address);
+            b = 0x89;
+            break;
+        case "test":
+            b = 0x85;
+            break;
+        default:
+            int code = GetOperatorCode(op);
+            if (code < 0)
+                raise("invalid operator: " + op);
+            b = (byte)(code * 8 + 1);
+            break;
+        }
+        return OpCode.NewA(Util.GetBytes2(0x66, b), Addr32.NewAdM(op1, (byte)op2));
+    }
+
+    static function FromName2WA(op : string, op1 : Addr32, op2 : ushort) : OpCode
+    {
+        switch (op)
+        {
+        case "mov":
+            return OpCode.NewWA(Util.GetBytes2(0x66, 0xc7), op2, op1);
+        case "test":
+            return OpCode.NewWA(Util.GetBytes2(0x66, 0xf7), op2, op1);
+        default:
+            int code = GetOperatorCode(op);
+            if (code < 0)
+                raise("invalid operator: " + op);
+            return OpCode.NewWA(Util.GetBytes2(0x66, 0x81), op2, Addr32.NewAdM(op1, (byte)code));
+        }
+    }
+}
