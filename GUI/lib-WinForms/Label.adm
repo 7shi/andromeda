@@ -1,7 +1,0 @@
-﻿class Label : Control
-{
-	function ctor()
-	{
-		lpClassName = "Static";
-	}
-}

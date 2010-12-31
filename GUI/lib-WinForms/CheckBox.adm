@@ -1,7 +1,0 @@
-﻿class CheckBox : Button
-{
-	function ctor()
-	{
-		SetStyle(BS_AUTOCHECKBOX, true);
-	}
-}

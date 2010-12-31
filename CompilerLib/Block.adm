@@ -3,9 +3,7 @@
 class Byte
 {
 
-    byte _Value;
-    function get_Value : byte { return _Value; }
-    function set_Value(value : byte) { _Value = value; }
+    byte Value;
 
     static function New(v : byte) : Byte
     {
@@ -18,9 +16,7 @@ class Byte
 class UShort
 {
 
-    ushort _Value;
-    function get_Value : ushort { return _Value; }
-    function set_Value(value : ushort) { _Value = value; }
+    ushort Value;
 
     static function New(v : ushort) : UShort
     {
@@ -33,9 +29,7 @@ class UShort
 class UInt
 {
 
-    uint _Value;
-    function get_Value : uint { return _Value; }
-    function set_Value(value : uint) { _Value = value; }
+    uint Value;
 
     static function New(v : uint) : UInt
     {
@@ -48,9 +42,7 @@ class UInt
 class Int
 {
 
-    int _Value;
-    function get_Value : int { return _Value; }
-    function set_Value(value : int) { _Value = value; }
+    int Value;
 
     static function New(v : int) : Int
     {
