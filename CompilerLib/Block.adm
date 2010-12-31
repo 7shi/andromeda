@@ -201,10 +201,27 @@ class Block
             else if (obj is char[])
             {
                 var chars = (char[])obj;
-                ms.WriteWithLength(chars, chars.Length * sizeof(char));
+                for (int i = 0; i < chars.Length; i++)
+                {
+                    var ch = chars[i];
+                    if (ch < 128)
+                        ms.WriteByte((byte)ch);
+                    else
+                        ms.WriteByte('?');
+                }
             }
             else if (obj is string)
-                ms.WriteString((string)obj);
+            {
+                var s = obj as string;
+                for (int i = 0; i < s.Length; i++)
+                {
+                    char ch = s[i];
+                    if (ch < 128)
+                        ms.WriteByte((byte)ch);
+                    else
+                        ms.WriteByte('?');
+                }
+            }
             else if (obj is Block)
                 (obj as Block).Write(ms);
             else if (obj is Val32)
