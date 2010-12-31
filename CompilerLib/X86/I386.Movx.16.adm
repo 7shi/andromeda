@@ -1,0 +1,56 @@
+class I386
+{
+    static function MovzxW(op1 : Reg32, op2 : Reg16) : OpCode
+    {
+        return FromNameW("movzx", op1, op2);
+    }
+
+    static function MovzxWA(op1 : Reg32, op2 : Addr32) : OpCode
+    {
+        return FromNameWA("movzx", op1, op2);
+    }
+
+    static function MovsxW(op1 : Reg32, op2 : Reg16) : OpCode
+    {
+        return FromNameW("movsx", op1, op2);
+    }
+
+    static function MovsxWA(op1 : Reg32, op2 : Addr32) : OpCode
+    {
+        return FromNameWA("movsx", op1, op2);
+    }
+
+    static function FromNameW(op : string, op1 : Reg32, op2 : Reg16) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "movzx":
+            b = 0xb7;
+            break;
+        case "movsx":
+            b = 0xbf;
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        return OpCode.NewBytes(Util.GetBytes3(0x0f, b, (byte)(0xc0 + (((int )op1) << 3) + op2)));
+    }
+
+    static function FromNameWA(op : string, op1 : Reg32, op2 : Addr32) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "movzx":
+            b = 0xb7;
+            break;
+        case "movsx":
+            b = 0xbf;
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        return OpCode.NewA(Util.GetBytes2(0x0f, b), Addr32.NewAdM(op2, (byte)op1));
+    }
+}
