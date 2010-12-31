@@ -1,0 +1,16 @@
+class WriterBase
+{
+    virtual WriteBlock(block : Block) {}
+
+    function ToBlock() : Block
+    {
+        var ret = new Block();
+        WriteBlock(ret);
+        return ret;
+    }
+
+    function Write(ms : MemoryStream)
+    {
+        ToBlock().Write(ms);
+    }
+}
