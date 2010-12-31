@@ -1,0 +1,107 @@
+struct CallType
+{
+    static function get_CDecl { return (CallType)0; }
+    static function get_Std { return (CallType)1; }
+}
+
+struct Reg32
+{
+    static function get_EAX { return (Reg32)0; }
+    static function get_ECX { return (Reg32)1; }
+    static function get_EDX { return (Reg32)2; }
+    static function get_EBX { return (Reg32)3; }
+    static function get_ESP { return (Reg32)4; }
+    static function get_EBP { return (Reg32)5; }
+    static function get_ESI { return (Reg32)6; }
+    static function get_EDI { return (Reg32)7; }
+}
+
+struct Reg16
+{
+    static function get_AX { return (Reg16)0; }
+    static function get_CX { return (Reg16)1; }
+    static function get_DX { return (Reg16)2; }
+    static function get_BX { return (Reg16)3; }
+    static function get_SP { return (Reg16)4; }
+    static function get_BP { return (Reg16)5; }
+    static function get_SI { return (Reg16)6; }
+    static function get_DI { return (Reg16)7; }
+}
+
+struct Reg8
+{
+    static function get_AL { return (Reg8)0; }
+    static function get_CL { return (Reg8)1; }
+    static function get_DL { return (Reg8)2; }
+    static function get_BL { return (Reg8)3; }
+    static function get_AH { return (Reg8)4; }
+    static function get_CH { return (Reg8)5; }
+    static function get_DH { return (Reg8)6; }
+    static function get_BH { return (Reg8)7; }
+}
+
+struct SegReg
+{
+    static function get_SS { return (SegReg)0; }
+    static function get_CS { return (SegReg)1; }
+    static function get_DS { return (SegReg)2; }
+    static function get_ES { return (SegReg)3; }
+}
+
+struct Cc
+{
+    static function get_O { return (Cc)0; }
+    static function get_NO { return (Cc)1; }
+    static function get_C { return (Cc)2; }
+    static function get_B { return (Cc)C; }
+    static function get_NAE { return (Cc)C; }
+    static function get_NC { return (Cc)3; }
+    static function get_AE { return (Cc)NC; }
+    static function get_NB { return (Cc)NC; }
+    static function get_Z { return (Cc)4; }
+    static function get_E { return (Cc)Z; }
+    static function get_NZ { return (Cc)5; }
+    static function get_NE { return (Cc)NZ; }
+    static function get_BE { return (Cc)6; }
+    static function get_NA { return (Cc)BE; }
+    static function get_NBE { return (Cc)7; }
+    static function get_A { return (Cc)NBE; }
+    static function get_S { return (Cc)8; }
+    static function get_NS { return (Cc)9; }
+    static function get_P { return (Cc)10; }
+    static function get_PE { return (Cc)P; }
+    static function get_NP { return (Cc)11; }
+    static function get_PO { return (Cc)NP; }
+    static function get_L { return (Cc)12; }
+    static function get_NGE { return (Cc)L; }
+    static function get_NL { return (Cc)13; }
+    static function get_GE { return (Cc)NL; }
+    static function get_LE { return (Cc)14; }
+    static function get_NG { return (Cc)LE; }
+    static function get_NLE { return (Cc)15; }
+    static function get_G { return (Cc)NLE; }
+}
+
+struct Mm
+{
+    static function get__0 { return (Mm)0; }
+    static function get__1 { return (Mm)1; }
+    static function get__2 { return (Mm)2; }
+    static function get__3 { return (Mm)3; }
+    static function get__4 { return (Mm)4; }
+    static function get__5 { return (Mm)5; }
+    static function get__6 { return (Mm)6; }
+    static function get__7 { return (Mm)7; }
+}
+
+struct Xmm
+{
+    static function get__0 { return (Xmm)0; }
+    static function get__1 { return (Xmm)1; }
+    static function get__2 { return (Xmm)2; }
+    static function get__3 { return (Xmm)3; }
+    static function get__4 { return (Xmm)4; }
+    static function get__5 { return (Xmm)5; }
+    static function get__6 { return (Xmm)6; }
+    static function get__7 { return (Xmm)7; }
+}

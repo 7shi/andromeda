@@ -58,4 +58,38 @@ class Util
         b[pos + 2] = (byte)(v >> 16);
         b[pos + 3] = (byte)(v >> 24);
     }
+
+    static function GetBytes1(b1 : byte)
+    {
+        var ret = new byte[1];
+        ret[0] = b1;
+        return ret;
+    }
+
+    static function GetBytes2(b1 : byte, b2 : byte)
+    {
+        var ret = new byte[2];
+        ret[0] = b1;
+        ret[1] = b2;
+        return ret;
+    }
+
+    static function GetBytes3(b1 : byte, b2 : byte, b3 : byte)
+    {
+        var ret = new byte[3];
+        ret[0] = b1;
+        ret[1] = b2;
+        ret[2] = b3;
+        return ret;
+    }
+
+    static function GetBytes4(b1 : byte, b2 : byte, b3 : byte, b4 : byte)
+    {
+        var ret = new byte[4];
+        ret[0] = b1;
+        ret[1] = b2;
+        ret[2] = b3;
+        ret[3] = b4;
+        return ret;
+    }
 }
