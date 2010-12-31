@@ -1,10 +1,15 @@
 ﻿const string VERSION = "Andromeda ver.1.0.2010.1231";
 
+printfln(VERSION);
+I386.Test0();
+{ _Finish _finish; }
+
 extern "kernel32.dll" __stdcall ExitProcess(uExitCode);
 
 function raise(msg : string)
 {
 	printfln(msg);
+	{ _Finish _finish; }
 	ExitProcess(1);
 }
 
