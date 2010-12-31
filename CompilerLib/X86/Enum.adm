@@ -53,33 +53,33 @@ struct Cc
     static function get_O { return (Cc)0; }
     static function get_NO { return (Cc)1; }
     static function get_C { return (Cc)2; }
-    static function get_B { return (Cc)C; }
-    static function get_NAE { return (Cc)C; }
+    static function get_B { return C; }
+    static function get_NAE { return C; }
     static function get_NC { return (Cc)3; }
-    static function get_AE { return (Cc)NC; }
-    static function get_NB { return (Cc)NC; }
+    static function get_AE { return NC; }
+    static function get_NB { return NC; }
     static function get_Z { return (Cc)4; }
-    static function get_E { return (Cc)Z; }
+    static function get_E { return Z; }
     static function get_NZ { return (Cc)5; }
-    static function get_NE { return (Cc)NZ; }
+    static function get_NE { return NZ; }
     static function get_BE { return (Cc)6; }
-    static function get_NA { return (Cc)BE; }
+    static function get_NA { return BE; }
     static function get_NBE { return (Cc)7; }
-    static function get_A { return (Cc)NBE; }
+    static function get_A { return NBE; }
     static function get_S { return (Cc)8; }
     static function get_NS { return (Cc)9; }
     static function get_P { return (Cc)10; }
-    static function get_PE { return (Cc)P; }
+    static function get_PE { return P; }
     static function get_NP { return (Cc)11; }
-    static function get_PO { return (Cc)NP; }
+    static function get_PO { return NP; }
     static function get_L { return (Cc)12; }
-    static function get_NGE { return (Cc)L; }
+    static function get_NGE { return L; }
     static function get_NL { return (Cc)13; }
-    static function get_GE { return (Cc)NL; }
+    static function get_GE { return NL; }
     static function get_LE { return (Cc)14; }
-    static function get_NG { return (Cc)LE; }
+    static function get_NG { return LE; }
     static function get_NLE { return (Cc)15; }
-    static function get_G { return (Cc)NLE; }
+    static function get_G { return NLE; }
 }
 
 struct Mm

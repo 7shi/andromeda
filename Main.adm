@@ -7,3 +7,28 @@ function raise(msg : string)
 	printfln(msg);
 	ExitProcess(1);
 }
+
+function getASCIIBytes(s : string)
+{
+	var ret = new byte[s.Length];
+	for (int i = 0; i < ret.Length; i++)
+	{
+		char ch = s[i];
+		if (ch < 128) ret[i] = ch; else ret[i] = '?';
+	}
+	return ret;
+}
+
+class BitConverter
+{
+	static function ToString(b : byte[])
+	{
+		var sb = new StringBuilder();
+		for (int i = 0; i < b.Length; i++)
+		{
+			if (i > 0) sb.Append("-");
+			sb.AppendFormat("%02x", b[i]);
+		}
+		return sb.ToString();
+	}
+}
