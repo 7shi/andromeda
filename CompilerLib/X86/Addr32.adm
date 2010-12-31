@@ -1,0 +1,148 @@
+class Addr32
+{
+    bool isInitialized;
+    var reg : Reg32;
+    int disp;
+    var address : Val32;
+    byte middleBits;
+
+    function get_IsInitialized : bool
+    {
+        return isInitialized;
+    }
+
+    function get_Register : Reg32
+    {
+        return reg;
+    }
+
+    function get_Disp : int
+    {
+        return disp;
+    }
+
+    function get_Address : Val32
+    {
+        return address;
+    }
+
+    function get_IsAddress : bool
+    {
+        return address != null;
+    }
+
+    static function New(r : Reg32) : Addr32
+    {
+        var ret = new Addr32();
+        ret.isInitialized = true;
+        ret.reg = r;
+        return ret;
+    }
+
+    static function NewRO(r : Reg32, offset : int) : Addr32
+    {
+        var ret = new Addr32();
+        ret.isInitialized = true;
+        ret.reg = r;
+        ret.disp = offset;
+        return ret;
+    }
+
+    static function NewV(ad : Val32) : Addr32
+    {
+        var ret = new Addr32();
+        ret.isInitialized = true;
+        ret.address = ad;
+        return ret;
+    }
+
+    static function NewUInt(ad : uint) : Addr32
+    {
+        return NewV(Val32.New(ad));
+    }
+
+    static function NewAd(src : Addr32) : Addr32
+    {
+        var ret = new Addr32();
+        ret.isInitialized = true;
+        ret.Set(src);
+        return ret;
+    }
+
+    static function NewAdM(src : Addr32, middleBits : byte) : Addr32
+    {
+        var ret = NewAd(src);
+        ret.middleBits = middleBits;
+        return ret;
+    }
+
+    function Set(src : Addr32)
+    {
+        isInitialized = src.isInitialized;
+        reg = src.reg;
+        disp = src.disp;
+        address = src.address;
+        middleBits = src.middleBits;
+    }
+
+    function GetModRM()
+    {
+        if (address != null)
+            return Util.AddUIntToBytes(Util.GetBytes1(0x05), address.Value);
+        var sbdisp = (sbyte)disp;
+        if (reg == Reg32.ESP)
+        {
+            if (disp == 0)
+                return Util.GetBytes2(0x04, 0x24);
+            else if (disp == sbdisp)
+                return Util.GetBytes3(0x44, 0x24, (byte)sbdisp);
+            else
+                return Util.AddUIntToBytes(Util.GetBytes2(0x84, 0x24), (uint)disp);
+        }
+        else if (reg == Reg32.EBP || disp != 0)
+        {
+            if (disp == sbdisp)
+                return Util.GetBytes2((byte)(0x40 + (int )reg), (byte)sbdisp);
+            else
+                return Util.AddUIntToBytes(Util.GetBytes1((byte)(0x80 + (int)reg)), (uint)disp);
+        }
+        else
+        {
+            return Util.GetBytes1((byte)reg);
+        }
+    }
+
+    function GetCodes()
+    {
+        var ret = GetModRM();
+        ret[0] += (byte)(middleBits << 3);
+        return ret;
+    }
+
+    function Write(block : Block)
+    {
+        if (address != null)
+        {
+            block.AddByte((byte)(0x05 + (middleBits << 3)));
+            block.AddVal32(address);
+        }
+        else
+        {
+            block.AddBytes(GetCodes());
+        }
+    }
+
+    function Add(n : int)
+    {
+        if (n == 0)
+            return ;
+        if (address != null)
+        {
+            address = Val32.New2(address, Val32.NewI(n));
+        }
+        else
+        {
+            disp += n;
+        }
+    }
+}
