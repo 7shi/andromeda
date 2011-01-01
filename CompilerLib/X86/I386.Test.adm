@@ -5,9 +5,9 @@ class I386
         Test1_32();
         Test1_16();
         Test1_8();
-        //Test2_32();
-        //Test2_16();
-        //Test2_8();
+        Test2_32();
+        Test2_16();
+        Test2_8();
         //TestShift_32();
         //TestShift_16();
         //TestShift_8();

@@ -268,6 +268,7 @@ class I386
     static function FromName2W(op : string, op1 : Reg16, op2 : Reg16) : OpCode
     {
         byte b;
+        int code;
         switch (op)
         {
         case "mov":
@@ -285,7 +286,7 @@ class I386
                 b = 0x87;
             break;
         default:
-            int code = GetOperatorCode(op);
+            code = GetOperatorCode(op);
             if (code < 0)
                 raise("invalid operator: " + op);
             b = (byte)(code * 8 + 1);
@@ -297,6 +298,7 @@ class I386
     static function FromName2WR(op : string, op1 : Reg16, op2 : ushort) : OpCode
     {
         var bytes : byte[];
+        int code;
         switch (op)
         {
         case "mov":
@@ -309,7 +311,7 @@ class I386
                 bytes = Util.GetBytes3(0x66, 0xf7, (byte)(0xc0 + op1));
             break;
         default:
-            int code = GetOperatorCode(op);
+            code = GetOperatorCode(op);
             if (code < 0)
                 raise("invalid operator: " + op);
             if (op1 == Reg16.AX)
@@ -324,6 +326,7 @@ class I386
     static function FromName2WRA(op : string, op1 : Reg16, op2 : Addr32) : OpCode
     {
         byte b;
+        int code;
         switch (op)
         {
         case "mov":
@@ -335,7 +338,7 @@ class I386
             b = 0x87;
             break;
         default:
-            int code = GetOperatorCode(op);
+            code = GetOperatorCode(op);
             if (code < 0)
                 raise("invalid operator: " + op);
             b = (byte)(code * 8 + 3);
@@ -347,6 +350,7 @@ class I386
     static function FromName2WAR(op : string, op1 : Addr32, op2 : Reg16) : OpCode
     {
         byte b;
+        int code;
         switch (op)
         {
         case "mov":
@@ -358,7 +362,7 @@ class I386
             b = 0x85;
             break;
         default:
-            int code = GetOperatorCode(op);
+            code = GetOperatorCode(op);
             if (code < 0)
                 raise("invalid operator: " + op);
             b = (byte)(code * 8 + 1);
@@ -369,6 +373,7 @@ class I386
 
     static function FromName2WA(op : string, op1 : Addr32, op2 : ushort) : OpCode
     {
+        int code;
         switch (op)
         {
         case "mov":
@@ -376,7 +381,7 @@ class I386
         case "test":
             return OpCode.NewWA(Util.GetBytes2(0x66, 0xf7), op2, op1);
         default:
-            int code = GetOperatorCode(op);
+            code = GetOperatorCode(op);
             if (code < 0)
                 raise("invalid operator: " + op);
             return OpCode.NewWA(Util.GetBytes2(0x66, 0x81), op2, Addr32.NewAdM(op1, (byte)code));

@@ -268,6 +268,7 @@ class I386
     static function FromName2B(op : string, op1 : Reg8, op2 : Reg8) : OpCode
     {
         byte b;
+        int code;
         switch (op)
         {
         case "mov":
@@ -280,7 +281,7 @@ class I386
             b = 0x86;
             break;
         default:
-            int code = GetOperatorCode(op);
+            code = GetOperatorCode(op);
             if (code < 0)
                 raise("invalid operator: " + op);
             b = (byte)(code * 8);
@@ -292,6 +293,7 @@ class I386
     static function FromName2BR(op : string, op1 : Reg8, op2 : byte) : OpCode
     {
         var bytes : byte[];
+        int code;
         switch (op)
         {
         case "mov":
@@ -304,7 +306,7 @@ class I386
                 bytes = Util.GetBytes2(0xf6, (byte)(0xc0 + op1));
             break;
         default:
-            int code = GetOperatorCode(op);
+            code = GetOperatorCode(op);
             if (code < 0)
                 raise("invalid operator: " + op);
             if (op1 == Reg8.AL)
@@ -319,6 +321,7 @@ class I386
     static function FromName2BRA(op : string, op1 : Reg8, op2 : Addr32) : OpCode
     {
         byte b;
+        int code;
         switch (op)
         {
         case "mov":
@@ -330,7 +333,7 @@ class I386
             b = 0x86;
             break;
         default:
-            int code = GetOperatorCode(op);
+            code = GetOperatorCode(op);
             if (code < 0)
                 raise("invalid operator: " + op);
             b = (byte)(code * 8 + 2);
@@ -342,6 +345,7 @@ class I386
     static function FromName2BAR(op : string, op1 : Addr32, op2 : Reg8) : OpCode
     {
         byte b;
+        int code;
         switch (op)
         {
         case "mov":
@@ -353,7 +357,7 @@ class I386
             b = 0x84;
             break;
         default:
-            int code = GetOperatorCode(op);
+            code = GetOperatorCode(op);
             if (code < 0)
                 raise("invalid operator: " + op);
             b = (byte)(code * 8);
@@ -364,6 +368,7 @@ class I386
 
     static function FromName2BA(op : string, op1 : Addr32, op2 : byte) : OpCode
     {
+        int code;
         switch (op)
         {
         case "mov":
@@ -371,7 +376,7 @@ class I386
         case "test":
             return OpCode.NewBA(Util.GetBytes1(0xf6), op2, op1);
         default:
-            int code = GetOperatorCode(op);
+            code = GetOperatorCode(op);
             if (code < 0)
                 raise("invalid operator: " + op);
             return OpCode.NewBA(Util.GetBytes1(0x80), op2, Addr32.NewAdM(op1, (byte)code));
