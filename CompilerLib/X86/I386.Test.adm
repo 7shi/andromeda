@@ -8,9 +8,9 @@ class I386
         Test2_32();
         Test2_16();
         Test2_8();
-        //TestShift_32();
-        //TestShift_16();
-        //TestShift_8();
+        TestShift_32();
+        TestShift_16();
+        TestShift_8();
         //TestMovx_16();
         //TestMovx_8();
 
