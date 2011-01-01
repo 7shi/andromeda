@@ -1,0 +1,178 @@
+class I386
+{
+    static function Shl(op1 : Reg32, op2 : byte) : OpCode
+    {
+        return Shift("shl", op1, op2);
+    }
+
+    static function ShlR(op1 : Reg32, op2 : Reg8) : OpCode
+    {
+        return ShiftR("shl", op1, op2);
+    }
+
+    static function ShlA(op1 : Addr32, op2 : byte) : OpCode
+    {
+        return ShiftA("shl", op1, op2);
+    }
+
+    static function ShlAR(op1 : Addr32, op2 : Reg8) : OpCode
+    {
+        return ShiftAR("shl", op1, op2);
+    }
+
+    static function Shr(op1 : Reg32, op2 : byte) : OpCode
+    {
+        return Shift("shr", op1, op2);
+    }
+
+    static function ShrR(op1 : Reg32, op2 : Reg8) : OpCode
+    {
+        return ShiftR("shr", op1, op2);
+    }
+
+    static function ShrA(op1 : Addr32, op2 : byte) : OpCode
+    {
+        return ShiftA("shr", op1, op2);
+    }
+
+    static function ShrAR(op1 : Addr32, op2 : Reg8) : OpCode
+    {
+        return ShiftAR("shr", op1, op2);
+    }
+
+    static function Sal(op1 : Reg32, op2 : byte) : OpCode
+    {
+        return Shift("sal", op1, op2);
+    }
+
+    static function SalR(op1 : Reg32, op2 : Reg8) : OpCode
+    {
+        return ShiftR("sal", op1, op2);
+    }
+
+    static function SalA(op1 : Addr32, op2 : byte) : OpCode
+    {
+        return ShiftA("sal", op1, op2);
+    }
+
+    static function SalAR(op1 : Addr32, op2 : Reg8) : OpCode
+    {
+        return ShiftAR("sal", op1, op2);
+    }
+
+    static function Sar(op1 : Reg32, op2 : byte) : OpCode
+    {
+        return Shift("sar", op1, op2);
+    }
+
+    static function SarR(op1 : Reg32, op2 : Reg8) : OpCode
+    {
+        return ShiftR("sar", op1, op2);
+    }
+
+    static function SarA(op1 : Addr32, op2 : byte) : OpCode
+    {
+        return ShiftA("sar", op1, op2);
+    }
+
+    static function SarAR(op1 : Addr32, op2 : Reg8) : OpCode
+    {
+        return ShiftAR("sar", op1, op2);
+    }
+
+    static function Shift(op : string, op1 : Reg32, op2 : byte) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "shl":
+        case "sal":
+            b = (byte)(0xe0 + op1);
+            break;
+        case "shr":
+            b = (byte)(0xe8 + op1);
+            break;
+        case "sar":
+            b = (byte)(0xf8 + op1);
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        if (op2 == 1)
+            return OpCode.NewBytes(Util.GetBytes2(0xd1, b));
+        else
+            return OpCode.NewB(Util.GetBytes2(0xc1, b), op2);
+    }
+
+    static function ShiftR(op : string, op1 : Reg32, op2 : Reg8) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "shl":
+        case "sal":
+            b = (byte)(0xe0 + op1);
+            break;
+        case "shr":
+            b = (byte)(0xe8 + op1);
+            break;
+        case "sar":
+            b = (byte)(0xf8 + op1);
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        if (op2 != Reg8.CL)
+            raise("invalid register: " + op2);
+        else
+            return OpCode.NewBytes(Util.GetBytes2(0xd3, b));
+    }
+
+    static function ShiftA(op : string, op1 : Addr32, op2 : byte) : OpCode
+    {
+        var ad : Addr32;
+        switch (op)
+        {
+        case "shl":
+        case "sal":
+            ad = Addr32.NewAdM(op1, 4);
+            break;
+        case "shr":
+            ad = Addr32.NewAdM(op1, 5);
+            break;
+        case "sar":
+            ad = Addr32.NewAdM(op1, 7);
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        if (op2 == 1)
+            return OpCode.NewA(Util.GetBytes1(0xd1), ad);
+        else
+            return OpCode.NewBA(Util.GetBytes1(0xc1), op2, ad);
+    }
+
+    static function ShiftAR(op : string, op1 : Addr32, op2 : Reg8) : OpCode
+    {
+        var ad : Addr32;
+        switch (op)
+        {
+        case "shl":
+        case "sal":
+            ad = Addr32.NewAdM(op1, 4);
+            break;
+        case "shr":
+            ad = Addr32.NewAdM(op1, 5);
+            break;
+        case "sar":
+            ad = Addr32.NewAdM(op1, 7);
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        if (op2 != Reg8.CL)
+            raise("invalid register: " + op2);
+        else
+            return OpCode.NewA(Util.GetBytes1(0xd3), ad);
+    }
+}
