@@ -1,4 +1,4 @@
-﻿const string VERSION = "Andromeda ver.1.0.2010.1231";
+﻿const string VERSION = "Andromeda ver.1.0.2011.0101";
 
 printfln(VERSION);
 I386.Test0();
