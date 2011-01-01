@@ -1,0 +1,39 @@
+class Symbol
+{
+    ushort Hint;
+    var Name : string;
+    var hintAddress = Val32.NewI(0);
+    var importRef = Val32.NewB((uint)0, true);
+
+    function get_ImportRef : Val32
+    {
+        return importRef;
+    }
+
+    static function New(hint : ushort, name : string) : Symbol
+    {
+        var ret = new Symbol();
+        ret.Hint = hint;
+        ret.Name = name;
+        return ret;
+    }
+
+    function get_NameSize : int
+    {
+        return HeaderBase.GetPaddedSize(4, Name);
+    }
+
+    function WriteLookup(block : Block, lookup : bool)
+    {
+        if (!lookup)
+            importRef.Value = block.Current;
+        block.AddVal32(hintAddress);
+    }
+
+    function Write(block : Block)
+    {
+        hintAddress.Value = block.Current;
+        block.AddUShort(Hint);
+        block.AddString(HeaderBase.Pad(NameSize, Name));
+    }
+}

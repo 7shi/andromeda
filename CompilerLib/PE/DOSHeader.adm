@@ -1,0 +1,49 @@
+class DOSHeader : HeaderBase
+{
+    var signature : string = "MZ";
+    ushort bytes_in_last_block = 0x90;
+    ushort blocks_in_file = 3;
+    ushort num_relocs = 0;
+    ushort header_paragraphs = 4;
+    ushort min_extra_paragraphs = 0;
+    ushort max_extra_paragraphs = 0xffff;
+    ushort ss = 0;
+    ushort sp = 0xb8;
+    ushort checksum = 0;
+    ushort ip = 0;
+    ushort cs = 0;
+    ushort reloc_table_offset = 0x40;
+    ushort overlay_number = 0;
+
+    override WriteBlock(block : Block)
+    {
+        block.AddString(signature);
+        block.AddUShort(bytes_in_last_block);
+        block.AddUShort(blocks_in_file);
+        block.AddUShort(num_relocs);
+        block.AddUShort(header_paragraphs);
+        block.AddUShort(min_extra_paragraphs);
+        block.AddUShort(max_extra_paragraphs);
+        block.AddUShort(ss);
+        block.AddUShort(sp);
+        block.AddUShort(checksum);
+        block.AddUShort(ip);
+        block.AddUShort(cs);
+        block.AddUShort(reloc_table_offset);
+        block.AddUShort(overlay_number);
+    }
+
+    static function get_Stub
+    {
+        var ret = new OpCode[8];
+        ret[0] = I8086.PushS(SegReg.CS);
+        ret[1] = I8086.PopS(SegReg.DS);
+        ret[2] = I8086.Mov(Reg16.DX, 0x000e);
+        ret[3] = I8086.MovB(Reg8.AH, 0x09);
+        ret[4] = I8086.Int(0x21);
+        ret[5] = I8086.Mov(Reg16.AX, 0x4c01);
+        ret[6] = I8086.Int(0x21);
+        ret[7] = OpCode.NewString("This program cannot be run in DOS mode.\r\n$");
+        return ret;
+    }
+}

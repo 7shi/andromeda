@@ -1,0 +1,21 @@
+class BitConverter
+{
+    static function ToString(b : byte[])
+    {
+        var sb = new StringBuilder();
+        for (int i = 0; i < b.Length; i++)
+        {
+            if (i > 0) sb.Append("-");
+            sb.AppendFormat("%02X", b[i]);
+        }
+        return sb.ToString();
+    }
+
+    static function ToUInt32(b : byte[], pos) : uint
+    {
+        return b[pos]
+            | (b[pos + 1] << 8)
+            | (b[pos + 2] << 16)
+            | (b[pos + 3] << 24);
+    }
+}

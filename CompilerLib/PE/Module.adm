@@ -1,0 +1,221 @@
+class Module
+{
+    var DOSHeader = new DOSHeader();
+
+    var PEHeader = new PEFileHeader();
+    var Standard = new PEHeaderStandardFields();
+    var Specific = new PEHeaderWindowsNTSpecificFields();
+    var DataDirs = new PEHeaderDataDirectories();
+
+    var Sections = new ArrayList();
+    var Text = new TextSection();
+    var Data = DataSection.New(".data");
+    var RData = DataSection.New(".rdata");
+    var BSS = DataSection.New(".bss");
+    var Import = new ImportSection();
+
+    static function EncodeString(s : string)
+    {
+        var ret = new byte[(s.Length + 1) * 2];
+        memcpy(ret, s, ret.Length);
+        return ret;
+    }
+
+    function GetFunction(lib : string, sym : string) : Addr32
+    {
+        return Addr32.NewD(Import.Add(lib, sym).ImportRef);
+    }
+
+    function GetString(s : string) : Val32
+    {
+        return RData.AddString(s).Address;
+    }
+
+    function GetBuffer(name : string, size : int) : Val32
+    {
+        return BSS.AddBuffer(name, size).Address;
+    }
+
+    function GetInt32(name : string) : Val32
+    {
+        return Data.AddBuffer(name, sizeof(int )).Address;
+    }
+
+    function GetSection(name : string) : SectionHeader
+    {
+        for (int i = 0; i < Sections.Count; i++)
+        {
+            var sb = Sections.Get(i) as SectionBase;
+            if (sb.Name == name) return sb.Header;
+        }
+        return null;
+    }
+
+    function CreateBlock(sb : SectionBase) : Block
+    {
+        if (sb.Header != null)
+            return sb.ToBlock(sb.Header.VirtualAddress);
+        else
+            return sb.ToBlock(GetNextVirtualAddress());
+    }
+
+    function AddSection(sb : SectionBase) : SectionHeader
+    {
+        if (Sections.Count == 16)
+        {
+            raise("Maximum sections.");
+        }
+        var ret = new SectionHeader();
+        ret.Name = sb.Name;
+        ret.VirtualSize = CreateBlock(sb).Length;
+        ret.VirtualAddress = GetNextVirtualAddress();
+        ret.SizeOfRawData = Align(ret.VirtualSize, Specific.FileAlignment);
+        ret.PointerToRawData = GetNextPointerToRawData();
+        switch (ret.Name)
+        {
+        case ".text":
+            ret.Characteristics = IMAGE_SCN.CNT_CODE | IMAGE_SCN.CNT_INITIALIZED_DATA | IMAGE_SCN.MEM_EXECUTE | IMAGE_SCN.MEM_READ;
+            break;
+        case ".rdata":
+            ret.Characteristics = IMAGE_SCN.CNT_INITIALIZED_DATA | IMAGE_SCN.MEM_READ;
+            break;
+        case ".bss":
+            ret.Characteristics = IMAGE_SCN.CNT_UNINITIALIZED_DATA | IMAGE_SCN.MEM_READ | IMAGE_SCN.MEM_WRITE;
+            break;
+        default:
+            ret.Characteristics = IMAGE_SCN.CNT_INITIALIZED_DATA | IMAGE_SCN.MEM_READ | IMAGE_SCN.MEM_WRITE;
+            break;
+        }
+        sb.Header = ret;
+        Sections.Add(sb);
+        return ret;
+    }
+
+    function GetNextVirtualAddress() : uint
+    {
+        if (Sections.Count == 0)
+            return Specific.SectionAlignment;
+        var last = (Sections.Get(Sections.Count - 1) as SectionBase).Header;
+        return last.VirtualAddress + Align(last.VirtualSize, Specific.SectionAlignment);
+    }
+
+    function GetNextPointerToRawData() : uint
+    {
+        if (Sections.Count == 0)
+            return Specific.HeaderSize;
+        var last = (Sections.Get(Sections.Count - 1) as SectionBase).Header;
+        return last.PointerToRawData + last.SizeOfRawData;
+    }
+
+    function Link(output : string)
+    {
+        var text = AddSection(Text);
+        AddSection(Data);
+        if (!RData.IsEmtpy)
+            AddSection(RData);
+        if (!BSS.IsEmtpy)
+            AddSection(BSS);
+        AddSection(Import);
+        var now = DateTime.Now;
+        PEHeader.TimeDateStamp = now.ToUnixTime();
+        Standard.EntryPoint = text.VirtualAddress;
+        var ms = new MemoryStream;
+        Write(ms);
+        var img = ms.ToArray();
+        var fs = new FileStream;
+        fs.OpenWrite(output);
+        fs.Write(img);
+        fs.Close();
+    }
+
+    function Write(ms : MemoryStream)
+    {
+        PEHeader.NumberOfSections = (ushort)Sections.Count;
+        Standard.InitializedDataSize = 0;
+        Standard.UninitializedDataSize = 0;
+        for (int i = 0; i < Sections.Count; i++)
+        {
+            var sb = Sections.Get(i) as SectionBase;
+            var sh = sb.Header;
+            if ((sh.Characteristics & IMAGE_SCN.CNT_INITIALIZED_DATA) != 0)
+                Standard.InitializedDataSize += sh.VirtualSize;
+            else if ((sh.Characteristics & IMAGE_SCN.CNT_UNINITIALIZED_DATA) != 0)
+                Standard.UninitializedDataSize += sh.VirtualSize;
+        }
+        Specific.ImageSize = GetNextVirtualAddress();
+        Standard.CodeSize = Text.Header.VirtualSize;
+        Standard.BaseOfCode = Text.Header.VirtualAddress;
+        Standard.BaseOfData = Data.Header.VirtualAddress;
+        DataDirs.ImportTable.Address = Import.Header.VirtualAddress;
+        DataDirs.ImportTable.Size = Import.Header.VirtualSize;
+
+        // write headers
+        DOSHeader.Write(ms);
+        SetPosition(ms, (uint)0x3c);
+        const int peSignPos = 0x80;
+        ms.WriteInt(peSignPos);
+        WriteCodes(ms, DOSHeader.get_Stub());
+        SetPosition(ms, (uint)peSignPos);
+        WriteString(ms, "PE\0\0");
+        PEHeader.Write(ms);
+        Standard.Write(ms);
+        Specific.Write(ms);
+        DataDirs.Write(ms);
+        for (int i = 0; i < Sections.Count; i++)
+        {
+            var sb = Sections.Get(i) as SectionBase;
+            sb.Header.Write(ms);
+        }
+
+        // write sections
+        for (int i = 0; i < Sections.Count; i++)
+        {
+            var sb = Sections.Get(i) as SectionBase;
+            SetPosition(ms, sb.Header.PointerToRawData);
+            var block = CreateBlock(sb);
+            var bytes = block.ToByteArray();
+            for (int j = 0; j < block.Relocations.Length; j++)
+            {
+                var reloc = block.Relocations[j];
+                uint v = BitConverter.ToUInt32(bytes, (int)reloc);
+                Util.SetUInt(bytes, (int)reloc, v + Specific.ImageBase);
+                //printfln("reloc[%016X]%16X", reloc, v);
+            }
+            ms.Write(bytes);
+        }
+        SetPosition(ms, GetNextPointerToRawData());
+    }
+
+    static function SetPosition(ms : MemoryStream, offset : uint)
+    {
+        uint len = offset - (uint)ms.Length;
+        if (len > 0)
+            ms.Write(new byte[len]);
+    }
+
+    static function WriteCodes(ms : MemoryStream, ops : OpCode[])
+    {
+        for (int i = 0; i < ops.Length; i++)
+        {
+            ms.Write(ops[i].GetCodes());
+        }
+    }
+
+    static function WriteString(ms : MemoryStream, s : string)
+    {
+        ms.Write(getASCIIBytes(s));
+    }
+
+    static function WritePadString(ms : MemoryStream, pad : int, s : string)
+    {
+        WriteString(ms, s);
+        int len = pad - s.Length;
+        if (len > 0)
+            ms.Write(new byte[len]);
+    }
+
+    static function Align(size : uint, align : uint) : uint
+    {
+        return (size + align - 1) / align * align;
+    }
+}

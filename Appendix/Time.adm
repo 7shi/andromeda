@@ -1,0 +1,51 @@
+class TimeSpan
+{
+    var Ticks : UInt64;
+
+    function get_TotalSeconds
+    {
+        return Ticks.Div32((uint)10000000);
+    }
+
+    function get_TotalMilliseconds
+    {
+        return Ticks.Div32((uint)10000);
+    }
+}
+
+class DateTime
+{
+    var ft : FILETIME;
+
+    static function get_Now
+    {
+        var ret = new DateTime;
+        ret.ft = SYSTEMTIME.get_Now().ToFileTime();
+        return ret;
+    }
+
+    static function New(year, month, day)
+    {
+        var ret = new DateTime;
+        ret.ft = SYSTEMTIME.New(year, month, day).ToFileTime();
+        return ret;
+    }
+
+    function ToString
+    {
+        return ft.ToSystemTime().ToString();
+    }
+
+    function Sub(t : DateTime)
+    {
+        var ret = new TimeSpan;
+        ret.Ticks = ft.ToUInt64().Sub(t.ft.ToUInt64());
+        return ret;
+    }
+
+    function ToUnixTime
+    {
+        var epoch = New(1970, 1, 1);
+        return Sub(epoch).TotalSeconds;
+    }
+}

@@ -1,9 +1,13 @@
-* �o�O
-case�ł̕ϐ��錾
-�߂�l�̌^�錾�ł̔z��
+* バグ
+caseでの変数宣言
+戻り値の型宣言での配列
+式中のプロパティで一時インスタンスを作れない (argument mismatched)
 
-* �ǉ��@�\
-�I�[�o�[���[�h
-�R���X�g���N�^����
-�W�F�l���b�N�X
+* 追加機能
+オーバーロード
+コンストラクタ引数
+ジェネリックス
+indexer
 foreach
+abstract
+即値のuint

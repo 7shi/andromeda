@@ -1,0 +1,71 @@
+class Library
+{
+    var name : string;
+    function get_Name : string { return name; }
+
+    var table = new ImportTable();
+    var symbols = new Hashtable();
+
+    static function New(name : string) : Library
+    {
+        var ret = new Library();
+        ret.name = name;
+        return ret;
+    }
+
+    function Add(name : string) : Symbol
+    {
+        var sym : Symbol;
+        if (symbols.ContainsKey(name))
+        {
+            sym = symbols.Get(name) as Symbol;
+        }
+        else
+        {
+            sym = Symbol.New(0, name);
+            symbols.Add(name, sym);
+        }
+        return sym;
+    }
+
+    function get_NameSize : int
+    {
+        return HeaderBase.GetPaddedSize(4, name);
+    }
+
+    function WriteImportTable(block : Block)
+    {
+        table.WriteBlock(block);
+    }
+
+    function WriteImportLookupTable(block : Block)
+    {
+        table.ImportLookupTable = block.Current;
+        var syms = symbols.Values;
+        for (int i = 0; i < syms.Length; i++)
+            (syms[i] as Symbol).WriteLookup(block, true);
+        block.AddInt(0);
+    }
+
+    function WriteImportAddressTable(block : Block)
+    {
+        table.ImportAddressTable = block.Current;
+        var syms = symbols.Values;
+        for (int i = 0; i < syms.Length; i++)
+            (syms[i] as Symbol).WriteLookup(block, false);
+        block.AddInt(0);
+    }
+
+    function WriteSymbols(block : Block)
+    {
+        var syms = symbols.Values;
+        for (int i = 0; i < syms.Length; i++)
+            (syms[i] as Symbol).Write(block);
+    }
+
+    function WriteName(block : Block)
+    {
+        table.Name = block.Current;
+        block.AddString(HeaderBase.Pad(NameSize, name));
+    }
+}

@@ -1,41 +1,13 @@
 ﻿const string VERSION = "Andromeda ver.1.0.2011.0101";
 
 printfln(VERSION);
+var start = DateTime.Now;
+
 I386.Test0();
 MMX.Test();
 SSE2.Test();
+
+var end = DateTime.Now;
+printfln("%dms", end.Sub(start).TotalMilliseconds);
+
 { _Finish _finish; }
-
-extern "kernel32.dll" __stdcall ExitProcess(uExitCode);
-
-function raise(msg : string)
-{
-	printfln(msg);
-	{ _Finish _finish; }
-	ExitProcess(1);
-}
-
-function getASCIIBytes(s : string)
-{
-	var ret = new byte[s.Length];
-	for (int i = 0; i < ret.Length; i++)
-	{
-		char ch = s[i];
-		if (ch < 128) ret[i] = ch; else ret[i] = '?';
-	}
-	return ret;
-}
-
-class BitConverter
-{
-	static function ToString(b : byte[])
-	{
-		var sb = new StringBuilder();
-		for (int i = 0; i < b.Length; i++)
-		{
-			if (i > 0) sb.Append("-");
-			sb.AppendFormat("%02X", b[i]);
-		}
-		return sb.ToString();
-	}
-}

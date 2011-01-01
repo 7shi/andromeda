@@ -1,0 +1,209 @@
+class IMAGE_SUBSYSTEM
+{
+    const int WINDOWS_GUI = 2;
+    const int WINDOWS_CUI = 3;
+    const int WINCE_GUI = 9;
+}
+
+class IMAGE_SCN
+{
+    const int CNT_CODE = 0x00000020;
+    const int CNT_INITIALIZED_DATA = 0x00000040;
+    const int CNT_UNINITIALIZED_DATA = 0x00000080;
+    const int MEM_EXECUTE = 0x20000000;
+    const int MEM_READ = 0x40000000;
+    const int MEM_WRITE = 0x80000000;
+}
+
+class PEFileHeader : HeaderBase
+{
+    ushort Machine = 0x14c;
+    ushort NumberOfSections;
+    uint TimeDateStamp = 0;
+    uint PointerToSymbolTable = 0;
+    uint NumberOfSymbols = 0;
+    ushort OptionalHeaderSize = 0xe0;
+    ushort Characteristics = 0x10e;
+
+    override WriteBlock(block : Block)
+    {
+        block.AddUShort(Machine);
+        block.AddUShort(NumberOfSections);
+        block.AddUInt(TimeDateStamp);
+        block.AddUInt(PointerToSymbolTable);
+        block.AddUInt(NumberOfSymbols);
+        block.AddUShort(OptionalHeaderSize);
+        block.AddUShort(Characteristics);
+    }
+}
+
+class PEHeaderStandardFields : HeaderBase
+{
+    ushort Magic = 0x10b;
+    byte LMajor = 6;
+    byte LMinor = 0;
+    uint CodeSize;
+    uint InitializedDataSize;
+    uint UninitializedDataSize;
+    uint EntryPoint;
+    uint BaseOfCode;
+    uint BaseOfData;
+
+    override WriteBlock(block : Block)
+    {
+        block.AddUShort(Magic);
+        block.AddByte(LMajor);
+        block.AddByte(LMinor);
+        block.AddUInt(CodeSize);
+        block.AddUInt(InitializedDataSize);
+        block.AddUInt(UninitializedDataSize);
+        block.AddUInt(EntryPoint);
+        block.AddUInt(BaseOfCode);
+        block.AddUInt(BaseOfData);
+    }
+}
+
+class PEHeaderWindowsNTSpecificFields : HeaderBase
+{
+    uint ImageBase = 0x400000;
+    uint SectionAlignment = 0x2000;
+    uint FileAlignment = 0x200;
+    ushort OSMajor = 4;
+    ushort OSMinor = 0;
+    ushort UserMajor = 0;
+    ushort UserMinor = 0;
+    ushort SubSysMajor = 4;
+    ushort SubSysMinor = 0;
+    uint Reserved = 0;
+    uint ImageSize;
+    uint HeaderSize = 0x400;
+    uint FileChecksum = 0;
+    ushort SubSystem = 3;
+    ushort DLLFlags = 0;
+    uint StackReserveSize = 0x100000;
+    uint StackCommitSize = 0x1000;
+    uint HeapReserveSize = 0x100000;
+    uint HeapCommitSize = 0x1000;
+    uint LoaderFlags = 0;
+    uint NumberOfDataDirectories = 0x10;
+
+    override WriteBlock(block : Block)
+    {
+        block.AddUInt(ImageBase);
+        block.AddUInt(SectionAlignment);
+        block.AddUInt(FileAlignment);
+        block.AddUShort(OSMajor);
+        block.AddUShort(OSMinor);
+        block.AddUShort(UserMajor);
+        block.AddUShort(UserMinor);
+        block.AddUShort(SubSysMajor);
+        block.AddUShort(SubSysMinor);
+        block.AddUInt(Reserved);
+        block.AddUInt(ImageSize);
+        block.AddUInt(HeaderSize);
+        block.AddUInt(FileChecksum);
+        block.AddUShort(SubSystem);
+        block.AddUShort(DLLFlags);
+        block.AddUInt(StackReserveSize);
+        block.AddUInt(StackCommitSize);
+        block.AddUInt(HeapReserveSize);
+        block.AddUInt(HeapCommitSize);
+        block.AddUInt(LoaderFlags);
+        block.AddUInt(NumberOfDataDirectories);
+    }
+}
+
+class PEHeaderDataDirectories : HeaderBase
+{
+    var ExportTable : Table;
+    var ImportTable : Table;
+    var ResourceTable : Table;
+    var ExceptionTable : Table;
+    var CertificateTable : Table;
+    var BaseRelocationTable : Table;
+    var Debug : Table;
+    var Copyright : Table;
+    var GlobalPtr : Table;
+    var TLSTable : Table;
+    var LoadConfigTable : Table;
+    var BoundImport : Table;
+    var IAT : Table;
+    var DelayImportDescriptor : Table;
+    var CLIHeader : Table;
+    var Reserved : Table;
+
+    override WriteBlock(block : Block)
+    {
+        ExportTable.WriteBlock(block);
+        ImportTable.WriteBlock(block);
+        ResourceTable.WriteBlock(block);
+        ExceptionTable.WriteBlock(block);
+        CertificateTable.WriteBlock(block);
+        BaseRelocationTable.WriteBlock(block);
+        Debug.WriteBlock(block);
+        Copyright.WriteBlock(block);
+        GlobalPtr.WriteBlock(block);
+        TLSTable.WriteBlock(block);
+        LoadConfigTable.WriteBlock(block);
+        BoundImport.WriteBlock(block);
+        IAT.WriteBlock(block);
+        DelayImportDescriptor.WriteBlock(block);
+        CLIHeader.WriteBlock(block);
+        Reserved.WriteBlock(block);
+    }
+}
+
+class SectionHeader : HeaderBase
+{
+    var name : string = "";
+
+    function get_Name : string
+    {
+        return Trim(name);
+    }
+    function set_Name(value : string)
+    {
+        name = Pad(8, value);
+    }
+    uint VirtualSize;
+    uint VirtualAddress;
+    uint SizeOfRawData = 0;
+    uint PointerToRawData = 0;
+    uint PointerToRelocations = 0;
+    uint PointerToLinenumbers = 0;
+    ushort NumberOfRelocations = 0;
+    ushort NumberOfLinenumbers = 0;
+    uint Characteristics;
+
+    override WriteBlock(block : Block)
+    {
+        block.AddString(name);
+        block.AddUInt(VirtualSize);
+        block.AddUInt(VirtualAddress);
+        block.AddUInt(SizeOfRawData);
+        block.AddUInt(PointerToRawData);
+        block.AddUInt(PointerToRelocations);
+        block.AddUInt(PointerToLinenumbers);
+        block.AddUShort(NumberOfRelocations);
+        block.AddUShort(NumberOfLinenumbers);
+        block.AddUInt(Characteristics);
+    }
+}
+
+class ImportTable : HeaderBase
+{
+    uint ImportLookupTable = 0;
+    uint DateTimeStamp = 0;
+    uint ForwarderChain = 0;
+    uint Name = 0;
+    uint ImportAddressTable = 0;
+
+    override WriteBlock(block : Block)
+    {
+        block.AddUInt(ImportLookupTable);
+        block.AddUInt(DateTimeStamp);
+        block.AddUInt(ForwarderChain);
+        block.AddUInt(Name);
+        block.AddUInt(ImportAddressTable);
+    }
+}

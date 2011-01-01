@@ -1,0 +1,19 @@
+extern "kernel32.dll" __stdcall ExitProcess(uExitCode);
+
+function raise(msg : string)
+{
+    printfln(msg);
+    { _Finish _finish; }
+    ExitProcess(1);
+}
+
+function getASCIIBytes(s : string)
+{
+    var ret = new byte[s.Length];
+    for (int i = 0; i < ret.Length; i++)
+    {
+        char ch = s[i];
+        if (ch < 128) ret[i] = ch; else ret[i] = '?';
+    }
+    return ret;
+}

@@ -1,0 +1,96 @@
+class DataBlock
+{
+    var address = Val32.NewB((uint)0, true);
+    function get_Address { return address; }
+
+    var block = new Block();
+    function get_Block { return block; }
+
+    static function New(d : byte[]) : DataBlock
+    {
+        var ret = new DataBlock();
+        ret.block.AddBytes(d);
+        return ret;
+    }
+
+    function Write(block : Block)
+    {
+        address.Value = block.Current;
+        block.AddBlock(Block);
+        uint padlen = Module.Align((uint)Block.Length, (uint)4) - (uint)Block.Length;
+        if (padlen > 0)
+            block.AddBytes(new byte[padlen]);
+    }
+}
+
+class DataSection : SectionBase
+{
+    var name : string;
+
+    function get_Name : string
+    {
+        return name;
+    }
+
+    static function New(name : string) : DataSection
+    {
+        var ret = new DataSection();
+        ret.name = name;
+        return ret;
+    }
+    var data : Hashtable = new Hashtable();
+
+    function get_IsEmtpy : bool
+    {
+        return data.Count == 0;
+    }
+
+    function GetCategory(name : string) : Hashtable
+    {
+        if (data.ContainsKey(name))
+            return data.Get(name) as Hashtable;
+        var ret = new Hashtable();
+        data.Add(name, ret);
+        return ret;
+    }
+
+    function AddDataBlock(category : string, name : string, data : DataBlock)
+    {
+        var ctg = GetCategory(category);
+        if (!ctg.ContainsKey(name))
+            ctg.Add(name, data);
+    }
+
+    function Add(category : string, name : string, data : byte[]) : DataBlock
+    {
+        var ctg = GetCategory(category);
+        if (ctg.ContainsKey(name))
+            return ctg.Get(name) as DataBlock;
+        var ret = DataBlock.New(data);
+        ctg.Add(name, ret);
+        return ret;
+    }
+
+    function AddString(s : string) : DataBlock
+    {
+        return Add("string", s, Module.EncodeString(s));
+    }
+
+    function AddBuffer(name : string, size : int) : DataBlock
+    {
+        return Add("buffer", name, new byte[size]);
+    }
+
+    override Write(block : Block)
+    {
+        var dval = data.Values;
+        for (int i = 0; i < dval.Length; i++)
+        {
+            var cval = (dval[i] as Hashtable).Values;
+            for (int j = 0; j < cval.Length; j++)
+                (cval[j] as DataBlock).Write(block);
+        }
+        if (IsEmtpy)
+            block.AddBytes(new byte[16]);
+    }
+}

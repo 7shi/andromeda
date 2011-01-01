@@ -1,0 +1,40 @@
+struct Table
+{
+    uint Address, Size;
+
+    function WriteBlock(block : Block)
+    {
+        block.AddUInt(Address);
+        block.AddUInt(Size);
+    }
+}
+
+class HeaderBase : WriterBase
+{
+
+    static function Trim(s : string) : string
+    {
+        int p = s.IndexOfChar('\0');
+        if (p < 0)
+            return s;
+        return s.Substring(0, p);
+    }
+
+    static function Pad(len : int, s : string) : string
+    {
+        if (s.Length > len)
+        {
+            return s.Substring(0, len);
+        }
+        else if (s.Length < len)
+        {
+            return s + "\0" * (len - s.Length);
+        }
+        return s;
+    }
+
+    static function GetPaddedSize(pad : int, s : string) : int
+    {
+        return (s.Length / pad + 1) * pad;
+    }
+}

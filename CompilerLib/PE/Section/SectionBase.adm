@@ -1,0 +1,18 @@
+class SectionBase
+{
+    var Header : SectionHeader;
+
+    virtual get_Name : string { return null; }
+    virtual Write(block : Block) {}
+
+    var block : Block;
+    function get_Block : Block { return block; }
+
+    function ToBlock(vaddr : uint) : Block
+    {
+        var ret = Block.New(vaddr);
+        Write(ret);
+        block = ret;
+        return ret;
+    }
+}

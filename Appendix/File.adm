@@ -1,0 +1,182 @@
+﻿const int FILE_ATTRIBUTE_DIRECTORY   = 0x00000010;
+const int FILE_FLAG_BACKUP_SEMANTICS = 0x02000000;
+
+extern "kernel32.dll"
+{
+    __stdcall GetFileTime(hFile, lpCreationTime : FILETIME, lpLastAccessTime : FILETIME, lpLastWriteTime : FILETIME) : bool;
+    __stdcall FileTimeToLocalFileTime(lpFileTime : FILETIME, lpLocalFileTime : FILETIME) : bool;
+    __stdcall FileTimeToDosDateTime(lpFileTime : FILETIME, lpFatDate, lpFatTime) : bool;
+    __stdcall FileTimeToSystemTime(lpFileTime : FILETIME, lpSystemTime : SYSTEMTIME) : bool;
+    __stdcall __widecharset GetFileAttributes(lpFileName : string);
+    __stdcall __widecharset FindFirstFile(lpFileName : string, lpFindFileData : WIN32_FIND_DATA);
+    __stdcall __widecharset FindNextFile(hFindFile, lpFindFileData : WIN32_FIND_DATA) : bool;
+    __stdcall FindClose(hFindFile) : bool;
+    __stdcall SystemTimeToFileTime(lpSystemTime : SYSTEMTIME, lpFileTime : FILETIME) : bool;
+    __stdcall GetLocalTime(lpSystemTime : SYSTEMTIME);
+}
+
+extern "shell32.dll"
+{
+    __stdcall __widecharset DragQueryFile(hDrop, iFile, lpszFile, cch);
+    __stdcall DragAcceptFiles(hWnd, fAccept : bool);
+}
+
+function GetDropFiles(hDrop)
+{
+    var len = DragQueryFile(hDrop, -1, null, 0);
+    var files = new string[len];
+    var buf = new char[512];
+    for (int i = 0; i < len; i++)
+    {
+        DragQueryFile(hDrop, i, buf, buf.Length);
+        files[i] = string.FromCharArray(buf, -1);
+    }
+    return files;
+}
+
+function writeShort(fs : FileStream, v : short)
+{
+    fs.WriteWithLength(addrof v, sizeof v);
+}
+
+function writeUInt(fs : FileStream, v : uint)
+{
+    fs.WriteWithLength(addrof v, sizeof v);
+}
+
+class File
+{
+    static function GetLastWriteTime(path : string)
+    {
+        var handle = CreateFile(path, GENERIC_READ,
+            FILE_SHARE_READ | FILE_SHARE_WRITE, null,
+            OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, null);
+        var ft = new FILETIME;
+        if (handle != INVALID_HANDLE_VALUE)
+        {
+            GetFileTime(handle, null, null, ft);
+            CloseHandle(handle);
+        }
+        var ret = new FILETIME;
+        FileTimeToLocalFileTime(ft, ret);
+        return ret;
+    }
+
+    static function Exists(path : string)
+    {
+        var attrs = GetFileAttributes(path);
+        return attrs != -1 && (attrs & FILE_ATTRIBUTE_DIRECTORY) == 0;
+    }
+}
+
+class Directory
+{
+    static function Exists(path : string)
+    {
+        var attrs = GetFileAttributes(path);
+        return attrs != -1 && (attrs & FILE_ATTRIBUTE_DIRECTORY) != 0;
+    }
+
+    static function getFiles(path : string, delg)
+    {
+        var ret = new StringList;
+        var fd = new WIN32_FIND_DATA;
+        var h = FindFirstFile(Path.Combine(path, "*"), fd);
+        if (h != INVALID_HANDLE_VALUE)
+        {
+            do
+            {
+                var name = string.FromCharArray(fd.cFileName, -1);
+                var fn = Path.Combine(path, name);
+                if (name != "." && name != ".." && delg(fn)) ret.Add(fn);
+            }
+            while (FindNextFile(h, fd));
+            FindClose(h);
+        }
+        ret.SortBy(string.Compare);
+        return ret.ToArray();
+    }
+
+    static function GetFiles(path : string)
+    {
+        return getFiles(path, \fn => File.Exists(fn));
+    }
+
+    static function GetDirectories(path : string)
+    {
+        return getFiles(path, \fn => Directory.Exists(fn));
+    }
+}
+
+class FILETIME
+{
+    uint dwLowDateTime;
+    uint dwHighDateTime;
+
+    function ToSystemTime
+    {
+        var ret = new SYSTEMTIME;
+        FileTimeToSystemTime(this, ret);
+        return ret;
+    }
+
+    function ToUInt64
+    {
+        return UInt64.New(dwHighDateTime, dwLowDateTime);
+    }
+}
+
+class SYSTEMTIME
+{
+    ushort wYear;
+    ushort wMonth;
+    ushort wDayOfWeek;
+    ushort wDay;
+    ushort wHour;
+    ushort wMinute;
+    ushort wSecond;
+    ushort wMilliseconds;
+
+    static function New(year, month, day)
+    {
+        var ret = new SYSTEMTIME;
+        ret.wYear = year;
+        ret.wMonth = month;
+        ret.wDay = day;
+        return ret;
+    }
+
+    function ToFileTime
+    {
+        var ret = new FILETIME;
+        SystemTimeToFileTime(this, ret);
+        return ret;
+    }
+
+    function ToString
+    {
+        return string.Format("%d/%02d/%02d %02d:%02d:%02d",
+            wYear, wMonth, wDay, wHour, wMinute, wSecond);
+    }
+
+    static function get_Now
+    {
+        var ret = new SYSTEMTIME;
+        GetLocalTime(ret);
+        return ret;
+    }
+}
+
+class WIN32_FIND_DATA
+{
+    uint dwFileAttributes;
+    uint ftCreationTime[2];
+    uint ftLastAccessTime[2];
+    uint ftLastWriteTime[2];
+    uint nFileSizeHigh;
+    uint nFileSizeLow;
+    uint dwReserved0;
+    uint dwReserved1;
+    char cFileName[MAX_PATH];
+    char cAlternateFileName[14];
+}

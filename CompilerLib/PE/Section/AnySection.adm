@@ -1,0 +1,20 @@
+class AnySection : SectionBase
+{
+    var name : string;
+    function get_Name : string { return name; }
+
+    var data : byte[];
+
+    static function New(name : string, data : byte[]) : AnySection
+    {
+        var ret = new AnySection();
+        ret.name = name;
+        ret.data = data;
+        return ret;
+    }
+
+    override Write(block : Block)
+    {
+        block.AddBytes(data);
+    }
+}

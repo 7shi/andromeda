@@ -1,0 +1,42 @@
+class ImportSection : SectionBase
+{
+    function get_Name : string
+    {
+        return ".idata";
+    }
+
+    var libraries = new Hashtable();
+
+    function Add(libname : string, sym : string) : Symbol
+    {
+        var lib : Library;
+        if (libraries.ContainsKey(libname))
+        {
+            lib = libraries.Get(libname) as Library;
+        }
+        else
+        {
+            lib = Library.New(libname);
+            libraries.Add(libname, lib);
+        }
+        return lib.Add(sym);
+    }
+
+    override Write(block : Block)
+    {
+        var libs = libraries.Values;
+        for (int i = 0; i < libs.Length; i++)
+            (libs[i] as Library).WriteImportTable(block);
+        var imp = new ImportTable();
+        imp.WriteBlock(block);
+
+        for (int i = 0; i < libs.Length; i++)
+            (libs[i] as Library).WriteImportLookupTable(block);
+        for (int i = 0; i < libs.Length; i++)
+            (libs[i] as Library).WriteImportAddressTable(block);
+        for (int i = 0; i < libs.Length; i++)
+            (libs[i] as Library).WriteSymbols(block);
+        for (int i = 0; i < libs.Length; i++)
+            (libs[i] as Library).WriteName(block);
+    }
+}

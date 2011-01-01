@@ -1,0 +1,151 @@
+﻿class UInt64
+{
+    uint Low, High;
+
+    static function New(high : uint, low : uint)
+    {
+        var ret = new UInt64;
+        ret.High = high;
+        ret.Low = low;
+        return ret;
+    }
+
+    static function New32(low : uint)
+    {
+        var ret = new UInt64;
+        ret.Low = low;
+        return ret;
+    }
+
+    function Add(v : UInt64)
+    {
+        var ret = New(High + v.High, Low + v.Low);
+        if (Low > ret.Low) ret.High++;
+        return ret;
+    }
+
+    function Sub(v : UInt64)
+    {
+        var ret = New(High - v.High, Low - v.Low);
+        if (Low < ret.Low) ret.High--;
+        return ret;
+    }
+
+    function AddEq(v : UInt64)
+    {
+        uint low = Low;
+        High += v.High;
+        Low += v.Low;
+        if (low > Low) High++;
+        return this;
+    }
+
+    function SubEq(v : UInt64)
+    {
+        uint low = Low;
+        High -= v.High;
+        Low -= v.Low;
+        if (low < Low) High--;
+        return this;
+    }
+
+    static function Mul32(ab : uint, cd : uint)
+    {
+        uint a = ab >> 16, b = ab & 0xffff;
+        uint c = cd >> 16, d = cd & 0xffff;
+        uint ef = b * d, gh = a * d, ij = b * c, kl = a * c;
+        uint e = ef >> 16, f = ef & 0xffff;
+        uint g = gh >> 16, h = gh & 0xffff;
+        uint i = ij >> 16, j = ij & 0xffff;
+        uint my = e + h + j;
+        uint m = my >> 16, y = my & 0xffff;
+        return New(m + g + i + kl, f + (y << 16));
+    }
+
+    function Mul(v : UInt64)
+    {
+        var ef = Mul32(Low, v.Low);
+        return New(ef.High + High * v.Low + Low * v.High, ef.Low);
+    }
+
+    function Clone()
+    {
+        return New(High, Low);
+    }
+
+    function Double()
+    {
+        High <<= 1;
+        if (((int)Low) < 0) High++;
+        Low <<= 1;
+    }
+
+    function Half()
+    {
+        Low >>= 1;
+        if (High & 1) Low |= 0x80000000;
+        High >>= 1;
+    }
+
+    function Div32(v : uint)
+    {
+        var a = Clone();
+        var b = New32(v);
+        var c = New32((uint)1);
+        uint ret = 0;
+        while (((int)b.High) >= 0)
+        {
+            var bh = b.High << 1;
+            var bl = b.Low << 1;
+            if (((int)b.Low) < 0) bh++;
+            if (High < bh || (High == bh && Low < bl)) break;
+
+            b.High = bh;
+            b.Low = bl;
+            c.Double();
+        }
+        while (c.High > 0 || c.Low > 0)
+        {
+            if (a.High > b.High || (a.High == b.High && a.Low >= b.Low))
+            {
+                a.SubEq(b);
+                ret += c.Low;
+                if (a.High == 0 && a.Low == 0) break;
+            }
+            b.Half();
+            c.Half();
+        }
+        return ret;
+    }
+
+    function Div(v : UInt64)
+    {
+        var a = Clone();
+        var b = v.Clone();
+        var c = New32((uint)1);
+        var ret = new UInt64;
+        while (((int)b.High) >= 0)
+        {
+            var bh = b.High << 1;
+            var bl = b.Low << 1;
+            if (((int)b.Low) < 0) bh++;
+            if (High < bh || (High == bh && Low < bl)) break;
+
+            b.High = bh;
+            b.Low = bl;
+            c.Double();
+        }
+        while (c.High > 0 || c.Low > 0)
+        {
+            if (a.High > b.High || (a.High == b.High && a.Low >= b.Low))
+            {
+                a.SubEq(b);
+                ret.AddEq(c);
+                if (a.High == 0 && a.Low == 0) break;
+            }
+            b.Half();
+            c.Half();
+        }
+        return ret;
+    }
+}
