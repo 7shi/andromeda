@@ -1,0 +1,165 @@
+class OpCodes
+{
+    var list : ArrayList = new ArrayList();
+
+    function Add(op : OpCode)
+    {
+        list.Add(op);
+    }
+
+    function AddCodes(op : string, dest : Addr32)
+    {
+        AddCodesA(op, dest, (Addr32)null);
+    }
+
+    function AddCodesA(op : string, dest : Addr32, ad : Addr32)
+    {
+        switch (op)
+        {
+        case "push":
+            if (ad != null)
+                Add(I386.PushA(ad));
+            else
+                Add(I386.Push(Reg32.EAX));
+            break;
+        default:
+            if (ad != null)
+                Add(I386.MovRA(Reg32.EAX, ad));
+            if (dest != null)
+                Add(I386.FromName2AR(op, dest, Reg32.EAX));
+            break;
+        }
+    }
+
+    function AddCodesV(op : string, dest : Addr32, v : Val32)
+    {
+        switch (op)
+        {
+        case "push":
+            Add(I386.PushD(v));
+            break;
+        default:
+            if (dest != null)
+                Add(I386.FromName2A(op, dest, v));
+            else
+                Add(I386.FromName2R(op, Reg32.EAX, v));
+            break;
+        }
+    }
+
+    function AddCodesSW(op : string, dest : Addr32)
+    {
+        AddCodesSWA(op, dest, null);
+    }
+
+    function AddCodesSWA(op : string, dest : Addr32, ad : Addr32)
+    {
+        switch (op)
+        {
+        case "push":
+            if (ad != null)
+                Add(I386.MovsxWA(Reg32.EAX, ad));
+            else
+                Add(I386.MovsxW(Reg32.EAX, Reg16.AX));
+            Add(I386.Push(Reg32.EAX));
+            break;
+        default:
+            if (ad != null)
+                Add(I386.MovWRA(Reg16.AX, ad));
+            if (dest != null)
+                Add(I386.FromName2WAR(op, dest, Reg16.AX));
+            else
+                Add(I386.MovsxW(Reg32.EAX, Reg16.AX));
+            break;
+        }
+    }
+
+    function AddCodesUW(op : string, dest : Addr32)
+    {
+        AddCodesUWA(op, dest, null);
+    }
+
+    function AddCodesUWA(op : string, dest : Addr32, ad : Addr32)
+    {
+        switch (op)
+        {
+        case "push":
+            if (ad != null)
+                Add(I386.MovzxWA(Reg32.EAX, ad));
+            else
+                Add(I386.MovzxW(Reg32.EAX, Reg16.AX));
+            Add(I386.Push(Reg32.EAX));
+            break;
+        default:
+            if (ad != null)
+                Add(I386.MovWRA(Reg16.AX, ad));
+            if (dest != null)
+                Add(I386.FromName2WAR(op, dest, Reg16.AX));
+            else
+                Add(I386.MovzxW(Reg32.EAX, Reg16.AX));
+            break;
+        }
+    }
+
+    function AddCodesSB(op : string, dest : Addr32)
+    {
+        AddCodesSBA(op, dest, null);
+    }
+
+    function AddCodesSBA(op : string, dest : Addr32, ad : Addr32)
+    {
+        switch (op)
+        {
+        case "push":
+            if (ad != null)
+                Add(I386.MovsxBA(Reg32.EAX, ad));
+            else
+                Add(I386.MovsxB(Reg32.EAX, Reg8.AL));
+            Add(I386.Push(Reg32.EAX));
+            break;
+        default:
+            if (ad != null)
+                Add(I386.MovBRA(Reg8.AL, ad));
+            if (dest != null)
+                Add(I386.FromName2BAR(op, dest, Reg8.AL));
+            else
+                Add(I386.MovsxB(Reg32.EAX, Reg8.AL));
+            break;
+        }
+    }
+
+    function AddCodesUB(op : string, dest : Addr32)
+    {
+        AddCodesUBA(op, dest, null);
+    }
+
+    function AddCodesUBA(op : string, dest : Addr32, ad : Addr32)
+    {
+        switch (op)
+        {
+        case "push":
+            if (ad != null)
+                Add(I386.MovzxBA(Reg32.EAX, ad));
+            else
+                Add(I386.MovzxB(Reg32.EAX, Reg8.AL));
+            Add(I386.Push(Reg32.EAX));
+            break;
+        default:
+            if (ad != null)
+                Add(I386.MovBRA(Reg8.AL, ad));
+            if (dest != null)
+                Add(I386.FromName2BAR(op, dest, Reg8.AL));
+            else
+                Add(I386.MovzxB(Reg32.EAX, Reg8.AL));
+            break;
+        }
+    }
+
+    function ToArray()
+    {
+        var ret = new OpCode[list.Count];
+        for (int i = 0; i < ret.Length; i++)
+            ret[i] = (OpCode)list.Get(i);
+        return ret;
+    }
+}
