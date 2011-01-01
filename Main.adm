@@ -2,6 +2,8 @@
 
 printfln(VERSION);
 I386.Test0();
+MMX.Test();
+SSE2.Test();
 { _Finish _finish; }
 
 extern "kernel32.dll" __stdcall ExitProcess(uExitCode);

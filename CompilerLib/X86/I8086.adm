@@ -1,0 +1,61 @@
+class I8086
+{
+    static function Push(op1 : Reg16) : OpCode
+    {
+        return OpCode.NewBytes(Util.GetBytes1((byte)(0x50 + (int)op1)));
+    }
+
+    static function PushS(op1 : SegReg) : OpCode
+    {
+        switch (op1)
+        {
+        case SegReg.ES:
+            return OpCode.NewBytes(Util.GetBytes1(0x06));
+        case SegReg.CS:
+            return OpCode.NewBytes(Util.GetBytes1(0x0e));
+        }
+        raise("The method or operation is not implemented.");
+    }
+
+    static function Pop(op1 : Reg16) : OpCode
+    {
+        return OpCode.NewBytes(Util.GetBytes1((byte)(0x58 + (int)op1)));
+    }
+
+    static function PopS(op1 : SegReg) : OpCode
+    {
+        switch (op1)
+        {
+        case SegReg.ES:
+            return OpCode.NewBytes(Util.GetBytes1(0x07));
+        case SegReg.DS:
+            return OpCode.NewBytes(Util.GetBytes1(0x1f));
+        }
+        raise("The method or operation is not implemented.");
+    }
+
+    static function Mov(op1 : Reg16, op2 : ushort) : OpCode
+    {
+        return OpCode.NewW(Util.GetBytes1((byte)(0xb8 + (int)op1)), op2);
+    }
+
+    static function MovB(op1 : Reg8, op2 : byte) : OpCode
+    {
+        return OpCode.NewB(Util.GetBytes1((byte)(0xb0 + (int)op1)), op2);
+    }
+
+    static function Inc(op1 : Reg16) : OpCode
+    {
+        return OpCode.NewBytes(Util.GetBytes1((byte)(0x40 + (int)op1)));
+    }
+
+    static function Dec(op1 : Reg16) : OpCode
+    {
+        return OpCode.NewBytes(Util.GetBytes1((byte)(0x48 + (int)op1)));
+    }
+
+    static function Int(op1 : byte) : OpCode
+    {
+        return OpCode.NewB(Util.GetBytes1(0xcd), op1);
+    }
+}

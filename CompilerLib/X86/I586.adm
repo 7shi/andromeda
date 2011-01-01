@@ -1,0 +1,7 @@
+class I586
+{
+    static function Cpuid() : OpCode
+    {
+        return OpCode.NewBytes(Util.GetBytes2(0x0f, 0xa2));
+    }
+}

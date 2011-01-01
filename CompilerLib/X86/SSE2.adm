@@ -1,0 +1,563 @@
+class SSE2
+{
+    static function MovD(op1 : Xmm, op2 : Reg32) : OpCode
+    {
+        return FromNameD("movd", op1, op2);
+    }
+
+    static function MovDA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("movd", op1, op2);
+    }
+
+    static function MovDR(op1 : Reg32, op2 : Xmm) : OpCode
+    {
+        return FromNameR("movd", op1, op2);
+    }
+
+    static function MovDAX(op1 : Addr32, op2 : Xmm) : OpCode
+    {
+        return FromNameAX("movd", op1, op2);
+    }
+
+    static function MovQ(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("movq", op1, op2);
+    }
+
+    static function MovQA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("movq", op1, op2);
+    }
+
+    static function MovQAX(op1 : Addr32, op2 : Xmm) : OpCode
+    {
+        return FromNameAX("movq", op1, op2);
+    }
+
+    static function MovDQA(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("movdqa", op1, op2);
+    }
+
+    static function MovDQAA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("movdqa", op1, op2);
+    }
+
+    static function MovDQAAX(op1 : Addr32, op2 : Xmm) : OpCode
+    {
+        return FromNameAX("movdqa", op1, op2);
+    }
+
+    static function MovDQU(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("movdqu", op1, op2);
+    }
+
+    static function MovDQUA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("movdqu", op1, op2);
+    }
+
+    static function MovDQUAX(op1 : Addr32, op2 : Xmm) : OpCode
+    {
+        return FromNameAX("movdqu", op1, op2);
+    }
+
+    static function PAddB(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("paddb", op1, op2);
+    }
+
+    static function PAddBA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("paddb", op1, op2);
+    }
+
+    static function PAddW(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("paddw", op1, op2);
+    }
+
+    static function PAddWA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("paddw", op1, op2);
+    }
+
+    static function PAddD(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("paddd", op1, op2);
+    }
+
+    static function PAddDA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("paddd", op1, op2);
+    }
+
+    static function PAddQ(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("paddq", op1, op2);
+    }
+
+    static function PAddQA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("paddq", op1, op2);
+    }
+
+    static function PSubB(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psubb", op1, op2);
+    }
+
+    static function PSubBA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psubb", op1, op2);
+    }
+
+    static function PSubW(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psubw", op1, op2);
+    }
+
+    static function PSubWA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psubw", op1, op2);
+    }
+
+    static function PSubD(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psubd", op1, op2);
+    }
+
+    static function PSubDA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psubd", op1, op2);
+    }
+
+    static function PSubQ(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psubq", op1, op2);
+    }
+
+    static function PSubQA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psubq", op1, op2);
+    }
+
+    static function PMulHW(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("pmulhw", op1, op2);
+    }
+
+    static function PMulHWA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("pmulhw", op1, op2);
+    }
+
+    static function PMulLW(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("pmullw", op1, op2);
+    }
+
+    static function PMulLWA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("pmullw", op1, op2);
+    }
+
+    static function PSLLW(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psllw", op1, op2);
+    }
+
+    static function PSLLWA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psllw", op1, op2);
+    }
+
+    static function PSLLWB(op1 : Xmm, op2 : byte) : OpCode
+    {
+        return FromNameB("psllw", op1, op2);
+    }
+
+    static function PSLLD(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("pslld", op1, op2);
+    }
+
+    static function PSLLDA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("pslld", op1, op2);
+    }
+
+    static function PSLLDB(op1 : Xmm, op2 : byte) : OpCode
+    {
+        return FromNameB("pslld", op1, op2);
+    }
+
+    static function PSLLQ(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psllq", op1, op2);
+    }
+
+    static function PSLLQA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psllq", op1, op2);
+    }
+
+    static function PSLLQB(op1 : Xmm, op2 : byte) : OpCode
+    {
+        return FromNameB("psllq", op1, op2);
+    }
+
+    static function PSRLW(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psrlw", op1, op2);
+    }
+
+    static function PSRLWA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psrlw", op1, op2);
+    }
+
+    static function PSRLWB(op1 : Xmm, op2 : byte) : OpCode
+    {
+        return FromNameB("psrlw", op1, op2);
+    }
+
+    static function PSRLD(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psrld", op1, op2);
+    }
+
+    static function PSRLDA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psrld", op1, op2);
+    }
+
+    static function PSRLDB(op1 : Xmm, op2 : byte) : OpCode
+    {
+        return FromNameB("psrld", op1, op2);
+    }
+
+    static function PSRLQ(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psrlq", op1, op2);
+    }
+
+    static function PSRLQA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psrlq", op1, op2);
+    }
+
+    static function PSRLQB(op1 : Xmm, op2 : byte) : OpCode
+    {
+        return FromNameB("psrlq", op1, op2);
+    }
+
+    static function PSRAW(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psraw", op1, op2);
+    }
+
+    static function PSRAWA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psraw", op1, op2);
+    }
+
+    static function PSRAWB(op1 : Xmm, op2 : byte) : OpCode
+    {
+        return FromNameB("psraw", op1, op2);
+    }
+
+    static function PSRAD(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("psrad", op1, op2);
+    }
+
+    static function PSRADA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("psrad", op1, op2);
+    }
+
+    static function PSRADB(op1 : Xmm, op2 : byte) : OpCode
+    {
+        return FromNameB("psrad", op1, op2);
+    }
+
+    static function PUnpckHBW(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("punpckhbw", op1, op2);
+    }
+
+    static function PUnpckHBWA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("punpckhbw", op1, op2);
+    }
+
+    static function PUnpckHWD(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("punpckhwd", op1, op2);
+    }
+
+    static function PUnpckHWDA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("punpckhwd", op1, op2);
+    }
+
+    static function PUnpckHDQ(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("punpckhdq", op1, op2);
+    }
+
+    static function PUnpckHDQA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("punpckhdq", op1, op2);
+    }
+
+    static function PUnpckLBW(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("punpcklbw", op1, op2);
+    }
+
+    static function PUnpckLBWA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("punpcklbw", op1, op2);
+    }
+
+    static function PUnpckLWD(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("punpcklwd", op1, op2);
+    }
+
+    static function PUnpckLWDA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("punpcklwd", op1, op2);
+    }
+
+    static function PUnpckLDQ(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("punpckldq", op1, op2);
+    }
+
+    static function PUnpckLDQA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("punpckldq", op1, op2);
+    }
+
+    static function PackSSWB(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("packsswb", op1, op2);
+    }
+
+    static function PackSSWBA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("packsswb", op1, op2);
+    }
+
+    static function PackSSDW(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("packssdw", op1, op2);
+    }
+
+    static function PackSSDWA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("packssdw", op1, op2);
+    }
+
+    static function PackUSWB(op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        return FromName("packuswb", op1, op2);
+    }
+
+    static function PackUSWBA(op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        return FromNameA("packuswb", op1, op2);
+    }
+
+    static function GetCode(op : string) : byte
+    {
+        switch (op)
+        {
+        case "movq":
+            return 0x7e;
+        case "movdqa":
+        case "movdqu":
+            return 0x6f;
+        case "paddb":
+            return 0xfc;
+        case "paddw":
+            return 0xfd;
+        case "paddd":
+            return 0xfe;
+        case "paddq":
+            return 0xd4;
+        case "psubb":
+            return 0xf8;
+        case "psubw":
+            return 0xf9;
+        case "psubd":
+            return 0xfa;
+        case "psubq":
+            return 0xfb;
+        case "pmulhw":
+            return 0xe5;
+        case "pmullw":
+            return 0xd5;
+        case "psllw":
+            return 0xf1;
+        case "pslld":
+            return 0xf2;
+        case "psllq":
+            return 0xf3;
+        case "psrlw":
+            return 0xd1;
+        case "psrld":
+            return 0xd2;
+        case "psrlq":
+            return 0xd3;
+        case "psraw":
+            return 0xe1;
+        case "psrad":
+            return 0xe2;
+        case "punpckhbw":
+            return 0x68;
+        case "punpckhwd":
+            return 0x69;
+        case "punpckhdq":
+            return 0x6a;
+        case "punpcklbw":
+            return 0x60;
+        case "punpcklwd":
+            return 0x61;
+        case "punpckldq":
+            return 0x62;
+        case "packsswb":
+            return 0x63;
+        case "packssdw":
+            return 0x6b;
+        case "packuswb":
+            return 0x67;
+        default:
+            raise("invalid operator: " + op);
+        }
+    }
+
+    static function FromName(op : string, op1 : Xmm, op2 : Xmm) : OpCode
+    {
+        byte b1 = 0x66, b2 = GetCode(op);
+        if (op == "movq" || op == "movdqu")
+            b1 = 0xf3;
+        return OpCode.NewBytes(Util.GetBytes4(b1, 0x0f, b2, (byte)(0xc0 + (((int)op1) << 3) + op2)));
+    }
+
+    static function FromNameA(op : string, op1 : Xmm, op2 : Addr32) : OpCode
+    {
+        byte b1 = 0x66, b2;
+        if (op == "movq" || op == "movdqu")
+            b1 = 0xf3;
+        switch (op)
+        {
+        case "movd":
+            b2 = 0x6e;
+            break;
+        default:
+            b2 = GetCode(op);
+            break;
+        }
+        return OpCode.NewA(Util.GetBytes3(b1, 0x0f, b2), Addr32.NewAdM(op2, (byte)op1));
+    }
+
+    static function FromNameAX(op : string, op1 : Addr32, op2 : Xmm) : OpCode
+    {
+        byte b1 = 0x66, b2;
+        if (op == "movdqu")
+            b1 = 0xf3;
+        switch (op)
+        {
+        case "movd":
+            b2 = 0x7e;
+            break;
+        case "movq":
+            b2 = 0xd6;
+            break;
+        case "movdqa":
+        case "movdqu":
+            b2 = 0x7f;
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        return OpCode.NewA(Util.GetBytes3(b1, 0x0f, b2), Addr32.NewAdM(op1, (byte)op2));
+    }
+
+    static function FromNameD(op : string, op1 : Xmm, op2 : Reg32) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "movd":
+            b = 0x6e;
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        return OpCode.NewBytes(Util.GetBytes4(0x66, 0x0f, b, (byte)(0xc0 + (((int)op1) << 3) + op2)));
+    }
+
+    static function FromNameR(op : string, op1 : Reg32, op2 : Xmm) : OpCode
+    {
+        byte b;
+        switch (op)
+        {
+        case "movd":
+            b = 0x7e;
+            break;
+        default:
+            raise("invalid operator: " + op);
+        }
+        return OpCode.NewBytes(Util.GetBytes4(0x66, 0x0f, b, (byte)(0xc0 + (((int)op2) << 3) + op1)));
+    }
+
+    static function FromNameB(op : string, op1 : Xmm, op2 : byte) : OpCode
+    {
+        byte b1 = 0, b2 = 0;
+        switch (op)
+        {
+        case "psllw":
+        case "psrlw":
+        case "psraw":
+            b1 = 0x71;
+            break;
+        case "pslld":
+        case "psrld":
+        case "psrad":
+            b1 = 0x72;
+            break;
+        case "psllq":
+        case "psrlq":
+            b1 = 0x73;
+            break;
+        }
+        switch (op)
+        {
+        case "psllw":
+        case "pslld":
+        case "psllq":
+            b2 = 0xf0;
+            break;
+        case "psrlw":
+        case "psrld":
+        case "psrlq":
+            b2 = 0xd0;
+            break;
+        case "psraw":
+        case "psrad":
+            b2 = 0xe0;
+            break;
+        }
+        if (b1 == 0 || b2 == 0)
+            raise("invalid operator: " + op);
+        return OpCode.NewB(Util.GetBytes4(0x66, 0x0f, b1, (byte)(b2 + op1)), op2);
+    }
+}
