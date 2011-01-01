@@ -1,7 +1,7 @@
 class AnySection : SectionBase
 {
     var name : string;
-    function get_Name : string { return name; }
+    override get_Name { return name; }
 
     var data : byte[];
 

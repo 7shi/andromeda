@@ -26,11 +26,7 @@ class DataBlock
 class DataSection : SectionBase
 {
     var name : string;
-
-    function get_Name : string
-    {
-        return name;
-    }
+    override get_Name { return name; }
 
     static function New(name : string) : DataSection
     {

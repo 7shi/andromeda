@@ -1,9 +1,6 @@
 class ImportSection : SectionBase
 {
-    function get_Name : string
-    {
-        return ".idata";
-    }
+    override get_Name { return ".idata"; }
 
     var libraries = new Hashtable();
 

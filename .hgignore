@@ -1,8 +1,4 @@
 syntax: glob
 _cleanup.bat
-gen-XML.exe
-src-*.adm
 output.exe
-a.arm.exe
-a.i386.exe
-Test-*.exe
+a.exe

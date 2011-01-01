@@ -138,9 +138,15 @@ class Module
             var sb = Sections.Get(i) as SectionBase;
             var sh = sb.Header;
             if ((sh.Characteristics & IMAGE_SCN.CNT_INITIALIZED_DATA) != 0)
-                Standard.InitializedDataSize += sh.VirtualSize;
+            {
+                var size = sh.VirtualSize;
+                this.Standard.InitializedDataSize += size;
+            }
             else if ((sh.Characteristics & IMAGE_SCN.CNT_UNINITIALIZED_DATA) != 0)
-                Standard.UninitializedDataSize += sh.VirtualSize;
+            {
+                var size = sh.VirtualSize;
+                Standard.UninitializedDataSize += size;
+            }
         }
         Specific.ImageSize = GetNextVirtualAddress();
         Standard.CodeSize = Text.Header.VirtualSize;

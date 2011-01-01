@@ -1,9 +1,6 @@
 class TextSection : SectionBase
 {
-    function get_Name : string
-    {
-        return ".text";
-    }
+    override get_Name { return ".text"; }
 
     var OpCodes : OpCode[];
 

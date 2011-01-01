@@ -115,22 +115,22 @@ class PEHeaderWindowsNTSpecificFields : HeaderBase
 
 class PEHeaderDataDirectories : HeaderBase
 {
-    var ExportTable : Table;
-    var ImportTable : Table;
-    var ResourceTable : Table;
-    var ExceptionTable : Table;
-    var CertificateTable : Table;
-    var BaseRelocationTable : Table;
-    var Debug : Table;
-    var Copyright : Table;
-    var GlobalPtr : Table;
-    var TLSTable : Table;
-    var LoadConfigTable : Table;
-    var BoundImport : Table;
-    var IAT : Table;
-    var DelayImportDescriptor : Table;
-    var CLIHeader : Table;
-    var Reserved : Table;
+    Table ExportTable;
+    Table ImportTable;
+    Table ResourceTable;
+    Table ExceptionTable;
+    Table CertificateTable;
+    Table BaseRelocationTable;
+    Table Debug;
+    Table Copyright;
+    Table GlobalPtr;
+    Table TLSTable;
+    Table LoadConfigTable;
+    Table BoundImport;
+    Table IAT;
+    Table DelayImportDescriptor;
+    Table CLIHeader;
+    Table Reserved;
 
     override WriteBlock(block : Block)
     {
