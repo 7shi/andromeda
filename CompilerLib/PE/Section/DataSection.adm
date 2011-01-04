@@ -3,7 +3,7 @@ class DataBlock
     var address = Val32.NewB((uint)0, true);
     function get_Address { return address; }
 
-    var block = new Block();
+    var block = new Block32();
     function get_Block { return block; }
 
     static function New(d : byte[]) : DataBlock
@@ -13,7 +13,7 @@ class DataBlock
         return ret;
     }
 
-    function Write(block : Block)
+    function Write(block : Block32)
     {
         address.Value = block.Current;
         block.AddBlock(Block);
@@ -77,7 +77,7 @@ class DataSection : SectionBase
         return Add("buffer", name, new byte[size]);
     }
 
-    override Write(block : Block)
+    override Write(block : Block32)
     {
         var dval = data.Values;
         for (int i = 0; i < dval.Length; i++)

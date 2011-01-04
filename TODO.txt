@@ -1,4 +1,4 @@
-* バグ
+﻿* バグ
 caseでの変数宣言
 戻り値の型宣言での配列
 式中のプロパティで一時インスタンスを作れない (argument mismatched)
@@ -12,3 +12,4 @@ indexer
 foreach
 abstract
 即値のuint
+out

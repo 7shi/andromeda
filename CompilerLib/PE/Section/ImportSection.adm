@@ -19,7 +19,7 @@ class ImportSection : SectionBase
         return lib.Add(sym);
     }
 
-    override Write(block : Block)
+    override Write(block : Block32)
     {
         var libs = libraries.Values;
         for (int i = 0; i < libs.Length; i++)

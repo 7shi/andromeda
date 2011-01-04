@@ -3,14 +3,14 @@ class SectionBase
     var Header : SectionHeader;
 
     virtual get_Name : string { return null; }
-    virtual Write(block : Block) {}
+    virtual Write(block : Block32) {}
 
-    var block : Block;
-    function get_Block : Block { return block; }
+    var block : Block32;
+    function get_Block : Block32 { return block; }
 
-    function ToBlock(vaddr : uint) : Block
+    function ToBlock(vaddr : uint) : Block32
     {
-        var ret = Block.New(vaddr);
+        var ret = Block32.New(vaddr);
         Write(ret);
         block = ret;
         return ret;

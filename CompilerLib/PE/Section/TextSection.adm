@@ -4,7 +4,7 @@ class TextSection : SectionBase
 
     var OpCodes : OpCode[];
 
-    override Write(block : Block)
+    override Write(block : Block32)
     {
         for (int i = 0; i < OpCodes.Length; i++)
         {

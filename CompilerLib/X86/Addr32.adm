@@ -124,7 +124,7 @@ class Addr32
         return ret;
     }
 
-    function Write(block : Block)
+    function Write(block : Block32)
     {
         if (address != null)
         {

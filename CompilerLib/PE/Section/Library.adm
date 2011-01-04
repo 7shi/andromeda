@@ -33,12 +33,12 @@ class Library
         return HeaderBase.GetPaddedSize(4, name);
     }
 
-    function WriteImportTable(block : Block)
+    function WriteImportTable(block : Block32)
     {
         table.WriteBlock(block);
     }
 
-    function WriteImportLookupTable(block : Block)
+    function WriteImportLookupTable(block : Block32)
     {
         table.ImportLookupTable = block.Current;
         var syms = symbols.Values;
@@ -47,7 +47,7 @@ class Library
         block.AddInt(0);
     }
 
-    function WriteImportAddressTable(block : Block)
+    function WriteImportAddressTable(block : Block32)
     {
         table.ImportAddressTable = block.Current;
         var syms = symbols.Values;
@@ -56,14 +56,14 @@ class Library
         block.AddInt(0);
     }
 
-    function WriteSymbols(block : Block)
+    function WriteSymbols(block : Block32)
     {
         var syms = symbols.Values;
         for (int i = 0; i < syms.Length; i++)
             (syms[i] as Symbol).Write(block);
     }
 
-    function WriteName(block : Block)
+    function WriteName(block : Block32)
     {
         table.Name = block.Current;
         block.AddString(HeaderBase.Pad(NameSize, name));

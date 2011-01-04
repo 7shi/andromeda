@@ -46,7 +46,7 @@ class Int
     }
 }
 
-class Block
+class Block32
 {
     var data = new ArrayList();
     var relocs = new VarList();
@@ -68,9 +68,9 @@ class Block
         return relocs.ToArray();
     }
 
-    static function New(addr : uint) : Block
+    static function New(addr : uint) : Block32
     {
-        var ret = new Block();
+        var ret = new Block32();
         ret.Address = addr;
         return ret;
     }
@@ -149,7 +149,7 @@ class Block
         length += sizeof(uint);
     }
 
-    function AddBlock(block : Block)
+    function AddBlock(block : Block32)
     {
         for (int i = 0; i < block.data.Count; i++)
         {
@@ -168,8 +168,8 @@ class Block
                 AddChars((char[])obj);
             else if (obj is string)
                 AddString((string)obj);
-            else if (obj is Block)
-                AddBlock((Block)obj);
+            else if (obj is Block32)
+                AddBlock((Block32)obj);
             else if (obj is Val32)
                 AddVal32((Val32)obj);
             else
@@ -200,8 +200,8 @@ class Block
             }
             else if (obj is string)
                 ms.Write(getASCIIBytes(obj as string));
-            else if (obj is Block)
-                (obj as Block).Write(ms);
+            else if (obj is Block32)
+                (obj as Block32).Write(ms);
             else if (obj is Val32)
                 ms.WriteInt((int)((Val32)obj).Value);
             else

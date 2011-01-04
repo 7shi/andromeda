@@ -144,7 +144,7 @@ class OpCode
         return data;
     }
 
-    function Write(block : Block)
+    function Write(block : Block32)
     {
         if (this.op1 is Val32 && relative)
         {
@@ -178,7 +178,7 @@ class OpCode
         {
             raise(string.Format("[Test 1 failed] %s\r\n\tOK: %s\r\n\tNG: %s", mnemonic, data, datastr));
         }
-        var block = new Block();
+        var block = new Block32();
         Write(block);
         var datastr2 = BitConverter.ToString(block.ToByteArray());
         if (data != datastr2)

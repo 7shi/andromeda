@@ -51,7 +51,7 @@ class Module
         return null;
     }
 
-    function CreateBlock(sb : SectionBase) : Block
+    function CreateBlock(sb : SectionBase) : Block32
     {
         if (sb.Header != null)
             return sb.ToBlock(sb.Header.VirtualAddress);

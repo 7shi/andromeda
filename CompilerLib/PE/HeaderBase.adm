@@ -2,7 +2,7 @@ struct Table
 {
     uint Address, Size;
 
-    function WriteBlock(block : Block)
+    function WriteBlock(block : Block32)
     {
         block.AddUInt(Address);
         block.AddUInt(Size);

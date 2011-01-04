@@ -25,7 +25,7 @@ class PEFileHeader : HeaderBase
     ushort OptionalHeaderSize = 0xe0;
     ushort Characteristics = 0x10e;
 
-    override WriteBlock(block : Block)
+    override WriteBlock(block : Block32)
     {
         block.AddUShort(Machine);
         block.AddUShort(NumberOfSections);
@@ -49,7 +49,7 @@ class PEHeaderStandardFields : HeaderBase
     uint BaseOfCode;
     uint BaseOfData;
 
-    override WriteBlock(block : Block)
+    override WriteBlock(block : Block32)
     {
         block.AddUShort(Magic);
         block.AddByte(LMajor);
@@ -87,7 +87,7 @@ class PEHeaderWindowsNTSpecificFields : HeaderBase
     uint LoaderFlags = 0;
     uint NumberOfDataDirectories = 0x10;
 
-    override WriteBlock(block : Block)
+    override WriteBlock(block : Block32)
     {
         block.AddUInt(ImageBase);
         block.AddUInt(SectionAlignment);
@@ -132,7 +132,7 @@ class PEHeaderDataDirectories : HeaderBase
     Table CLIHeader;
     Table Reserved;
 
-    override WriteBlock(block : Block)
+    override WriteBlock(block : Block32)
     {
         ExportTable.WriteBlock(block);
         ImportTable.WriteBlock(block);
@@ -175,7 +175,7 @@ class SectionHeader : HeaderBase
     ushort NumberOfLinenumbers = 0;
     uint Characteristics;
 
-    override WriteBlock(block : Block)
+    override WriteBlock(block : Block32)
     {
         block.AddString(name);
         block.AddUInt(VirtualSize);
@@ -198,7 +198,7 @@ class ImportTable : HeaderBase
     uint Name = 0;
     uint ImportAddressTable = 0;
 
-    override WriteBlock(block : Block)
+    override WriteBlock(block : Block32)
     {
         block.AddUInt(ImportLookupTable);
         block.AddUInt(DateTimeStamp);

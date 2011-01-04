@@ -1,10 +1,10 @@
 class WriterBase
 {
-    virtual WriteBlock(block : Block) {}
+    virtual WriteBlock(block : Block32) {}
 
-    function ToBlock() : Block
+    function ToBlock() : Block32
     {
-        var ret = new Block();
+        var ret = new Block32();
         WriteBlock(ret);
         return ret;
     }

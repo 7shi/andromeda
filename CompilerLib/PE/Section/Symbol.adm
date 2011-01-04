@@ -23,14 +23,14 @@ class Symbol
         return HeaderBase.GetPaddedSize(4, Name);
     }
 
-    function WriteLookup(block : Block, lookup : bool)
+    function WriteLookup(block : Block32, lookup : bool)
     {
         if (!lookup)
             importRef.Value = block.Current;
         block.AddVal32(hintAddress);
     }
 
-    function Write(block : Block)
+    function Write(block : Block32)
     {
         hintAddress.Value = block.Current;
         block.AddUShort(Hint);

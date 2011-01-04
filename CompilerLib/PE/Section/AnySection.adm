@@ -13,7 +13,7 @@ class AnySection : SectionBase
         return ret;
     }
 
-    override Write(block : Block)
+    override Write(block : Block32)
     {
         block.AddBytes(data);
     }

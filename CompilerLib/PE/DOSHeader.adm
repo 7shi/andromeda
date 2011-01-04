@@ -15,7 +15,7 @@ class DOSHeader : HeaderBase
     ushort reloc_table_offset = 0x40;
     ushort overlay_number = 0;
 
-    override WriteBlock(block : Block)
+    override WriteBlock(block : Block32)
     {
         block.AddString(signature);
         block.AddUShort(bytes_in_last_block);
