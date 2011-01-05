@@ -1,3 +1,105 @@
-class Declare
+class Declare : VarDeclare
 {
+    var values : ArrayList = new ArrayList();
+    function get_Values : ArrayList
+    {
+        return values;
+    }
+
+    function get_NeedsInit : bool
+    {
+        if (values != null)
+            return true;
+        var st = GetStruct();
+        return st != null && st.NeedsInit;
+    }
+
+    function get_NeedsCtor : bool
+    {
+        var st = GetStruct();
+        return st != null && st.NeedsCtor;
+    }
+
+    function get_NeedsDtor : bool
+    {
+        var st = GetStruct();
+        return st != null && st.NeedsDtor;
+    }
+
+    static function NewDecl(parent : Declare) : Declare
+    {
+        var ret = new Declare();
+        ret.Parent = parent.Parent;
+        return ret;
+    }
+
+    static function New(parent : BlockBase, name : string, type : string) : Declare
+    {
+        var ret = new Declare();
+        ret.init1(parent, name, null);
+        ret.type = Types.GetType(parent, type) as TypeStruct;
+        if (ret.type == null)
+            raise(ret.Abort("type required"));
+        return ret;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        var st = GetStruct();
+        if (!st.NeedsInit && values.Count == 0 && !st.NeedsCtor)
+            return;
+        codes.Add(I386.Lea(Reg32.EAX, GetAddress(codes, Parent)));
+        codes.Add(I386.Push(Reg32.EAX));
+        var ad = Addr32.New(Reg32.ESP);
+        st.AddInit(codes, ad);
+        AddInitValues(codes, st);
+        st.AddConstructor(codes, ad);
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+    }
+
+    function AddInitValues(codes : OpModule, st : Define) : bool
+    {
+        if (values.Count == 0)
+            return false;
+        var members = st.GetMemberDecls();
+        if (members.Length != values.Count)
+            raise(Abort("initializers mismatched: " + st.Name));
+        var ad = Addr32.New(Reg32.ESP);
+        codes.Add(I386.PushA(ad));
+        for (int i = 0; i < values.Count; i++)
+        {
+            var mem = members[i];
+            var obj = values.Get(i);
+            if (obj is Declare)
+            {
+                var memst = Types.GetStruct(mem.Type);
+                if (!(mem is Declare) || memst == null)
+                    raise(Abort("struct required: " + mem.Name));
+                (obj as Declare).AddInitValues(codes, memst);
+            }
+            else if (obj is NodeBase)
+            {
+                if (!(mem is VarDeclare))
+                    raise(Abort("value required: " + mem.Name));
+                (obj as NodeBase).AddCodesV(codes, "mov", null);
+                codes.Add(I386.MovRA(Var.DestRegister, ad));
+                mem.Type.AddSetCodes(codes, Addr32.New(Var.DestRegister));
+            }
+            else
+                raise(Abort("invalid parameter: " + mem.Name));
+            codes.Add(I386.AddA(ad, Val32.NewI(mem.Type.Size)));
+        }
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+        return true;
+    }
+
+    function CheckField(st1 : Define, st2 : Define)
+    {
+        st2.MakeUp();
+        if (st1 == st2)
+            raise(Abort("can not define recursive field: %s", st1.GetFullName(name)));
+        var b = st2.GetBaseStruct();
+        if (b != null)
+            CheckField(st1, b);
+    }
 }

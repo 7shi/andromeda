@@ -4,11 +4,17 @@ class Define : Block
     const string Constructor = "ctor";
     const string Destructor = "dtor";
 
+    var IsClass = false;
+    var NeedsInit = false;
+    var NeedsCtor = false;
+    var NeedsDtor = false;
+
     function CanUpCast(st : Define) { return false; }
     function GetOffset(name : string) { return 0; }
     function AddInit(codes : OpModule, ad : Addr32) {}
     function AddAfterDtor(codes : OpModule) {}
     function AddBeforeCtor(codes : OpModule) {}
     function GetBaseStruct : Define { return null; }
-    var IsClass = false;
+    function GetMemberDecls { return new VarDeclare[0]; }
+    function AddConstructor(codes : OpModule, ad : Addr32) {}
 }
