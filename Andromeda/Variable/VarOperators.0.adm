@@ -4,7 +4,7 @@ class VarOperatorPre : VarOperator
     {
         var dest = Var.Get(this.dest);
         if (dest == null)
-            raise(Abort("{0}: destination is not variable", Tag));
+            raise(Abort("%s: destination is not variable", Tag));
         var ad1 = dest.GetAddress(codes);
         var ad2 = ad1;
         if (dest.Type.Size < Var.DefaultSize)
@@ -62,7 +62,7 @@ class VarOperatorPost : VarOperatorPre
     {
         var thisdest = Var.Get(this.dest);
         if (thisdest == null)
-            raise(Abort("{0}: destination is not variable", Tag));
+            raise(Abort("%s: destination is not variable", Tag));
         var ad1 = thisdest.GetAddress(codes);
         var ad2 = ad1;
         thisdest.Type.AddGetCodes(codes, "push", null, ad1);
