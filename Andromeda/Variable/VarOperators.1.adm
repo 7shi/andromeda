@@ -1,0 +1,163 @@
+class VarOperator1 : VarOperator
+{
+    function Calculate(codes : OpModule) : Addr32
+    {
+        var dest = Var.Get(this.dest);
+        if (dest == null)
+            raise(Abort("{0}: destination is not variable", Tag));
+        var ad = dest.GetAddress(codes);
+        var ad2 = ad;
+        var tb = CheckFunc();
+        var schar = "";
+        var sint = "";
+        if (dest.Type is TypeString)
+        {
+            if (dest.Type.CheckFunc(Tag + "-char"))
+                schar = Tag + "-char";
+            if (dest.Type.CheckFunc(Tag + "-int"))
+                sint = Tag + "-int";
+        }
+        var size = dest.Type.Size;
+        var cleanup = OpModule.NeedsDtor(dest);
+        var indirect = (dest.Reference != null && dest.Reference.Parent != Parent) || size < Var.DefaultSize || cleanup;
+        if (indirect)
+        {
+            if (!ad.IsAddress && ad.Register != Reg32.EBP)
+                codes.Add(I386.Push(ad.Register));
+            dest.Type.AddGetCodes(codes, "push", null, ad);
+            ad2 = Addr32.New(Reg32.ESP);
+        }
+        for (int i = 0; i < values.Count; i++)
+        {
+            var v = values.Get(i) as NodeBase;
+            var tag = Tag;
+            if (schar != "" && v.Type is TypeChar)
+                tag = schar;
+            else if (sint != "" && v.Type is TypeIntBase)
+                tag = sint;
+            codes.AddOperatorCodes(tb, tag, ad2, v, false);
+        }
+        if (indirect)
+        {
+            codes.Add(I386.Pop(Reg32.EAX));
+            if (!ad.IsAddress && ad.Register != Reg32.EBP)
+                codes.Add(I386.Pop(ad.Register));
+            dest.Type.AddSetCodes(codes, ad);
+        }
+        return ad;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        Calculate(codes);
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        var ad = Calculate(codes);
+        if (this.dest.Type.Size < Var.DefaultSize)
+            codes.AddCodes(op, dest);
+        else
+            codes.AddCodesA(op, dest, ad);
+    }
+}
+
+class VarAdd : VarOperator1
+{
+    function get_Tag { return "add"; }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarAdd
+    {
+        return Init1(new VarAdd(), parent, dest, arg) as VarAdd;
+    }
+}
+
+class VarSub : VarOperator1
+{
+    function get_Tag { return "sub"; }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarSub
+    {
+        return Init1(new VarSub(), parent, dest, arg) as VarSub;
+    }
+}
+
+class VarAnd : VarOperator1
+{
+    function get_Tag { return "and"; }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarAnd
+    {
+        return Init1(new VarAnd(), parent, dest, arg) as VarAnd;
+    }
+}
+
+class VarOr : VarOperator1
+{
+    function get_Tag { return "or"; }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarOr
+    {
+        return Init1(new VarOr(), parent, dest, arg) as VarOr;
+    }
+}
+
+class VarXor : VarOperator1
+{
+    function get_Tag { return "xor"; }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarXor
+    {
+        return Init1(new VarXor(), parent, dest, arg) as VarXor;
+    }
+}
+
+class VarShiftLeft : VarOperator1
+{
+    function get_Tag { return "shift-left"; }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarShiftLeft
+    {
+        return Init1(new VarShiftLeft(), parent, dest, arg) as VarShiftLeft;
+    }
+}
+
+class VarShiftRight : VarOperator1
+{
+    function get_Tag { return "shift-right"; }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarShiftRight
+    {
+        return Init1(new VarShiftRight(), parent, dest, arg) as VarShiftRight;
+    }
+}
+
+class VarMul : VarOperator1
+{
+    function get_Tag { return "mul"; }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarMul
+    {
+        return Init1(new VarMul(), parent, dest, arg) as VarMul;
+    }
+}
+
+class VarDiv : VarOperator1
+{
+    function get_Tag { return "div"; }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarDiv
+    {
+        return Init1(new VarDiv(), parent, dest, arg) as VarDiv;
+    }
+}
+
+class VarMod : VarOperator1
+{
+    function get_Tag { return "mod"; }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarMod
+    {
+        return Init1(new VarMod(), parent, dest, arg) as VarMod;
+    }
+}
