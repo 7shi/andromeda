@@ -1,6 +1,458 @@
-class Member
+class Member : Var
 {
-    var FullName = "";
-    var IsSetter = false;
-    function AddSetterCodes(codes : OpModule, arg : NodeBase) {}
+    var target : NodeBase;
+    function get_Target : NodeBase
+    {
+        if (target == null && !string.IsNullOrEmpty(TargetType))
+        {
+            var t = Variant.GetTarget(Parent, TargetType);
+            if (t != null)
+            {
+                target = t;
+                TargetType = null;
+            }
+        }
+        return target;
+    }
+    function set_Target(value : NodeBase)
+    {
+        target = value;
+    }
+
+    var _TargetType : string;
+    function get_TargetType : string { return _TargetType; }
+    function set_TargetType(value : string) { _TargetType = value; }
+
+    var _Child : Member;
+    function get_Child : Member { return _Child; }
+    function set_Child(value : Member) { _Child = value; }
+
+    static function New(parent : BlockBase, name : string) : Member
+    {
+        var ret = new Member();
+        ret.Parent = parent;
+        ret.name = name;
+        return ret;
+    }
+
+    function GetAddressInternal(codes : OpModule) : Addr32
+    {
+        var st = GetTargetStruct();
+        if (st == null)
+            raise(Abort("can not find member: %s", name));
+        var mem = st.GetMemberDecl(name);
+        if (mem != null && mem.IsStatic)
+            return Addr32.NewAd(mem.Address);
+        var ret : Addr32 = null;
+        var t : TypeBase = null;
+        var target = Target;
+        if (target is Member)
+        {
+            var tsm = target as Member;
+            ret = tsm.GetAddressInternal(codes);
+            if (ret != null)
+                t = tsm.TypeInternal;
+            else
+            {
+                tsm.AddCodesInternal(codes, "mov", null);
+                codes.Add(I386.Mov(Var.DestRegister, Reg32.EAX));
+                ret = Addr32.New(Var.DestRegister);
+            }
+        }
+        else if (target is Var)
+        {
+            var tv = Var.Get(target);
+            ret = tv.GetAddress(codes);
+            if (!(tv is Index))
+                t = tv.Type;
+        }
+        else if (target != null)
+        {
+            target.AddCodesV(codes, "mov", null);
+            codes.Add(I386.Mov(Var.DestRegister, Reg32.EAX));
+            ret = Addr32.New(Var.DestRegister);
+        }
+        else
+        {
+            var g = parent.GetFunction("get_" + TargetType);
+            if (g != null)
+            {
+                Call.NewName(Parent, g.Name).AddCodesV(codes, "mov", null);
+                if (mem != null)
+                {
+                    codes.Add(I386.AddR(Reg32.EAX, Val32.NewI(st.GetOffset(name))));
+                    codes.Add(I386.Mov(Var.DestRegister, Reg32.EAX));
+                    return Addr32.New(Var.DestRegister);
+                }
+                if (IsFunctionInternal)
+                {
+                }
+                else if (IsGetterInternal)
+                {
+                    var gg = GetFunctionPrefix("get_");
+                    codes.Add(I386.Push(Reg32.EAX));
+                    codes.Add(I386.CallD(gg.First));
+                    if (gg.CallType == CallType.CDecl)
+                        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+                    return null;
+                }
+                raise(Abort("undefined member: %s.%s", st.FullName, name));
+            }
+        }
+        if (t != null && t.IsValue)
+        {
+            codes.Add(I386.MovRA(Var.DestRegister, ret));
+            ret = Addr32.New(Var.DestRegister);
+        }
+        if (mem != null)
+        {
+            if (ret == null)
+                raise(Abort("not static: %s.%s", st.FullName, name));
+            ret.Add(st.GetOffset(name));
+            return ret;
+        }
+        if (IsFunctionInternal)
+        {
+        }
+        else if (IsGetterInternal)
+        {
+            GetCall("get_", null).AddCodesV(codes, "mov", null);
+            return null;
+        }
+        raise(Abort("undefined member: %s.%s", st.FullName, name));
+    }
+
+    override GetAddress(codes : OpModule) : Addr32
+    {
+        if (_Child != null)
+            return _Child.GetAddress(codes);
+        else
+            return GetAddressInternal(codes);
+    }
+
+    function GetTargetStruct() : Define
+    {
+        var target = Target;
+        if (target is Member)
+            return (target as Member).GetStructInternal();
+        else if (target != null)
+            return Types.GetStruct(target.Type);
+        var g = parent.GetFunction("get_" + TargetType);
+        if (g != null)
+            return Types.GetStruct(g.ReturnType.Type);
+        return parent.GetStruct(TargetType);
+    }
+
+    function GetStructInternal() : Define
+    {
+        var t = TypeInternal;
+        if (t != null)
+            return Types.GetStruct(t);
+        return null;
+    }
+
+    override GetStruct() : Define
+    {
+        if (_Child != null)
+            return _Child.GetStruct();
+        else
+            return GetStructInternal();
+    }
+
+    function GetIsStatic() : bool
+    {
+        var target = Target;
+        if (target == null)
+            return true;
+        if (target is Member)
+            return (target as Member).GetIsStatic();
+        return false;
+    }
+
+    function get_TypeInternal : TypeBase
+    {
+        if (IsLengthInternal)
+            return TypeVar.Instance;
+        var st = GetTargetStruct();
+        if (st == null) return null;
+        var m = st.GetMemberDecl(name);
+        if (m != null) return m.Type;
+        var f = st.GetFunction(name);
+        if (f != null)
+        {
+            var delg = GetDelegate();
+            if (delg != null)
+                return delg.Type;
+            return f.Type;
+        }
+        var g = st.GetFunction("get_" + name);
+        if (g != null)
+            return g.ReturnType;
+        return null;
+    }
+
+    function get_Type : TypeBase
+    {
+        if (_Child != null)
+            return _Child.Type;
+        return TypeInternal;
+    }
+
+    function Append(mem : Member)
+    {
+        if (_Child == null)
+        {
+            _Child = mem;
+            _Child.target = this;
+        }
+        else
+            _Child.Append(mem);
+    }
+
+    function GetName() : string
+    {
+        if (_Child != null)
+            return _Child.GetName();
+        return name;
+    }
+
+    function GetTarget() : NodeBase
+    {
+        if (_Child != null)
+            return _Child.GetTarget();
+        return GetTargetInternal();
+    }
+
+    function GetTargetInternal() : NodeBase
+    {
+        var target = Target;
+        if (target is Member)
+            return (target as Member).Duplicate();
+        return target;
+    }
+
+    bool flgDelg;
+    var delg : DelgFunc;
+
+    function GetDelegate() : DelgFunc
+    {
+        if (_Child != null)
+            return _Child.GetDelegate();
+        if (flgDelg)
+            return delg;
+        flgDelg = true;
+        var st = GetTargetStruct();
+        if (st == null)
+            return null;
+        var m = st.GetMemberDecl(name);
+        if (m != null)
+            return null;
+        var f = st.GetFunction(name);
+        if (f == null || GetIsStatic())
+            return null;
+        var args = new NodeBase[1];
+        args[0] = Target;
+        delg = DelgFunc.New(Parent, f.CallType, args, f);
+        return delg;
+    }
+
+    function GetFunction() : Function
+    {
+        if (_Child != null)
+            return _Child.GetFunction();
+        var t = GetTargetStruct();
+        if (t == null)
+            return null;
+        var ret = t.GetFunction(name);
+        var target = Target;
+        if (target is Base && (ret.IsVirtual || ret.IsOverride))
+            ret = t.GetFunction("override_" + name);
+        return ret;
+    }
+
+    function GetFunctionPrefix(prefix : string) : Function
+    {
+        var st = GetTargetStruct();
+        if (st == null) return null;
+        int of = st.GetOffset(name);
+        if (of >= 0) return null;
+        return st.GetFunction(prefix + name);
+    }
+
+    function CheckFunction(prefix : string) : bool
+    {
+        return GetFunctionPrefix(prefix) != null;
+    }
+
+    function get_IsFunctionInternal : bool
+    {
+        return CheckFunction("");
+    }
+
+    function get_IsFunction : bool
+    {
+        if (_Child != null)
+            return _Child.IsFunction;
+        return IsFunctionInternal;
+    }
+
+    function get_IsSetterInternal : bool
+    {
+        return CheckFunction("set_");
+    }
+
+    function get_IsSetter : bool
+    {
+        if (_Child != null)
+            return _Child.IsSetter;
+        return IsSetterInternal;
+    }
+
+    function get_IsGetterInternal : bool
+    {
+        return CheckFunction("get_");
+    }
+
+    function get_IsGetter : bool
+    {
+        if (_Child != null)
+            return _Child.IsGetter;
+        return IsGetterInternal;
+    }
+
+    function get_IsLengthInternal : bool
+    {
+        if (name != "Length") return false;
+        var t = Target;
+        if (t == null) return false;
+        var tt : TypeBase;
+        if (t is Member)
+            tt = (t as Member).TypeInternal;
+        else
+            tt = t.Type;
+        if (tt is TypeString)
+            return true;
+        var tr = tt as TypeReference;
+        return tr != null && tr.IsArray;
+    }
+
+    function Duplicate() : Member
+    {
+        var m = Member.New(Parent, name);
+        var target = Target;
+        if (target is Member)
+        {
+            var t = (target as Member).Duplicate();
+            t.Append(m);
+            return t;
+        }
+        m.Target = target;
+        return m;
+    }
+
+    function GetCall(prefix : string, args : NodeBase[]) : Call
+    {
+        return Call.NewV(Parent, GetFunctionPrefix(prefix), GetTargetInternal(), args);
+    }
+
+    function AddSetterCodesInternal(codes : OpModule, arg : NodeBase)
+    {
+        var args = new NodeBase[1];
+        args[0] = arg;
+        GetCall("set_", args).AddCodes(codes);
+    }
+
+    function AddSetterCodes(codes : OpModule, arg : NodeBase)
+    {
+        if (_Child != null)
+            _Child.AddSetterCodes(codes, arg);
+        else
+            AddSetterCodesInternal(codes, arg);
+    }
+
+    function AddCodesInternal(codes : OpModule, op : string, dest : Addr32)
+    {
+        var st = GetTargetStruct();
+        var target = Target;
+        if (IsLengthInternal)
+        {
+            if (target is Member)
+                (target as Member).AddCodesInternal(codes, "mov", null);
+            else
+                target.AddCodesV(codes, "mov", null);
+            codes.Add(I386.MovRA(Reg32.EAX, Addr32.NewRO(Reg32.EAX,  - 4)));
+            codes.AddCodes(op, dest);
+            return;
+        }
+        else if (IsGetterInternal)
+        {
+            if (target == null)
+            {
+                var g = parent.GetFunction("get_" + TargetType);
+                if (g != null)
+                {
+                    Call.NewName(Parent, g.Name).AddCodesV(codes, "mov", null);
+                    var gg = GetFunctionPrefix("get_");
+                    codes.Add(I386.Push(Reg32.EAX));
+                    codes.Add(I386.CallD(gg.First));
+                    if (gg.CallType == CallType.CDecl)
+                        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+                    codes.AddCodes(op, dest);
+                    return;
+                }
+            }
+            GetCall("get_", null).AddCodesV(codes, op, dest);
+            return;
+        }
+        else if (IsFunctionInternal)
+        {
+            var delg = GetDelegate();
+            if (delg != null)
+                delg.AddCodesV(codes, op, dest);
+            else
+            {
+                var fp = Variant.NewName(GetTargetStruct(), name);
+                fp.AddCodesV(codes, op, dest);
+            }
+            return;
+        }
+        if (st != null)
+        {
+            var ci = st.GetInt(name);
+            if (ci != null)
+            {
+                ci.AddCodesV(codes, op, dest);
+                return;
+            }
+            var cs = st.GetString(name);
+            if (cs != null)
+            {
+                cs.AddCodesV(codes, op, dest);
+                return;
+            }
+        }
+        get_TypeInternal().AddGetCodes(codes, op, dest, GetAddressInternal(codes));
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        if (_Child != null)
+            _Child.AddCodesV(codes, op, dest);
+        else
+            AddCodesInternal(codes, op, dest);
+    }
+
+    function get_FullName : string
+    {
+        var n : string = null;
+        if (this.target is Member)
+            n = (this.target as Member).FullName;
+        else if (this.target is NodeBase)
+            n = (this.target as NodeBase).Name;
+        else if (!string.IsNullOrEmpty(TargetType))
+            n = TargetType;
+        if (string.IsNullOrEmpty(n))
+            return name;
+        return n + "." + name;
+    }
 }

@@ -1,0 +1,4 @@
+class DelgFunc : NodeBase
+{
+    static function New(parent : BlockBase, callType : CallType, args : NodeBase[], func : NodeBase) { return new DelgFunc; }
+}

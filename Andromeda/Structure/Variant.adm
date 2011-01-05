@@ -1,6 +1,7 @@
 class Variant : NodeBase
 {
     static function New(func : Function) { return new Variant; }
+    static function GetTarget(parent : BlockBase, name : string) : NodeBase { return null; }
     function GetVar : Var { return null; }
     function GetConst() : NodeBase { return null; }
     function GetSetter() : Function { return null; }
