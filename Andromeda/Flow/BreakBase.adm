@@ -1,0 +1,13 @@
+class BreakBase : NodeBase
+{
+    var _UsingPointers : VarDeclare[];
+    function get_UsingPointers { return _UsingPointers; }
+    function set_UsingPointers(value : VarDeclare[]) { _UsingPointers = value; }
+
+    function init(parent : BlockBase)
+    {
+        Parent = parent;
+        if (parent != null)
+            UsingPointers = parent.GetUsingPointers();
+    }
+}

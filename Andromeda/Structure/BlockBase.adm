@@ -1,3 +1,7 @@
-class BlockBase : NodeBase
+class BlockBase : BreakBase
 {
+    function GetUsingPointers
+    {
+        return new VarDeclare[0];
+    }
 }
