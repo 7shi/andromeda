@@ -1,4 +1,294 @@
 class Call : NodeBase
 {
-    static function NewV(parent : BlockBase, val : NodeBase, target : NodeBase, args : NodeBase[]) { return new Call; }
+    var target : NodeBase;
+    var args : ArrayList = new ArrayList();
+    var val : NodeBase;
+    var callType : CallType = CallType.CDecl;
+
+    static function NewName(parent : BlockBase, name : string) : Call
+    {
+        var ret = new Call();
+        ret.Parent = parent;
+        ret.name = name;
+        return ret;
+    }
+
+    static function New(parent : BlockBase, name : string, target : NodeBase, args : NodeBase[]) : Call
+    {
+        var ret = NewName(parent, name);
+        ret.target = target;
+        if (args != null)
+        {
+            for (int i = 0; i < args.Length; i++)
+                ret.args.Add(args[i]);
+        }
+        if (string.IsNullOrEmpty(name) && target is Member)
+            ret.name = (target as Member).GetName();
+        return ret;
+    }
+
+    static function NewV(parent : BlockBase, val : NodeBase, target : NodeBase, args : NodeBase[]) : Call
+    {
+        var ret = new Call();
+        ret.Parent = parent;
+        ret.val = val;
+        ret.target = target;
+        if (args != null)
+        {
+            for (int i = 0; i < args.Length; i++)
+                ret.args.Add(args[i]);
+        }
+        return ret;
+    }
+
+    function AddArgs(list : ArrayList)
+    {
+        for (int i = 0; i < args.Count; i++)
+            list.Add(args.Get(i));
+    }
+
+    function GetFunction(codes : OpModule, target : NodeBase, args : ArrayList[]) : NodeBase
+    {
+        if (val == null && target is Member)
+        {
+            var mem = target as Member;
+            var memf = mem.GetFunction();
+            if (memf == null)
+                memf = parent.GetFunction(mem.GetName());
+            if (memf == null)
+            {
+                if (!string.IsNullOrEmpty(mem.TargetType))
+                    raise(Abort("call: undefined symbol: %s", mem.TargetType));
+                else
+                    raise(Abort("call: undefined function: %s", mem.FullName));
+            }
+            var memt = mem.GetTarget();
+            args[0] = new ArrayList();
+            if (memt != null && !memf.IsStatic)
+                args[0].Add(memt);
+            AddArgs(args[0]);
+            return memf;
+        }
+        else if (string.IsNullOrEmpty(name))
+        {
+            args[0] = new ArrayList();
+            if (target != null)
+                args[0].Add(target);
+            AddArgs(args[0]);
+            if (this.val is Function)
+                return val;
+            else if (this.val is Variant)
+                return (val as Variant).GetFunction();
+            return null;
+        }
+        var ret : Function = null;
+        if (target == null)
+        {
+            ret = parent.GetFunction(name);
+            if (ret == null)
+                raise(Abort("undefined function: %s", name));
+            else if (ret.HasThis)
+                return GetFunction(codes, This.New(Parent), args);
+            args[0] = this.args;
+            return ret;
+        }
+        var st = Types.GetStruct(target.Type);
+        if (st != null)
+        {
+            ret = st.GetFunction(name);
+            if (ret == null)
+            {
+                var mem = st.GetMemberDecl(name);
+                if (mem != null)
+                {
+                    args[0] = this.args;
+                    var mem2 = Member.New(Parent, name);
+                    if (target is Member)
+                    {
+                        var mem3 = (target as Member).Duplicate();
+                        mem3.Append(mem2);
+                        return mem3;
+                    }
+                    mem2.Target = target;
+                    return mem2;
+                }
+            }
+        }
+        if (ret == null)
+            ret = parent.GetFunction(name);
+        if (ret == null)
+        {
+            if (st == null)
+                raise(Abort("undefined function: %s", name));
+            else
+                raise(Abort("undefined function: %s", st.GetFullName(name)));
+        }
+        args[0] = new ArrayList();
+        args[0].Add(target);
+        AddArgs(args[0]);
+        return ret;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        var args = new ArrayList[1];
+        args[0] = new ArrayList();
+        if (this.val == null && this.target is Member)
+            args[0].Add((target as Member).GetTarget());
+        else if (target != null)
+            args[0].Add(target);
+        AddArgs(args[0]);
+        if (name != null && name.StartsWith("__"))
+        {
+            if (AddIntrinsicCodes(codes, args[0]))
+                return;
+            if (AddSIMDCodes(codes, args[0]))
+                return;
+        }
+        var f = GetFunction(codes, target, args);
+        var args_array = new NodeBase[args[0].Count];
+        for (int i = 0; i < args_array.Length; i++)
+            args_array[i] = args[0].Get(i) as NodeBase;
+        if (f is Function)
+        {
+            (f.Type as TypeFunction).CheckArgs(this, args_array);
+            AddCallCodes(codes, f as Function, args_array);
+            return;
+        }
+        var val = this.val;
+        if (f != null)
+            val = f;
+        var t = val.Type;
+        if (t is TypeFunction)
+            (t as TypeFunction).CheckArgs(this, args_array);
+        var cleanup = NeedsDtor(val);
+        if (cleanup)
+            codes.Add(I386.SubR(Reg32.ESP, Val32.NewI(4)));
+        AddCallCodes2(codes, args_array, callType, \() =>
+        {
+            if (!cleanup)
+            {
+                val.AddCodesV(codes, "mov", null);
+                codes.Add(I386.Call(Reg32.EAX));
+            }
+            else
+            {
+                var ad = Addr32.NewRO(Reg32.ESP, args_array.Length * 4);
+                val.AddCodesV(codes, "mov", ad);
+                codes.Add(I386.CallA(ad));
+                codes.Add(I386.Push(Reg32.EAX));
+                var ad2 = Addr32.NewRO(Reg32.ESP, 4);
+                if (callType == CallType.CDecl)
+                    ad2.Add(args_array.Length * 4);
+                val.Type.AddDestructorA(codes, ad2);
+                codes.Add(I386.Pop(Reg32.EAX));
+            }
+        });
+        if (cleanup)
+            codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        AddCodes(codes);
+        codes.AddCodes(op, dest);
+    }
+
+    static function AddCallCodes(codes : OpModule, f : Function, args : NodeBase[])
+    {
+        AddCallCodes2(codes, args, f.CallType, \() =>
+        {
+            codes.Add(I386.CallD(f.First));
+        });
+    }
+
+    static function NeedsDtor(arg : NodeBase) : bool
+    {
+        if (arg is Call || arg is DelgFunc)
+        {
+            var t = arg.Type;
+            if (t != null)
+                return t.NeedsDtor;
+        }
+        else if (arg is Member)
+        {
+            var t = arg.Type;
+            if (t is TypeDelegate)
+                return t.NeedsDtor;
+        }
+        return false;
+    }
+
+    static function AddCallCodes2(codes : OpModule, args : NodeBase[], type : CallType, delg)
+    {
+        for (int i = args.Length - 1; i >= 0; i--)
+            args[i].AddCodesV(codes, "push", null);
+        delg();
+        if (type == CallType.CDecl && args.Length > 0)
+        {
+            int p = 4;
+            var pop = false;
+            for (int i = 0; i < args.Length; i++)
+            {
+                var arg = args[i];
+                if (OpModule.NeedsDtor(arg))
+                {
+                    if (!pop)
+                    {
+                        codes.Add(I386.Push(Reg32.EAX));
+                        pop = true;
+                    }
+                    arg.Type.AddDestructorA(codes, Addr32.NewRO(Reg32.ESP, p));
+                }
+                p += 4;
+            }
+            if (pop)
+                codes.Add(I386.Pop(Reg32.EAX));
+            codes.Add(I386.AddR(Reg32.ESP, Val32.New((byte)(args.Length * 4))));
+        }
+    }
+    var type : TypeBase;
+    bool doneInferType = false;
+
+    function get_Type : TypeBase
+    {
+        if (doneInferType || !root.IsCompiling)
+            return type;
+        doneInferType = true;
+        if (name == null)
+        {
+            var t = val.Type;
+            if (t is TypeFunction)
+                type = (t as TypeFunction).RetType;
+            else
+                type = TypeVar.Instance;
+        }
+        else if (AddIntrinsicCodes(null, this.args) || AddSIMDCodes(null, this.args))
+        {
+            return null;
+        }
+        else
+        {
+            var args = new ArrayList[1];
+            var f = GetFunction(null, target, args);
+            if (f is Function)
+                type = (f as Function).ReturnType;
+            else
+                type = TypeVar.Instance;
+        }
+        return type;
+    }
+
+    function PipeForward(arg : NodeBase)
+    {
+        args.Add(arg);
+    }
+
+    function PipeBack(arg : NodeBase)
+    {
+        if (target == null)
+            target = arg;
+        else
+            args.Insert(0, arg);
+    }
 }

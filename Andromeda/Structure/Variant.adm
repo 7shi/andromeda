@@ -6,4 +6,5 @@ class Variant : NodeBase
     function GetConst() : NodeBase { return null; }
     function GetSetter() : Function { return null; }
     function GetVariantType() : TypeBase { return null; }
+    function GetFunction() : Function { return null; }
 }
