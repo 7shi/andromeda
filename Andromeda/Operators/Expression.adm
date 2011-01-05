@@ -1,0 +1,44 @@
+class Expression : Operator
+{
+    function get_Tag : string
+    {
+        return "expression";
+    }
+
+    static function New(parent : BlockBase, arg : NodeBase) : Expression
+    {
+        return Init1(new Expression(), parent, arg) as Expression;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        if (AddConstCodes(codes, "mov", null))
+            return;
+        var v = values.Get(0) as NodeBase;
+        if (v != null && !OpModule.NeedsDtor(v))
+            v.AddCodes(codes);
+        else
+            AddCodesV(codes, "mov", null);
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        if (AddConstCodes(codes, op, dest))
+            return;
+        var v = values.Get(0) as NodeBase;
+        if (!OpModule.NeedsDtor(v))
+            v.AddCodesV(codes, op, dest);
+        else
+        {
+            v.AddCodesV(codes, "mov", null);
+            codes.Add(I386.Push(Reg32.EAX));
+            codes.AddCodes(op, dest);
+            codes.AddDtorCodes(v.Type);
+        }
+    }
+
+    override GetConst() : IntValue
+    {
+        return IntValue.GetValue(values.Get(0) as NodeBase);
+    }
+}
