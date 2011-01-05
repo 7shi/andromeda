@@ -1,7 +1,7 @@
 class Var : NodeBase
 {
     const int DefaultSize = 4;
-    var DestRegister = Reg32.ECX;
+    static var DestRegister = Reg32.ECX;
 
     function get_Type : TypeBase
     {

@@ -1,3 +1,81 @@
-class Index
+class Index : Var
 {
+    var target : NodeBase;
+    var order : NodeBase;
+
+    static function New(parent : BlockBase, target : NodeBase, order : NodeBase) : Index
+    {
+        var ret = new Index();
+        ret.Parent = parent;
+        ret.target = target;
+        ret.order = order;
+        return ret;
+    }
+
+    override GetAddress(codes : OpModule) : Addr32
+    {
+        var target = Var.Get(this.target);
+        if (target == null)
+            raise(Abort("index: source is not array"));
+        var t = target.Type;
+        int ts;
+        if (t is TypeString)
+            ts = TypeChar.get_Instance().Size;
+        else if (!t.IsArray)
+            raise(Abort("%s is not array", target.Name));
+        else
+            ts = t.Type.Size;
+        var oi = order as IntValue;
+        if (oi != null)
+        {
+            if (oi.Value < 0)
+                raise(Abort("%s[%d]: over flow: < 0", target.Name, oi.Value));
+            if (t is TypeArray)
+            {
+                var tc = (t as TypeArray).Count;
+                if (oi.Value >= tc)
+                    raise(Abort("%s[%d]: over flow: >= {2}", target.Name, oi.Value, tc));
+            }
+            var ret = target.GetAddress(codes);
+            if (ret == null)
+            {
+                codes.Add(I386.Mov(Var.DestRegister, Reg32.EAX));
+                ret = Addr32.New(Var.DestRegister);
+            }
+            else if (t.IsValue)
+            {
+                codes.Add(I386.MovRA(Var.DestRegister, ret));
+                ret = Addr32.New(Var.DestRegister);
+            }
+            ret.Add(ts * oi.Value);
+            return ret;
+        }
+        order.AddCodesV(codes, "mov", null);
+        codes.Add(I386.MovR(Reg32.EDX, Val32.NewI(ts)));
+        codes.Add(I386.Imul(Reg32.EDX));
+        codes.Add(I386.Push(Reg32.EAX));
+        target.AddCodesV(codes, "mov", null);
+        codes.Add(I386.Pop(Var.DestRegister));
+        codes.Add(I386.Add(Var.DestRegister, Reg32.EAX));
+        return Addr32.New(Var.DestRegister);
+    }
+
+    function get_Type : TypeBase
+    {
+        var t = target.Type;
+        if (t is TypeString)
+            return TypeConstChar.Instance;
+        else if (t != null)
+            return t.Type;
+        if (this.target is Member)
+            raise(Abort("index: undefined member: %s", (target as Member).FullName));
+        else if (this.target is NodeBase)
+            raise(Abort("index: undefined symbol: %s", (target as NodeBase).Name));
+        raise(Abort("index: undefined symbol"));
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        get_Type().AddGetCodes(codes, op, dest, GetAddress(codes));
+    }
 }
