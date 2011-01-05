@@ -1,5 +1,67 @@
 class TypeOf : NodeBase
 {
-    static function GetType(parent : BlockBase, target : NodeBase) : TypeBase { return null; }
-    static function AddCodes(caller : NodeBase, parent : BlockBase, target : NodeBase, codes : OpModule, op : string, dest : Addr32) {}
+    var _Target : NodeBase;
+    function get_Target : NodeBase { return _Target; }
+    function set_Target(value : NodeBase) { _Target = value; }
+
+    static function New(parent : BlockBase, target : NodeBase) : TypeOf
+    {
+        var ret = new TypeOf();
+        ret.Parent = parent;
+        ret.Target = target;
+        return ret;
+    }
+
+    function get_Type : TypeBase
+    {
+        return TypeType.Instance;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        AddCodes(this, Parent, Target, codes, op, dest);
+    }
+
+    static function GetType(parent : BlockBase, target : NodeBase) : TypeBase
+    {
+        var v = target as Variant;
+        if (v != null)
+        {
+            var vt = v.GetVariantType();
+            if (vt != null) return vt;
+            return Types.GetType(parent, v.Name);
+        }
+        return target.Type;
+    }
+
+    static function AddCodes(caller : NodeBase, parent : BlockBase, target : NodeBase, codes : OpModule, op : string, dest : Addr32)
+    {
+        if (target is TypeOf)
+            target = (target as TypeOf).Target;
+        var v = target as Variant;
+        if (v != null && parent.GetFunction(v.Name) == null)
+        {
+            var fpname = (target as Variant).Name;
+            var fpt = Types.GetType(parent, fpname);
+            if (fpt == null || !fpt.Check())
+                raise(caller.Abort("undefined type: {0}", fpname));
+            codes.AddCodesV(op, dest, codes.GetTypeObject(fpt));
+            return;
+        }
+        var tt = target.Type;
+        var tr = tt as TypeReference;
+        var tts = tt.Type as TypeStruct;
+        if (tr != null && (tr.IsArray || (tts != null && tts.IsClass)))
+        {
+            target.AddCodesV(codes, "mov", null);
+            var label = new OpCode();
+            codes.Add(I386.Test(Reg32.EAX, Reg32.EAX));
+            codes.Add(I386.Jcc(Cc.Z, label.Address));
+            codes.Add(I386.MovRA(Reg32.EAX, Addr32.NewRO(Reg32.EAX,  - 16)));
+            codes.Add(label);
+            codes.AddCodes(op, dest);
+        }
+        else
+            codes.AddCodesV(op, dest, codes.GetTypeObject(tt));
+    }
 }
