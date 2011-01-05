@@ -2,19 +2,383 @@ class Define : Block
 {
     const string Initializer = "izer";
     const string Constructor = "ctor";
-    const string Destructor = "dtor";
+    const string Destructor  = "dtor";
 
-    var IsClass = false;
-    var NeedsInit = false;
-    var NeedsCtor = false;
-    var NeedsDtor = false;
+    var _BaseType : string;
+    function get_BaseType : string { return _BaseType; }
+    function set_BaseType(value : string) { _BaseType = value; }
 
-    function CanUpCast(st : Define) { return false; }
-    function GetOffset(name : string) { return 0; }
-    function AddInit(codes : OpModule, ad : Addr32) {}
-    function AddAfterDtor(codes : OpModule) {}
-    function AddBeforeCtor(codes : OpModule) {}
-    function GetBaseStruct : Define { return null; }
-    function GetMemberDecls { return new VarDeclare[0]; }
-    function AddConstructor(codes : OpModule, ad : Addr32) {}
+    var type : TypeBase;
+    function get_Type : TypeBase
+    {
+        if (type == null)
+            type = TypeStruct.New(this, name);
+        return type;
+    }
+
+    bool _IsClass;
+    function get_IsClass : bool { return _IsClass; }
+    function set_IsClass(value : bool) { _IsClass = value; }
+
+    var thisptr : Arg;
+    bool isAnonymous;
+
+    static function New(parent : BlockBase, name : string, baseType : string) : Define
+    {
+        var ret = new Define();
+        ret.init(parent);
+        if (string.IsNullOrEmpty(name))
+        {
+            ret.isAnonymous = true;
+            ret.name = parent.GetAnonymousName();
+        }
+        else
+            ret.name = name;
+        ret.thisptr = Arg.New(ret, "this", Types.ToVarType(ret.Type));
+        ret.BaseType = baseType;
+        return ret;
+    }
+
+    override GetMember(name : string) : object
+    {
+        if (members.ContainsKey(name))
+            return members.Get(name);
+        var st = GetBaseStruct();
+        if (st == null)
+            return null;
+        return st.GetMember(name);
+    }
+
+    override GetMemberRecursive(name : string, conv) : object
+    {
+        var ret = conv(GetMember(name));
+        if (ret != null || Parent == null)
+            return ret;
+        ret = parent.GetMemberRecursive(name, conv);
+        if (ret == null || !(ret is VarDeclare || ret is Function))
+            return ret;
+        if ((ret as NodeBase).Parent is Root)
+            return ret;
+        return null;
+    }
+
+    function GetBaseStruct() : Define
+    {
+        if (BaseType == null)
+            return null;
+        var st = parent.GetStruct(BaseType);
+        if (!root.IsCompiling || st != null)
+            return st;
+        raise(Abort("undefined struct: " + BaseType));
+    }
+
+    function GetSizeInternal() : int
+    {
+        int ret = 0;
+        ForEachMembers(null, \(size : int) =>
+        {
+            ret = size;
+        }
+        );
+        var st = GetBaseStruct();
+        if (st != null)
+            ret += st.GetSizeInternal();
+        return ret;
+    }
+
+    function GetSize() : int
+    {
+        var ret = GetSizeInternal();
+        if (ret == 0)
+            ret = Var.DefaultSize;
+        return ret;
+    }
+
+    function GetOffset(name : string) : int
+    {
+        int ret =  - 1;
+        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        {
+            if (p.Name != name)
+                return false;
+            ret = pos;
+            return true;
+        }
+        , null);
+        var st = GetBaseStruct();
+        if (st == null) return ret;
+        if (ret < 0) return st.GetOffset(name);
+        return ret + st.GetSizeInternal();
+    }
+
+    function GetMemberDecl(name : string) : VarDeclare
+    {
+        var ret : VarDeclare = null;
+        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        {
+            if (p.Name != name)
+                return false;
+            ret = p;
+            return true;
+        }, null);
+        if (ret != null) return ret;
+        var st = GetBaseStruct();
+        if (st == null) return null;
+        return st.GetMemberDecl(name);
+    }
+
+    function GetMemberDecls()
+    {
+        var list = new ArrayList();
+        var st = GetBaseStruct();
+        if (st != null)
+        {
+            var stmd = st.GetMemberDecls();
+            for (int i = 0; i < stmd.Length; i++)
+                list.Add(stmd[i]);
+        }
+        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        {
+            list.Add(p);
+            return false;
+        }, null);
+        var ret = new VarDeclare[list.Count];
+        for (int i = 0; i < ret.Length; i++)
+            ret[i] = list.Get(i) as VarDeclare;
+        return ret;
+    }
+
+    function get_ThisStruct : Define
+    {
+        return this;
+    }
+
+    function CallBlock(codes : OpModule, ad : Addr32, b : Block, ct : CallType)
+    {
+        if (ad!=null)
+            codes.Add(I386.PushA(ad));
+        else
+            codes.Add(I386.Push(Reg32.EAX));
+        codes.Add(I386.CallD(b.First));
+        if (ct == CallType.CDecl)
+            codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+    }
+
+    function AddInit(codes : OpModule, ad : Addr32)
+    {
+        if (!NeedsInit) return;
+        CallBlock(codes, ad, this, CallType.CDecl);
+    }
+
+    function AddConstructor(codes : OpModule, ad : Addr32)
+    {
+        if (!NeedsCtor) return;
+        var f = GetFunction(Constructor);
+        CallBlock(codes, ad, f, f.CallType);
+    }
+
+    function AddDestructor(codes : OpModule, ad : Addr32)
+    {
+        if (!NeedsDtor) return;
+        var dtor = GetFunction(Destructor);
+        if (dtor.IsVirtual)
+            dtor = GetFunction("override_" + Destructor);
+        CallBlock(codes, ad, dtor, dtor.CallType);
+    }
+
+    function AddBeforeCtor(codes : OpModule)
+    {
+        var st = GetBaseStruct();
+        if (st != null)
+            st.AddConstructor(codes, Addr32.NewRO(Reg32.EBP, 8));
+    }
+
+    function AddAfterDtor(codes : OpModule)
+    {
+        var list = new ArrayList();
+        var poslist = new VarList();
+        int offset = 0;
+        var st = GetBaseStruct();
+        if (st != null)
+            offset = st.GetSizeInternal();
+        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        {
+            if (!p.IsStatic && p.NeedsDtor)
+            {
+                list.Add(p);
+                poslist.Add(offset + pos);
+            }
+            return false;
+        }, null);
+        var ad = Addr32.NewRO(Reg32.EBP, 8);
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            var p = list.Get(i) as VarDeclare;
+            codes.Add(I386.MovRA(Var.DestRegister, ad));
+            p.Type.AddDestructorA(codes, Addr32.NewRO(Var.DestRegister, poslist.Get(i)));
+        }
+        if (st != null)
+            st.AddDestructor(codes, ad);
+    }
+
+    function get_HasStackFrame : bool
+    {
+        return false;
+    }
+
+    override BeforeAddCodes(codes : OpModule)
+    {
+        thisptr.Address = Addr32.NewRO(Reg32.EBP, 8);
+        int lv = Level + 1;
+        codes.Add(I386.Enter((ushort)(lv * 4), (byte)lv));
+        var st = GetBaseStruct();
+        if (st != null && !IsEmpty)
+            st.AddInit(codes, thisptr.Address);
+    }
+
+    override AfterAddCodes(codes : OpModule)
+    {
+        AddExitCodes(codes);
+    }
+
+    override AddExitCodes(codes : OpModule)
+    {
+        codes.Add(I386.Leave());
+        codes.Add(I386.Ret());
+    }
+
+    override AddDestructors(codes : OpModule, ptrs : VarDeclare[])
+    {
+    }
+
+    function get_NeedsInit : bool
+    {
+        var st = GetBaseStruct();
+        if (st != null && st.NeedsInit)
+            return true;
+        for (int i = 0; i < sentences.Count; i++)
+        {
+            var s = sentences.Get(i);
+            if (s is VarDeclare)
+            {
+                var d = s as VarDeclare;
+                if (!d.NeedsInit && !d.NeedsCtor)
+                    continue;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    function get_NeedsCtor : bool
+    {
+        var st = GetBaseStruct();
+        if (st != null && st.NeedsCtor)
+            return true;
+        return GetFunction(Constructor).Sentences.Count > 0;
+    }
+
+    function get_NeedsDtor : bool
+    {
+        var st = GetBaseStruct();
+        if (st != null && st.NeedsDtor)
+            return true;
+        var dtor = GetFunction(Destructor);
+        if (dtor.IsVirtual || dtor.Sentences.Count > 0)
+            return true;
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
+        {
+            var vd = mems[i] as VarDeclare;
+            if (vd != null && vd.NeedsDtor)
+                return true;
+        }
+        return false;
+    }
+
+    bool doneCheckStruct = false;
+
+    function CheckStruct()
+    {
+        if (doneCheckStruct)
+            return;
+        doneCheckStruct = true;
+        if (IsClass && BaseType == null && FullName != "object")
+            BaseType = "object";
+        var list = new ArrayList();
+        CheckStructList(list);
+        CheckField();
+    }
+
+    function CheckStructList(list : ArrayList)
+    {
+        MakeUp();
+        if (list.Contains(this))
+            raise(Abort("can not define recursive type: %s", (list.Get(0) as Define).name));
+        list.Add(this);
+        var b = GetBaseStruct();
+        if (b == null)
+            return;
+        if (IsClass && !b.IsClass)
+            raise(Abort("class: can not inherit from struct: %s <= %s", FullName, b.FullName));
+        else if (!IsClass && b.IsClass)
+            raise(Abort("struct: can not inherit from class: %s <= %s", FullName, b.FullName));
+        b.CheckStructList(list);
+    }
+
+    bool _IsEmpty;
+    function get_IsEmpty : bool { return _IsEmpty; }
+    function set_IsEmpty(value : bool) { _IsEmpty = value; }
+
+    bool doneCheckField = false;
+
+    function CheckField()
+    {
+        if (doneCheckField) return;
+        doneCheckField = true;
+        IsEmpty = isAnonymous && members.Count <= 1;
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
+        {
+            var field = mems[i] as Declare;
+            if (field == null) continue;
+            var t = field.Type;
+            if (!(t is TypeStruct)) continue;
+            var st = (t as TypeStruct).GetStruct();
+            field.CheckField(this, st);
+        }
+        var bst = GetBaseStruct();
+        int offset = 0;
+        if (bst != null)
+            offset = bst.GetSizeInternal();
+        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        {
+            if (!p.IsStatic)
+                p.Address = Addr32.NewRO(Var.DestRegister, offset + pos);
+            return false;
+        }, null);
+    }
+
+    override MakeUpInternal()
+    {
+        CheckStruct();
+        var f1 = base.GetMember(Initializer) as Function;
+        if (f1 == null)
+            AddFunction(Function.New(this, Initializer, false));
+        var f2 = base.GetMember(Constructor) as Function;
+        if (f2 == null)
+            AddFunction(Function.New(this, Constructor, false));
+        var f3 = base.GetMember(Destructor) as Function;
+        if (f3 == null)
+            AddFunction(Function.New(this, Destructor, false));
+    }
+
+    function CanUpCast(st : Define) : bool
+    {
+        MakeUp();
+        if (st == this) return true;
+        var b = GetBaseStruct();
+        if (b == null) return false;
+        return b.CanUpCast(st);
+    }
 }

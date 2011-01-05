@@ -1,5 +1,7 @@
 class TypeStruct : TypeBase
 {
+    static function New(parent : BlockBase, name : string) { return new TypeStruct; }
+
     function GetStruct : Define
     {
         return null;
