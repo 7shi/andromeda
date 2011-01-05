@@ -1,3 +1,85 @@
-class New
+class New : NodeBase
 {
+    const string Function = "__operator_new";
+    const string DereferencePtr = "__dereference_ptr";
+
+    var type : TypeBase;
+    function get_Type : TypeBase
+    {
+        return type;
+    }
+
+    var _Length : NodeBase;
+    function get_Length : NodeBase { return _Length; }
+    function set_Length(value : NodeBase) { _Length = value; }
+
+    function get_IsArray : bool
+    {
+        return !(this._Length is IntValue
+            && (this._Length as IntValue).Value == -1);
+    }
+
+    static function New1(parent : BlockBase, type : string) : New
+    {
+        var ret = new New();
+        ret.Parent = parent;
+        ret.type = Types.GetVarType(parent, type);
+        ret.Length = IntValue.New(-1);
+        return ret;
+    }
+
+    static function New2(parent : BlockBase, type : string, length : NodeBase) : New
+    {
+        var ret = new New();
+        ret.Parent = parent;
+        ret.type = TypeReference.New(Types.GetType(parent, type), true);
+        ret.Length = length;
+        return ret;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        AddCodesV(codes, "mov", null);
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        var tt = Type.Type;
+        var tts = tt as TypeStruct;
+        if (!IsArray && (tts == null || !tts.IsClass))
+            raise(Abort("new: is not class: %s", tts.Name));
+        var f = parent.GetFunction(Function);
+        if (f == null)
+            raise(Abort("new: undefined function: %s", Function));
+        var type = codes.GetTypeObject(Type);
+        var izer = Val32.NewI(0);
+        var ctor = Val32.NewI(0);
+        var init : Val32 = null;
+        if (!IsArray)
+        {
+            var st = tts.GetStruct();
+            if (st.IsEmpty)
+            {
+                init = st.First;
+                st = st.GetBaseStruct();
+                type = codes.GetTypeObjectD(st);
+            }
+            izer = codes.GetAddress(st.GetFunction(Define.Initializer));
+            ctor = codes.GetAddress(st.GetFunction(Define.Constructor));
+        }
+        codes.Add(I386.PushD(ctor));
+        codes.Add(I386.PushD(izer));
+        _Length.AddCodesV(codes, "push", null);
+        codes.Add(I386.PushD(Val32.NewI(tt.Size)));
+        codes.Add(I386.PushD(type));
+        codes.Add(I386.CallD(f.First));
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(16)));
+        if (init != null)
+        {
+            codes.Add(I386.Push(Reg32.EAX));
+            codes.Add(I386.CallD(init));
+            codes.Add(I386.Pop(Reg32.EAX));
+        }
+        codes.AddCodes(op, dest);
+    }
 }

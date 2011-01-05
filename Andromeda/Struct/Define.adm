@@ -92,7 +92,7 @@ class Define : Block
 
     function GetOffset(name : string) : int
     {
-        int ret =  - 1;
+        int ret = -1;
         ForEachMembers(\(p : VarDeclare, pos : int) =>
         {
             if (p.Name != name) return false;

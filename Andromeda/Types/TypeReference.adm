@@ -1,5 +1,6 @@
 class TypeReference : TypeBase
 {
-    function get_UseGC { return false; }
+    static function New(type : TypeBase, isArray : bool) { return new TypeReference; }
     static function AddReferenceCodes(codes : OpModule) {}
+    function get_UseGC { return false; }
 }
