@@ -1,3 +1,61 @@
-class Cast
+class Cast : Var
 {
+    var _Source : NodeBase;
+    function get_Source : NodeBase { return _Source; }
+
+    var type : string;
+    function get_Type : TypeBase
+    {
+        var t = Types.GetType(Parent, type);
+        if (!(this._Source is Call || (_Source.Type != null && _Source.get_Type().IsValue)))
+            return t;
+        return Types.ToVarType(t);
+    }
+
+    static function New(parent : BlockBase, type : string, source : NodeBase) : Cast
+    {
+        var ret = new Cast();
+        ret.Parent = parent;
+        ret.name = "__cast";
+        ret.type = type;
+        ret._Source = source;
+        return ret;
+    }
+
+    override GetAddress(codes : OpModule) : Addr32
+    {
+        if (this._Source is Var)
+            return (_Source as Var).GetAddress(codes);
+        else if (this._Source is IntValue)
+            codes.Add(I386.MovR(Var.DestRegister, Val32.NewI((_Source as IntValue).Value)));
+        else if (this._Source is StringValue)
+            codes.Add(I386.MovR(Var.DestRegister, codes.GetString((_Source as StringValue).Value)));
+        else
+        {
+            _Source.AddCodesV(codes, "mov", null);
+            return null;
+        }
+        return Addr32.New(Var.DestRegister);
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        var t = Type;
+        var st = _Source.Type;
+        if (st is TypeIntBase && t.Size < st.Size)
+        {
+            _Source.AddCodesV(codes, "mov", null);
+            t.AddGetCodes(codes, op, dest, null);
+        }
+        else
+            _Source.AddCodesV(codes, op, dest);
+    }
+
+    function GetSource() : NodeBase
+    {
+        var ret = _Source;
+        if (ret == null || !(ret is Cast))
+            return ret;
+        return (ret as Cast).GetSource();
+    }
 }
