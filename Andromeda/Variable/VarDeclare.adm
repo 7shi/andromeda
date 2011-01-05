@@ -1,5 +1,7 @@
 class VarDeclare : NodeBase
 {
+    static function New(parent : BlockBase, name : string, type : TypeBase) { return new VarDeclare; }
+
     var type : TypeBase;
 
     function init1(parent : BlockBase, name : string, type : TypeBase) {}
@@ -9,4 +11,10 @@ class VarDeclare : NodeBase
     {
         return null;
     }
+
+    var IsStatic = false;
+    var Address : Addr32;
+    var NeedsDtor = false;
+
+    function CheckClass() {}
 }

@@ -2,4 +2,6 @@ class Types
 {
     static function GetTypeRoot(type : string) : TypeBase { return null; }
     static function GetStruct(t : TypeBase) : Define { return null; }
+    static function ToVarType(t : TypeBase) : TypeBase { return null; }
+    static function Cast(t1 : TypeBase, t2 : TypeBase) : TypeBase { return null; }
 }

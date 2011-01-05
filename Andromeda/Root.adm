@@ -1,3 +1,4 @@
-class Root
+class Root : Block
 {
+    var IsCompiling = false;
 }

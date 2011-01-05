@@ -1,12 +1,509 @@
 class BlockBase : BreakBase
 {
-    function GetUsingPointers
+    const string Separator = ".";
+
+    var sentences : ArrayList = new ArrayList();
+    function get_Sentences : ArrayList
     {
-        return new VarDeclare[0];
+        return sentences;
     }
-    
-    function GetVar(name : string) : VarDeclare
+
+    var first : OpCode = new OpCode();
+    function get_First : Val32
+    {
+        return first.Address;
+    }
+
+    var construct : OpCode = new OpCode();
+    function get_Construct : Val32
+    {
+        return construct.Address;
+    }
+
+    var destruct : OpCode = new OpCode();
+    function get_Destruct : Val32
+    {
+        return destruct.Address;
+    }
+
+    var last : OpCode = new OpCode();
+    function get_Last : Val32
+    {
+        return last.Address;
+    }
+
+    function get_AcceptsBreak : bool
+    {
+        return false;
+    }
+
+    function get_AcceptsContinue : bool
+    {
+        return false;
+    }
+
+    function get_Continue : Val32
     {
         return null;
+    }
+
+    var retVal : VarDeclare;
+    function get_HasRetVal : bool
+    {
+        return retVal != null;
+    }
+
+    function GetRetVal(parent : BlockBase) : Var
+    {
+        if (retVal == null)
+            retVal = VarDeclare.New(this, "__retval", null);
+        return Var.New(parent, retVal);
+    }
+
+    var members : ListDictionary = new ListDictionary();
+    virtual GetMember(name : string) : object
+    {
+        if (members.ContainsKey(name))
+            return members.Get(name);
+        return null;
+    }
+
+    virtual GetMemberRecursive(name : string, conv) : object
+    {
+        var ret = conv(GetMember(name));
+        if (ret != null || Parent == null)
+            return ret;
+        return parent.GetMemberRecursive(name, conv);
+    }
+
+    function GetUsingPointers()
+    {
+        var list = new ArrayList();
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
+        {
+            var mem = mems[i];
+            if (mem is VarDeclare && !(mem is Arg))
+                list.Add(mem);
+        }
+        var ret = new VarDeclare[list.Count];
+        for (int i = 0; i < list.Count; i++)
+            ret[i] = list.Get(i) as VarDeclare;
+        return ret;
+    }
+
+    function AddMember(name : string, obj : object) : bool
+    {
+        if (members.ContainsKey(name))
+            return false;
+        members.Add(name, obj);
+        return true;
+    }
+
+    function GetInt(name : string) : ConstInt
+    {
+        var obj = GetMember(name);
+        if (obj is ConstInt)
+            return obj as ConstInt;
+        if (Parent == null)
+            return null;
+        return parent.GetInt(name);
+    }
+
+    function AddInt(name : string, value : NodeBase) : bool
+    {
+        return AddMember(name, ConstInt.New(this, value));
+    }
+
+    function GetString(name : string) : ConstString
+    {
+        return GetMemberRecursive(name, \(o : object) =>
+        {
+            return o as ConstString;
+        }
+        ) as ConstString;
+    }
+
+    function AddString(name : string, value : string) : bool
+    {
+        return AddMember(name, ConstString.New(this, value));
+    }
+
+    virtual GetVar(name : string) : VarDeclare
+    {
+        return GetMemberRecursive(name,
+            \(o : object) => o as VarDeclare) as VarDeclare;
+    }
+
+    function AddVar(v : VarDeclare) : bool
+    {
+        return AddMember(v.Name, v);
+    }
+
+    function GetFunction(name : string) : Function
+    {
+        return GetMemberRecursive(name, \(o : object) =>
+            \(o : object) => o as Function) as Function;
+    }
+
+    function AddFunction(f : Function) : bool
+    {
+        return AddMember(f.Name, f);
+    }
+
+    function GetStruct(name : string) : Define
+    {
+        return GetMemberRecursive(name, \(o : object) =>
+            \(o : object) => o as Define) as Define;
+    }
+
+    function AddStruct(s : Define) : bool
+    {
+        return AddMember(s.Name, s);
+    }
+
+    function get_HasStackFrame : bool
+    {
+        var ret = false;
+        var pret = addrof ret;
+        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        {
+            pret[0] = true;
+            return true;
+        }, null);
+        return ret;
+    }
+
+    function get_Level : int
+    {
+        if (Parent == null)
+            return 0;
+        if (HasStackFrame)
+            return Parent.Level + 1;
+        else
+            return Parent.Level;
+    }
+
+    function ForEachMembers(delg1, delg2)
+    {
+        int pos = 0;
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
+        {
+            var obj = mems[i];
+            var t = typeof obj;
+            if (t == typeof(VarDeclare) || t == typeof(Declare))
+            {
+                var p = obj as VarDeclare;
+                var len = p.Type.Size;
+                if (len > Var.DefaultSize)
+                    len = Var.DefaultSize;
+                var pad = pos % len;
+                if (pad > 0)
+                    pos += len - pad;
+                if (delg1 != null && delg1(p, pos))
+                    return;
+                if (!p.IsStatic)
+                    pos += p.Type.Size;
+            }
+        }
+        var padv = pos % Var.DefaultSize;
+        if (padv > 0)
+            pos += Var.DefaultSize - padv;
+        if (delg2 != null)
+            delg2(pos);
+    }
+
+    virtual BeforeAddCodes(codes : OpModule)
+    {
+        if (HasStackFrame)
+        {
+            int stackSize = Level * 4;
+            var pstackSize = addrof stackSize;
+            ForEachMembers(null, \(size : int) =>
+            {
+                pstackSize[0] += size;
+            });
+            ForEachMembers(\(p : VarDeclare, pos : int) =>
+            {
+                var s = pstackSize[0];
+                if (!p.IsStatic)
+                    p.Address = Addr32.NewRO(Reg32.EBP, pos - s);
+                return false;
+            }, null);
+            codes.Add(I386.Enter((ushort)stackSize, (byte)Level));
+        }
+        var n = FullName;
+        if (!string.IsNullOrEmpty(n) && (Parent == null || Parent.FullName != n))
+            codes.Add(I386.MovR(Reg32.EAX, codes.GetString(n)));
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        codes.Add(first);
+        BeforeAddCodes(codes);
+        codes.Add(construct);
+        for (int i = 0; i < sentences.Count; i++)
+        {
+            var child = sentences.Get(i) as NodeBase;
+            child.AddCodes(codes);
+        }
+        if (!IsTerminated)
+        {
+            var list = new ArrayList();
+            ForEachMembers(\(p : VarDeclare, pos : int) =>
+            {
+                list.Add(p);
+                return false;
+            }, null);
+            var args = new VarDeclare[list.Count];
+            for (int i = 0; i < args.Length; i++)
+                args[i] = list.Get(i) as VarDeclare;
+            AddDestructors(codes, args);
+        }
+        codes.Add(destruct);
+        AfterAddCodes(codes);
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
+        {
+            var func = mems[i] as Function;
+            if (func != null)
+                func.AddCodes(codes);
+        }
+        for (int i = 0; i < mems.Length; i++)
+        {
+            var st = mems[i] as Define;
+            if (st != null)
+                st.AddCodes(codes);
+        }
+        codes.Add(last);
+    }
+
+    virtual AfterAddCodes(codes : OpModule)
+    {
+        if (IsTerminated)
+            return;
+        AddExitCodes(codes);
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
+        {
+            var mem = mems[i];
+            if (mem is Function || mem is Define)
+            {
+                codes.Add(I386.JmpD(last.Address));
+                return;
+            }
+        }
+    }
+
+    function get_IsTerminated : bool
+    {
+        int len = sentences.Count;
+        if (len == 0)
+            return false;
+        var n = sentences.Get(len - 1) as NodeBase;
+        return n is Break || n is Return;
+    }
+
+    virtual AddDestructors(codes : OpModule, ptrs : VarDeclare[])
+    {
+        if (ptrs == null)
+            return;
+        for (int i = ptrs.Length - 1; i >= 0; i--)
+        {
+            var p = ptrs[i];
+            if (p.NeedsDtor)
+                p.Type.AddDestructorA(codes, p.GetAddress(codes, this));
+        }
+    }
+
+    virtual AddExitCodes(codes : OpModule)
+    {
+        if (HasStackFrame)
+            codes.Add(I386.Leave());
+    }
+
+    function GetBelongFunction() : BlockBase
+    {
+        for (var b = this; b != root; b = b.Parent)
+        {
+            if (b is Function)
+                return b;
+        }
+        return root;
+    }
+
+    function get_ThisStruct : Define
+    {
+        if (Parent == null)
+            return null;
+        return Parent.ThisStruct;
+    }
+
+    function get_FullName : string
+    {
+        if (Parent == null)
+            return "(root)";
+        var ret = "";
+        for (var b = this; b != root; b = b.Parent)
+        {
+            if (!string.IsNullOrEmpty(b.Name))
+            {
+                if (ret == "")
+                    ret = b.Name;
+                else
+                    ret = b.Name + Separator + ret;
+            }
+        }
+        return ret;
+    }
+
+    function GetFullName(name : string) : string
+    {
+        if (Parent == null)
+            return name;
+        return FullName + Separator + name;
+    }
+
+    int anonymousNo = 0;
+    function GetAnonymousName() : string
+    {
+        return "__anonymous_" + (anonymousNo++);
+    }
+
+    function AddDebug(codes : OpModule, message : string)
+    {
+        codes.Add(I386.Push(Reg32.EAX));
+        codes.Add(I386.PushD(codes.GetString(message)));
+        AddDebugCount(codes, "%s", 1);
+        codes.Add(I386.Pop(Reg32.EAX));
+    }
+
+    function AddDebugCount(codes : OpModule, format : string, argCount : int)
+    {
+        codes.Add(I386.PushD(codes.GetString(format)));
+        codes.Add(I386.CallD(GetFunction("printfln").First));
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(((argCount + 1) * 4))));
+    }
+    var typeInfos : ArrayList = new ArrayList();
+
+    function AddTypeInfo(v : NodeBase)
+    {
+        GetRetVal(this);
+        typeInfos.Add(v);
+    }
+    var returnType : TypeBase;
+    bool doneInferReturnType = false;
+
+    function get_ReturnType : TypeBase
+    {
+        if (doneInferReturnType || !root.IsCompiling)
+            return returnType;
+        doneInferReturnType = true;
+        for (int i = 0; i < typeInfos.Count; i++)
+        {
+            var v = typeInfos.Get(i) as NodeBase;
+            var t = returnType;
+            if (!InferType(v))
+            {
+                var err = string.Format("can not cast return type: %s => %s", t.Name, v.Type.Name);
+                if (v is NodeBase)
+                    raise((v as NodeBase).Abort(err));
+                raise(Abort(err));
+            }
+        }
+        return returnType;
+    }
+
+    function InferType(v : NodeBase) : bool
+    {
+        var vt = v.Type;
+        if (vt == null)
+            return true;
+        var t = returnType;
+        if (v is Null)
+        {
+            if (t == null || t is TypeReference || t is TypePointer)
+                return true;
+            return false;
+        }
+        returnType = Types.Cast(t, Types.ToVarType(vt));
+        return returnType != null;
+    }
+    bool doneMakeUp = false;
+
+    function MakeUp()
+    {
+        if (doneMakeUp)
+            return;
+        doneMakeUp = true;
+        MakeUpInternal();
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
+        {
+            var obj = mems[i];
+            if (obj is BlockBase)
+                (obj as BlockBase).MakeUp();
+            else if (obj is VarDeclare)
+                (obj as VarDeclare).CheckClass();
+        }
+    }
+
+    virtual MakeUpInternal()
+    {
+    }
+
+    function AddSentence(nb : NodeBase)
+    {
+        if (nb is VarDeclare)
+        {
+            if ((nb as VarDeclare).IsStatic)
+            {
+                parent.root.sentences.Add(nb);
+                return;
+            }
+        }
+        sentences.Add(nb);
+    }
+
+    function AddSentences(nbs : NodeBase[])
+    {
+        for (int i = 0; i < nbs.Length; i++)
+            AddSentence(nbs[i]);
+    }
+}
+
+class ListDictionary
+{
+    var dict : Hashtable = new Hashtable();
+    var list : ArrayList = new ArrayList();
+
+    function Add(key : string, value : object)
+    {
+        dict.Add(key, value);
+        list.Add(value);
+    }
+
+    function get_Count : int
+    {
+        return list.Count;
+    }
+
+    function get_Values
+    {
+        return list.ToArray();
+    }
+
+    function Get(name : string) : object
+    {
+        if (dict.ContainsKey(name))
+            return dict.Get(name);
+        else
+            return null;
+    }
+
+    function ContainsKey(name : string) : bool
+    {
+        return dict.ContainsKey(name);
     }
 }
