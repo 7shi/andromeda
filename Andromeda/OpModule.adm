@@ -1,3 +1,5 @@
 class OpModule : OpCodes
 {
+    function AddDtorCodes(t : TypeBase) {}
+    function GetCall(tag : string, name : string) : OpCode { return null; }
 }

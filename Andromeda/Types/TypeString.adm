@@ -1,0 +1,141 @@
+class TypeString : TypeReference
+{
+    const string Equal = "__string_equal";
+    const string Add   = "__string_add";
+    const string Sub   = "__string_sub";
+    const string Mul   = "__string_mul";
+
+    static var instance = new TypeString();
+    static function get_Instance { return instance; }
+
+    function ctor
+    {
+        conds.Add("equal", CondPair.New(Cc.NZ, Cc.Z));
+        conds.Add("not-equal", CondPair.New(Cc.Z, Cc.NZ));
+    }
+
+    override CheckFunc(op : string) : bool
+    {
+        switch (op)
+        {
+        case "equal":
+        case "not-equal":
+        case "add":
+        case "add-char":
+        case "add-int":
+        case "sub":
+        case "sub-char":
+        case "sub-int":
+        case "mul":
+        case "mul-int":
+            return true;
+        default:
+            return base.CheckFunc(op);
+        }
+    }
+
+    override AddOpCodes(op : string, codes : OpModule, dest : Addr32)
+    {
+        switch (op)
+        {
+        case "equal":
+        case "not-equal":
+            codes.Add(I386.PushA(dest));
+            codes.Add(I386.XchgRA(Reg32.EAX, Addr32.New(Reg32.ESP)));
+            codes.Add(I386.Push(Reg32.EAX));
+            codes.Add(codes.GetCall("string", Equal));
+            codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(8)));
+            codes.Add(I386.Test(Reg32.EAX, Reg32.EAX));
+            break;
+        case "add":
+            AddFunc(codes, dest, Add);
+            break;
+        case "add-char":
+            AddFunc(codes, dest, Add + "_char");
+            break;
+        case "add-int":
+            AddFunc(codes, dest, Add + "_int");
+            break;
+        case "sub":
+            AddFunc(codes, dest, Sub);
+            break;
+        case "sub-char":
+            AddFunc(codes, dest, Sub + "_char");
+            break;
+        case "sub-int":
+            AddFunc(codes, dest, Sub + "_int");
+            break;
+        case "mul":
+            AddFunc(codes, dest, Add);
+            break;
+        case "mul-int":
+            AddFunc(codes, dest, Mul + "_int");
+            break;
+        default:
+            base.AddOpCodes(op, codes, dest);
+            break;
+        }
+    }
+
+    function AddFunc(codes : OpModule, dest : Addr32, func : string)
+    {
+        codes.Add(I386.PushA(dest));
+        codes.Add(I386.XchgRA(Reg32.EAX, Addr32.New(Reg32.ESP)));
+        codes.Add(I386.Push(Reg32.EAX));
+        codes.Add(codes.GetCall("string", func));
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(8)));
+        codes.Add(I386.XchgRA(Reg32.EAX, dest));
+        codes.Add(I386.Push(Reg32.EAX));
+        codes.AddDtorCodes(TypeString.Instance);
+    }
+
+    override Cast(type : TypeBase) : TypeBase
+    {
+        if (type is TypePointer && type.Type is TypeChar)
+            return type;
+        return base.Cast(type);
+    }
+
+    static var type : TypeBase;
+
+    static function Init()
+    {
+        type = null;
+    }
+
+    function get_Type : TypeBase
+    {
+        if (type != null)
+            return type;
+        return type = Types.GetTypeRoot("string");
+    }
+
+    function get_UseGC : bool
+    {
+        return true;
+    }
+}
+
+class TypeConstString : TypeString
+{
+
+    function get_Name : string
+    {
+        return "var:(const string)";
+    }
+
+    static var instance = new TypeConstString();
+    static function get_Instance { return instance; }
+}
+
+class TypeConstChar : TypeChar
+{
+
+    function get_Name : string
+    {
+        return "(const char)";
+    }
+
+    static var instance = new TypeConstChar();
+    static function get_Instance { return instance; }
+}

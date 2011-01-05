@@ -1,7 +1,5 @@
 class Types
 {
-    static function GetStruct(t : TypeBase) : Define
-    {
-        return null;
-    }
+    static function GetTypeRoot(type : string) : TypeBase { return null; }
+    static function GetStruct(t : TypeBase) : Define { return null; }
 }
