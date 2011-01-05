@@ -1,0 +1,36 @@
+class VarOperator : NodeBase
+{
+    var _Tag : string;
+    function get_Tag : string { return _Tag; }
+
+    var dest : NodeBase;
+    var values : ArrayList = new ArrayList();
+
+    static function Init0(op : VarOperator, parent : BlockBase, dest : NodeBase) : VarOperator
+    {
+        op.Parent = parent;
+        op.dest = dest;
+        return op;
+    }
+
+    static function Init1(op : VarOperator, parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarOperator
+    {
+        op.Parent = parent;
+        op.dest = dest;
+        op.values.Add(arg);
+        return op;
+    }
+
+    function CheckFunc() : TypeBase
+    {
+        var t = Type;
+        if (!t.CheckFunc(Tag))
+            raise(Tag + ": " + t.Name + ": not supported");
+        return t;
+    }
+
+    function get_Type : TypeBase
+    {
+        return dest.Type;
+    }
+}
