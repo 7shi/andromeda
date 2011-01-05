@@ -1,0 +1,18 @@
+class TypeType : TypeReference
+{
+    static var instance = new TypeType();
+    static function get_Instance { return instance; }
+
+    static var type : TypeBase;
+
+    static function Init()
+    {
+        type = null;
+    }
+
+    function get_Type : TypeBase
+    {
+        if (type != null) return type;
+        return type = Types.GetTypeRoot("Type");
+    }
+}
