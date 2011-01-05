@@ -1,3 +1,41 @@
-class Do
+class Do : BlockBase
 {
+    var _Cond : Cond;
+    function get_Cond : Cond { return _Cond; }
+    function set_Cond(value : Cond) { _Cond = value; }
+
+    var _Block : Block;
+    function get_Block : Block { return _Block; }
+    function set_Block(value : Block) { _Block = value; }
+
+    function get_AcceptsBreak : bool
+    {
+        return true;
+    }
+
+    function get_AcceptsContinue : bool
+    {
+        return true;
+    }
+
+    function get_Continue : Val32
+    {
+        return Block.Last;
+    }
+
+    static function New(parent : BlockBase) : Do
+    {
+        var ret = new Do();
+        ret.init(parent);
+        return ret;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        sentences.Clear();
+        Cond.First = Block.First;
+        AddSentence(Block);
+        AddSentence(Cond);
+        base.AddCodes(codes);
+    }
 }
