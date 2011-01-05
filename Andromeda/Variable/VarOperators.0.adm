@@ -1,0 +1,103 @@
+class VarOperatorPre : VarOperator
+{
+    function Calculate(codes : OpModule) : Addr32
+    {
+        var dest = Var.Get(this.dest);
+        if (dest == null)
+            raise(Abort("{0}: destination is not variable", Tag));
+        var ad1 = dest.GetAddress(codes);
+        var ad2 = ad1;
+        if (dest.Type.Size < Var.DefaultSize)
+        {
+            ad2 = Addr32.New(Reg32.ESP);
+            dest.Type.AddGetCodes(codes, "push", null, ad1);
+        }
+        CheckFunc().AddOpCodes(Tag, codes, ad2);
+        if (dest.Type.Size < Var.DefaultSize)
+        {
+            codes.Add(I386.Pop(Reg32.EAX));
+            dest.Type.AddSetCodes(codes, ad1);
+        }
+        return ad1;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        Calculate(codes);
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        var ad = Calculate(codes);
+        if (this.dest.Type.Size < Var.DefaultSize)
+            codes.AddCodes(op, dest);
+        else
+            codes.AddCodesA(op, dest, ad);
+    }
+}
+
+class Inc : VarOperatorPre
+{
+    function get_Tag { return "inc"; }
+
+    static function New(parent : BlockBase, dest : NodeBase) : Inc
+    {
+        return Init0(new Inc(), parent, dest) as Inc;
+    }
+}
+
+class Dec : VarOperatorPre
+{
+    function get_Tag { return "dec"; }
+
+    static function New(parent : BlockBase, dest : NodeBase) : Dec
+    {
+        return Init0(new Dec(), parent, dest) as Dec;
+    }
+}
+
+class VarOperatorPost : VarOperatorPre
+{
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        var thisdest = Var.Get(this.dest);
+        if (thisdest == null)
+            raise(Abort("{0}: destination is not variable", Tag));
+        var ad1 = thisdest.GetAddress(codes);
+        var ad2 = ad1;
+        thisdest.Type.AddGetCodes(codes, "push", null, ad1);
+        if (thisdest.Type.Size < Var.DefaultSize)
+        {
+            ad2 = Addr32.New(Reg32.ESP);
+            codes.Add(I386.PushA(ad2));
+        }
+        CheckFunc().AddOpCodes(Tag, codes, ad2);
+        if (thisdest.Type.Size < Var.DefaultSize)
+        {
+            codes.Add(I386.Pop(Reg32.EAX));
+            thisdest.Type.AddSetCodes(codes, ad1);
+        }
+        codes.Add(I386.Pop(Reg32.EAX));
+        codes.AddCodes(op, dest);
+    }
+}
+
+class PostInc : VarOperatorPost
+{
+    function get_Tag { return "post-inc"; }
+
+    static function New(parent : BlockBase, dest : NodeBase) : PostInc
+    {
+        return Init0(new PostInc(), parent, dest) as PostInc;
+    }
+}
+
+class PostDec : VarOperatorPost
+{
+    function get_Tag { return "post-dec"; }
+
+    static function New(parent : BlockBase, dest : NodeBase) : PostDec
+    {
+        return Init0(new PostDec(), parent, dest) as PostDec;
+    }
+}
