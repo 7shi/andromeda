@@ -1,3 +1,33 @@
 class Block : BlockBase
 {
+    static function New(parent : BlockBase) : Block
+    {
+        var ret = new Block();
+        ret.init(parent);
+        return ret;
+    }
+
+    var _Target : BlockBase;
+    function get_Target : BlockBase { return _Target; }
+    function set_Target(value : BlockBase) { _Target = value; }
+
+    static function Parse(parent : BlockBase, token : Tokenizer)
+    {
+        var parser = Parser.Create(token, parent);
+        var ret = parser.Parse();
+        if (token.CanRead)
+            ret = null;
+        return ret;
+    }
+
+    function ReadText(file : string, src : string)
+    {
+        var t = Tokenizer.New(file, src);
+        var target = Target;
+        if (target == null)
+            target = this;
+        var sents = Block.Parse(target, t);
+        if (sents != null)
+            AddSentences(sents);
+    }
 }

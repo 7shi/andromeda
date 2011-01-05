@@ -1,4 +1,5 @@
 class Tokenizer
 {
+    static function New(file : string, src : string) { return new Tokenizer; }
     function get_CanRead { return false; }
 }

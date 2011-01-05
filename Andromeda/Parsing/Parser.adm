@@ -5,8 +5,6 @@ class Parser
         return new Parser;
     }
 
-    function ParseExpressions
-    {
-        return new NodeBase[0];
-    }
+    function Parse { return new NodeBase[0]; }
+    function ParseExpressions { return new NodeBase[0]; }
 }
