@@ -1,3 +1,59 @@
-class OrElse
+class OrElse : Operator
 {
+    function get_Tag : string
+    {
+        return "or-else";
+    }
+
+    function get_Type : TypeBase
+    {
+        return TypeBool.Instance;
+    }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : OrElse
+    {
+        return Init2(new OrElse(), parent, arg1, arg2) as OrElse;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        if (AddConstCodes(codes, op, dest))
+            return;
+        var last = new OpCode();
+        for (int i = 0; i < values.Count; i++)
+        {
+            (values.Get(i) as NodeBase).AddCodesV(codes, "mov", null);
+            codes.Add(I386.Test(Reg32.EAX, Reg32.EAX));
+            if (i < values.Count - 1)
+                codes.Add(I386.Jcc(Cc.NZ, last.Address));
+        }
+        codes.Add(last);
+        codes.Add(I386.MovR(Reg32.EAX, Val32.NewI(0)));
+        codes.Add(I386.Setcc(Cc.NZ, Reg8.AL));
+        codes.AddCodes(op, dest);
+    }
+
+    override GetConst() : IntValue
+    {
+        var v = IntValue.GetValue(values.Get(0) as NodeBase);
+        if (v == null)
+            return null;
+        var ret = v.Value != 0;
+        for (int i = 1; i < values.Count; i++)
+        {
+            var iv = IntValue.GetValue(values.Get(i) as NodeBase);
+            if (iv == null)
+                return null;
+            ret = Calculate(ret, iv.Value != 0);
+        }
+        if (ret)
+            return IntValue.One;
+        else
+            return IntValue.Zero;
+    }
+
+    function Calculate(a : bool, b : bool) : bool
+    {
+        return a || b;
+    }
 }
