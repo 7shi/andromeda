@@ -1,3 +1,29 @@
-class Base
+class Base : Var
 {
+    static function New(parent : BlockBase) : Base
+    {
+        var ret = new Base();
+        ret.Parent = parent;
+        ret.name = "base";
+        ret.Reference = parent.GetVar("this");
+        return ret;
+    }
+
+    var type : TypeBase;
+    bool doneInferType = false;
+
+    function get_Type : TypeBase
+    {
+        if (doneInferType || !root.IsCompiling)
+            return type;
+        doneInferType = true;
+        var st = _Reference.GetStruct();
+        if (st == null)
+            raise(Abort("base: is not struct member: %s", Parent.FullName));
+        var bst = st.GetBaseStruct();
+        if (bst == null)
+            raise(Abort("base: has no base type: %s", st.Name));
+        type = Types.ToVarType(bst.Type);
+        return type;
+    }
 }
