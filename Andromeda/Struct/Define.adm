@@ -10,4 +10,5 @@ class Define : Block
     function AddAfterDtor(codes : OpModule) {}
     function AddBeforeCtor(codes : OpModule) {}
     function GetBaseStruct : Define { return null; }
+    var IsClass = false;
 }

@@ -1,22 +1,160 @@
 class VarDeclare : NodeBase
 {
-    static function New(parent : BlockBase, name : string, type : TypeBase) { return new VarDeclare; }
+    var _Address : Addr32;
+    function get_Address : Addr32 { return _Address; }
+    function set_Address(value : Addr32) { _Address = value; }
 
-    var type : TypeBase;
+    bool _IsMember;
+    function get_IsMember : bool { return _IsMember; }
+    function set_IsMember(value : bool) { _IsMember = value; }
 
-    function init1(parent : BlockBase, name : string, type : TypeBase) {}
-    virtual init2() {}
+    var _Value : NodeBase;
+    function get_Value : NodeBase { return _Value; }
+    function set_Value(value : NodeBase) { _Value = value; }
+
+    bool _IsStatic;
+    function get_IsStatic : bool { return _IsStatic; }
+    function set_IsStatic(value : bool) { _IsStatic = value; }
+
+    function get_NeedsInit : bool
+    {
+        return Value != null;
+    }
+
+    function get_NeedsCtor : bool
+    {
+        return type.NeedsCtor;
+    }
+
+    function get_NeedsDtor : bool
+    {
+        return type.NeedsDtor;
+    }
+
+    static function New(parent : BlockBase, name : string, type : TypeBase) : VarDeclare
+    {
+        var ret = new VarDeclare();
+        ret.init1(parent, name, type);
+        return ret;
+    }
+
+    static function Array(parent : BlockBase, name : string, type : TypeBase, count : NodeBase) : VarDeclare
+    {
+        var ret = New(parent, name, null);
+        ret.doneInferType = true;
+        ret.type = TypeArray.New(type, count);
+        return ret;
+    }
+
+    function init1(parent : BlockBase, name : string, type : TypeBase)
+    {
+        Parent = parent;
+        this.name = name;
+        init2();
+        AddToParent();
+        if (type != null)
+        {
+            doneInferType = true;
+            this.type = type;
+        }
+    }
+
+    virtual init2()
+    {
+        if (type == null)
+            type = TypeVar.Instance;
+        IsMember = this.parent is Define;
+        if (parent.Parent == null)
+            IsStatic = true;
+    }
+
+    function GetStruct() : Define
+    {
+        var ret = Types.GetStruct(Type);
+        if (ret != null)
+            return ret;
+        raise(Abort("undefined struct: " + Type.Name));
+    }
 
     function GetAddress(codes : OpModule, scope : BlockBase) : Addr32
     {
-        return null;
+        if (IsMember && !IsStatic)
+        {
+            var thisptr = This.New(scope);
+            codes.Add(I386.MovRA(Var.DestRegister, thisptr.GetAddress(codes)));
+            return Addr32.NewAd(Address);
+        }
+        int plv = scope.Level, lv = Parent.Level;
+        if (plv == lv || Address.IsAddress)
+            return Addr32.NewAd(Address);
+        if (lv <= 0 || lv >= plv)
+            raise(Abort("Invalid variable scope: " + Name));
+        codes.Add(I386.MovRA(Var.DestRegister, Addr32.NewRO(Reg32.EBP,  - lv * 4)));
+        return Addr32.NewRO(Var.DestRegister, Address.Disp);
     }
 
-    var IsStatic = false;
-    var IsMember = false;
-    var Address : Addr32;
-    var NeedsDtor = false;
-    var Value : NodeBase;
+    virtual AddToParent()
+    {
+        if (!parent.AddVar(this))
+            raise(Abort("multiple definitions: " + name));
+    }
 
-    function CheckClass() {}
+    function AddConstructor(codes : OpModule)
+    {
+        if (!type.NeedsCtor)
+            return;
+        var pst = Parent as Define;
+        if (pst != null && pst.IsClass)
+        {
+            var tr = type as TypeReference;
+            if (tr != null && tr.UseGC)
+                return;
+        }
+        type.AddConstructorA(codes, GetAddress(codes, Parent));
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        AddConstructor(codes);
+        if (Value != null)
+        {
+            var s = Set.New(Parent, Var.New(Parent, this), Value);
+            s.AddCodes(codes);
+        }
+    }
+
+    var type : TypeBase;
+    bool doneInferType = false;
+
+    function get_Type : TypeBase
+    {
+        if (doneInferType || !root.IsCompiling)
+            return type;
+        doneInferType = true;
+        if (Value != null)
+            type = Types.ToVarType(Value.Type);
+        return type;
+    }
+
+    function get_FullName : string
+    {
+        return parent.GetFullName(name);
+    }
+
+    function CheckClass()
+    {
+        var t = Type;
+        var ts : TypeStruct = null;
+        if (Type is TypeStruct)
+            ts = t as TypeStruct;
+        else if (Type is TypeArray)
+            ts = t.Type as TypeStruct;
+        if (ts == null)
+            return;
+        var st = ts.GetStruct();
+        st.MakeUp();
+        if (!st.IsClass)
+            return;
+        raise(Abort("can not declare class as automatic variable: {0}", st.FullName));
+    }
 }
