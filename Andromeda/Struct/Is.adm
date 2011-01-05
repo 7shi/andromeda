@@ -1,3 +1,34 @@
-class Is
+class Is : Operator
 {
+    function get_Tag : string
+    {
+        return "__type_is";
+    }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Is
+    {
+        return Init2(new Is(), parent, arg1, arg2) as Is;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        var f = parent.GetFunction(Tag);
+        if (f == null)
+            raise(Abort("is: can not find: %s", Tag));
+        TypeOf.AddCodes(this, Parent, values.Get(1) as NodeBase, codes, "push", null);
+        TypeOf.AddCodes(this, Parent, values.Get(0) as NodeBase, codes, "push", null);
+        codes.Add(I386.CallD(f.First));
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(8)));
+        codes.AddCodes(op, dest);
+    }
+
+    function get_Type : TypeBase
+    {
+        return TypeBool.Instance;
+    }
+
+    override GetConst() : IntValue
+    {
+        return null;
+    }
 }
