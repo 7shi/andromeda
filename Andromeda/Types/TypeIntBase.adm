@@ -1,0 +1,142 @@
+class TypeVarBase : TypeBase
+{
+    function ctor
+    {
+        conds.Add("equal", CondPair.New(Cc.E, Cc.NE));
+        conds.Add("not-equal", CondPair.New(Cc.NE, Cc.E));
+    }
+
+    override AddGetCodes(codes : OpModule, op : string, dest : Addr32, src : Addr32)
+    {
+        codes.AddCodesA(op, dest, src);
+    }
+
+    override AddSetCodes(codes : OpModule, ad : Addr32)
+    {
+        codes.Add(I386.MovAR(ad, Reg32.EAX));
+    }
+
+    override CheckFunc(op : string) : bool
+    {
+        switch (op)
+        {
+        case "equal":
+        case "not-equal":
+        case "greater":
+        case "greater-equal":
+        case "less":
+        case "less-equal":
+            return true;
+        default:
+            return base.CheckFunc(op);
+        }
+    }
+
+    override AddOpCodes(op : string, codes : OpModule, dest : Addr32)
+    {
+        switch (op)
+        {
+        case "equal":
+        case "not-equal":
+        case "greater":
+        case "greater-equal":
+        case "less":
+        case "less-equal":
+            codes.Add(I386.CmpAR(dest, Reg32.EAX));
+            break;
+        default:
+            base.AddOpCodes(op, codes, dest);
+            break;
+        }
+    }
+}
+
+class TypeIntBase : TypeVarBase
+{
+
+    override CheckFunc(op : string) : bool
+    {
+        switch (op)
+        {
+        case "inc":
+        case "post-inc":
+        case "dec":
+        case "post-dec":
+        case "add":
+        case "sub":
+        case "and":
+        case "or":
+        case "xor":
+        case "not":
+        case "neg":
+        case "rev":
+            return true;
+        default:
+            return base.CheckFunc(op);
+        }
+    }
+
+    override AddOpCodes(op : string, codes : OpModule, dest : Addr32)
+    {
+        switch (op)
+        {
+        case "inc":
+        case "post-inc":
+            codes.Add(I386.IncA(dest));
+            break;
+        case "dec":
+        case "post-dec":
+            codes.Add(I386.DecA(dest));
+            break;
+        case "add":
+            codes.Add(I386.AddAR(dest, Reg32.EAX));
+            break;
+        case "sub":
+            codes.Add(I386.SubAR(dest, Reg32.EAX));
+            break;
+        case "and":
+            codes.Add(I386.AndAR(dest, Reg32.EAX));
+            break;
+        case "or":
+            codes.Add(I386.OrAR(dest, Reg32.EAX));
+            break;
+        case "xor":
+            codes.Add(I386.XorAR(dest, Reg32.EAX));
+            break;
+        case "not":
+            codes.Add(I386.Test(Reg32.EAX, Reg32.EAX));
+            codes.Add(I386.MovR(Reg32.EAX, Val32.NewI(0)));
+            codes.Add(I386.Setcc(Cc.Z, Reg8.AL));
+            break;
+        case "neg":
+            codes.Add(I386.Neg(Reg32.EAX));
+            break;
+        case "rev":
+            codes.Add(I386.Not(Reg32.EAX));
+            break;
+        default:
+            base.AddOpCodes(op, codes, dest);
+            break;
+        }
+    }
+
+    static function Shift(shift : string, codes : OpModule, dest : Addr32)
+    {
+        var l1 = new OpCode();
+        var l2 = new OpCode();
+        var last = new OpCode();
+        codes.Add(I386.CmpR(Reg32.EAX, Val32.NewI(0)));
+        codes.Add(I386.Jcc(Cc.E, last.Address));
+        codes.Add(I386.Jcc(Cc.G, l1.Address));
+        codes.Add(I386.MovA(dest, Val32.NewI(0)));
+        codes.Add(I386.JmpD(last.Address));
+        codes.Add(l1);
+        codes.Add(I386.CmpR(Reg32.EAX, Val32.NewI(255)));
+        codes.Add(I386.Jcc(Cc.LE, l2.Address));
+        codes.Add(I386.MovR(Reg32.EAX, Val32.NewI(255)));
+        codes.Add(l2);
+        codes.Add(I386.Mov(Reg32.ECX, Reg32.EAX));
+        codes.Add(I386.ShiftAR(shift, dest, Reg8.CL));
+        codes.Add(last);
+    }
+}
