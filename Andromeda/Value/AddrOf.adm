@@ -1,3 +1,29 @@
-class AddrOf
+class AddrOf : NodeBase
 {
+    var _Target : NodeBase;
+    function get_Target : NodeBase { return _Target; }
+    function set_Target(value : NodeBase) { _Target = value; }
+
+    static function New(parent : BlockBase, target : NodeBase) : AddrOf
+    {
+        var ret = new AddrOf();
+        ret.Parent = parent;
+        ret.Target = target;
+        return ret;
+    }
+
+    function get_Type : TypeBase
+    {
+        return TypePointer.New(Target.Type);
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        var t = Var.Get(Target);
+        if (t == null)
+            raise(Abort("addrof: variable required"));
+        var ad = t.GetAddress(codes);
+        codes.Add(I386.Lea(Reg32.EAX, ad));
+        codes.AddCodes(op, dest);
+    }
 }
