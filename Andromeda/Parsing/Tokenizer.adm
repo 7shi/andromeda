@@ -1,5 +1,344 @@
+class TokenData
+{
+    int Pos;
+    var String : string;
+    var Comment : string;
+    var SrcInfo : SrcInfo;
+
+    static function New(pos : int, si : SrcInfo) : TokenData
+    {
+        var ret = new TokenData();
+        ret.Pos = pos;
+        ret.SrcInfo = si;
+        return ret;
+    }
+}
+
 class Tokenizer
 {
-    static function New(file : string, src : string) { return new Tokenizer; }
-    function get_CanRead { return false; }
+    var file : string;
+
+    var _Source : string;
+    function get_Source : string { return _Source; }
+    function set_Source(value : string) { _Source = value; }
+
+    int pos = 0, lineNumber = 1, linePosition = 1;
+    var linePositions = new VarList;
+    var tokens = new ArrayList;
+    var results = new ArrayList;
+
+    var reserved : string[];
+    function set_Reserved(value : string[])
+    {
+        reserved = value;
+    }
+
+    static function New(file : string, src : string) : Tokenizer
+    {
+        var ret = new Tokenizer();
+        ret.file = file;
+        ret.Source = src;
+        return ret;
+    }
+
+    function get_CanRead : bool
+    {
+        return Peek() != null;
+    }
+
+    function Read() : string
+    {
+        var ret = ReadInternal();
+        if (ret == null)
+            return null;
+        if (ret.String == "//")
+        {
+            var sb = new StringBuilder;
+            sb.Append(ret.String);
+            for (; ; )
+            {
+                var ch = ReadChar();
+                if (ch ==  - 1 || ch == '\r' || ch == '\n')
+                    break;
+                sb.AppendChar((char)ch);
+            }
+            ret.Comment = sb.ToString();
+            return Read();
+        }
+        else if (ret.String == "/*")
+        {
+            var sb = new StringBuilder;
+            sb.Append(ret.String);
+            var aster = false;
+            for (; ; )
+            {
+                var ch = ReadChar();
+                if (ch ==  - 1)
+                    break;
+                sb.AppendChar((char)ch);
+                if (aster && ch == '/')
+                    break;
+                aster = ch == '*';
+            }
+            ret.Comment = sb.ToString();
+            return Read();
+        }
+        tokens.Add(ret);
+        return ret.String;
+    }
+
+    function SkipSpaces()
+    {
+        for (; ; )
+        {
+            var ch = ReadChar();
+            if (ch ==  - 1)
+                break;
+            if (ch > ' ')
+            {
+                RewindChar();
+                break;
+            }
+        }
+    }
+
+    function Rewind()
+    {
+        if (tokens.Count > 0)
+        {
+            int last = tokens.Count - 1;
+            results.Add(tokens.Get(last));
+            tokens.RemoveAt(last);
+        }
+    }
+
+    function Peek() : string
+    {
+        var ret = Read();
+        if (ret != null)
+            Rewind();
+        return ret;
+    }
+
+    function get_Latest : string
+    {
+        if (results.Count > 0)
+            return (results.Get(results.Count - 1) as TokenData).String;
+        if (tokens.Count > 0)
+            return (tokens.Get(tokens.Count - 1) as TokenData).String;
+        return null;
+    }
+
+    function get_SrcInfo : SrcInfo
+    {
+        if (results.Count > 0)
+        {
+            var d = results.Get(results.Count - 1) as TokenData;
+            return d.SrcInfo;
+        }
+        SkipSpaces();
+        return SrcInfo.New(file, lineNumber, linePosition);
+    }
+
+    static function IsLetterChar(ch : char) : bool
+    {
+        return ('A' <= ch && ch <= 'Z') || ('a' <= ch && ch <= 'z');
+    }
+
+    static function IsDigitChar(ch : char) : bool
+    {
+        return '0' <= ch && ch <= '9';
+    }
+
+    static function IsWordChar(ch : char) : bool
+    {
+        return ch > 128 || ch == '_' || IsLetterChar(ch) || IsDigitChar(ch);
+    }
+
+    static function IsWord(s : string) : bool
+    {
+        return CheckString(s, IsDigitChar, IsWordChar);
+    }
+
+    static function IsDigit(s : string) : bool
+    {
+        return CheckString(s, null, IsDigitChar);
+    }
+
+    static function CheckString(s : string, func1, func2) : bool
+    {
+        if (string.IsNullOrEmpty(s))
+            return false;
+        var first = true;
+        for (int i = 0; i < s.Length; i++)
+        {
+            char ch = s[i];
+            if (first)
+            {
+                if (func1 != null && func1(ch))
+                    return false;
+                first = false;
+            }
+            if (!func2(ch))
+                return false;
+        }
+        return true;
+    }
+
+    function get_CanReadChar : bool
+    {
+        return _Source != null && pos < _Source.Length;
+    }
+
+    function ReadChar() : int
+    {
+        if (!CanReadChar)
+            return  - 1;
+        char ret = _Source[pos++];
+        if (ret == '\n')
+        {
+            linePositions.Add(linePosition);
+            linePosition = 1;
+            lineNumber++;
+        }
+        else
+            linePosition++;
+        return ret;
+    }
+
+    function PeekChar() : int
+    {
+        if (!CanReadChar)
+            return  - 1;
+        return _Source[pos];
+    }
+
+    function RewindChar()
+    {
+        if (pos <= 0)
+            return;
+        pos--;
+        linePosition--;
+        if (linePosition < 1)
+        {
+            var last = linePositions.Count - 1;
+            linePosition = linePositions.Get(last);
+            linePositions.RemoveAt(last);
+            lineNumber--;
+        }
+    }
+
+    function ReadInternal() : TokenData
+    {
+        if (results.Count > 0)
+        {
+            int last = results.Count - 1;
+            var result = results.Get(last) as TokenData;
+            results.RemoveAt(last);
+            return result;
+        }
+        SkipSpaces();
+        var ret = TokenData.New(pos, SrcInfo);
+        var sb = new StringBuilder();
+        int chi, str = 0;
+        var isWord = true;
+        var useEscape = true;
+        while ((chi = ReadChar()) !=  - 1)
+        {
+            var ch = (char)chi;
+            if (str != 0 && ch == '\\' && useEscape)
+            {
+                sb.AppendChar(ch);
+                chi = ReadChar();
+                if (chi ==  - 1)
+                    break;
+                sb.AppendChar((char)chi);
+            }
+            else if (ch == '@' && sb.Length == 0)
+            {
+                sb.AppendChar(ch);
+                chi = ReadChar();
+                if (chi ==  - 1)
+                    break;
+                else if (chi == '"')
+                {
+                    str = chi;
+                    useEscape = false;
+                    sb.AppendChar((char)chi);
+                }
+                else
+                    RewindChar();
+            }
+            else if (ch == '\'' || ch == '"')
+            {
+                if (sb.Length == 0)
+                    str = ch;
+                else if (str == 0)
+                {
+                    RewindChar();
+                    break;
+                }
+                else if (str == ch)
+                {
+                    sb.AppendChar(ch);
+                    break;
+                }
+                sb.AppendChar(ch);
+            }
+            else if (str != 0)
+                sb.AppendChar(ch);
+            else if (ch <= ' ')
+            {
+                if (sb.Length > 0)
+                    break;
+            }
+            else if (IsWordChar((char)ch))
+            {
+                if (!isWord)
+                {
+                    RewindChar();
+                    break;
+                }
+                sb.AppendChar(ch);
+            }
+            else
+            {
+                isWord = false;
+                if (sb.Length > 0)
+                {
+                    var b = IsReserved(sb.ToString() + ch);
+                    if (b == 0)
+                        RewindChar();
+                    else
+                        sb.AppendChar(ch);
+                    if (b != 2)
+                        break;
+                }
+                else
+                    sb.AppendChar(ch);
+            }
+        }
+        if (sb.Length == 0)
+            return null;
+        ret.String = sb.ToString();
+        return ret;
+    }
+
+    function IsReserved(s : string) : int
+    {
+        for (int i = 0; i < reserved.Length; i++)
+        {
+            var r = reserved[i];
+            if (r == s)
+                return 1;
+            if (r.StartsWith(s))
+                return 2;
+        }
+        return 0;
+    }
+
+    function Abort(msg : string)
+    {
+        return string.Format("%s: [%d:%d] %s", file, lineNumber, linePosition, msg);
+    }
 }
