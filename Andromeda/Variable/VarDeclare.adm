@@ -155,6 +155,6 @@ class VarDeclare : NodeBase
         st.MakeUp();
         if (!st.IsClass)
             return;
-        raise(Abort("can not declare class as automatic variable: {0}", st.FullName));
+        raise(Abort("can not declare class as automatic variable: %s", st.FullName));
     }
 }

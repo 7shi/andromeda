@@ -1,3 +1,30 @@
-class SizeOf
+class SizeOf : IntValue
 {
+    var target : NodeBase;
+
+    static function New(parent : BlockBase, target : NodeBase) : SizeOf
+    {
+        var ret = new SizeOf();
+        ret.Parent = parent;
+        ret.target = target;
+        return ret;
+    }
+
+    function get_Value : int
+    {
+        if (this.target is Variant)
+        {
+            var v = parent.GetVar((target as Variant).Name);
+            if (v != null)
+            {
+                var vt = v.Type;
+                if (vt is TypeArray)
+                    return vt.Size;
+            }
+        }
+        var t = TypeOf.GetType(Parent, target);
+        if (t != null)
+            return t.Size;
+        raise(Abort("undefined type: " + name));
+    }
 }

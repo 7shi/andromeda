@@ -1,0 +1,4 @@
+class TypeOf : NodeBase
+{
+    static function GetType(parent : BlockBase, target : NodeBase) : TypeBase { return null; }
+}
