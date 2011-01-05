@@ -1,3 +1,53 @@
-class For
+class For : BlockBase
 {
+    var Init : Block;
+    var Cond : Cond;
+    var Loop : Block;
+    var Block : Block;
+
+    function get_AcceptsBreak : bool
+    {
+        return true;
+    }
+
+    function get_AcceptsContinue : bool
+    {
+        return true;
+    }
+
+    function get_Continue : Val32
+    {
+        return Block.Last;
+    }
+
+    static function New(parent : BlockBase) : For
+    {
+        var ret = new For();
+        ret.init(parent);
+        return ret;
+    }
+
+    override BeforeAddCodes(codes : OpModule)
+    {
+        base.BeforeAddCodes(codes);
+        if (Init != null)
+            Init.AddCodes(codes);
+        if (Loop != null)
+            codes.Add(I386.JmpD(Loop.Last));
+        else
+            codes.Add(I386.JmpD(Block.Last));
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        sentences.Clear();
+        AddSentence(Block);
+        if (Loop != null)
+            AddSentence(Loop);
+        if (Cond == null)
+            Cond = Cond.New(this, IntValue.One);
+        Cond.First = Block.First;
+        AddSentence(Cond);
+        base.AddCodes(codes);
+    }
 }

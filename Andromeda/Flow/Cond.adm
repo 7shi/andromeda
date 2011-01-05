@@ -5,8 +5,8 @@ class Cond : Operator
         return "cond";
     }
 
+    var First : Val32;
     var Next : Val32;
-    var First : Val32;;
 
     static function New(parent : BlockBase, arg : NodeBase) : Cond
     {
