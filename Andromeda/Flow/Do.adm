@@ -20,7 +20,7 @@ class Do : BlockBase
 
     function get_Continue : Val32
     {
-        return Block.Last;
+        return _Block.Last;
     }
 
     static function New(parent : BlockBase) : Do

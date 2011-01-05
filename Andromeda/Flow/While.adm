@@ -1,3 +1,15 @@
-class While
+class While : Do
 {
+    static function New(parent : BlockBase) : newWhile
+    {
+        var ret = new While();
+        ret.init(parent);
+        return ret;
+    }
+
+    override BeforeAddCodes(codes : OpModule)
+    {
+        base.BeforeAddCodes(codes);
+        codes.Add(I386.JmpD(Continue));
+    }
 }
