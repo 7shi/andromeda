@@ -1,4 +1,61 @@
 class Operator : NodeBase
 {
-    function GetConst { return IntValue.Zero; }
+    var _Tag : string;
+    function get_Tag : string { return _Tag; }
+
+    var values : ArrayList = new ArrayList();
+
+    static function Init1(op : Operator, parent : BlockBase, arg1 : NodeBase) : Operator
+    {
+        return Init2(op, parent, arg1, null);
+    }
+
+    static function Init2(op : Operator, parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Operator
+    {
+        op.Parent = parent;
+        if (arg1 != null)
+            op.values.Add(arg1);
+        if (arg2 != null)
+            op.values.Add(arg2);
+        return op;
+    }
+
+    function CheckFunc() : TypeBase
+    {
+        var t = (values.Get(0) as NodeBase).Type;
+        if (t == null)
+            t = TypeVar.Instance;
+        if (!t.CheckFunc(Tag))
+            raise(Abort("%s: %s: not supported", Tag, t.Name));
+        return t;
+    }
+
+    function GetCond() : CondPair
+    {
+        var t = (values.Get(0) as NodeBase).Type;
+        if (t == null)
+            t = TypeVar.Instance;
+        var c = t.GetCond(Tag);
+        if (c == null)
+            raise(Abort("%s: %s: no conditions", Tag, t.Name));
+        return c;
+    }
+
+    function get_Type : TypeBase
+    {
+        if (values.Count == 0)
+            raise(Tag + ": no arguments");
+        return (values.Get(0) as NodeBase).Type;
+    }
+
+    virtual GetConst() : IntValue { return null; }
+
+    function AddConstCodes(codes : OpModule, op : string, dest : Addr32) : bool
+    {
+        var v = GetConst();
+        if (v == null)
+            return false;
+        v.AddCodesV(codes, op, dest);
+        return true;
+    }
 }
