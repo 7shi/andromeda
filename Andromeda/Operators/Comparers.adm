@@ -1,0 +1,123 @@
+class OperatorCmp : Operator
+{
+    virtual Calculate(a : int, b : int) { return false; }
+
+    function get_Type : TypeBase
+    {
+        return TypeBool.Instance;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        if (AddConstCodes(codes, op, dest))
+            return;
+        var last = new OpCode();
+        var ad = Addr32.New(Reg32.ESP);
+        var tb = CheckFunc();
+        var c = GetCond();
+        var v = values.Get(0) as NodeBase;
+        v.AddCodesV(codes, "push", null);
+        for (int i = 1; i < values.Count; i++)
+        {
+            codes.AddOperatorCodes(tb, Tag, ad, values.Get(i) as NodeBase, true);
+            if (i < values.Count - 1)
+            {
+                codes.Add(I386.Jcc(c.NotCondition, last.Address));
+                codes.Add(I386.MovAR(ad, Reg32.EAX));
+            }
+        }
+        codes.Add(last);
+        codes.Add(I386.MovR(Reg32.EAX, Val32.NewI(0)));
+        codes.Add(I386.Setcc(c.Condition, Reg8.AL));
+        if (!OpModule.NeedsDtor(v))
+            codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+        else
+        {
+            codes.Add(I386.XchgRA(Reg32.EAX, Addr32.New(Reg32.ESP)));
+            codes.Add(I386.Push(Reg32.EAX));
+            codes.AddDtorCodes(v.Type);
+            codes.Add(I386.Pop(Reg32.EAX));
+        }
+        codes.AddCodes(op, dest);
+    }
+
+    override GetConst() : IntValue
+    {
+        for (int i = 0; i < values.Count - 1; i++)
+        {
+            var a = IntValue.GetValue(values.Get(i) as NodeBase);
+            var b = IntValue.GetValue(values.Get(i + 1) as NodeBase);
+            if (a == null || b == null)
+                return null;
+            if (!Calculate(a.Value, b.Value))
+                return IntValue.Zero;
+        }
+        return IntValue.One;
+    }
+}
+
+class Equal : OperatorCmp
+{
+    function get_Tag { return "equal"; }
+    override Calculate(a : int, b : int) { return a == b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Equal
+    {
+        return Init2(new Equal(), parent, arg1, arg2) as Equal;
+    }
+}
+
+class NotEqual : OperatorCmp
+{
+    function get_Tag { return "not-equal"; }
+    override Calculate(a : int, b : int) { return a != b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : NotEqual
+    {
+        return Init2(new NotEqual(), parent, arg1, arg2) as NotEqual;
+    }
+}
+
+class Less : OperatorCmp
+{
+    function get_Tag { return "less"; }
+    override Calculate(a : int, b : int) { return a < b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Less
+    {
+        return Init2(new Less(), parent, arg1, arg2) as Less;
+    }
+}
+
+class Greater : OperatorCmp
+{
+    function get_Tag { return "greater"; }
+    override Calculate(a : int, b : int) { return a > b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Greater
+    {
+        return Init2(new Greater(), parent, arg1, arg2) as Greater;
+    }
+}
+
+class LessEqual : OperatorCmp
+{
+    function get_Tag { return "less-equal"; }
+    override Calculate(a : int, b : int) { return a <= b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : LessEqual
+    {
+        return Init2(new LessEqual(), parent, arg1, arg2) as LessEqual;
+    }
+}
+
+class GreaterEqual : OperatorCmp
+{
+    function get_Tag { return "greater-equal"; }
+    override Calculate(a : int, b : int) { return a >= b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : GreaterEqual
+    {
+        return Init2(new GreaterEqual(), parent, arg1, arg2) as GreaterEqual;
+    }
+}

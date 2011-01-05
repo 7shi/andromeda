@@ -1,6 +1,8 @@
 class OpModule : OpCodes
 {
     function AddDtorCodes(t : TypeBase) {}
+    function AddOperatorCodes(tb : TypeBase, op : string, dest : Addr32, arg : NodeBase, pushf : bool) {}
     function GetCall(tag : string, name : string) : OpCode { return null; }
     function GetString(s : string) { return Val32.NewI(0); }
+    static function NeedsDtor(v : NodeBase) { return false; }
 }
