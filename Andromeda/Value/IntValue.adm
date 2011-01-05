@@ -1,3 +1,65 @@
-class IntValue
+class IntValue : NodeBase
 {
+    int value;
+    function get_Value { return value; }
+
+    static var zero : IntValue = New(0);
+    static function get_Zero { return zero; }
+
+    static var one : IntValue = New(1);
+    static function get_One { return one; }
+
+    static function New(value : int) : IntValue
+    {
+        var ret = new IntValue();
+        ret.value = value;
+        return ret;
+    }
+
+    static function NewString(value : string) : IntValue
+    {
+        return New(Parse(value));
+    }
+
+    function get_Type : TypeBase
+    {
+        return TypeInt.Instance;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        codes.AddCodesV(op, dest, Val32.NewI(Value));
+    }
+
+    static function ReadText(parent : BlockBase, token : Tokenizer)
+    {
+        var parser = Parser.Create(token, parent);
+        var ret = parser.ParseExpressions();
+        if (token.CanRead)
+            ret = null;
+        return ret;
+    }
+
+    static function Parse(value : string) : int
+    {
+        if (value.StartsWith("0x"))
+            return Convert.ToInt32(value.SubstringFrom(2), 16);
+        if (value.Length > 1 && value.StartsWith("0"))
+            return Convert.ToInt32(value.SubstringFrom(1), 8);
+        return value.ToInt();
+    }
+
+    static function GetValue(v : NodeBase) : IntValue
+    {
+        if (v is ConstInt)
+            return GetValue((v as ConstInt).Value);
+        else if (v is IntValue)
+            return v as IntValue;
+        else if (v is Operator)
+            return (v as Operator).GetConst();
+        else if (v is Variant)
+            return GetValue((v as Variant).GetConst());
+        else
+            return null;
+    }
 }

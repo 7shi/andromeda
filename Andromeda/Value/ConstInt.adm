@@ -1,3 +1,28 @@
-class ConstInt
+class ConstInt : NodeBase
 {
+    var _Value : NodeBase;
+    function get_Value : NodeBase { return _Value; }
+    function set_Value(value : NodeBase) { _Value = value; }
+
+    static function New(parent : BlockBase, value : NodeBase) : ConstInt
+    {
+        var ret = new ConstInt();
+        ret.Parent = parent;
+        ret.Value = value;
+        return ret;
+    }
+
+    function get_Type : TypeBase
+    {
+        return TypeInt.Instance;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        var v = IntValue.GetValue(Value);
+        if (v != null)
+            v.AddCodesV(codes, op, dest);
+        else
+            _Value.AddCodesV(codes, op, dest);
+    }
 }

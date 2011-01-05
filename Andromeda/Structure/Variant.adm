@@ -1,7 +1,5 @@
 class Variant : NodeBase
 {
-    function GetVar : Var
-    {
-        return null;
-    }
+    function GetVar : Var { return null; }
+    function GetConst() : NodeBase { return null; }
 }

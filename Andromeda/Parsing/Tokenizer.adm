@@ -1,0 +1,4 @@
+class Tokenizer
+{
+    function get_CanRead { return false; }
+}

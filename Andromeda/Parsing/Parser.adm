@@ -1,0 +1,12 @@
+class Parser
+{
+    static function Create(tokenizer : Tokenizer, parent : BlockBase)
+    {
+        return new Parser;
+    }
+
+    function ParseExpressions
+    {
+        return new NodeBase[0];
+    }
+}
