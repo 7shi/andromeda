@@ -10,7 +10,7 @@ class Call
             if (codes != null)
             {
                 if (args.Count != 3)
-                    raise(Abort("{0}: argument mismatched", name));
+                    raise(Abort("%s: argument mismatched", name));
                 Stos(codes, name.SubstringFrom(2), args.Get(0) as NodeBase, args.Get(1) as NodeBase, args.Get(2) as NodeBase);
             }
             return true;
@@ -23,7 +23,7 @@ class Call
             if (codes != null)
             {
                 if (args.Count != 3)
-                    raise(Abort("{0}: argument mismatched", name));
+                    raise(Abort("%s: argument mismatched", name));
                 Movs(codes, name.SubstringFrom(2), args.Get(0) as NodeBase, args.Get(1) as NodeBase, args.Get(2) as NodeBase);
             }
             return true;
@@ -31,7 +31,7 @@ class Call
             if (codes != null)
             {
                 if (args.Count != 3)
-                    raise(Abort("{0}: argument mismatched", name));
+                    raise(Abort("%s: argument mismatched", name));
                 Memcpy(codes, args.Get(0) as NodeBase, args.Get(1) as NodeBase, args.Get(2) as NodeBase);
             }
             return true;
@@ -39,7 +39,7 @@ class Call
             if (codes != null)
             {
                 if (args.Count != 3)
-                    raise(Abort("{0}: argument mismatched", name));
+                    raise(Abort("%s: argument mismatched", name));
                 MemcpyRev(codes, args.Get(0) as NodeBase, args.Get(1) as NodeBase, args.Get(2) as NodeBase);
             }
             return true;
@@ -47,7 +47,7 @@ class Call
             if (codes != null)
             {
                 if (args.Count != 2)
-                    raise(Abort("{0}: argument mismatched", name));
+                    raise(Abort("%s: argument mismatched", name));
                 Cpuid(codes, args.Get(0) as NodeBase, args.Get(1) as NodeBase);
             }
             return true;

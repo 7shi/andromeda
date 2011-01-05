@@ -44,7 +44,7 @@ class TypeOf : NodeBase
             var fpname = (target as Variant).Name;
             var fpt = Types.GetType(parent, fpname);
             if (fpt == null || !fpt.Check())
-                raise(caller.Abort("undefined type: {0}", fpname));
+                raise(caller.Abort("undefined type: %s", fpname));
             codes.AddCodesV(op, dest, codes.GetTypeObject(fpt));
             return;
         }

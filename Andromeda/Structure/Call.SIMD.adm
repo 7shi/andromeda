@@ -1,0 +1,293 @@
+class Call
+{
+    function AddSIMDCodes(codes : OpModule, args : ArrayList) : bool
+    {
+        switch (name)
+        {
+        case "__emms":
+            if (codes != null)
+            {
+                if (args.Count != 0)
+                    raise(Abort("%s: argument mismatched", name));
+                Emms(codes);
+            }
+            return true;
+        case "__movd":
+            if (codes != null)
+            {
+                if (args.Count != 2)
+                    raise(Abort("%s: argument mismatched", name));
+                Movd(codes, args.Get(0) as NodeBase, args.Get(1) as NodeBase);
+            }
+            return true;
+        case "__movq":
+            if (codes != null)
+            {
+                if (args.Count != 2)
+                    raise(Abort("%s: argument mismatched", name));
+                Movq(codes, args.Get(0) as NodeBase, args.Get(1) as NodeBase);
+            }
+            return true;
+        case "__movdqa":
+        case "__movdqu":
+            if (codes != null)
+            {
+                if (args.Count != 2)
+                    raise(Abort("%s: argument mismatched", name));
+                Movdq(codes, name, args.Get(0) as NodeBase, args.Get(1) as NodeBase);
+            }
+            return true;
+        case "__paddb":
+        case "__paddw":
+        case "__paddd":
+        case "__paddq":
+        case "__psubb":
+        case "__psubw":
+        case "__psubd":
+        case "__psubq":
+        case "__pmulhw":
+        case "__pmullw":
+        case "__punpckhbw":
+        case "__punpckhwd":
+        case "__punpckhdq":
+        case "__punpcklbw":
+        case "__punpcklwd":
+        case "__punpckldq":
+        case "__packsswb":
+        case "__packssdw":
+        case "__packuswb":
+            if (codes != null)
+            {
+                if (args.Count != 2)
+                    raise(Abort("%s: argument mismatched", name));
+                Simd(codes, name, args.Get(0) as NodeBase, args.Get(1) as NodeBase);
+            }
+            return true;
+        case "__psllw":
+        case "__pslld":
+        case "__psllq":
+        case "__psrlw":
+        case "__psrld":
+        case "__psrlq":
+        case "__psraw":
+        case "__psrad":
+            if (codes != null)
+            {
+                if (args.Count != 2)
+                    raise(Abort("%s: argument mismatched", name));
+                SimdShift(codes, name, args.Get(0) as NodeBase, args.Get(1) as NodeBase);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    function GetMm(v : NodeBase) : int
+    {
+        var fp = v as Variant;
+        if (fp == null || !fp.Name.StartsWith("__mm") || fp.Name.Length != 5)
+            return  - 1;
+        char n = fp.Name[4];
+        if (n < '0' || n > '9')
+            return  - 1;
+        return n - '0';
+    }
+
+    function GetXmm(v : NodeBase) : int
+    {
+        var fp = v as Variant;
+        if (fp == null || !fp.Name.StartsWith("__xmm") || fp.Name.Length != 6)
+            return  - 1;
+        char n = fp.Name[5];
+        if (n < '0' || n > '9')
+            return  - 1;
+        return n - '0';
+    }
+
+    static function Emms(codes : OpModule)
+    {
+        codes.Add(MMX.EMMS());
+    }
+
+    function Movd(codes : OpModule, m1 : NodeBase, m2 : NodeBase)
+    {
+        var m1m = GetMm(m1);
+        var m2m = GetMm(m2);
+        var m1x = GetXmm(m1);
+        var m2x = GetXmm(m2);
+        if (m1m !=  - 1)
+        {
+            if (m2 is Var && m2.Type is TypeIntBase)
+            {
+                var ad = (m2 as Var).GetAddress(codes);
+                codes.Add(MMX.MovDA((Mm)m1m, ad));
+            }
+            else if (m2 is IntValue)
+            {
+                m2.AddCodesV(codes, "mov", null);
+                codes.Add(MMX.MovD((Mm)m1m, Reg32.EAX));
+            }
+            else
+            {
+                m2.AddCodesV(codes, "mov", null);
+                codes.Add(MMX.MovDA((Mm)m1m, Addr32.New(Reg32.EAX)));
+            }
+            return;
+        }
+        else if (m1x !=  - 1)
+        {
+            if (m2 is Var && m2.Type is TypeIntBase)
+            {
+                var m2a = (m2 as Var).GetAddress(codes);
+                codes.Add(SSE2.MovDA((Xmm)m1x, m2a));
+            }
+            else if (m2 is IntValue)
+            {
+                m2.AddCodesV(codes, "mov", null);
+                codes.Add(SSE2.MovD((Xmm)m1x, Reg32.EAX));
+            }
+            else
+            {
+                m2.AddCodesV(codes, "mov", null);
+                codes.Add(SSE2.MovDA((Xmm)m1x, Addr32.New(Reg32.EAX)));
+            }
+            return;
+        }
+        var v = Var.Get(m1);
+        if (v == null)
+            raise(Abort("__movd: invalid argument 1"));
+        if (m2m !=  - 1)
+        {
+            if (v.Type is TypeIntBase)
+            {
+                var ad = v.GetAddress(codes);
+                codes.Add(MMX.MovDAM(ad, (Mm)m2m));
+            }
+            else
+            {
+                v.AddCodesV(codes, "mov", null);
+                codes.Add(MMX.MovDAM(Addr32.New(Reg32.EAX), (Mm)m2m));
+            }
+        }
+        else if (m2x !=  - 1)
+        {
+            if (v.Type is TypeIntBase)
+            {
+                var ad = v.GetAddress(codes);
+                codes.Add(SSE2.MovDAX(ad, (Xmm)m2x));
+            }
+            else
+            {
+                v.AddCodesV(codes, "mov", null);
+                codes.Add(SSE2.MovDAX(Addr32.New(Reg32.EAX), (Xmm)m2x));
+            }
+        }
+        else
+            raise(Abort("__movd: invalid argument 2"));
+    }
+
+    function Movq(codes : OpModule, m1 : NodeBase, m2 : NodeBase)
+    {
+        var m1m = GetMm(m1);
+        var m2m = GetMm(m2);
+        var m1x = GetXmm(m1);
+        var m2x = GetXmm(m2);
+        if (m1m !=  - 1 && m2m !=  - 1)
+            codes.Add(MMX.MovQ((Mm)m1m, (Mm)m2m));
+        else if (m1x !=  - 1 && m2x !=  - 1)
+            codes.Add(SSE2.MovQ((Xmm)m1x, (Xmm)m2x));
+        else if (m1m !=  - 1)
+        {
+            m2.AddCodesV(codes, "mov", null);
+            codes.Add(MMX.MovQA((Mm)m1m, Addr32.New(Reg32.EAX)));
+        }
+        else if (m2m !=  - 1)
+        {
+            m1.AddCodesV(codes, "mov", null);
+            codes.Add(MMX.MovQAM(Addr32.New(Reg32.EAX), (Mm)m2m));
+        }
+        else if (m1x !=  - 1)
+        {
+            m2.AddCodesV(codes, "mov", null);
+            codes.Add(SSE2.MovQA((Xmm)m1x, Addr32.New(Reg32.EAX)));
+        }
+        else if (m2x !=  - 1)
+        {
+            m1.AddCodesV(codes, "mov", null);
+            codes.Add(SSE2.MovQAX(Addr32.New(Reg32.EAX), (Xmm)m2x));
+        }
+        else
+            raise(Abort("__movq: invalid arguments"));
+    }
+
+    function Movdq(codes : OpModule, op : string, m1 : NodeBase, m2 : NodeBase)
+    {
+        var m1x = GetXmm(m1);
+        var m2x = GetXmm(m2);
+        var op2 = op.SubstringFrom(2);
+        if (m1x !=  - 1 && m2x !=  - 1)
+            codes.Add(SSE2.FromName(op2, (Xmm)m1x, (Xmm)m2x));
+        else if (m1x !=  - 1)
+        {
+            m2.AddCodesV(codes, "mov", null);
+            codes.Add(SSE2.FromNameA(op2, (Xmm)m1x, Addr32.New(Reg32.EAX)));
+        }
+        else if (m2x !=  - 1)
+        {
+            m1.AddCodesV(codes, "mov", null);
+            codes.Add(SSE2.FromNameAX(op2, Addr32.New(Reg32.EAX), (Xmm)m2x));
+        }
+        else
+            raise(Abort("%s: invalid arguments", op));
+    }
+
+    function Simd(codes : OpModule, op : string, m1 : NodeBase, m2 : NodeBase)
+    {
+        var m1m = GetMm(m1);
+        var m2m = GetMm(m2);
+        var m1x = GetXmm(m1);
+        var m2x = GetXmm(m2);
+        var op2 = op.SubstringFrom(2);
+        if (m1m !=  - 1)
+        {
+            if (m2m !=  - 1)
+                codes.Add(MMX.FromName(op2, (Mm)m1m, (Mm)m2m));
+            else
+            {
+                m2.AddCodesV(codes, "mov", null);
+                codes.Add(MMX.FromNameA(op2, (Mm)m1m, Addr32.New(Reg32.EAX)));
+            }
+        }
+        else if (m1x !=  - 1)
+        {
+            if (m2x !=  - 1)
+                codes.Add(SSE2.FromName(op2, (Xmm)m1x, (Xmm)m2x));
+            else
+            {
+                m2.AddCodesV(codes, "mov", null);
+                codes.Add(SSE2.FromNameA(op2, (Xmm)m1x, Addr32.New(Reg32.EAX)));
+            }
+        }
+        else
+            raise(Abort("%s: invalid argument 1", op));
+    }
+
+    function SimdShift(codes : OpModule, op : string, m1 : NodeBase, m2 : NodeBase)
+    {
+        var m2i = m2 as IntValue;
+        if (m2i == null)
+        {
+            Simd(codes, op, m1, m2);
+            return;
+        }
+        var m1m = GetMm(m1);
+        var m1x = GetXmm(m1);
+        var op2 = op.SubstringFrom(2);
+        if (m1m !=  - 1)
+            codes.Add(MMX.FromNameB(op2, (Mm)m1m, (byte)m2i.Value));
+        else if (m1x !=  - 1)
+            codes.Add(SSE2.FromNameB(op2, (Xmm)m1x, (byte)m2i.Value));
+        else
+            raise(Abort("%s: invalid argument 1", op));
+    }
+}
