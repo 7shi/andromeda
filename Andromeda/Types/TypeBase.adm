@@ -1,0 +1,6 @@
+class TypeBase
+{
+    function AddGetCodes(codes : OpModule, op : string, dest : Addr32, src : Addr32)
+    {
+    }
+}

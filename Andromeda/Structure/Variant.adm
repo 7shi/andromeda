@@ -1,3 +1,7 @@
-class Variant
+class Variant : NodeBase
 {
+    function GetVar : Var
+    {
+        return null;
+    }
 }

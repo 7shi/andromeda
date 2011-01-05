@@ -1,3 +1,7 @@
-class VarDeclare
+class VarDeclare : NodeBase
 {
+    function GetAddress(codes : OpModule, scope : BlockBase) : Addr32
+    {
+        return null;
+    }
 }

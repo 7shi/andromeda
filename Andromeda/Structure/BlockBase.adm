@@ -4,4 +4,9 @@ class BlockBase : BreakBase
     {
         return new VarDeclare[0];
     }
+    
+    function GetVar(name : string) : VarDeclare
+    {
+        return null;
+    }
 }

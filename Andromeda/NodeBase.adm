@@ -27,8 +27,8 @@ class NodeBase
     {
         return null;
     }
-    var srcInfo : SrcInfo;
 
+    var srcInfo : SrcInfo;
     function get_SrcInfo : SrcInfo
     {
         if (srcInfo != null)

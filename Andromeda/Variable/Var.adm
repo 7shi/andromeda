@@ -1,3 +1,57 @@
-class Var
+class Var : NodeBase
 {
+    const int DefaultSize = 4;
+    var DestRegister = Reg32.ECX;
+
+    function get_Type : TypeBase
+    {
+        return Reference.Type;
+    }
+
+    var _Reference : VarDeclare;
+    function get_Reference : VarDeclare { return _Reference; }
+    function set_Reference(value : VarDeclare) { _Reference = value; }
+
+    static function New(parent : BlockBase, var : VarDeclare) : Var
+    {
+        var ret = new Var();
+        ret.Parent = parent;
+        ret.name = var.Name;
+        ret.Reference = var;
+        return ret;
+    }
+
+    static function NewName(parent : BlockBase, name : string) : Var
+    {
+        var ret = new Var();
+        ret.Parent = parent;
+        ret.name = name;
+        ret.Reference = parent.GetVar(name);
+        if (ret.Reference == null)
+            raise(ret.Abort("undefined pointer: " + name));
+        return ret;
+    }
+
+    virtual GetStruct() : Define
+    {
+        return Types.GetStruct(Type);
+    }
+
+    virtual GetAddress(codes : OpModule) : Addr32
+    {
+        return _Reference.GetAddress(codes, Parent);
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        get_Type().AddGetCodes(codes, op, dest, GetAddress(codes));
+    }
+
+    static function Get(v : NodeBase) : Var
+    {
+        if (v is Variant)
+            return (v as Variant).GetVar();
+        else
+            return v as Var;
+    }
 }

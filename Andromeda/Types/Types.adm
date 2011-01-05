@@ -1,0 +1,7 @@
+class Types
+{
+    static function GetStruct(t : TypeBase) : Define
+    {
+        return null;
+    }
+}
