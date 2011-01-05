@@ -1,3 +1,23 @@
-class Extern
+class Extern : Function
 {
+    var module : string;
+    var alias : string;
+
+    static function New(parent : BlockBase, name : string, module : string, alias : string) : Extern
+    {
+        var ret = new Extern();
+        ret.init2(parent, name, false);
+        ret.module = module;
+        ret.alias = alias;
+        return ret;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        codes.Add(first);
+        if (alias != null)
+            codes.Add(I386.Jmp(codes.Module.GetFunction(module, alias)));
+        else
+            codes.Add(I386.Jmp(codes.Module.GetFunction(module, name)));
+    }
 }
