@@ -44,8 +44,7 @@ class Define : Block
         if (members.ContainsKey(name))
             return members.Get(name);
         var st = GetBaseStruct();
-        if (st == null)
-            return null;
+        if (st == null) return null;
         return st.GetMember(name);
     }
 
@@ -64,8 +63,7 @@ class Define : Block
 
     function GetBaseStruct() : Define
     {
-        if (BaseType == null)
-            return null;
+        if (BaseType == null) return null;
         var st = parent.GetStruct(BaseType);
         if (!root.IsCompiling || st != null)
             return st;
@@ -78,8 +76,7 @@ class Define : Block
         ForEachMembers(null, \(size : int) =>
         {
             ret = size;
-        }
-        );
+        });
         var st = GetBaseStruct();
         if (st != null)
             ret += st.GetSizeInternal();
@@ -89,8 +86,7 @@ class Define : Block
     function GetSize() : int
     {
         var ret = GetSizeInternal();
-        if (ret == 0)
-            ret = Var.DefaultSize;
+        if (ret == 0) ret = Var.DefaultSize;
         return ret;
     }
 
@@ -99,8 +95,7 @@ class Define : Block
         int ret =  - 1;
         ForEachMembers(\(p : VarDeclare, pos : int) =>
         {
-            if (p.Name != name)
-                return false;
+            if (p.Name != name) return false;
             ret = pos;
             return true;
         }
@@ -116,8 +111,7 @@ class Define : Block
         var ret : VarDeclare = null;
         ForEachMembers(\(p : VarDeclare, pos : int) =>
         {
-            if (p.Name != name)
-                return false;
+            if (p.Name != name) return false;
             ret = p;
             return true;
         }, null);
@@ -300,8 +294,7 @@ class Define : Block
 
     function CheckStruct()
     {
-        if (doneCheckStruct)
-            return;
+        if (doneCheckStruct) return;
         doneCheckStruct = true;
         if (IsClass && BaseType == null && FullName != "object")
             BaseType = "object";
@@ -317,8 +310,7 @@ class Define : Block
             raise(Abort("can not define recursive type: %s", (list.Get(0) as Define).name));
         list.Add(this);
         var b = GetBaseStruct();
-        if (b == null)
-            return;
+        if (b == null) return;
         if (IsClass && !b.IsClass)
             raise(Abort("class: can not inherit from struct: %s <= %s", FullName, b.FullName));
         else if (!IsClass && b.IsClass)

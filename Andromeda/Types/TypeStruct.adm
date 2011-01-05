@@ -6,4 +6,6 @@ class TypeStruct : TypeBase
     {
         return null;
     }
+
+    var IsClass = false;
 }

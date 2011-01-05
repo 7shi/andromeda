@@ -1,4 +1,5 @@
 class TypeOf : NodeBase
 {
     static function GetType(parent : BlockBase, target : NodeBase) : TypeBase { return null; }
+    static function AddCodes(caller : NodeBase, parent : BlockBase, target : NodeBase, codes : OpModule, op : string, dest : Addr32) {}
 }
