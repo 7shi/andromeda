@@ -1,0 +1,177 @@
+class TypeInt : TypeIntBase
+{
+    function get_Name : string
+    {
+        return "int";
+    }
+
+    static var instance : TypeInt = new TypeInt();
+    static function get_Instance { return instance; }
+
+    override Cast(type : TypeBase) : TypeBase
+    {
+        if (type is TypeInt || type is TypeUShort || type is TypeByte)
+            return this;
+        return null;
+    }
+
+    function ctor
+    {
+        conds.Add("greater", CondPair.New(Cc.G, Cc.NG));
+        conds.Add("greater-equal", CondPair.New(Cc.GE, Cc.NGE));
+        conds.Add("less", CondPair.New(Cc.L, Cc.NL));
+        conds.Add("less-equal", CondPair.New(Cc.LE, Cc.NLE));
+    }
+
+    override CheckFunc(op : string) : bool
+    {
+        switch (op)
+        {
+        case "shift-left":
+        case "shift-right":
+        case "mul":
+        case "div":
+        case "mod":
+            return true;
+        default:
+            return base.CheckFunc(op);
+        }
+    }
+
+    override AddOpCodes(op : string, codes : OpModule, dest : Addr32)
+    {
+        switch (op)
+        {
+        case "shift-left":
+            Shift("sal", codes, dest);
+            break;
+        case "shift-right":
+            Shift("sar", codes, dest);
+            break;
+        case "mul":
+            codes.Add(I386.ImulA(dest));
+            codes.Add(I386.MovAR(dest, Reg32.EAX));
+            break;
+        case "div":
+            codes.Add(I386.XchgRA(Reg32.EAX, dest));
+            codes.Add(I386.Cdq());
+            codes.Add(I386.IdivA(dest));
+            codes.Add(I386.MovAR(dest, Reg32.EAX));
+            break;
+        case "mod":
+            codes.Add(I386.XchgRA(Reg32.EAX, dest));
+            codes.Add(I386.Cdq());
+            codes.Add(I386.IdivA(dest));
+            codes.Add(I386.MovAR(dest, Reg32.EDX));
+            break;
+        default:
+            base.AddOpCodes(op, codes, dest);
+            break;
+        }
+    }
+}
+
+class TypeVar : TypeInt
+{
+    function get_Name : string
+    {
+        return "var";
+    }
+
+    static var instance : TypeVar = new TypeVar();
+    static function get_Instance { return instance; }
+
+    override Cast(type : TypeBase) : TypeBase
+    {
+        return this;
+    }
+}
+
+class TypeBool : TypeInt
+{
+    function get_Name : string
+    {
+        return "bool";
+    }
+
+    static var instance : TypeBool = new TypeBool();
+    static function get_Instance { return instance; }
+}
+
+class TypeShort : TypeInt
+{
+    function get_Name : string
+    {
+        return "short";
+    }
+
+    function get_Size : int
+    {
+        return 2;
+    }
+
+    static var instance : TypeShort = new TypeShort();
+    static function get_Instance { return instance; }
+
+    override AddGetCodes(codes : OpModule, op : string, dest : Addr32, src : Addr32)
+    {
+        codes.AddCodesSWA(op, dest, src);
+    }
+
+    override AddSetCodes(codes : OpModule, dest : Addr32)
+    {
+        codes.Add(I386.MovWAR(dest, Reg16.AX));
+    }
+
+    override Cast(type : TypeBase) : TypeBase
+    {
+        if (type is TypeShort || type is TypeSByte || type is TypeByte)
+            return this;
+        else if (type is TypeInt)
+            return TypeInt.Instance;
+        else if (type is TypeUInt)
+            return TypeUInt.Instance;
+        return null;
+    }
+}
+
+class TypeSByte : TypeInt
+{
+    function get_Name : string
+    {
+        return "sbyte";
+    }
+
+    function get_Size : int
+    {
+        return 1;
+    }
+
+    static var instance : TypeSByte = new TypeSByte();
+    static function get_Instance { return instance; }
+
+    override AddGetCodes(codes : OpModule, op : string, dest : Addr32, src : Addr32)
+    {
+        codes.AddCodesSBA(op, dest, src);
+    }
+
+    override AddSetCodes(codes : OpModule, dest : Addr32)
+    {
+        codes.Add(I386.MovBAR(dest, Reg8.AL));
+    }
+
+    override Cast(type : TypeBase) : TypeBase
+    {
+        if (type is TypeByte)
+            return this;
+        else if (type is TypeInt)
+            return TypeInt.Instance;
+        else if (type is TypeUInt)
+            return TypeUInt.Instance;
+        else if (type is TypeShort)
+            return TypeShort.Instance;
+        else if (type is TypeUShort)
+            return TypeUShort.Instance;
+        return null;
+    }
+}

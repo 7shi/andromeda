@@ -1,0 +1,161 @@
+class TypeUInt : TypeIntBase
+{
+    function get_Name : string
+    {
+        return "uint";
+    }
+
+    static var instance : TypeUInt = new TypeUInt();
+    static function get_Instance { return instance; }
+
+    override Cast(type : TypeBase) : TypeBase
+    {
+        if (type is TypeUInt || type is TypeShort || type is TypeSByte)
+            return this;
+        return null;
+    }
+
+    function ctor
+    {
+        conds.Add("greater", CondPair.New(Cc.A, Cc.NA));
+        conds.Add("greater-equal", CondPair.New(Cc.AE, Cc.NAE));
+        conds.Add("less", CondPair.New(Cc.B, Cc.NB));
+        conds.Add("less-equal", CondPair.New(Cc.BE, Cc.NBE));
+    }
+
+    override CheckFunc(op : string) : bool
+    {
+        switch (op)
+        {
+        case "shift-left":
+        case "shift-right":
+        case "mul":
+        case "div":
+        case "mod":
+            return true;
+        default:
+            return base.CheckFunc(op);
+        }
+    }
+
+    override AddOpCodes(op : string, codes : OpModule, dest : Addr32)
+    {
+        switch (op)
+        {
+        case "shift-left":
+            Shift("shl", codes, dest);
+            break;
+        case "shift-right":
+            Shift("shr", codes, dest);
+            break;
+        case "mul":
+            codes.Add(I386.MulA(dest));
+            codes.Add(I386.MovAR(dest, Reg32.EAX));
+            break;
+        case "div":
+            codes.Add(I386.XchgRA(Reg32.EAX, dest));
+            codes.Add(I386.Xor(Reg32.EDX, Reg32.EDX));
+            codes.Add(I386.DivA(dest));
+            codes.Add(I386.MovAR(dest, Reg32.EAX));
+            break;
+        case "mod":
+            codes.Add(I386.XchgRA(Reg32.EAX, dest));
+            codes.Add(I386.Xor(Reg32.EDX, Reg32.EDX));
+            codes.Add(I386.DivA(dest));
+            codes.Add(I386.MovAR(dest, Reg32.EDX));
+            break;
+        default:
+            base.AddOpCodes(op, codes, dest);
+            break;
+        }
+    }
+}
+
+class TypeUShort : TypeUInt
+{
+    function get_Name : string
+    {
+        return "ushort";
+    }
+
+    function get_Size : int
+    {
+        return 2;
+    }
+
+    static var instance : TypeUShort = new TypeUShort();
+    static function get_Instance { return instance; }
+
+    override AddGetCodes(codes : OpModule, op : string, dest : Addr32, src : Addr32)
+    {
+        codes.AddCodesUWA(op, dest, src);
+    }
+
+    override AddSetCodes(codes : OpModule, dest : Addr32)
+    {
+        codes.Add(I386.MovWAR(dest, Reg16.AX));
+    }
+
+    override Cast(type : TypeBase) : TypeBase
+    {
+        if (type is TypeUShort || type is TypeSByte || type is TypeByte)
+            return this;
+        else if (type is TypeInt)
+            return TypeInt.Instance;
+        else if (type is TypeUInt)
+            return TypeUInt.Instance;
+        return null;
+    }
+}
+
+class TypeChar : TypeUShort
+{
+    function get_Name : string
+    {
+        return "char";
+    }
+
+    static var instance : TypeChar = new TypeChar();
+    static function get_Instance { return instance; }
+}
+
+class TypeByte : TypeUInt
+{
+    function get_Name : string
+    {
+        return "byte";
+    }
+
+    function get_Size : int
+    {
+        return 1;
+    }
+
+    static var instance : TypeByte = new TypeByte();
+    static function get_Instance { return instance; }
+
+    override AddGetCodes(codes : OpModule, op : string, dest : Addr32, src : Addr32)
+    {
+        codes.AddCodesUBA(op, dest, src);
+    }
+
+    override AddSetCodes(codes : OpModule, dest : Addr32)
+    {
+        codes.Add(I386.MovBAR(dest, Reg8.AL));
+    }
+
+    override Cast(type : TypeBase) : TypeBase
+    {
+        if (type is TypeSByte)
+            return this;
+        else if (type is TypeInt)
+            return TypeInt.Instance;
+        else if (type is TypeUInt)
+            return TypeUInt.Instance;
+        else if (type is TypeShort)
+            return TypeShort.Instance;
+        else if (type is TypeUShort)
+            return TypeUShort.Instance;
+        return null;
+    }
+}
