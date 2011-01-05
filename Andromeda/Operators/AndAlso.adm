@@ -1,3 +1,58 @@
-class AndAlso
+class AndAlso : Operator
 {
+    function get_Tag : string
+    {
+        return "and-also";
+    }
+
+    function get_Type : TypeBase
+    {
+        return TypeBool.Instance;
+    }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : AndAlso
+    {
+        return Init2(new AndAlso(), parent, arg1, arg2) as AndAlso;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        if (AddConstCodes(codes, op, dest))
+            return;
+        var last = new OpCode();
+        for (int i = 0; i < values.Count; i++)
+        {
+            var v = values.Get(i) as NodeBase;
+            v.AddCodesV(codes, "mov", null);
+            codes.Add(I386.Test(Reg32.EAX, Reg32.EAX));
+            codes.Add(I386.Jcc(Cc.Z, last.Address));
+        }
+        codes.Add(I386.MovR(Reg32.EAX, Val32.NewI(1)));
+        codes.Add(last);
+        codes.AddCodes(op, dest);
+    }
+
+    override GetConst() : IntValue
+    {
+        var v = IntValue.GetValue(values.Get(0) as NodeBase);
+        if (v == null)
+            return null;
+        var ret = v.Value != 0;
+        for (int i = 1; i < values.Count; i++)
+        {
+            var iv = IntValue.GetValue(values.Get(i) as NodeBase);
+            if (iv == null)
+                return null;
+            ret = Calculate(ret, iv.Value != 0);
+        }
+        if (ret)
+            return IntValue.One;
+        else
+            return IntValue.Zero;
+    }
+
+    function Calculate(a : bool, b : bool) : bool
+    {
+        return a && b;
+    }
 }
