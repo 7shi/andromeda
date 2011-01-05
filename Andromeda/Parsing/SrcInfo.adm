@@ -1,0 +1,28 @@
+class SrcInfo
+{
+    var _Source : string;
+    function get_Source : string { return _Source; }
+    function set_Source(value : string) { _Source = value; }
+
+    int _Number;
+    function get_Number : int { return _Number; }
+    function set_Number(value : int) { _Number = value; }
+
+    int _Position;
+    function get_Position : int { return _Position; }
+    function set_Position(value : int) { _Position = value; }
+
+    static function New(source : string, number : int, position : int) : SrcInfo
+    {
+        var ret = new SrcInfo();
+        ret.Source = source;
+        ret.Number = number;
+        ret.Position = position;
+        return ret;
+    }
+
+    function ToString() : string
+    {
+        return string.Format("%s: %d, %d", Source, Number, Position);
+    }
+}

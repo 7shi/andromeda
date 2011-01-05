@@ -1,0 +1,75 @@
+class NodeBase
+{
+    var parent : BlockBase;
+    function get_Parent : BlockBase
+    {
+        return parent;
+    }
+    function set_Parent(value : BlockBase)
+    {
+        parent = value;
+        root = parent.root;
+    }
+
+    var name : string;
+    function get_Name : string
+    {
+        return name;
+    }
+
+    var root : Root;
+    function get_Root : Root
+    {
+        return root;
+    }
+
+    function get_Type : TypeBase
+    {
+        return null;
+    }
+    var srcInfo : SrcInfo;
+
+    function get_SrcInfo : SrcInfo
+    {
+        if (srcInfo != null)
+            return srcInfo;
+        else if (Parent != null)
+            return Parent.SrcInfo;
+        else
+            return null;
+    }
+    function set_SrcInfo(value : SrcInfo)
+    {
+        srcInfo = value;
+    }
+
+    function Abort(format : string, args : params)
+    {
+        return VAbortInfo(SrcInfo, format, args);
+    }
+
+    function AbortInfo(si : SrcInfo, format : string, args : params)
+    {
+        return VAbortInfo(si, format, args);
+    }
+
+    function VAbortInfo(si : SrcInfo, format : string, args)
+    {
+        var s1 = "";
+        var s2 = "";
+        if (si != null)
+        {
+            s1 = si.Source + ": ";
+            s2 = string.Format("[%d:%d] ", si.Number, si.Position);
+        }
+        return s1 + s2 + string.VFormat(format, args);
+    }
+
+    virtual AddCodes(codes : OpModule)
+    {
+    }
+
+    virtual AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+    }
+}
