@@ -1,4 +1,107 @@
 class Root : Block
 {
-    var IsCompiling = false;
+    const string VERSION = "2.0.2011.0105";
+    var Version = VERSION;
+    var Output = "output.exe";
+    ushort Subsystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
+
+    var included = new StringList();
+
+    function ctor
+    {
+        root = this;
+    }
+
+    override BeforeAddCodes(codes : OpModule)
+    {
+        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        {
+            p.Address = Addr32.NewD(codes.Module.GetBuffer(p.Name, p.Type.Size));
+            return false;
+        }, null);
+    }
+
+    override AfterAddCodes(codes : OpModule)
+    {
+        AddExitCodes(codes);
+        codes.Add(I386.Ret());
+    }
+
+    override AddExitCodes(codes : OpModule)
+    {
+        switch (Subsystem)
+        {
+        case IMAGE_SUBSYSTEM.WINDOWS_CUI:
+        case IMAGE_SUBSYSTEM.WINDOWS_GUI:
+            if (retVal != null)
+                GetRetVal(this).AddCodesV(codes, "push", null);
+            else
+                codes.Add(I386.PushD(Val32.NewI(0)));
+            codes.Add(I386.CallA(codes.Module.GetFunction("kernel32.dll", "ExitProcess")));
+            break;
+        default:
+            if (retVal != null)
+                GetRetVal(this).AddCodesV(codes, "mov", null);
+            else
+                codes.Add(I386.Xor(Reg32.EAX, Reg32.EAX));
+            break;
+        }
+    }
+
+    bool _IsCompiling;
+    function get_IsCompiling : bool { return _IsCompiling; }
+    function set_IsCompiling(value : bool) { _IsCompiling = value; }
+
+    override AddCodes(codes : OpModule)
+    {
+        switch (Subsystem)
+        {
+        case IMAGE_SUBSYSTEM.WINCE_GUI:
+            codes.Module.Specific.ImageBase = 0x10000;
+            codes.Module.Specific.SectionAlignment = 0x1000;
+            break;
+        }
+        IsCompiling = true;
+        OpModule.Root = this;
+        MakeUpStatics(codes.Module);
+        MakeUp();
+        base.AddCodes(codes);
+        OpModule.Root = null;
+        IsCompiling = false;
+    }
+
+    function MakeUpStatics(m : Module)
+    {
+        for (int i = 0; i < sentences.Count; i++)
+        {
+            var vd = sentences.Get(i) as VarDeclare;
+            if (vd != null && vd.IsStatic)
+                vd.Address = Addr32.NewD(m.GetBuffer(vd.FullName, vd.Type.Size));
+        }
+    }
+
+    function SetSubsystem(subsys : string) : bool
+    {
+        switch (subsys)
+        {
+        case "WINDOWS_CUI":
+            Subsystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
+            return true;
+        case "WINDOWS_GUI":
+            Subsystem = IMAGE_SUBSYSTEM.WINDOWS_GUI;
+            return true;
+        case "WINCE_GUI":
+            Subsystem = IMAGE_SUBSYSTEM.WINCE_GUI;
+            return true;
+        }
+        return false;
+    }
+
+    var Error : delegate;
+
+    function OnError(ex : string)
+    {
+        var err = (var)Error;
+        if (err != null) err(ex);
+    }
 }
