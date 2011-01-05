@@ -1,12 +1,183 @@
 class OpModule : OpCodes
 {
-    static function NeedsDtor(v : NodeBase) { return false; }
-    function AddDtorCodes(t : TypeBase) {}
-    function AddOperatorCodes(tb : TypeBase, op : string, dest : Addr32, arg : NodeBase, pushf : bool) {}
-    function GetCall(tag : string, name : string) : OpCode { return null; }
-    function GetString(s : string) { return Val32.NewI(0); }
-    function GetAddress(f : Function) : Val32 { return null; }
-    function GetTypeObject(type : TypeBase) : Val32 { return null; }
-    function GetTypeObjectD(st : Define) : Val32 { return null; }
-    static var Root : Root;
+    var _Module : Module;
+    function get_Module : Module { return _Module; }
+    function set_Module(value : Module) { _Module = value; }
+
+    static var root : Root;
+    static function get_Root : Root
+    {
+        return root;
+    }
+    static function set_Root(value : Root)
+    {
+        TypeString.Init();
+        TypeType.Init();
+        root = value;
+    }
+
+    static function Create(m : Module) : OpModule
+    {
+        var ret = new OpModule();
+        ret.Module = m;
+        return ret;
+    }
+
+    var strings : Hashtable = new Hashtable();
+    function GetString(s : string) : Val32
+    {
+        if (strings.ContainsKey(s))
+            return strings.Get(s) as Val32;
+        var block = new Block32();
+        block.AddBytes(Module.EncodeString(s));
+        var type = Val32.NewB((uint)0, true);
+        var ret = AddData("string_constant", s, type, 2, s.Length, block);
+        strings.Add(s, ret);
+        type.Reference = GetTypeObjectD(root.GetStruct("string"));
+        return ret;
+    }
+
+    var types : Hashtable = new Hashtable();
+    function GetTypeObjectD(st : Define) : Val32
+    {
+        if (st == null)
+            return Val32.NewI(0);
+        var name = st.FullName;
+        if (types.ContainsKey(name))
+            return types.Get(name) as Val32;
+        return GetTypeObjectV(name, st.GetFunction(Define.Destructor), st.GetSize(), GetTypeObjectD(st.GetBaseStruct()));
+    }
+
+    function GetTypeObjectV(name : string, dtor : Function, size : int, baseType : Val32) : Val32
+    {
+        if (types.ContainsKey(name))
+            return types.Get(name) as Val32;
+        var block = new Block32();
+        var namev = Val32.NewB((uint)0, true);
+        block.AddVal32(namev);
+        if (dtor == null || name == "string" || name == "Type")
+            block.AddInt(0);
+        else
+            block.AddVal32(GetAddress(dtor));
+        block.AddInt(size);
+        block.AddVal32(baseType);
+        var type = Val32.NewB((uint)0, true);
+        var tsz = (int)block.Length;
+        var ret = AddData("type_object", name, type, tsz, -1, block);
+        types.Add(name, ret);
+        namev.Reference = GetString(name);
+        type.Reference = GetTypeObjectD(root.GetStruct("Type"));
+        return ret;
+    }
+
+    function GetTypeObject(type : TypeBase) : Val32
+    {
+        var tr = type as TypeReference;
+        if (tr != null)
+        {
+            var tt = type.Type;
+            if (!tr.IsArray)
+                return GetTypeObject(tt);
+            var tts = tt as TypeStruct;
+            var dtor : Function = null;
+            var name = tt.Name;
+            var targetType = Val32.NewI(0);
+            if (tt is TypeReference)
+            {
+                dtor = root.GetFunction(New.DereferencePtr);
+                var at = tt.Type as TypeStruct;
+                if (at != null)
+                {
+                    name = at.Name;
+                    targetType = GetTypeObjectD(at.GetStruct());
+                }
+            }
+            else if (tts != null)
+            {
+                name = tts.Name;
+                targetType = GetTypeObjectD(tts.GetStruct());
+            }
+            return GetTypeObjectV(name + "[]", dtor, tt.Size, targetType);
+        }
+        var ts = type as TypeStruct;
+        if (ts != null)
+        {
+            var st = ts.GetStruct();
+            return GetTypeObjectD(st);
+        }
+        return GetTypeObjectV(type.Name, null, type.Size, Val32.NewI(0));
+    }
+
+    function AddData(category : string, name : string, type : Val32, size : int, len : int, data : Block32) : Val32
+    {
+        var db = new DataBlock();
+        db.block.AddVal32(type);
+        db.block.AddInt(1);
+        db.block.AddInt(size);
+        db.block.AddInt(len);
+        var offset = db.block.Length;
+        db.block.AddBlock(data);
+        _Module.Data.AddDataBlock(category, name, db);
+        return Val32.New2(db.Address, Val32.New(offset));
+    }
+
+    function GetAddress(f : Function) : Val32
+    {
+        if (f == null) return Val32.NewI(0);
+        return f.GetAddress(Module);
+    }
+
+    static function NeedsDtor(v : NodeBase) : bool
+    {
+        while (v is Cast)
+            v = (v as Cast).Source;
+        var vt = v.Type;
+        if (vt == null)
+            return false;
+        var vsm = v as Member;
+        if (vsm != null && vt is TypeDelegate && vsm.GetDelegate() != null)
+            return true;
+        var mem = v as Member;
+        return vt.NeedsDtor && !(v is As) && (v is Call || v is New || v is DelgFunc || v is Operator || (mem != null && mem.IsGetter));
+    }
+
+    function AddDtorCodes(t : TypeBase)
+    {
+        Add(I386.Push(Reg32.ESP));
+        t.AddDestructor(this);
+        Add(I386.AddR(Reg32.ESP, Val32.NewI(8)));
+    }
+
+    function AddOperatorCodes(tb : TypeBase, op : string, dest : Addr32, arg : NodeBase, pushf : bool)
+    {
+        arg.AddCodesV(this, "mov", null);
+        var cleanup = NeedsDtor(arg);
+        if (cleanup)
+        {
+            Add(I386.Push(Reg32.EAX));
+            if (dest.Register == Reg32.ESP)
+                dest = Addr32.NewRO(dest.Register, dest.Disp + 4);
+        }
+        tb.AddOpCodes(op, this, dest);
+        if (cleanup)
+        {
+            if (pushf)
+            {
+                Add(I386.Pop(Reg32.EAX));
+                Add(I386.Pushf());
+                Add(I386.Push(Reg32.EAX));
+            }
+            AddDtorCodes(arg.Type);
+            if (pushf)
+                Add(I386.Popf());
+        }
+    }
+
+    function GetCall(tag : string, name : string) : OpCode
+    {
+        var f = root.GetFunction(name);
+        if (f == null)
+            raise(root.Abort("%s: can not find: %s", tag, name));
+        return I386.CallD(f.First);
+    }
 }
