@@ -1,3 +1,23 @@
-class StringValue
+class StringValue : NodeBase
 {
+    var _Value : string;
+    function get_Value : string { return _Value; }
+    function set_Value(value : string) { _Value = value; }
+
+    static function New(value : string) : StringValue
+    {
+        var ret = new StringValue();
+        ret.Value = value;
+        return ret;
+    }
+
+    function get_Type : TypeBase
+    {
+        return TypeConstString.Instance;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        codes.AddCodesV(op, dest, codes.GetString(Value));
+    }
 }

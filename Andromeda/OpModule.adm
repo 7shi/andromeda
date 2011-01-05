@@ -2,4 +2,5 @@ class OpModule : OpCodes
 {
     function AddDtorCodes(t : TypeBase) {}
     function GetCall(tag : string, name : string) : OpCode { return null; }
+    function GetString(s : string) { return Val32.NewI(0); }
 }
