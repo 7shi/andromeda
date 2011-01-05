@@ -1,10 +1,151 @@
 class Variant : NodeBase
 {
-    static function New(func : Function) { return new Variant; }
-    static function GetTarget(parent : BlockBase, name : string) : NodeBase { return null; }
-    function GetVar : Var { return null; }
-    function GetConst() : NodeBase { return null; }
-    function GetSetter() : Function { return null; }
-    function GetVariantType() : TypeBase { return null; }
-    function GetFunction() : Function { return null; }
+    var func : Function;
+
+    static function NewName(parent : BlockBase, name : string) : Variant
+    {
+        var ret = new Variant();
+        ret.Parent = parent;
+        ret.name = name;
+        return ret;
+    }
+
+    static function New(func : Function) : Variant
+    {
+        var ret = new Variant();
+        ret.func = func;
+        return ret;
+    }
+
+    function get_Type : TypeBase
+    {
+        var ret = GetVariantType();
+        if (ret != null) return ret;
+        raise(Abort("undefined symbol: %s", name));
+    }
+
+    function GetVariantType() : TypeBase
+    {
+        var v = GetVar();
+        if (v != null) return v.Type;
+        var c = GetConst();
+        if (c != null) return c.Type;
+        var f = GetFunction();
+        if (f != null) return f.Type;
+        var g = GetGetter();
+        if (g != null)
+        {
+            var rt = g.ReturnType;
+            if (rt != null)
+                return rt;
+            return TypeVar.Instance;
+        }
+        var s = GetSetter();
+        if (s != null)
+            return (s.Args.Get(1) as VarDeclare).Type;
+        return null;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        var v : Val32;
+        var m = codes.Module;
+        if (func != null)
+            v = func.GetAddress(m);
+        else
+        {
+            var vv = GetVar();
+            if (vv != null)
+            {
+                vv.AddCodesV(codes, op, dest);
+                return;
+            }
+            var c = GetConst();
+            if (c != null)
+            {
+                c.AddCodesV(codes, op, dest);
+                return;
+            }
+            var f = GetFunction();
+            if (f == null)
+            {
+                var g = GetGetter();
+                if (g != null)
+                {
+                    Call.NewName(Parent, g.Name).AddCodesV(codes, op, dest);
+                    return;
+                }
+                raise(Abort("undefined symbol: " + name));
+            }
+            v = f.GetAddress(m);
+        }
+        codes.AddCodesV(op, dest, v);
+    }
+
+    function GetFunction() : Function
+    {
+        if (func != null) return func;
+        return parent.GetFunction(name);
+    }
+
+    function GetGetter() : Function
+    {
+        if (GetFunction() != null) return null;
+        return parent.GetFunction("get_" + name);
+    }
+
+    function GetSetter() : Function
+    {
+        if (GetFunction() != null) return null;
+        return parent.GetFunction("set_" + name);
+    }
+
+    function GetVar() : Var
+    {
+        if (GetFunction() != null) return null;
+        var v = parent.GetVar(name);
+        if (v != null && v.Parent is Define)
+        {
+            var ret = Var.New(Parent, v);
+            ret.SrcInfo = SrcInfo;
+            return ret;
+        }
+        return null;
+    }
+
+    function get_IsGetter : bool
+    {
+        return GetGetter() != null;
+    }
+
+    function get_IsSetter : bool
+    {
+        return GetSetter() != null;
+    }
+
+    function GetConst() : NodeBase
+    {
+        var ret = GetTarget(Parent, name);
+        if (ret is NodeBase)
+            (ret as NodeBase).SrcInfo = SrcInfo;
+        return ret;
+    }
+
+    static function GetTarget(parent : BlockBase, name : string) : NodeBase
+    {
+        if (parent == null || name == null)
+            return null;
+        var i = parent.GetInt(name);
+        if (i != null && i.parent.Parent == null)
+            return i;
+        var s = parent.GetString(name);
+        if (s != null && s.parent.Parent == null)
+            return s;
+        if (parent.Parent == null)
+            return null;
+        var v = parent.GetVar(name);
+        if (v != null && (v.parent is Define || v.parent.parent == null))
+            return Var.New(parent, v);
+        return null;
+    }
 }
