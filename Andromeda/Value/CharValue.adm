@@ -1,3 +1,27 @@
-class CharValue
+class CharValue : NodeBase
 {
+    char value;
+
+    function get_Value : char
+    {
+        return value;
+    }
+
+    static function New(value : char, si : SrcInfo) : CharValue
+    {
+        var ret = new CharValue();
+        ret.value = value;
+        ret.SrcInfo = si;
+        return ret;
+    }
+
+    function get_Type : TypeBase
+    {
+        return TypeChar.Instance;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        codes.AddCodesV(op, dest, Val32.New(Value));
+    }
 }
