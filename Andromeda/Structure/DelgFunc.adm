@@ -1,4 +1,9 @@
 class DelgFunc : NodeBase
 {
+    const string Alloc = "__jit_alloc";
+    const string Free = "__jit_free";
+    const string Duplicate = "__jit_dup";
+    const int DefaultSize = 64;
+
     static function New(parent : BlockBase, callType : CallType, args : NodeBase[], func : NodeBase) { return new DelgFunc; }
 }

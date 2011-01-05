@@ -1,4 +1,148 @@
 class TypeFunction : TypeVarBase
 {
-    static function New(f : Function) { return new TypeFunction; }
+    function get_Name : string
+    {
+        return GetName("function");
+    }
+
+    function GetName(type : string) : string
+    {
+        var sb = new StringBuilder();
+        sb.Append(type);
+        if (CallType == CallType.Std)
+            sb.Append("((stdcall))");
+        sb.Append("(");
+        var first = true;
+        for (int i = 0; i < _Args.Length; i++)
+        {
+            var arg = _Args[i];
+            if (first)
+                first = false;
+            else
+                sb.Append(",");
+            sb.Append(arg.Type.Name);
+        }
+        sb.Append(")");
+        if (RetType != null)
+        {
+            var rt = RetType.Name;
+            if (rt.StartsWith("var:"))
+                rt = rt.SubstringFrom(4);
+            sb.Append(":" + rt);
+        }
+        return sb.ToString();
+    }
+
+    function CheckArgs(target : NodeBase, args : NodeBase[])
+    {
+        if (!(args.Length == _Args.Length || (HasParams && args.Length >= _Args.Length)))
+            raise(target.Abort("argument mismatched: %s", target.Name));
+        for (int i = 0; i < _Args.Length; i++)
+        {
+            var t1 = args[i].Type;
+            var t2 = _Args[i].Type;
+            if (t1 != null && t1.Cast(t2) == null)
+                raise(target.Abort("can not cast arg %d: %s: %s => %s", i + 1, _Args[i].Name, t1.Name, t2.Name));
+        }
+    }
+
+    var _RetType : TypeBase;
+    function get_RetType : TypeBase { return _RetType; }
+
+    var _Args : VarDeclare[];
+    function get_Args { return _Args; }
+
+    var _CallType : CallType;
+    function get_CallType : CallType { return _CallType; }
+
+    bool _HasParams;
+    function get_HasParams : bool { return _HasParams; }
+
+    static function New(f : Function) : TypeFunction
+    {
+        var ret = new TypeFunction();
+        var args = new VarDeclare[f.Args.Count];
+        for (int i = 0; i < args.Length; i++)
+            args[i] = f.Args.Get(i) as VarDeclare;
+        ret.init(f.CallType, f.ReturnType, args);
+        return ret;
+    }
+
+    function init(callType : CallType, retType : TypeBase, args : VarDeclare[])
+    {
+        _CallType = callType;
+        _RetType = retType;
+        var list = new ArrayList();
+        if (args == null)
+            _HasParams = true;
+        else
+            for (int i = 0; i < args.Length; i++)
+            {
+                var arg = args[i];
+                if (arg is ArgPtr)
+                    _HasParams = true;
+                else
+                    list.Add(arg);
+            }
+        var ret = new VarDeclare[list.Count];
+        for (int i = 0; i < ret.Length; i++)
+            ret[i] = list.Get(i) as VarDeclare;
+        _Args = ret;
+    }
+}
+
+class TypeDelegate : TypeFunction
+{
+    function get_Name : string
+    {
+        return GetName("delegate");
+    }
+
+    override AddSetCodes(codes : OpModule, ad : Addr32)
+    {
+        var flag = !ad.IsAddress && ad.Register == Var.DestRegister;
+        if (flag)
+            codes.Add(I386.Push(ad.Register));
+        codes.Add(I386.Push(Reg32.EAX));
+        codes.Add(I386.PushA(ad));
+        codes.Add(codes.GetCall("delegate", DelgFunc.Free));
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+        codes.Add(codes.GetCall("delegate", DelgFunc.Duplicate));
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+        if (flag)
+            codes.Add(I386.Pop(ad.Register));
+        base.AddSetCodes(codes, ad);
+    }
+
+    function get_NeedsCtor : bool
+    {
+        return true;
+    }
+
+    override AddConstructor(codes : OpModule)
+    {
+        codes.Add(I386.MovRA(Reg32.EAX, Addr32.New(Reg32.ESP)));
+        codes.Add(I386.MovA(Addr32.New(Reg32.EAX), Val32.NewI(0)));
+    }
+
+    function get_NeedsDtor : bool
+    {
+        return true;
+    }
+
+    override AddDestructor(codes : OpModule)
+    {
+        codes.Add(I386.MovRA(Reg32.EAX, Addr32.New(Reg32.ESP)));
+        codes.Add(I386.PushA(Addr32.New(Reg32.EAX)));
+        codes.Add(codes.GetCall("delegate", DelgFunc.Free));
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+    }
+
+    static function New(parent : BlockBase, callType : CallType, retType : TypeBase, args : VarDeclare[]) : TypeDelegate
+    {
+        var ret = new TypeDelegate();
+        ret.init(callType, retType, args);
+        ret.Parent = parent;
+        return ret;
+    }
 }
