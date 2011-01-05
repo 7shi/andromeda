@@ -1,11 +1,100 @@
 class TypeStruct : TypeBase
 {
-    static function New(parent : BlockBase, name : string) { return new TypeStruct; }
-
-    function GetStruct : Define
+    var name : string;
+    function get_Name : string
     {
-        return null;
+        return name;
     }
 
-    var IsClass = false;
+    function get_Size : int
+    {
+        return GetStruct().GetSize();
+    }
+
+    function get_IsValue : bool
+    {
+        return false;
+    }
+
+    override GetCond(op : string) : CondPair
+    {
+        return base.GetCond(op);
+    }
+
+    override Cast(type : TypeBase) : TypeBase
+    {
+        if (type is TypeStruct)
+        {
+            if (GetStruct().CanUpCast((type as TypeStruct).GetStruct()))
+                return type;
+            return null;
+        }
+        else if (type is TypeReference)
+        {
+            if (Cast(type.Type) != null)
+                return type;
+            return null;
+        }
+        else if (type is TypeVar)
+            return type;
+        else
+            return null;
+    }
+
+    function get_NeedsCtor : bool
+    {
+        var st = GetStruct();
+        return st.NeedsInit || st.NeedsCtor;
+    }
+
+    override AddConstructor(codes : OpModule)
+    {
+        var st = GetStruct();
+        var f1 = st.GetFunction(Define.Initializer);
+        var f2 = st.GetFunction(Define.Constructor);
+        codes.Add(I386.CallD(f1.First));
+        codes.Add(I386.CallD(f2.First));
+    }
+
+    function get_NeedsDtor : bool
+    {
+        return GetStruct().NeedsDtor;
+    }
+
+    override AddDestructor(codes : OpModule)
+    {
+        var dtor = GetStruct().GetFunction(Define.Destructor);
+        codes.Add(I386.CallD(dtor.First));
+    }
+
+    override Check() : bool
+    {
+        var ret = _Parent.GetStruct(name);
+        return ret != null;
+    }
+
+    function GetStruct() : Define
+    {
+        var ret = _Parent.GetStruct(name);
+        if (ret != null)
+            return ret;
+        raise(_Parent.Abort("can not find struct: %s", name));
+    }
+
+    function get_IsClass : bool
+    {
+        var st = GetStruct();
+        if (st != null) return st.IsClass;
+        return false;
+    }
+
+    static function New(parent : BlockBase, name : string) : TypeStruct
+    {
+        if (name.EndsWith("]"))
+            raise("TypeStruct: invalid type: " + name);
+        var ret = new TypeStruct();
+        ret.Parent = parent;
+        ret.name = name;
+        return ret;
+    }
 }
