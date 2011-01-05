@@ -1,0 +1,18 @@
+class CondPair
+{
+    var _Condition : Cc;
+    function get_Condition : Cc { return _Condition; }
+    function set_Condition(value : Cc) { _Condition = value; }
+
+    var _NotCondition : Cc;
+    function get_NotCondition : Cc { return _NotCondition; }
+    function set_NotCondition(value : Cc) { _NotCondition = value; }
+
+    static function New(condition : Cc, notCondition : Cc) : CondPair
+    {
+        var ret = new CondPair();
+        ret.Condition = condition;
+        ret.NotCondition = notCondition;
+        return ret;
+    }
+}
