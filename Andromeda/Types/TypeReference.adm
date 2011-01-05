@@ -1,0 +1,4 @@
+class TypeReference : TypeBase
+{
+    function get_UseGC { return false; }
+}

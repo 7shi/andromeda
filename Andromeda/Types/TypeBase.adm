@@ -1,6 +1,122 @@
 class TypeBase
 {
-    function AddGetCodes(codes : OpModule, op : string, dest : Addr32, src : Addr32)
+    var _Parent : BlockBase;
+    function get_Parent : BlockBase { return _Parent; }
+    function set_Parent(value : BlockBase) { _Parent = value; }
+
+    var _Name : string;
+    function get_Name : string { return _Name; }
+
+    function get_Size : int
     {
+        return Var.DefaultSize;
+    }
+
+    virtual CheckFunc(op : string) : bool
+    {
+        return false;
+    }
+
+    virtual AddOpCodes(op : string, codes : OpModule, dest : Addr32)
+    {
+    }
+
+    var conds : Hashtable = new Hashtable();
+    virtual GetCond(op : string) : CondPair
+    {
+        if (!conds.ContainsKey(op))
+            return null;
+        return conds.Get(op) as CondPair;
+    }
+
+    virtual AddGetCodes(codes : OpModule, op : string, dest : Addr32, src : Addr32)
+    {
+        if (src != null)
+            codes.Add(I386.Lea(Reg32.EAX, src));
+        codes.AddCodes(op, dest);
+    }
+
+    virtual AddSetCodes(codes : OpModule, dest : Addr32)
+    {
+        raise("can not set value!");
+    }
+
+    function get_IsArray : bool
+    {
+        return false;
+    }
+
+    function get_IsValue : bool
+    {
+        return true;
+    }
+
+    var _Type : TypeBase;
+    function get_Type : TypeBase { return _Type; }
+    function set_Type(value : TypeBase) { _Type = value; }
+
+    virtual Cast(type : TypeBase) : TypeBase
+    {
+        var tr1 = this as TypeReference;
+        var tr2 = type as TypeReference;
+        if (tr1 == null && tr2 != null && tr2.UseGC)
+            return null;
+        var t1 = Type;
+        var t2 = type.Type;
+        if (t1 == t2)
+            return type;
+        var ts1 = t1 as TypeStruct;
+        var ts2 = t2 as TypeStruct;
+        if (ts1 == null || ts2 == null)
+            return null;
+        var st1 = ts1.GetStruct();
+        var st2 = ts2.GetStruct();
+        if (st1 == null || st2 == null)
+            return null;
+        if (st1 == st2 || st1.CanUpCast(st2))
+            return type;
+        return null;
+    }
+
+    function get_NeedsCtor : bool
+    {
+        return false;
+    }
+
+    virtual AddConstructor(codes : OpModule)
+    {
+    }
+
+    function AddConstructorA(codes : OpModule, ad : Addr32)
+    {
+        if (ad != null)
+            codes.Add(I386.Lea(Reg32.EAX, ad));
+        codes.Add(I386.Push(Reg32.EAX));
+        AddConstructor(codes);
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+    }
+
+    function get_NeedsDtor : bool
+    {
+        return false;
+    }
+
+    virtual AddDestructor(codes : OpModule)
+    {
+    }
+
+    function AddDestructorA(codes : OpModule, ad : Addr32)
+    {
+        if (ad != null)
+            codes.Add(I386.Lea(Reg32.EAX, ad));
+        codes.Add(I386.Push(Reg32.EAX));
+        AddDestructor(codes);
+        codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+    }
+
+    virtual Check() : bool
+    {
+        if (_Type != null) return _Type.Check();
+        return true;
     }
 }

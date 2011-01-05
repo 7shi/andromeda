@@ -1,3 +1,4 @@
 class Define : Block
 {
+    function CanUpCast(st : Define) { return false; }
 }
