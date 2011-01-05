@@ -1,3 +1,36 @@
-class Cond
+class Cond : Operator
 {
+    function get_Tag : string
+    {
+        return "cond";
+    }
+
+    var Next : Val32;
+    var First : Val32;;
+
+    static function New(parent : BlockBase, arg : NodeBase) : Cond
+    {
+        return Init1(new Cond(), parent, arg) as Cond;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        if (Next != null)
+        {
+            (values.Get(0) as NodeBase).AddCodesV(codes, "mov", null);
+            codes.Add(I386.Test(Reg32.EAX, Reg32.EAX));
+            codes.Add(I386.Jcc(Cc.Z, Next));
+        }
+        else if (First != null)
+        {
+            (values.Get(0) as NodeBase).AddCodesV(codes, "mov", null);
+            codes.Add(I386.Test(Reg32.EAX, Reg32.EAX));
+            codes.Add(I386.Jcc(Cc.NZ, First));
+        }
+    }
+
+    override GetConst() : IntValue
+    {
+        return IntValue.GetValue(values.Get(0) as NodeBase);
+    }
 }
