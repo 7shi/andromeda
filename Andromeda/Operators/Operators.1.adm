@@ -1,0 +1,58 @@
+class Operator1 : Operator
+{
+    virtual Calculate(v : int) : int { return 0; }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        if (AddConstCodes(codes, op, dest))
+            return;
+        codes.AddOperatorCodes(CheckFunc(), Tag, dest, values.Get(0) as NodeBase, false);
+        codes.AddCodes(op, dest);
+    }
+
+    override GetConst() : IntValue
+    {
+        var v = IntValue.GetValue(values.Get(0) as NodeBase);
+        if (v == null)
+            return null;
+        return IntValue.New(Calculate(v.Value));
+    }
+}
+
+class Neg : Operator1
+{
+    function get_Tag { return "neg"; }
+    override Calculate(v : int) { return  -v; }
+
+    static function New(parent : BlockBase, arg : NodeBase) : Neg
+    {
+        return Init1(new Neg(), parent, arg) as Neg;
+    }
+}
+
+class Rev : Operator1
+{
+    function get_Tag { return "rev"; }
+    override Calculate(v : int) { return ~v; }
+
+    static function New(parent : BlockBase, arg : NodeBase) : Rev
+    {
+        return Init1(new Rev(), parent, arg) as Rev;
+    }
+}
+
+class Not : Operator1
+{
+    function get_Tag { return "not"; }
+    function get_Type { return TypeBool.Instance; }
+
+    override Calculate(v : int) : int
+    {
+        if (v != 0) return 0; else return 1;
+    }
+
+    static function New(parent : BlockBase, arg : NodeBase) : Not
+    {
+        return Init1(new Not(), parent, arg) as Not;
+    }
+}
