@@ -1,4 +1,11 @@
 class This : Var
 {
-    static function New(parent : BlockBase) { return new This; }
+    static function New(parent : BlockBase) : This
+    {
+        var ret = new This();
+        ret.Parent = parent;
+        ret.name = "this";
+        ret.Reference = parent.GetVar(ret.name);
+        return ret;
+    }
 }
