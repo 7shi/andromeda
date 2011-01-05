@@ -6,4 +6,5 @@ class DelgFunc : NodeBase
     const int DefaultSize = 64;
 
     static function New(parent : BlockBase, callType : CallType, args : NodeBase[], func : NodeBase) { return new DelgFunc; }
+    static function GetDefaultType(parent : BlockBase) : TypeFunction { return null; }
 }

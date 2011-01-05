@@ -1,9 +1,111 @@
 class Types
 {
-    static function GetTypeRoot(type : string) : TypeBase { return null; }
-    static function GetType(parent : BlockBase, type : string) : TypeBase { return null; }
-    static function GetStruct(t : TypeBase) : Define { return null; }
-    static function ToVarType(t : TypeBase) : TypeBase { return null; }
-    static function Cast(t1 : TypeBase, t2 : TypeBase) : TypeBase { return null; }
-    static function GetVarType(parent : BlockBase, type : string) : TypeBase { return null; }
+    static function GetTypeRoot(type : string) : TypeBase
+    {
+        return GetType(OpModule.Root, type);
+    }
+
+    static function GetType(parent : BlockBase, type : string) : TypeBase
+    {
+        if (type == null)
+            return null;
+        else if (type == "delegate")
+            return DelgFunc.GetDefaultType(parent);
+        else if (type.StartsWith("var:"))
+            return ToVarType(GetType(parent, type.SubstringFrom(4)));
+        else if (type.EndsWith("*"))
+        {
+            var t = type.Substring(0, type.Length - 1).TrimEnd();
+            return TypePointer.New(GetType(parent, t));
+        }
+        else if (type.EndsWith("[]"))
+        {
+            var t = type.Substring(0, type.Length - 2).TrimEnd();
+            return TypeReference.New(GetType(parent, t), true);
+        }
+        else if (type.EndsWith("]"))
+        {
+            var p = type.IndexOfChar('[');
+            var t = GetType(parent, type.Substring(0, p));
+            var n = type.Substring(p + 1, type.Length - p - 2);
+            return TypeArray.NewInt(t, n.ToInt());
+        }
+        var ret = Types.GetValueType(type);
+        if (ret != null)
+            return ret;
+        return TypeStruct.New(parent, type);
+    }
+
+    static function GetValueType(type : string) : TypeBase
+    {
+        switch (type)
+        {
+        case "var":
+            return TypeVar.Instance;
+        case "bool":
+            return TypeBool.Instance;
+        case "int":
+            return TypeInt.Instance;
+        case "short":
+            return TypeShort.Instance;
+        case "sbyte":
+            return TypeSByte.Instance;
+        case "uint":
+            return TypeUInt.Instance;
+        case "ushort":
+            return TypeUShort.Instance;
+        case "byte":
+            return TypeByte.Instance;
+        case "char":
+            return TypeChar.Instance;
+        default:
+            return null;
+        }
+    }
+
+    static function ToVarType(t : TypeBase) : TypeBase
+    {
+        if (t == null)
+            return TypeVar.Instance;
+        else if (t is TypeStruct)
+        {
+            if (t.Name == "string")
+                return TypeString.Instance;
+            else
+                return TypeReference.New(t, false);
+        }
+        else if (t is TypeArray)
+            return TypePointer.New(t.Type);
+        else if (t is TypeConstString)
+            return TypeString.Instance;
+        else
+            return t;
+    }
+
+    static function GetVarType(parent : BlockBase, type : string) : TypeBase
+    {
+        return ToVarType(GetType(parent, type));
+    }
+
+    static function GetStruct(t : TypeBase) : Define
+    {
+        if (t == null)
+            return null;
+        if (t is TypeStruct)
+            return (t as TypeStruct).GetStruct();
+        else
+            return GetStruct(t.Type);
+    }
+
+    static function Cast(t1 : TypeBase, t2 : TypeBase) : TypeBase
+    {
+        if (t1 == null)
+            return t2;
+        if (t2 == null)
+            return t1;
+        var c1 = t1.Cast(t2);
+        if (c1 != null)
+            return c1;
+        return t2.Cast(t1);
+    }
 }
