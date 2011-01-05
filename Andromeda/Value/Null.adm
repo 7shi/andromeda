@@ -1,3 +1,20 @@
-class Null
+class Null : NodeBase
 {
+    static function New(parent : BlockBase) : Null
+    {
+        var ret = new Null();
+        ret.Parent = parent;
+        ret.name = "null";
+        return ret;
+    }
+
+    function get_Type : TypeBase
+    {
+        return null;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        codes.AddCodesV(op, dest, Val32.NewI(0));
+    }
 }
