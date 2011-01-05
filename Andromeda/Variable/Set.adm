@@ -1,3 +1,74 @@
-class Set
+class Set : VarOperator
 {
+    function get_Tag : string
+    {
+        return "set";
+    }
+
+    static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : Set
+    {
+        return Init1(new Set(), parent, dest, arg) as Set;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        var dest = Var.Get(this.dest);
+        if (dest == null)
+        {
+            if (this.dest is Variant)
+            {
+                var setter = (this.dest as Variant).GetSetter();
+                if (setter != null)
+                {
+                    var args = new NodeBase[1];
+                    args[0] = values.Get(0) as NodeBase;
+                    Call.NewV(Parent, setter, This.New(Parent), args).AddCodes(codes);
+                    return;
+                }
+            }
+            raise(Abort("set: destination is not variable"));
+        }
+        var dt = dest.Type;
+        if (dt is TypeConstChar)
+            raise(Abort("set: can not change constants"));
+        if (dest is Member)
+        {
+            var mem = dest as Member;
+            if (mem.IsSetter)
+            {
+                mem.AddSetterCodes(codes, values.Get(0) as NodeBase);
+                return;
+            }
+        }
+        var v = values.Get(0) as NodeBase;
+        v.AddCodesV(codes, "push", null);
+        var ad = dest.GetAddress(codes);
+        if (!OpModule.NeedsDtor(v))
+        {
+            if (ad == null)
+            {
+                ad = Addr32.New(Reg32.ESP);
+                codes.Add(I386.XchgRA(Reg32.EAX, ad));
+                dt.AddSetCodes(codes, ad);
+                codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
+            }
+            else
+            {
+                codes.Add(I386.Pop(Reg32.EAX));
+                dt.AddSetCodes(codes, ad);
+            }
+        }
+        else
+        {
+            codes.Add(I386.MovRA(Reg32.EAX, Addr32.New(Reg32.ESP)));
+            dt.AddSetCodes(codes, ad);
+            codes.AddDtorCodes(v.Type);
+        }
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        AddCodes(codes);
+        codes.AddCodes(op, dest);
+    }
 }

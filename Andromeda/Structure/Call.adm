@@ -1,3 +1,4 @@
-class Call
+class Call : NodeBase
 {
+    static function NewV(parent : BlockBase, val : NodeBase, target : NodeBase, args : NodeBase[]) { return new Call; }
 }
