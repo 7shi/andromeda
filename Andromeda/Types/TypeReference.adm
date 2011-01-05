@@ -1,4 +1,5 @@
 class TypeReference : TypeBase
 {
     function get_UseGC { return false; }
+    static function AddReferenceCodes(codes : OpModule) {}
 }

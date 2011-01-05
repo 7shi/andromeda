@@ -1,0 +1,172 @@
+class Operator2 : Operator
+{
+    virtual Calculate(a : int, b : int) : int { return 0; }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        if (AddConstCodes(codes, op, dest))
+            return;
+        var ad = Addr32.New(Reg32.ESP);
+        var tb = CheckFunc();
+        var v = values.Get(0) as NodeBase;
+        var schar = "";
+        var sint = "";
+        if (v.Type is TypeString)
+        {
+            if (v.Type.CheckFunc(Tag + "-char"))
+                schar = Tag + "-char";
+            if (v.Type.CheckFunc(Tag + "-int"))
+                sint = Tag + "-int";
+        }
+        var tr = v.Type as TypeReference;
+        if (tr != null && tr.UseGC && !OpModule.NeedsDtor(v))
+        {
+            v.AddCodesV(codes, "mov", null);
+            codes.Add(I386.Push(Reg32.EAX));
+            TypeReference.AddReferenceCodes(codes);
+        }
+        else
+            v.AddCodesV(codes, "push", null);
+        for (int i = 1; i < values.Count; i++)
+        {
+            var vv = values.Get(i) as NodeBase;
+            var tag = Tag;
+            if (schar != "" && vv.Type is TypeChar)
+                tag = schar;
+            else if (sint != "" && vv.Type is TypeIntBase)
+                tag = sint;
+            codes.AddOperatorCodes(tb, tag, ad, vv, false);
+        }
+        if (op != "push")
+        {
+            codes.Add(I386.Pop(Reg32.EAX));
+            codes.AddCodes(op, dest);
+        }
+    }
+
+    override GetConst() : IntValue
+    {
+        var v = IntValue.GetValue(values.Get(0) as NodeBase);
+        if (v == null)
+            return null;
+        var ret = v.Value;
+        for (int i = 1; i < values.Count; i++)
+        {
+            var iv = IntValue.GetValue(values.Get(i) as NodeBase);
+            if (iv == null)
+                return null;
+            ret = Calculate(ret, iv.Value);
+        }
+        return IntValue.New(ret);
+    }
+}
+
+class Add : Operator2
+{
+    function get_Tag { return "add"; }
+    override Calculate(a : int, b : int) { return a + b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Add
+    {
+        return Init2(new Add(), parent, arg1, arg2) as Add;
+    }
+}
+
+class Sub : Operator2
+{
+    function get_Tag { return "sub"; }
+    override Calculate(a : int, b : int) { return a - b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Sub
+    {
+        return Init2(new Sub(), parent, arg1, arg2) as Sub;
+    }
+}
+
+class And : Operator2
+{
+    function get_Tag { return "and"; }
+    override Calculate(a : int, b : int) { return a & b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : And
+    {
+        return Init2(new And(), parent, arg1, arg2) as And;
+    }
+}
+
+class Or : Operator2
+{
+    function get_Tag { return "or"; }
+    override Calculate(a : int, b : int) { return a | b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Or
+    {
+        return Init2(new Or(), parent, arg1, arg2) as Or;
+    }
+}
+
+class Xor : Operator2
+{
+    function get_Tag { return "xor"; }
+    override Calculate(a : int, b : int) { return a ^ b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Xor
+    {
+        return Init2(new Xor(), parent, arg1, arg2) as Xor;
+    }
+}
+
+class ShiftLeft : Operator2
+{
+    function get_Tag { return "shift-left"; }
+    override Calculate(a : int, b : int) { return a << b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : ShiftLeft
+    {
+        return Init2(new ShiftLeft(), parent, arg1, arg2) as ShiftLeft;
+    }
+}
+
+class ShiftRight : Operator2
+{
+    function get_Tag { return "shift-right"; }
+    override Calculate(a : int, b : int) { return a >> b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : ShiftRight
+    {
+        return Init2(new ShiftRight(), parent, arg1, arg2) as ShiftRight;
+    }
+}
+
+class Mul : Operator2
+{
+    function get_Tag { return "mul"; }
+    override Calculate(a : int, b : int) { return a * b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Mul
+    {
+        return Init2(new Mul(), parent, arg1, arg2) as Mul;
+    }
+}
+
+class Div : Operator2
+{
+    function get_Tag { return "div"; }
+    override Calculate(a : int, b : int) { return a / b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Div
+    {
+        return Init2(new Div(), parent, arg1, arg2) as Div;
+    }
+}
+
+class Mod : Operator2
+{
+    function get_Tag { return "mod"; }
+    override Calculate(a : int, b : int) { return a % b; }
+
+    static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Mod
+    {
+        return Init2(new Mod(), parent, arg1, arg2) as Mod;
+    }
+}
