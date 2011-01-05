@@ -1,3 +1,10 @@
-class ConstString
+class ConstString : StringValue
 {
+    static function New(parent : BlockBase, value : string) : ConstString
+    {
+        var ret = new ConstString();
+        ret.Parent = parent;
+        ret.Value = value;
+        return ret;
+    }
 }
