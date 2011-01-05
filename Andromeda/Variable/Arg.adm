@@ -1,3 +1,45 @@
-class Arg
+class Arg : VarDeclare
 {
+    var target : VarDeclare;
+
+    static function New(parent : BlockBase, name : string, type : TypeBase) : newArg
+    {
+        var ret = new Arg();
+        ret.init1(parent, name, type);
+        return ret;
+    }
+
+    static function NewVar(parent : BlockBase, target : VarDeclare) : Arg
+    {
+        var ret = new Arg();
+        ret.init1(parent, target.Name, null);
+        ret.target = target;
+        return ret;
+    }
+
+    override init2()
+    {
+    }
+
+    function get_Type : TypeBase
+    {
+        if (target != null)
+            return target.Type;
+        return base.Type;
+    }
+}
+
+class ArgPtr : Arg
+{
+    static function New(parent : BlockBase, name : string) : ArgPtr
+    {
+        var ret = new ArgPtr();
+        ret.init1(parent, name, null);
+        return ret;
+    }
+
+    override init2()
+    {
+        type = TypeArray.NewInt(TypeInt.Instance, 1);
+    }
 }

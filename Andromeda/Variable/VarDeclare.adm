@@ -1,5 +1,10 @@
 class VarDeclare : NodeBase
 {
+    var type : TypeBase;
+
+    function init1(parent : BlockBase, name : string, type : TypeBase) {}
+    virtual init2() {}
+
     function GetAddress(codes : OpModule, scope : BlockBase) : Addr32
     {
         return null;
