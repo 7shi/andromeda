@@ -1,4 +1,13 @@
 class Define : Block
 {
+    const string Initializer = "izer";
+    const string Constructor = "ctor";
+    const string Destructor = "dtor";
+
     function CanUpCast(st : Define) { return false; }
+    function GetOffset(name : string) { return 0; }
+    function AddInit(codes : OpModule, ad : Addr32) {}
+    function AddAfterDtor(codes : OpModule) {}
+    function AddBeforeCtor(codes : OpModule) {}
+    function GetBaseStruct : Define { return null; }
 }

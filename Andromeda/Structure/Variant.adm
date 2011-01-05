@@ -1,5 +1,6 @@
 class Variant : NodeBase
 {
+    static function New(func : Function) { return new Variant; }
     function GetVar : Var { return null; }
     function GetConst() : NodeBase { return null; }
     function GetSetter() : Function { return null; }

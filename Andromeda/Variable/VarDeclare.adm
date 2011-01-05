@@ -13,8 +13,10 @@ class VarDeclare : NodeBase
     }
 
     var IsStatic = false;
+    var IsMember = false;
     var Address : Addr32;
     var NeedsDtor = false;
+    var Value : NodeBase;
 
     function CheckClass() {}
 }

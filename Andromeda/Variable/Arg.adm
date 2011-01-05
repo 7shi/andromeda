@@ -2,7 +2,7 @@ class Arg : VarDeclare
 {
     var target : VarDeclare;
 
-    static function New(parent : BlockBase, name : string, type : TypeBase) : newArg
+    static function New(parent : BlockBase, name : string, type : TypeBase) : Arg
     {
         var ret = new Arg();
         ret.init1(parent, name, type);

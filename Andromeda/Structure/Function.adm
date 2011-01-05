@@ -1,3 +1,328 @@
 class Function : Block
 {
+    var _CallType : CallType;
+    function get_CallType : CallType { return _CallType; }
+    function set_CallType(value : CallType) { _CallType = value; }
+
+    bool _IsStatic;
+    function get_IsStatic : bool { return _IsStatic; }
+    function set_IsStatic(value : bool) { _IsStatic = value; }
+
+    var args : ArrayList = new ArrayList();
+    function get_Args : ArrayList
+    {
+        return args;
+    }
+
+    var thisptr : Var;
+    function get_HasThis : bool
+    {
+        return thisptr != null;
+    }
+
+    var virtfunc : Function;
+    var virtptr : VarDeclare;
+
+    function get_IsVirtual : bool
+    {
+        return virtptr != null;
+    }
+    function set_IsVirtual(value : bool)
+    {
+        if (!value)
+        {
+            if (virtptr != null)
+                raise(Abort("can not remove virtual"));
+        }
+        else if (this.parent is Define)
+        {
+            var ovrfunc = Function.New(Parent, "override_" + name, IsStatic);
+            ovrfunc.SetOverride(this);
+            if (!parent.AddFunction(ovrfunc))
+                raise(Abort("multiple definitions: " + ovrfunc.Name));
+            virtptr = VarDeclare.New(Parent, "virtual_" + name, null);
+            virtptr.Value = Variant.New(ovrfunc);
+            parent.AddSentence(virtptr);
+        }
+        else
+            raise(Abort("can not make virtual"));
+    }
+
+    var ovrfunc : Function;
+    var ovrptr : Var;
+
+    function get_IsOverride : bool
+    {
+        return ovrfunc != null;
+    }
+    function set_IsOverride(value : bool)
+    {
+        if (!value)
+        {
+            if (ovrptr != null)
+                raise(Abort("can not remove override"));
+        }
+        else if (this.parent is Define)
+        {
+            ovrfunc = Function.New(Parent, "override_" + name, IsStatic);
+            ovrfunc.SetOverride(this);
+            if (!parent.AddFunction(ovrfunc))
+                raise(Abort("multiple definitions: " + ovrfunc.Name));
+        }
+        else
+            raise(Abort("can not make override"));
+    }
+
+    function SetOverride(virtfunc : Function)
+    {
+        this.virtfunc = virtfunc;
+        retVal = virtfunc.retVal;
+        args = virtfunc.args;
+        members = virtfunc.members;
+        sentences = virtfunc.sentences;
+        SrcInfo = virtfunc.SrcInfo;
+        construct = virtfunc.construct;
+        destruct = virtfunc.destruct;
+        last = virtfunc.last;
+    }
+
+    static function New(parent : BlockBase, name : string, isStatic : bool) : Function
+    {
+        var ret = new Function();
+        ret.init2(parent, name, isStatic);
+        return ret;
+    }
+
+    function init2(parent : BlockBase, name : string, isStatic : bool)
+    {
+        init(parent);
+        if (string.IsNullOrEmpty(name))
+        {
+            isAnonymous = true;
+            this.name = parent.GetAnonymousName();
+        }
+        else
+            this.name = name;
+        CallType = CallType.CDecl;
+        IsStatic = isStatic;
+        CheckThisArg();
+        CheckAnonymousMember();
+    }
+
+    bool isAnonymous = false;
+
+    function get_Level : int
+    {
+        if (isAnonymous)
+            return 1;
+        return base.Level;
+    }
+    ushort argStack;
+
+    function get_HasStackFrame : bool
+    {
+        return true;
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        if (IsVirtual)
+        {
+            var st = Parent as Define;
+            var offset = st.GetOffset(virtptr.Name);
+            codes.Add(first);
+            codes.Add(I386.MovRA(Reg32.EAX, Addr32.NewRO(Reg32.ESP, 4)));
+            codes.Add(I386.Jmp(Addr32.NewRO(Reg32.EAX, offset)));
+        }
+        else if (!IsOverride)
+        {
+            base.AddCodes(codes);
+        }
+    }
+
+    function ArgNeededGC(arg : VarDeclare) : bool
+    {
+        if (arg.Name == "this")
+            return false;
+        var tr = arg.Type as TypeReference;
+        return tr != null && tr.UseGC;
+    }
+
+    override BeforeAddCodes(codes : OpModule)
+    {
+        argStack = 0;
+        for (int i = 0; i < args.Count; i++)
+        {
+            var arg = args.Get(i) as VarDeclare;
+            arg.Address = Addr32.NewRO(Reg32.EBP, argStack + 8);
+            argStack += 4;
+        }
+        for (int i = 0; i < sentences.Count; i++)
+        {
+            var n = sentences.Get(i) as NodeBase;
+            if (n is Return)
+                (n as Return).IsLast = i == sentences.Count - 1;
+        }
+        base.BeforeAddCodes(codes);
+        for (int i = 0; i < args.Count; i++)
+        {
+            var arg = args.Get(i) as VarDeclare;
+            if (!arg.Type.Check())
+                raise(arg.Abort("undefined type: %s: %s", arg.Name, arg.Type.Name));
+            if (ArgNeededGC(arg))
+            {
+                codes.Add(I386.MovRA(Reg32.EAX, arg.Address));
+                TypeReference.AddReferenceCodes(codes);
+            }
+        }
+        if (thisptr == null)
+            return;
+        switch (name)
+        {
+        case Define.Initializer:
+            get_ThisStruct().AddInit(codes, Addr32.NewRO(Reg32.EBP, 8));
+            break;
+        case Define.Constructor:
+            get_ThisStruct().AddBeforeCtor(codes);
+            break;
+        }
+    }
+
+    override AfterAddCodes(codes : OpModule)
+    {
+        var name = this.name;
+        if (virtfunc != null)
+            name = virtfunc.name;
+        if (thisptr != null && name == Define.Destructor)
+            get_ThisStruct().AddAfterDtor(codes);
+        AddExitCodes(codes);
+    }
+
+    override AddDestructors(codes : OpModule, ptrs : VarDeclare[])
+    {
+        base.AddDestructors(codes, ptrs);
+        var args2 = args.ToArray();
+        for (int i = args2.Length - 1; i >= 0; i--)
+        {
+            var arg = args2[i] as VarDeclare;
+            if (ArgNeededGC(arg))
+                arg.Type.AddDestructorA(codes, arg.GetAddress(codes, this));
+        }
+    }
+
+    override AddExitCodes(codes : OpModule)
+    {
+        if (thisptr != null && name == Define.Constructor)
+            thisptr.AddCodesV(codes, "mov", null);
+        else if (retVal != null)
+            GetRetVal(this).AddCodesV(codes, "mov", null);
+        base.AddExitCodes(codes);
+        if (CallType == CallType.Std && argStack > 0)
+            codes.Add(I386.RetW(argStack));
+        else
+            codes.Add(I386.Ret());
+    }
+
+    function GetAddress(m : Module) : Val32
+    {
+        return Val32.New2(Val32.New(m.Specific.ImageBase), First);
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        codes.AddCodesV(op, dest, codes.GetAddress(this));
+    }
+
+    function SetReturnType(type : TypeBase)
+    {
+        doneInferReturnType = true;
+        this.returnType = type;
+    }
+
+    var type : TypeBase;
+    bool doneInferType = false;
+
+    function get_Type : TypeBase
+    {
+        if (doneInferType || !root.IsCompiling)
+            return type;
+        doneInferType = true;
+        type = TypeFunction.New(this);
+        return type;
+    }
+
+    var autoArgs : ArrayList = new ArrayList();
+
+    function GetAutoArgs()
+    {
+        if (autoArgs.Count == 0)
+            return null;
+        var ret = new VarDeclare[autoArgs.Count];
+        for (int i = 0; i < ret.Length; i++)
+            ret[i] = autoArgs.Get(i) as VarDeclare;
+        return ret;
+    }
+
+    function InsertArg(arg : Arg)
+    {
+        args.Insert(0, arg);
+        autoArgs.Insert(0, arg);
+    }
+
+    override GetVar(name : string) : VarDeclare
+    {
+        if (!isAnonymous)
+            return base.GetVar(name);
+        var v = GetMember(name) as VarDeclare;
+        if (v != null)
+            return v;
+        var vp = parent.GetVar(name);
+        if (vp == null || vp.IsMember || vp.IsStatic)
+            return vp;
+        var arg = Arg.NewVar(this, vp);
+        InsertArg(arg);
+        return arg;
+    }
+
+    function CheckThisArg()
+    {
+        if (this.parent is Define && !IsStatic)
+        {
+            var type = Types.ToVarType((Parent as Define).Type);
+            args.Add(Arg.New(this, "this", type));
+            thisptr = This.New(this);
+        }
+    }
+
+    function CheckAnonymousMember()
+    {
+        if (!isAnonymous || HasThis)
+            return;
+        var f = parent as Function;
+        if (f == null || !f.HasThis)
+            return;
+        InsertArg(Arg.New(this, "this", f.thisptr.Type));
+        thisptr = This.New(this);
+    }
+
+    override MakeUpInternal()
+    {
+        if (HasThis && CallType != CallType.CDecl && (name == Define.Constructor || name == Define.Destructor))
+        {
+            raise(Abort("%s: must be __cdecl", FullName));
+        }
+        if (IsOverride)
+        {
+            var st = (Parent as Define).GetBaseStruct();
+            var vf : Function = null;
+            if (st != null)
+                vf = st.GetFunction(name);
+            if (vf == null || (!vf.IsVirtual && !vf.IsOverride))
+                raise(Abort("can not find virtual: %s", name));
+            first = vf.first;
+            ovrptr = Var.NewName(Parent, "virtual_" + name);
+            var setvp = Set.New(Parent, ovrptr, Variant.New(ovrfunc));
+            parent.AddSentence(setvp);
+        }
+    }
 }

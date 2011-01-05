@@ -4,5 +4,6 @@ class OpModule : OpCodes
     function AddOperatorCodes(tb : TypeBase, op : string, dest : Addr32, arg : NodeBase, pushf : bool) {}
     function GetCall(tag : string, name : string) : OpCode { return null; }
     function GetString(s : string) { return Val32.NewI(0); }
+    function GetAddress(f : Function) : Val32 { return null; }
     static function NeedsDtor(v : NodeBase) { return false; }
 }

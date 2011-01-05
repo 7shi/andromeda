@@ -1,0 +1,4 @@
+class TypeFunction : TypeVarBase
+{
+    static function New(f : Function) { return new TypeFunction; }
+}

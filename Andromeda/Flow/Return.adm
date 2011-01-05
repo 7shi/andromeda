@@ -1,3 +1,4 @@
 class Return
 {
+    var IsLast = false;
 }
