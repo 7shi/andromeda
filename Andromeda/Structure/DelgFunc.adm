@@ -5,6 +5,135 @@ class DelgFunc : NodeBase
     const string Duplicate = "__jit_dup";
     const int DefaultSize = 64;
 
-    static function New(parent : BlockBase, callType : CallType, args : NodeBase[], func : NodeBase) { return new DelgFunc; }
-    static function GetDefaultType(parent : BlockBase) : TypeFunction { return null; }
+    static function GetDefaultType(parent : BlockBase) : TypeFunction
+    {
+        return TypeDelegate.New(parent.Root, CallType.CDecl, TypeVar.Instance, null);
+    }
+
+    var args : NodeBase[];
+    var func : NodeBase;
+    var ctype : CallType;
+
+    bool _Auto;
+    function get_Auto : bool { return _Auto; }
+    function set_Auto(value : bool) { _Auto = value; }
+
+    static function NewCurry(parent : BlockBase, callType : CallType, args : NodeBase[]) : DelgFunc
+    {
+        var ret = new DelgFunc();
+        ret.Parent = parent;
+        var len = args.Length;
+        if (len < 1)
+            raise(ret.Abort("delegate: arguments required"));
+        ret.args = new NodeBase[len-1];
+        for (int i = 0; i < len-1; i++)
+            ret.args[i] = args[i];
+        ret.func = args[len-1];
+        ret.ctype = callType;
+        return ret;
+    }
+
+    static function New(parent : BlockBase, callType : CallType, args : NodeBase[], func : NodeBase) : DelgFunc
+    {
+        var ret = new DelgFunc();
+        ret.Parent = parent;
+        ret.args = args;
+        ret.func = func;
+        ret.ctype = callType;
+        return ret;
+    }
+    var type : TypeBase;
+    bool doneInferType = false;
+
+    function get_Type : TypeBase
+    {
+        if (doneInferType || !root.IsCompiling)
+            return type;
+        doneInferType = true;
+        var f = func.Type as TypeFunction;
+        if (f == null)
+            raise(Abort("delegate: invalid target"));
+        var fargs = f.Args;
+        var len = fargs.Length - this.args.Length;
+        if (len < 0)
+            raise(Abort("delegate: argument mismatched"));
+        var args = new VarDeclare[len];
+        var src = this.args.Length;
+        for (int i = 0; i < len; i++)
+            args[i] = fargs[src + i];
+        type = TypeDelegate.New(parent.root, ctype, f.RetType, args);
+        return type;
+    }
+
+    override AddCodesV(codes : OpModule, op : string, dest : Addr32)
+    {
+        AddCodes(codes);
+        codes.AddCodes(op, dest);
+    }
+
+    override AddCodes(codes : OpModule)
+    {
+        var f = func.Type as TypeFunction;
+        if (f == null)
+            raise(Abort("delegate: invalid target"));
+        var fargs = f.Args;
+        var len = fargs.Length - this.args.Length;
+        if (len < 0)
+            raise(Abort("delegate: argument mismatched"));
+        int length = this.args.Length * 5 + 8;
+        if (len > 0)
+            length += 11;
+        if (f.CallType == CallType.CDecl)
+            length += 6;
+        if (ctype == CallType.Std)
+            length += 2;
+        if (length > 64)
+            raise(Abort("delegate: too many arguments"));
+        var alloc = parent.root.GetFunction(Alloc);
+        if (alloc == null)
+            raise(Abort("delegate: can not find: %s", Alloc));
+        var args = new NodeBase[1];
+        args[0] = IntValue.New(DefaultSize);
+        Call.AddCallCodes(codes, alloc, args);
+        codes.Add(I386.Push(Reg32.EDI));
+        codes.Add(I386.Mov(Reg32.EDI, Reg32.EAX));
+        int p = 0;
+        if (len > 0)
+        {
+            codes.Add(I386.MovBA(Addr32.New(Reg32.EDI), 0xb9));
+            codes.Add(I386.MovA(Addr32.NewRO(Reg32.EDI, 1), Val32.NewI(len)));
+            codes.Add(I386.MovA(Addr32.NewRO(Reg32.EDI, 5), Val32.NewI((0x2474FF | ((len * 4) << 24)))));
+            codes.Add(I386.MovWA(Addr32.NewRO(Reg32.EDI, 9), 0xfae2));
+            p = 11;
+        }
+        for (int i = this.args.Length - 1; i >= 0; i--)
+        {
+            this.args[i].AddCodesV(codes, "mov", null);
+            codes.Add(I386.MovBA(Addr32.NewRO(Reg32.EDI, p), 0x68));
+            codes.Add(I386.MovAR(Addr32.NewRO(Reg32.EDI, p + 1), Reg32.EAX));
+            p += 5;
+        }
+        func.AddCodesV(codes, "mov", null);
+        codes.Add(I386.MovBA(Addr32.NewRO(Reg32.EDI, p), 0xb8));
+        codes.Add(I386.MovAR(Addr32.NewRO(Reg32.EDI, p + 1), Reg32.EAX));
+        codes.Add(I386.MovWA(Addr32.NewRO(Reg32.EDI, p + 5), 0xd0ff));
+        p += 7;
+        if (f.CallType == CallType.CDecl)
+        {
+            codes.Add(I386.MovWA(Addr32.NewRO(Reg32.EDI, p), 0xc481));
+            codes.Add(I386.MovA(Addr32.NewRO(Reg32.EDI, p + 2), Val32.NewI((fargs.Length * 4))));
+            p += 6;
+        }
+        if (ctype == CallType.CDecl)
+        {
+            codes.Add(I386.MovBA(Addr32.NewRO(Reg32.EDI, p), 0xc3));
+        }
+        else
+        {
+            codes.Add(I386.MovBA(Addr32.NewRO(Reg32.EDI, p), 0xc2));
+            codes.Add(I386.MovWA(Addr32.NewRO(Reg32.EDI, p + 1), (ushort)(len * 4)));
+        }
+        codes.Add(I386.Mov(Reg32.EAX, Reg32.EDI));
+        codes.Add(I386.Pop(Reg32.EDI));
+    }
 }

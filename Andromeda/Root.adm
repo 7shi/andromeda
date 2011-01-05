@@ -97,11 +97,10 @@ class Root : Block
         return false;
     }
 
-    var Error : delegate;
+    var Error = new Event;
 
     function OnError(ex : string)
     {
-        var err = (var)Error;
-        if (err != null) err(ex);
+        Error.Invoke(this, ex);
     }
 }
