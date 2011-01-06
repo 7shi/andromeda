@@ -28,7 +28,7 @@
         case "less-equal":
             return true;
         default:
-            return base.CheckFunc(op);
+            return base.override_CheckFunc(op);
         }
     }
 
@@ -45,7 +45,7 @@
             codes.Add(I386.CmpAR(dest, Reg32.EAX));
             break;
         default:
-            base.AddOpCodes(op, codes, dest);
+            base.override_AddOpCodes(op, codes, dest);
             break;
         }
     }
@@ -72,7 +72,7 @@ class TypeIntBase : TypeVarBase
         case "rev":
             return true;
         default:
-            return base.CheckFunc(op);
+            return base.override_CheckFunc(op);
         }
     }
 
@@ -115,7 +115,7 @@ class TypeIntBase : TypeVarBase
             codes.Add(I386.Not(Reg32.EAX));
             break;
         default:
-            base.AddOpCodes(op, codes, dest);
+            base.override_AddOpCodes(op, codes, dest);
             break;
         }
     }

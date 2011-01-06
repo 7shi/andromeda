@@ -3,7 +3,7 @@
     const int DefaultSize = 4;
     static var DestRegister = Reg32.ECX;
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         return Reference.Type;
     }

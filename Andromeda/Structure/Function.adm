@@ -111,11 +111,11 @@
 
     bool isAnonymous = false;
 
-    function get_Level : int
+    override get_Level : int
     {
         if (isAnonymous)
             return 1;
-        return base.Level;
+        return base.override_get_Level();
     }
     ushort argStack;
 
@@ -136,7 +136,7 @@
         }
         else if (!IsOverride)
         {
-            base.AddCodes(codes);
+            base.override_AddCodes(codes);
         }
     }
 
@@ -163,7 +163,7 @@
             if (n is Return)
                 (n as Return).IsLast = i == sentences.Count - 1;
         }
-        base.BeforeAddCodes(codes);
+        base.override_BeforeAddCodes(codes);
         for (int i = 0; i < args.Count; i++)
         {
             var arg = args.Get(i) as VarDeclare;
@@ -200,7 +200,7 @@
 
     override AddDestructors(codes : OpModule, ptrs : VarDeclare[])
     {
-        base.AddDestructors(codes, ptrs);
+        base.override_AddDestructors(codes, ptrs);
         var args2 = args.ToArray();
         for (int i = args2.Length - 1; i >= 0; i--)
         {
@@ -216,7 +216,7 @@
             thisptr.AddCodesV(codes, "mov", null);
         else if (retVal != null)
             GetRetVal(this).AddCodesV(codes, "mov", null);
-        base.AddExitCodes(codes);
+        base.override_AddExitCodes(codes);
         if (CallType == CallType.Std && argStack > 0)
             codes.Add(I386.RetW(argStack));
         else
@@ -242,7 +242,7 @@
     var type : TypeBase;
     bool doneInferType = false;
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         if (doneInferType || !root.IsCompiling)
             return type;
@@ -272,7 +272,7 @@
     override GetVar(name : string) : VarDeclare
     {
         if (!isAnonymous)
-            return base.GetVar(name);
+            return base.override_GetVar(name);
         var v = GetMember(name) as VarDeclare;
         if (v != null)
             return v;

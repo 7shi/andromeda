@@ -14,20 +14,20 @@
 
     override CheckFunc(op : string) : bool
     {
-        return base.CheckFunc(op) || get_Type().CheckFunc(op);
+        return base.override_CheckFunc(op) || get_Type().CheckFunc(op);
     }
 
     override AddOpCodes(op : string, codes : OpModule, dest : Addr32)
     {
-        if (base.CheckFunc(op))
-            base.AddOpCodes(op, codes, dest);
+        if (base.override_CheckFunc(op))
+            base.override_AddOpCodes(op, codes, dest);
         else
             get_Type().AddOpCodes(op, codes, dest);
     }
 
     override GetCond(op : string) : CondPair
     {
-        var ret = base.GetCond(op);
+        var ret = base.override_GetCond(op);
         if (ret == null)
             ret = get_Type().GetCond(op);
         return ret;
@@ -61,7 +61,7 @@
             return Types.ToVarType(c);
         }
         else
-            return base.Cast(type);
+            return base.override_Cast(type);
     }
 
     override AddSetCodes(codes : OpModule, ad : Addr32)
@@ -80,22 +80,23 @@
             if (flag)
                 codes.Add(I386.Pop(ad.Register));
         }
-        base.AddSetCodes(codes, ad);
+        base.override_AddSetCodes(codes, ad);
     }
+
     bool doneInferType = false;
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         if (doneInferType)
-            return base.get_Type();
+            return base.override_get_Type();
         doneInferType = true;
         if (IsArray)
         {
-            var ts = base.get_Type() as TypeStruct;
+            var ts = base.override_get_Type() as TypeStruct;
             if (ts != null && ts.IsClass)
                 _Type = Types.ToVarType(ts);
         }
-        return base.get_Type();
+        return base.override_get_Type();
     }
 
     function get_NeedsCtor : bool

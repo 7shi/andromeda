@@ -17,7 +17,7 @@
         return ret;
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         var ret = GetVariantType();
         if (ret != null) return ret;

@@ -26,7 +26,7 @@
             return type;
         if (!(type is TypePointer))
             return null;
-        return base.Cast(type);
+        return base.override_Cast(type);
     }
 
     function get_NeedsCtor : bool

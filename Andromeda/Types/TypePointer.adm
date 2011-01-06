@@ -16,7 +16,7 @@
             return type;
         if (!(type is TypePointer || type is TypeReference))
             return null;
-        return base.Cast(type);
+        return base.override_Cast(type);
     }
 
     static function New(type : TypeBase) : TypePointer
@@ -42,7 +42,7 @@
         case "sub":
             return true;
         default:
-            return base.CheckFunc(op);
+            return base.override_CheckFunc(op);
         }
     }
 
@@ -75,13 +75,13 @@
             codes.Add(I386.SubAR(dest, Reg32.EAX));
             break;
         default:
-            base.AddOpCodes(op, codes, dest);
+            base.override_AddOpCodes(op, codes, dest);
             break;
         }
     }
 
     override GetCond(key : string) : CondPair
     {
-        return base.GetCond(key);
+        return base.override_GetCond(key);
     }
 }

@@ -45,7 +45,7 @@
     var type : TypeBase;
     bool doneInferType = false;
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         if (doneInferType || !root.IsCompiling)
             return type;

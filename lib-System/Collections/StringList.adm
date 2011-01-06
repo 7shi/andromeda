@@ -3,7 +3,7 @@
 	override Clear
 	{
 		ForEachRev(\s => __dereference(s));
-		base.Clear();
+		base.override_Clear();
 	}
 	
 	function ToArray

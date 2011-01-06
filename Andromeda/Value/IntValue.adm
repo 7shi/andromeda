@@ -21,7 +21,7 @@
         return New(Parse(value));
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         return TypeInt.Instance;
     }

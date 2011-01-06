@@ -65,7 +65,7 @@
         OpModule.Root = this;
         MakeUpStatics(codes.Module);
         MakeUp();
-        base.AddCodes(codes);
+        base.override_AddCodes(codes);
         OpModule.Root = null;
         IsCompiling = false;
     }

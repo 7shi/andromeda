@@ -39,7 +39,7 @@
         return c;
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         if (values.Count == 0)
             raise(Tag + ": no arguments");

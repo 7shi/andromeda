@@ -18,7 +18,7 @@
 
     override GetCond(op : string) : CondPair
     {
-        return base.GetCond(op);
+        return base.override_GetCond(op);
     }
 
     override Cast(type : TypeBase) : TypeBase

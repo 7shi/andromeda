@@ -9,7 +9,7 @@
     function set_BaseType(value : string) { _BaseType = value; }
 
     var type : TypeBase;
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         if (type == null)
             type = TypeStruct.New(this, name);
@@ -354,13 +354,13 @@
     override MakeUpInternal()
     {
         CheckStruct();
-        var f1 = base.GetMember(Initializer) as Function;
+        var f1 = base.override_GetMember(Initializer) as Function;
         if (f1 == null)
             AddFunction(Function.New(this, Initializer, false));
-        var f2 = base.GetMember(Constructor) as Function;
+        var f2 = base.override_GetMember(Constructor) as Function;
         if (f2 == null)
             AddFunction(Function.New(this, Constructor, false));
-        var f3 = base.GetMember(Destructor) as Function;
+        var f3 = base.override_GetMember(Destructor) as Function;
         if (f3 == null)
             AddFunction(Function.New(this, Destructor, false));
     }

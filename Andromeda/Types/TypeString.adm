@@ -30,7 +30,7 @@
         case "mul-int":
             return true;
         default:
-            return base.CheckFunc(op);
+            return base.override_CheckFunc(op);
         }
     }
 
@@ -72,7 +72,7 @@
             AddFunc(codes, dest, Mul + "_int");
             break;
         default:
-            base.AddOpCodes(op, codes, dest);
+            base.override_AddOpCodes(op, codes, dest);
             break;
         }
     }
@@ -93,7 +93,7 @@
     {
         if (type is TypePointer && type.Type is TypeChar)
             return type;
-        return base.Cast(type);
+        return base.override_Cast(type);
     }
 
     static var type : TypeBase;
@@ -103,7 +103,7 @@
         type = null;
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         if (type != null)
             return type;

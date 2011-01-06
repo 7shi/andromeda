@@ -2,7 +2,7 @@
 {
     virtual Calculate(a : int, b : int) { return false; }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         return TypeBool.Instance;
     }

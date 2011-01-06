@@ -52,8 +52,7 @@
     }
 
     var _Type : TypeBase;
-    function get_Type : TypeBase { return _Type; }
-    function set_Type(value : TypeBase) { _Type = value; }
+    virtual get_Type : TypeBase { return _Type; }
 
     virtual Cast(type : TypeBase) : TypeBase
     {

@@ -44,7 +44,7 @@ class Rev : Operator1
 class Not : Operator1
 {
     function get_Tag { return "not"; }
-    function get_Type { return TypeBool.Instance; }
+    override get_Type { return TypeBool.Instance; }
 
     override Calculate(v : int) : int
     {

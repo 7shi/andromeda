@@ -146,7 +146,8 @@
                 return;
         }
         var f = GetFunction(codes, target, args);
-        var args_array = new NodeBase[args[0].Count];
+        var args0 = args[0];
+        var args_array = new NodeBase[args0.Count];
         for (int i = 0; i < args_array.Length; i++)
             args_array[i] = args[0].Get(i) as NodeBase;
         if (f is Function)
@@ -250,7 +251,7 @@
     var type : TypeBase;
     bool doneInferType = false;
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         if (doneInferType || !root.IsCompiling)
             return type;

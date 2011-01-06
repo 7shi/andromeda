@@ -36,6 +36,6 @@
         Cond.First = Block.First;
         AddSentence(Block);
         AddSentence(Cond);
-        base.AddCodes(codes);
+        base.override_AddCodes(codes);
     }
 }

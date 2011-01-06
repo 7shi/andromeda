@@ -111,7 +111,7 @@ class TypeDelegate : TypeFunction
         codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
         if (flag)
             codes.Add(I386.Pop(ad.Register));
-        base.AddSetCodes(codes, ad);
+        base.override_AddSetCodes(codes, ad);
     }
 
     function get_NeedsCtor : bool

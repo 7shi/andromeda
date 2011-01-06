@@ -29,7 +29,7 @@
         return t;
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         return dest.Type;
     }

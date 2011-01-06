@@ -11,7 +11,7 @@
         return ret;
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         return TypeConstString.Instance;
     }

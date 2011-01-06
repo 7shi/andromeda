@@ -4,7 +4,7 @@
 	{
 		for (int i = 0; i < Count; i++)
 			__dereference(buffer[i]);
-		base.Clear();
+		base.override_Clear();
 	}
 	
 	function ToArray

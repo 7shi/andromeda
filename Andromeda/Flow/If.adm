@@ -62,6 +62,6 @@ class If : BlockBase
                 cb.Next = null;
             AddSentence(cb);
         }
-        base.AddCodes(codes);
+        base.override_AddCodes(codes);
     }
 }

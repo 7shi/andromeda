@@ -60,7 +60,7 @@
         return Addr32.New(Var.DestRegister);
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         var t = target.Type;
         if (t is TypeString)

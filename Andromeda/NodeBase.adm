@@ -23,7 +23,7 @@
         return root;
     }
 
-    function get_Type : TypeBase
+    virtual get_Type : TypeBase
     {
         return null;
     }

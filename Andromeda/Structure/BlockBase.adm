@@ -117,11 +117,8 @@
 
     function GetString(name : string) : ConstString
     {
-        return GetMemberRecursive(name, \(o : object) =>
-        {
-            return o as ConstString;
-        }
-        ) as ConstString;
+        return GetMemberRecursive(name,
+            \(o : object) => o as ConstString) as ConstString;
     }
 
     function AddString(name : string, value : string) : bool
@@ -142,7 +139,7 @@
 
     function GetFunction(name : string) : Function
     {
-        return GetMemberRecursive(name, \(o : object) =>
+        return GetMemberRecursive(name,
             \(o : object) => o as Function) as Function;
     }
 
@@ -153,7 +150,7 @@
 
     function GetStruct(name : string) : Define
     {
-        return GetMemberRecursive(name, \(o : object) =>
+        return GetMemberRecursive(name,
             \(o : object) => o as Define) as Define;
     }
 
@@ -174,7 +171,7 @@
         return ret;
     }
 
-    function get_Level : int
+    virtual get_Level : int
     {
         if (Parent == null)
             return 0;

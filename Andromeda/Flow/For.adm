@@ -29,7 +29,7 @@
 
     override BeforeAddCodes(codes : OpModule)
     {
-        base.BeforeAddCodes(codes);
+        base.override_BeforeAddCodes(codes);
         if (Init != null)
             Init.AddCodes(codes);
         if (Loop != null)
@@ -48,6 +48,6 @@
             Cond = Cond.New(this, IntValue.One);
         Cond.First = Block.First;
         AddSentence(Cond);
-        base.AddCodes(codes);
+        base.override_AddCodes(codes);
     }
 }

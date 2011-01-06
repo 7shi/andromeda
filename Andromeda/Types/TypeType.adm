@@ -10,7 +10,7 @@
         type = null;
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         if (type != null) return type;
         return type = Types.GetTypeRoot("Type");

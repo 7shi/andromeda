@@ -34,7 +34,7 @@
         case "mod":
             return true;
         default:
-            return base.CheckFunc(op);
+            return base.override_CheckFunc(op);
         }
     }
 
@@ -65,7 +65,7 @@
             codes.Add(I386.MovAR(dest, Reg32.EDX));
             break;
         default:
-            base.AddOpCodes(op, codes, dest);
+            base.override_AddOpCodes(op, codes, dest);
             break;
         }
     }

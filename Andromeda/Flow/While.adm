@@ -9,7 +9,7 @@
 
     override BeforeAddCodes(codes : OpModule)
     {
-        base.BeforeAddCodes(codes);
+        base.override_BeforeAddCodes(codes);
         codes.Add(I386.JmpD(Continue));
     }
 }

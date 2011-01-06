@@ -21,11 +21,11 @@
     {
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         if (target != null)
             return target.Type;
-        return base.Type;
+        return base.override_get_Type();
     }
 }
 

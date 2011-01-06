@@ -4,7 +4,7 @@
     function get_Source : NodeBase { return _Source; }
 
     var type : string;
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         var t = Types.GetType(Parent, type);
         if (!(this._Source is Call || (_Source.Type != null && _Source.get_Type().IsValue)))

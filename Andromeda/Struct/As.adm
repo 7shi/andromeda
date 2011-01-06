@@ -22,7 +22,7 @@
         codes.AddCodes(op, dest);
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         var ret = TypeOf.GetType(Parent, values.Get(1) as NodeBase);
         if (ret is TypeStruct && (ret as TypeStruct).IsClass)

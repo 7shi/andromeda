@@ -191,7 +191,7 @@
         return null;
     }
 
-    function get_Type : TypeBase
+    override get_Type : TypeBase
     {
         if (_Child != null)
             return _Child.Type;
