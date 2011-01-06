@@ -1,6 +1,6 @@
 class While : Do
 {
-    static function New(parent : BlockBase) : newWhile
+    static function New(parent : BlockBase) : While
     {
         var ret = new While();
         ret.init(parent);

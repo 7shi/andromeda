@@ -1,0 +1,259 @@
+class Parser
+{
+    function ReadExpression() : NodeBase
+    {
+        return ReadExpressionOrder(0);
+    }
+
+    function ReadExpressionOrder(order : int) : NodeBase
+    {
+        if (!CanRead)
+            raise(Abort("éÆÇ™Ç†ÇËÇ‹ÇπÇÒÅB"));
+        if (order >= orders.Length)
+            return Factor();
+        var ret = ReadExpressionOrder(order + 1);
+        var si = SrcInfo;
+        while (CanRead)
+        {
+            var t = Read();
+            if (!orders[order].Contains(t))
+            {
+                Rewind();
+                break;
+            }
+            ret = ReadOperator(order, t, ret);
+            ret.SrcInfo = si;
+            si = SrcInfo;
+        }
+        return ret;
+    }
+
+    function Factor() : NodeBase
+    {
+        if (Read() == "(")
+        {
+            var cast = ReadCast();
+            if (cast != null)
+                return cast;
+            var g = Group();
+            if (g != null)
+                return g;
+        }
+        Rewind();
+        return Unary();
+    }
+
+    function Group() : NodeBase
+    {
+        if (!CanRead)
+            return null;
+        var ret = ReadExpression();
+        if (ret == null || !CanRead)
+            return null;
+        if (Read() != ")")
+        {
+            Rewind();
+            return null;
+        }
+        return ret;
+    }
+
+    function Unary() : NodeBase
+    {
+        if (!CanRead)
+            raise(Abort("éÆÇ™Ç†ÇËÇ‹ÇπÇÒÅB"));
+        var si = SrcInfo;
+        var t = Read();
+        var ret = ReadUnary(t);
+        if (ret != null)
+        {
+            ret.SrcInfo = si;
+            return ret;
+        }
+        Rewind();
+        return Value();
+    }
+
+    function ReadUnary(t : string) : NodeBase
+    {
+        int order = orders.Length - 1;
+        switch (t)
+        {
+        case "+":
+        case "-":
+            return ReadSign(t, order);
+        case "!":
+            return Not.New(parent, ReadExpressionOrder(order));
+        case "~":
+            return Rev.New(parent, ReadExpressionOrder(order));
+        case "++":
+            return Inc.New(parent, ReadExpressionOrder(order));
+        case "--":
+            return Dec.New(parent, ReadExpressionOrder(order));
+        default:
+            return null;
+        }
+    }
+
+    function ReadSign(t : string, order : int) : NodeBase
+    {
+        var v = Integer();
+        if (v != null)
+        {
+            if (t == "-")
+                return IntValue.New( - v.Value);
+            else
+                return v;
+        }
+        var n = ReadExpressionOrder(order);
+        if (t == "-")
+            return Neg.New(parent, n);
+        return n;
+    }
+
+    function Value() : NodeBase
+    {
+        if (!CanRead)
+            raise(Abort("éÆÇ™Ç†ÇËÇ‹ÇπÇÒÅB"));
+        var iv = Integer();
+        if (iv != null)
+            return iv;
+        var sv = ReadString();
+        if (sv != null)
+            return sv;
+        var cv = Char();
+        if (cv != null)
+            return cv;
+        var r = Reserved();
+        if (r != null)
+            return r;
+        var si = SrcInfo;
+        var t = Read();
+        if (t == "::")
+        {
+            var ret = ReadExpression();
+            if (ret is NodeBase)
+                (ret as NodeBase).Parent = parent.Root;
+            return ret;
+        }
+        var v = parent.GetVar(t);
+        if (v != null && !(v.Parent is Define))
+        {
+            var ret = Var.New(parent, v);
+            ret.SrcInfo = si;
+            return ret;
+        }
+        var i = parent.GetInt(t);
+        if (i != null)
+            return i;
+        var s = parent.GetString(t);
+        if (s != null)
+            return s;
+        if (Tokenizer.IsWord(t))
+        {
+            var ret = Variant.NewName(parent, t);
+            ret.SrcInfo = si;
+            return ret;
+        }
+        raise(Abort("ï]âøÇ≈Ç´Ç‹ÇπÇÒ: %s", t));
+    }
+
+    function Integer() : IntValue
+    {
+        var si = SrcInfo;
+        var t = Read();
+        if (t == null)
+            return null;
+        var ret : IntValue;
+        if (!t.StartsWith("0x"))
+        {
+            for (int i = 0; i < t.Length; i++)
+            {
+                char ch = t[i];
+                if (!Tokenizer.IsDigitChar(ch))
+                {
+                    Rewind();
+                    return null;
+                }
+            }
+        }
+        ret = IntValue.NewString(t);
+        ret.SrcInfo = si;
+        return ret;
+    }
+
+    function ReadString() : StringValue
+    {
+        var si = SrcInfo;
+        var t = Read();
+        if (t == null)
+            return null;
+        if (t.EndsWith("\""))
+        {
+            var sv : StringValue = null;
+            if (t.Length >= 2 && t.StartsWith("\""))
+                sv = StringValue.New(GetString(t.Substring(1, t.Length - 2)));
+            else if (t.Length >= 3 && t.StartsWith("@\""))
+                sv = StringValue.New(t.Substring(2, t.Length - 3));
+            if (sv != null)
+            {
+                sv.SrcInfo = si;
+                return sv;
+            }
+        }
+        Rewind();
+        return null;
+    }
+
+    function Char() : CharValue
+    {
+        var si = SrcInfo;
+        var t = Read();
+        if (t == null)
+            return null;
+        if (t.Length < 2 || !t.StartsWith("'") || !t.EndsWith("'"))
+        {
+            Rewind();
+            return null;
+        }
+        var s = GetString(t.Substring(1, t.Length - 2));
+        if (s.Length != 1)
+            raise(Abort("1ï∂éöÇ≈ÇÕÇ†ÇËÇ‹ÇπÇÒ: %s", t));
+        return CharValue.New(s[0], si);
+    }
+
+    function ReadCast() : Cast
+    {
+        var si = SrcInfo;
+        var type = Read();
+        if (Tokenizer.IsWord(type) && parent.GetVar(type) == null)
+        {
+            var br2 = Read();
+            if (br2 == "*")
+            {
+                type += br2;
+                br2 = Read();
+            }
+            else if (br2 == "[")
+            {
+                var br3 = Read();
+                if (br3 == "]")
+                {
+                    type += "[]";
+                    br2 = Read();
+                }
+                else if (br3 != null)
+                    Rewind();
+            }
+            if (br2 == ")")
+            {
+                var ret = Cast.New(parent, type, ReadExpression());
+                ret.SrcInfo = si;
+                return ret;
+            }
+            Rewind();
+        }
+        Rewind();
+        return null;
+    }
+}

@@ -1,10 +1,162 @@
 class Parser
 {
-    static function Create(tokenizer : Tokenizer, parent : BlockBase)
+    var tokenizer : Tokenizer;
+    var parent : BlockBase;
+
+    function get_CanRead : bool
     {
-        return new Parser;
+        return tokenizer.CanRead;
     }
 
-    function Parse { return new NodeBase[0]; }
-    function ParseExpressions { return new NodeBase[0]; }
+    function Read() : string
+    {
+        return tokenizer.Read();
+    }
+
+    function Peek() : string
+    {
+        return tokenizer.Peek();
+    }
+
+    function Rewind()
+    {
+        tokenizer.Rewind();
+    }
+
+    static function Create(tokenizer : Tokenizer, parent : BlockBase) : Parser
+    {
+        var ret = new Parser();
+        ret.tokenizer = tokenizer;
+        ret.parent = parent;
+        ret.InitOperator();
+        return ret;
+    }
+
+    function ParseExpressions()
+    {
+        return Arguments(",", null, false);
+    }
+
+    function Parse()
+    {
+        var list = new ArrayList();
+        while (CanRead)
+        {
+            var s = Sentence();
+            if (s != null)
+            {
+                for (int i = 0; i < s.Length; i++)
+                    list.Add(s[i]);
+            }
+        }
+        var ret = new NodeBase[list.Count];
+        for (int i = 0; i < ret.Length; i++)
+            ret[i] = list.Get(i) as NodeBase;
+        return ret;
+    }
+
+    function Arguments(sep : string, end : string, mustSep : bool)
+    {
+        /// todo: infer return type
+        var ret : NodeBase[] = null;
+        var br = Read();
+        if (br != null)
+        {
+            if (br == end)
+                ret = new NodeBase[0];
+            else
+            {
+                var list = new ArrayList();
+                Rewind();
+                while (CanRead)
+                {
+                    var arg = ReadExpression();
+                    if (arg == null) break;
+                    list.Add(arg);
+                    var t = Read();
+                    if (mustSep)
+                    {
+                        if (t != sep)
+                        {
+                            Rewind();
+                            break;
+                        }
+                    }
+                    else if (t == end)
+                    {
+                        ret = new NodeBase[list.Count];
+                        for (int i = 0; i < ret.Length; i++)
+                            ret[i] = list.Get(i) as NodeBase;
+                        break;
+                    }
+                    else if (t == null)
+                        break;
+                    else if (sep == null)
+                        Rewind();
+                    else if (t != sep)
+                    {
+                        Rewind();
+                        break;
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    static function GetString(s : string) : string
+    {
+        var sb = new StringBuilder();
+        var esc = false;
+        for (int i = 0; i < s.Length; i++)
+        {
+            char ch = s[i];
+            if (esc)
+            {
+                switch (ch)
+                {
+                case 'n':
+                    sb.AppendChar('\n');
+                    break;
+                case 'r':
+                    sb.AppendChar('\r');
+                    break;
+                case 't':
+                    sb.AppendChar('\t');
+                    break;
+                case '0':
+                    sb.AppendChar('\0');
+                    break;
+                case 'a':
+                    sb.AppendChar('\a');
+                    break;
+                case 'b':
+                    sb.AppendChar('\b');
+                    break;
+                case 'f':
+                    sb.AppendChar('\f');
+                    break;
+                default:
+                    sb.AppendChar(ch);
+                    break;
+                }
+                esc = false;
+            }
+            else if (ch == '\\')
+                esc = true;
+            else
+                sb.AppendChar(ch);
+        }
+        return sb.ToString();
+    }
+
+    function Abort(format : string, args : params)
+    {
+        return parent.VAbortInfo(SrcInfo, format, args);
+    }
+
+    function get_SrcInfo : SrcInfo
+    {
+        return tokenizer.SrcInfo;
+    }
 }

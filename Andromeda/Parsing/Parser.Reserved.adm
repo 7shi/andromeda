@@ -1,0 +1,153 @@
+class Parser
+{
+    function Reserved() : NodeBase
+    {
+        var si = SrcInfo;
+        var t = Read();
+        var ret = ReservedInternal(si, t);
+        if (ret != null)
+            ret.SrcInfo = si;
+        else if (t != null)
+            Rewind();
+        return ret;
+    }
+
+    function ReservedInternal(si : SrcInfo, t : string) : NodeBase
+    {
+        var t2 : string;
+        var arg : NodeBase;
+        switch (t)
+        {
+        case "null":
+            return Null.New(parent);
+        case "true":
+            return Cast.New(parent, "bool", IntValue.One);
+        case "false":
+            return Cast.New(parent, "bool", IntValue.Zero);
+        case "base":
+            return Base.New(parent);
+        case "new":
+            return ReadNew();
+        case "function":
+            return AutoDelegate(ReadFunction(t, false));
+        case "delegate":
+            return ReadDelegate();
+        case "\\":
+            return AutoDelegate(Lambda());
+        case "sizeof":
+            t2 = Read();
+            if (t2 != "(" && t2 != null)
+                Rewind();
+            arg = ReadExpression();
+            if (arg == null)
+                raise(parent.AbortInfo(si, "sizeof: 引数が必要です。"));
+            if (t2 == "(")
+                Check("sizeof", ")");
+            return SizeOf.New(parent, arg);
+        case "addrof":
+            return AddrOf.New(parent, ReadExpression());
+        case "typeof":
+            t2 = Read();
+            if (t2 != "(" && t2 != null)
+                Rewind();
+            arg = ReadExpression();
+            if (arg == null)
+                raise(parent.AbortInfo(si, "typeof: 引数が必要です。"));
+            if (t2 == "(")
+                Check("typeof", ")");
+            if (arg is TypeOf)
+                return arg;
+            return TypeOf.New(parent, arg);
+        case "__FUNCTION__":
+            return StringValue.New(parent.FullName);
+        case "__FILE__":
+            return StringValue.New(si.Source);
+        case "__LINE__":
+            return IntValue.New(si.Number);
+        case "__VERSION__":
+            return StringValue.New("LLPML ver." + Root.VERSION);
+        default:
+            return null;
+        }
+    }
+
+    function ReadDelegate() : NodeBase
+    {
+        Check("delegate", "(");
+        var ct = CallType.CDecl;
+        if (Read() == "(")
+        {
+            var t = Read();
+            if (t == "stdcall")
+                ct = CallType.Std;
+            else
+                raise(Abort("delegate: 不明な属性です: %s", t));
+            Check("delegate", ")");
+            Check("delegate", ")");
+            Check("delegate", "(");
+        }
+        else
+            Rewind();
+        var args = Arguments(",", ")", false);
+        if (args == null)
+            raise(Abort("delegate: 引数が不完全です。"));
+        return DelgFunc.NewCurry(parent, ct, args);
+    }
+
+    function Lambda() : Function
+    {
+        var t = Peek();
+        if (t == null)
+            return null;
+        var type = "ラムダ式";
+        var ret = Function.New(this.parent, "", false);
+        if (t == "(")
+            ReadArgs(type, ret);
+        else if (t != "=>")
+        {
+            Read();
+            ret.Args.Add(Arg.New(ret, t, TypeVar.Instance));
+        }
+        Check(type, "=>");
+        if (Peek() == "{")
+            ReadBlock(type, ret);
+        else
+        {
+            var parent = this.parent;
+            this.parent = ret;
+            var ex = ReadExpression();
+            ret.AddSentence(Return.New(ret, ex));
+            this.parent = parent;
+        }
+        if (!ret.Parent.AddFunction(ret))
+            raise(Abort("%s: %s: 定義が重複しています。", type, ret.Name));
+        return ret;
+    }
+
+    function ReadNew() : New
+    {
+        var type = Read();
+        if (type == null)
+            raise(Abort("new: 型が必要です。"));
+        else if (!Tokenizer.IsWord(type))
+            raise(Abort("new: 型が不適切です: %s", type));
+        var br = Read();
+        if (br == "(")
+            Check("new", ")");
+        else if (br == "[")
+        {
+            var len = ReadExpression();
+            Check("new", "]");
+            return New.New2(parent, type, len);
+        }
+        else if (br != null)
+            Rewind();
+        if (Peek() != "{")
+            return New.New1(parent, type);
+        var anon = Define.New(parent, "", type);
+        anon.IsClass = true;
+        ReadBlock("anonymous class", anon);
+        parent.AddStruct(anon);
+        return New.New1(parent, anon.Name);
+    }
+}

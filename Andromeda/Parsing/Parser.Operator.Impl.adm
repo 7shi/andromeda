@@ -1,0 +1,82 @@
+class Parser
+{
+    function ReadCall(target : NodeBase) : NodeBase
+    {
+        var fn = "call";
+        if (target is NodeBase)
+        {
+            var nb = target as NodeBase;
+            fn = nb.Name;
+        }
+        var args = Arguments(",", ")", false);
+        if (args == null)
+            raise(Abort("%s: 引数が不完全です。", fn));
+        if (target is Variant)
+            return Call.New(parent, fn, null, args);
+        if (target is Member)
+        {
+            var mem = target as Member;
+            return Call.New(parent, "", mem, args);
+        }
+        return Call.NewV(parent, target, null, args);
+    }
+
+    function ReadMember(target : NodeBase) : NodeBase
+    {
+        var mem = target as Member;
+        var t2 = Read();
+        if (!Tokenizer.IsWord(t2))
+        {
+            raise(Abort("名前が不適切です: %s", t2));
+        }
+        var t2m = Member.New(parent, t2);
+        if (mem != null)
+        {
+            mem.Append(t2m);
+            return mem;
+        }
+        if (target is Variant)
+            t2m.TargetType = (target as Variant).Name;
+        else
+            t2m.Target = target;
+        return t2m;
+    }
+
+    function ReadIndex(target : NodeBase) : NodeBase
+    {
+        var t = Read();
+        if (t == "]" && target is Variant)
+            return TypeOf.New(parent, Variant.NewName(parent, (target as Variant).Name + "[]"));
+        else if (t != null)
+            Rewind();
+        var ret = Index.New(parent, target, ReadExpression());
+        Check("配列", "]");
+        return ret;
+    }
+
+    function ConvertToCall(v : NodeBase) : Call
+    {
+        if (v is Call)
+            return v as Call;
+        if (v is Variant)
+            return Call.NewName(parent, (v as Variant).Name);
+        if (!(v is Member))
+            return Call.NewV(parent, v, null, null);
+        var mem = v as Member;
+        return Call.New(parent, mem.GetName(), mem.GetTarget(), null);
+    }
+
+    function PipeForward(arg1 : NodeBase, arg2 : NodeBase) : NodeBase
+    {
+        var ret = ConvertToCall(arg2);
+        ret.PipeForward(arg1);
+        return ret;
+    }
+
+    function PipeBack(arg1 : NodeBase, arg2 : NodeBase) : NodeBase
+    {
+        var ret = ConvertToCall(arg2);
+        ret.PipeBack(arg1);
+        return ret;
+    }
+}

@@ -1,0 +1,286 @@
+class Parser
+{
+    function ReadDeclare(isStatic : bool)
+    {
+        /// todo: infer return type
+        var ret : VarDeclare[] = null;
+        if (CanRead)
+        {
+            var t = Read();
+            if (t == "var")
+                ret = DeclareVar(isStatic);
+            else if (t == "delegate" && Peek() != "(")
+                ret = DelegateDeclare(isStatic);
+            else
+            {
+                if (Tokenizer.IsWord(t) && CanRead)
+                {
+                    var name = Read();
+                    if (Tokenizer.IsWord(name) && CanRead)
+                    {
+                        switch (Peek())
+                        {
+                        case ",":
+                        case ";":
+                        case "=":
+                        case "[":
+                            Rewind();
+                            return TypedDeclare(t, isStatic);
+                        }
+                    }
+                    Rewind();
+                }
+                Rewind();
+            }
+        }
+        return ret;
+    }
+
+    function ConstDeclare()
+    {
+        if (!CanRead)
+            raise(Abort("const: 型が指定されていません。"));
+        var t = Read();
+        switch (t)
+        {
+        case "int":
+            ConstIntDeclare();
+            return;
+        case "string":
+            ConstStringDeclare();
+            return;
+        }
+        raise(Abort("const: 型が指定されていません。"));
+    }
+
+    function ReadDeclareInternal(category : string, delg1, delg2)
+    {
+        if (!CanRead)
+            raise(Abort("%s: 名前が必要です。", category));
+        var si = SrcInfo;
+        var name = Read();
+        if (!Tokenizer.IsWord(name))
+            raise(Abort("%s: 名前が不適切です: %s", category, name));
+        var array : NodeBase = null;
+        var br1 = Read();
+        if (br1 == "[")
+        {
+            array = ReadExpression();
+            Check(category, "]");
+        }
+        else
+            Rewind();
+        if (delg1 != null)
+            delg1();
+        var eq = Read();
+        if (eq == "=")
+            delg2(name, true, si, array);
+        else
+        {
+            if (eq != null)
+                Rewind();
+            delg2(name, false, si, array);
+        }
+        var sep = Read();
+        if (sep != ",")
+            Rewind();
+        else if (sep != null)
+            ReadDeclareInternal(category, delg1, delg2);
+    }
+
+    function ConstIntDeclare()
+    {
+        ReadDeclareInternal("const int", null, \(name : string, eq : bool, si : SrcInfo, array : NodeBase) =>
+        {
+            if (array != null)
+                raise(parent.AbortInfo(si, "const int: 配列は宣言できません。"));
+            if (!eq)
+                raise(Abort("const int: 等号がありません。"));
+            parent.AddInt(name, ReadExpression());
+        }
+        );
+    }
+
+    function ConstStringDeclare()
+    {
+        ReadDeclareInternal("const string", null, \(name : string, eq : bool, si : SrcInfo, array : NodeBase) =>
+        {
+            if (array != null)
+                raise(parent.AbortInfo(si, "const string: 配列は宣言できません。"));
+            if (!eq)
+                raise(Abort("const string: 等号がありません。"));
+            var v = ReadString();
+            if (v == null)
+                raise(Abort("const string: 文字列が必要です。"));
+            parent.AddString(name, v.Value);
+        });
+    }
+
+    function DeclareVar(isStatic : bool)
+    {
+        var list = new ArrayList();
+        var type : string = null;
+        ReadDeclareInternal("var",
+        \() =>
+        {
+            type = null;
+            var t = Read();
+            if (t != ":")
+            {
+                if (t != null)
+                    Rewind();
+                return;
+            }
+            if (!CanRead)
+                raise(Abort("var: 型が必要です。"));
+            type = Read();
+            if (!Tokenizer.IsWord(type))
+            {
+                raise(Abort("var: 型が必要です。"));
+            }
+            var ar = Read();
+            if (ar == "*")
+                type += ar;
+            else if (ar == "[")
+            {
+                ar = Read();
+                if (ar == "]")
+                    type += "[]";
+                else
+                {
+                    if (ar != null)
+                        Rewind();
+                    Rewind();
+                }
+            }
+            else if (ar != null)
+                Rewind();
+        },
+        \(name : string, eq : bool, si : SrcInfo, array : NodeBase) =>
+        {
+            var v : VarDeclare;
+            var tb = Types.GetType(parent, type);
+            if (array == null)
+            {
+                if (tb != null)
+                    tb = Types.ToVarType(tb);
+                var vd = VarDeclare.New(parent, name, tb);
+                if (eq)
+                    vd.Value = ReadExpression();
+                v = vd;
+            }
+            else
+            {
+                if (eq)
+                    raise(parent.AbortInfo(si, "var: 配列を初期化できません。"));
+                v = VarDeclare.Array(parent, name, Types.ToVarType(tb), array);
+            }
+            v.SrcInfo = si;
+            v.IsStatic = isStatic;
+            list.Add(v);
+        });
+        var ret = new VarDeclare[list.Count];
+        for (int i = 0; i < ret.Length; i++)
+            ret[i] = list.Get(i) as VarDeclare;
+        return ret;
+    }
+
+    function TypedDeclare(type : string, isStatic : bool)
+    {
+        var list = new ArrayList();
+        ReadDeclareInternal(type, null, \(name : string, eq : bool, si : SrcInfo, array : NodeBase) =>
+        {
+            var v : VarDeclare;
+            var tb = Types.GetType(parent, type);
+            if (array == null)
+            {
+                var vs = Types.GetValueType(type);
+                if (vs == null)
+                {
+                    v = Declare.New(parent, name, type);
+                    if (eq)
+                        ReadInitializers(v as Declare, type);
+                }
+                else
+                {
+                    var vd = VarDeclare.New(parent, name, tb);
+                    if (eq)
+                    {
+                        var ex = ReadExpression();
+                        vd.Value = ex;
+                    }
+                    v = vd;
+                }
+            }
+            else
+            {
+                if (eq)
+                    raise(parent.AbortInfo(si, "%s: 配列を初期化できません。", type));
+                if (tb == null)
+                    tb = TypeInt.Instance;
+                v = VarDeclare.Array(parent, name, tb, array);
+            }
+            v.SrcInfo = si;
+            v.IsStatic = isStatic;
+            list.Add(v);
+        });
+        var ret = new VarDeclare[list.Count];
+        for (int i = 0; i < ret.Length; i++)
+            ret[i] = list.Get(i) as VarDeclare;
+        return ret;
+    }
+
+    function ReadInitializers(st : Declare, type : string)
+    {
+        Check(type, "{");
+        for (; ; )
+        {
+            if (Peek() == "{")
+            {
+                var st2 = Declare.NewDecl(st);
+                st2.SrcInfo = SrcInfo;
+                ReadInitializers(st2, type);
+                st.Values.Add(st2);
+            }
+            else
+                st.Values.Add(ReadExpression());
+            var t = Read();
+            if (t == "}")
+                break;
+            else if (t != ",")
+            {
+                raise(Abort("%s: } が必要です。", type));
+            }
+        }
+    }
+
+    function DelegateDeclare(isStatic : bool)
+    {
+        var list = new ArrayList();
+        var type = DelgFunc.GetDefaultType(parent);
+        ReadDeclareInternal("delegate", null, \(name : string, eq : bool, si : SrcInfo, array : NodeBase) =>
+        {
+            var v : VarDeclare;
+            if (array == null)
+            {
+                var vd = VarDeclare.New(parent, name, type);
+                if (eq)
+                    vd.Value = ReadExpression();
+                v = vd;
+            }
+            else
+            {
+                if (eq)
+                    raise(parent.AbortInfo(si, "var: 配列を初期化できません。"));
+                v = VarDeclare.Array(parent, name, type, array);
+            }
+            v.SrcInfo = si;
+            v.IsStatic = isStatic;
+            list.Add(v);
+        });
+        var ret = new VarDeclare[list.Count];
+        for (int i = 0; i < ret.Length; i++)
+            ret[i] = list.Get(i) as VarDeclare;
+        return ret;
+    }
+}
