@@ -7,7 +7,7 @@ class As : Operator
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : As
     {
-        return Init2(new As(), parent, arg1, arg2) as As;
+        var ret = new As(); Init2(ret, parent, arg1, arg2); return ret;
     }
 
     override AddCodesV(codes : OpModule, op : string, dest : Addr32)

@@ -26,7 +26,7 @@ class Neg : Operator1
 
     static function New(parent : BlockBase, arg : NodeBase) : Neg
     {
-        return Init1(new Neg(), parent, arg) as Neg;
+        var ret = new Neg(); Init1(ret, parent, arg); return ret;
     }
 }
 
@@ -37,7 +37,7 @@ class Rev : Operator1
 
     static function New(parent : BlockBase, arg : NodeBase) : Rev
     {
-        return Init1(new Rev(), parent, arg) as Rev;
+        var ret = new Rev(); Init1(ret, parent, arg); return ret;
     }
 }
 
@@ -53,6 +53,6 @@ class Not : Operator1
 
     static function New(parent : BlockBase, arg : NodeBase) : Not
     {
-        return Init1(new Not(), parent, arg) as Not;
+        var ret = new Not(); Init1(ret, parent, arg); return ret;
     }
 }

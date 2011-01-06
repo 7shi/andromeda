@@ -63,7 +63,7 @@ class Equal : OperatorCmp
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Equal
     {
-        return Init2(new Equal(), parent, arg1, arg2) as Equal;
+        var ret = new Equal(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -74,7 +74,7 @@ class NotEqual : OperatorCmp
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : NotEqual
     {
-        return Init2(new NotEqual(), parent, arg1, arg2) as NotEqual;
+        var ret = new NotEqual(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -85,7 +85,7 @@ class Less : OperatorCmp
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Less
     {
-        return Init2(new Less(), parent, arg1, arg2) as Less;
+        var ret = new Less(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -96,7 +96,7 @@ class Greater : OperatorCmp
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Greater
     {
-        return Init2(new Greater(), parent, arg1, arg2) as Greater;
+        var ret = new Greater(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -107,7 +107,7 @@ class LessEqual : OperatorCmp
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : LessEqual
     {
-        return Init2(new LessEqual(), parent, arg1, arg2) as LessEqual;
+        var ret = new LessEqual(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -118,6 +118,6 @@ class GreaterEqual : OperatorCmp
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : GreaterEqual
     {
-        return Init2(new GreaterEqual(), parent, arg1, arg2) as GreaterEqual;
+        var ret = new GreaterEqual(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }

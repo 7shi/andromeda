@@ -12,7 +12,7 @@ class OrElse : Operator
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : OrElse
     {
-        return Init2(new OrElse(), parent, arg1, arg2) as OrElse;
+        var ret = new OrElse(); Init2(ret, parent, arg1, arg2); return ret;
     }
 
     override AddCodesV(codes : OpModule, op : string, dest : Addr32)

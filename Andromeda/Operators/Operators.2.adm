@@ -68,7 +68,7 @@ class Add : Operator2
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Add
     {
-        return Init2(new Add(), parent, arg1, arg2) as Add;
+        var ret = new Add(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -79,7 +79,7 @@ class Sub : Operator2
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Sub
     {
-        return Init2(new Sub(), parent, arg1, arg2) as Sub;
+        var ret = new Sub(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -90,7 +90,7 @@ class And : Operator2
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : And
     {
-        return Init2(new And(), parent, arg1, arg2) as And;
+        var ret = new And(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -101,7 +101,7 @@ class Or : Operator2
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Or
     {
-        return Init2(new Or(), parent, arg1, arg2) as Or;
+        var ret = new Or(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -112,7 +112,7 @@ class Xor : Operator2
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Xor
     {
-        return Init2(new Xor(), parent, arg1, arg2) as Xor;
+        var ret = new Xor(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -123,7 +123,7 @@ class ShiftLeft : Operator2
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : ShiftLeft
     {
-        return Init2(new ShiftLeft(), parent, arg1, arg2) as ShiftLeft;
+        var ret = new ShiftLeft(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -134,7 +134,7 @@ class ShiftRight : Operator2
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : ShiftRight
     {
-        return Init2(new ShiftRight(), parent, arg1, arg2) as ShiftRight;
+        var ret = new ShiftRight(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -145,7 +145,7 @@ class Mul : Operator2
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Mul
     {
-        return Init2(new Mul(), parent, arg1, arg2) as Mul;
+        var ret = new Mul(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -156,7 +156,7 @@ class Div : Operator2
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Div
     {
-        return Init2(new Div(), parent, arg1, arg2) as Div;
+        var ret = new Div(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }
 
@@ -167,6 +167,6 @@ class Mod : Operator2
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Mod
     {
-        return Init2(new Mod(), parent, arg1, arg2) as Mod;
+        var ret = new Mod(); Init2(ret, parent, arg1, arg2); return ret;
     }
 }

@@ -7,7 +7,7 @@ class Expression : Operator
 
     static function New(parent : BlockBase, arg : NodeBase) : Expression
     {
-        return Init1(new Expression(), parent, arg) as Expression;
+        var ret = new Expression(); Init1(ret, parent, arg); return ret;
     }
 
     override AddCodes(codes : OpModule)

@@ -5,19 +5,17 @@ class Operator : NodeBase
 
     var values : ArrayList = new ArrayList();
 
-    static function Init1(op : Operator, parent : BlockBase, arg1 : NodeBase) : Operator
-    {
-        return Init2(op, parent, arg1, null);
-    }
-
-    static function Init2(op : Operator, parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Operator
+    static function Init1(op : Operator, parent : BlockBase, arg1 : NodeBase)
     {
         op.Parent = parent;
-        if (arg1 != null)
-            op.values.Add(arg1);
-        if (arg2 != null)
-            op.values.Add(arg2);
-        return op;
+        op.values.Add(arg1);
+    }
+
+    static function Init2(op : Operator, parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase)
+    {
+        op.Parent = parent;
+        op.values.Add(arg1);
+        op.values.Add(arg2);
     }
 
     function CheckFunc() : TypeBase

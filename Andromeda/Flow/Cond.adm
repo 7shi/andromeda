@@ -10,7 +10,7 @@ class Cond : Operator
 
     static function New(parent : BlockBase, arg : NodeBase) : Cond
     {
-        return Init1(new Cond(), parent, arg) as Cond;
+        var ret = new Cond(); Init1(ret, parent, arg); return ret;
     }
 
     override AddCodes(codes : OpModule)
