@@ -1,4 +1,4 @@
-class CondBlock : NodeBase
+﻿class CondBlock : NodeBase
 {
     var Cond : Cond;
     var Block : Block;

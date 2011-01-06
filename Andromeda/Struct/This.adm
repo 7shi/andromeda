@@ -1,4 +1,4 @@
-class This : Var
+﻿class This : Var
 {
     static function New(parent : BlockBase) : This
     {

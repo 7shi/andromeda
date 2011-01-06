@@ -1,4 +1,4 @@
-class AnySection : SectionBase
+﻿class AnySection : SectionBase
 {
     var name : string;
     override get_Name { return name; }

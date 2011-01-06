@@ -1,4 +1,4 @@
-class Addr32
+﻿class Addr32
 {
     bool isInitialized;
     var reg : Reg32;

@@ -1,4 +1,4 @@
-extern "kernel32.dll" __stdcall ExitProcess(uExitCode);
+﻿extern "kernel32.dll" __stdcall ExitProcess(uExitCode);
 
 function raise(msg : string)
 {

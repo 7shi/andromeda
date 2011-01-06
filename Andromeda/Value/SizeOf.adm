@@ -1,4 +1,4 @@
-class SizeOf : IntValue
+﻿class SizeOf : IntValue
 {
     var target : NodeBase;
 

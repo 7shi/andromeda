@@ -1,4 +1,4 @@
-class Operator1 : Operator
+﻿class Operator1 : Operator
 {
     virtual Calculate(v : int) : int { return 0; }
 

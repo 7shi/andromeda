@@ -1,4 +1,4 @@
-class Index : Var
+﻿class Index : Var
 {
     var target : NodeBase;
     var order : NodeBase;

@@ -1,4 +1,4 @@
-class Module
+﻿class Module
 {
     var DOSHeader = new DOSHeader();
 

@@ -1,4 +1,4 @@
-class Operator : NodeBase
+﻿class Operator : NodeBase
 {
     var _Tag : string;
     function get_Tag : string { return _Tag; }

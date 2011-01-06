@@ -1,4 +1,4 @@
-class TypeOf : NodeBase
+﻿class TypeOf : NodeBase
 {
     var _Target : NodeBase;
     function get_Target : NodeBase { return _Target; }

@@ -1,4 +1,4 @@
-class Cond : Operator
+﻿class Cond : Operator
 {
     function get_Tag : string
     {

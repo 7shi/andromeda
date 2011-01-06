@@ -1,4 +1,4 @@
-class OpModule : OpCodes
+﻿class OpModule : OpCodes
 {
     var _Module : Module;
     function get_Module : Module { return _Module; }

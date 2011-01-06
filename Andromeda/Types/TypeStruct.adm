@@ -1,4 +1,4 @@
-class TypeStruct : TypeBase
+﻿class TypeStruct : TypeBase
 {
     var name : string;
     function get_Name : string

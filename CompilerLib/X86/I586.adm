@@ -1,4 +1,4 @@
-class I586
+﻿class I586
 {
     static function Cpuid() : OpCode
     {

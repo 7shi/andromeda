@@ -1,4 +1,4 @@
-class Call
+﻿class Call
 {
     function AddIntrinsicCodes(codes : OpModule, args : ArrayList) : bool
     {

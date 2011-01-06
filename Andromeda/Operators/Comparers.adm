@@ -1,4 +1,4 @@
-class OperatorCmp : Operator
+﻿class OperatorCmp : Operator
 {
     virtual Calculate(a : int, b : int) { return false; }
 

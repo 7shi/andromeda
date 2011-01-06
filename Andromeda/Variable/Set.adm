@@ -1,4 +1,4 @@
-class Set : VarOperator
+﻿class Set : VarOperator
 {
     function get_Tag : string
     {

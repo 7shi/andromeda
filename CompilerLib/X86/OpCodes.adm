@@ -1,4 +1,4 @@
-class OpCodes
+﻿class OpCodes
 {
     var list : ArrayList = new ArrayList();
 

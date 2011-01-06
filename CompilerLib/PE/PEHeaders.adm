@@ -1,4 +1,4 @@
-class IMAGE_SUBSYSTEM
+﻿class IMAGE_SUBSYSTEM
 {
     const int WINDOWS_GUI = 2;
     const int WINDOWS_CUI = 3;

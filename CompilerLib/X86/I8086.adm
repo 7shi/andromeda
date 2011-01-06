@@ -1,4 +1,4 @@
-class I8086
+﻿class I8086
 {
     static function Push(op1 : Reg16) : OpCode
     {

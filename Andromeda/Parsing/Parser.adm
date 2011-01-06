@@ -1,4 +1,4 @@
-class Parser
+﻿class Parser
 {
     var tokenizer : Tokenizer;
     var parent : BlockBase;

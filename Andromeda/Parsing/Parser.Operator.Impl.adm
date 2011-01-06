@@ -1,4 +1,4 @@
-class Parser
+ï»¿class Parser
 {
     function ReadCall(target : NodeBase) : NodeBase
     {
@@ -10,7 +10,7 @@ class Parser
         }
         var args = Arguments(",", ")", false);
         if (args == null)
-            raise(Abort("%s: ˆø”‚ª•sŠ®‘S‚Å‚·B", fn));
+            raise(Abort("%s: å¼•æ•°ãŒä¸å®Œå…¨ã§ã™ã€‚", fn));
         if (target is Variant)
             return Call.New(parent, fn, null, args);
         if (target is Member)
@@ -27,7 +27,7 @@ class Parser
         var t2 = Read();
         if (!Tokenizer.IsWord(t2))
         {
-            raise(Abort("–¼‘O‚ª•s“KØ‚Å‚·: %s", t2));
+            raise(Abort("åå‰ãŒä¸é©åˆ‡ã§ã™: %s", t2));
         }
         var t2m = Member.New(parent, t2);
         if (mem != null)
@@ -50,7 +50,7 @@ class Parser
         else if (t != null)
             Rewind();
         var ret = Index.New(parent, target, ReadExpression());
-        Check("”z—ñ", "]");
+        Check("é…åˆ—", "]");
         return ret;
     }
 

@@ -1,4 +1,4 @@
-class Arg : VarDeclare
+﻿class Arg : VarDeclare
 {
     var target : VarDeclare;
 

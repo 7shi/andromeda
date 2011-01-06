@@ -1,4 +1,4 @@
-class Continue : BreakBase
+﻿class Continue : BreakBase
 {
     static function New(parent : BlockBase) : Continue
     {

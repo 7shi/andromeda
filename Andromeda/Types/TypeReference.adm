@@ -1,4 +1,4 @@
-class TypeReference : TypeVarBase
+﻿class TypeReference : TypeVarBase
 {
     const string Delete = "__operator_delete";
     const string Reference = "__reference";

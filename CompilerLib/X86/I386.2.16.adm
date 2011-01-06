@@ -1,4 +1,4 @@
-class I386
+﻿class I386
 {
     static function MovW(op1 : Reg16, op2 : Reg16) : OpCode
     {

@@ -1,4 +1,4 @@
-class Root : Block
+﻿class Root : Block
 {
     const string VERSION = "1.0.2011.0107";
     var Version = VERSION;

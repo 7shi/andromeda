@@ -1,4 +1,4 @@
-class Library
+﻿class Library
 {
     var name : string;
     function get_Name : string { return name; }

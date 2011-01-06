@@ -1,4 +1,4 @@
-class Val32
+﻿class Val32
 {
     var value : uint;
     var ref1 : Val32;

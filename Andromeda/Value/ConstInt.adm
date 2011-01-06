@@ -1,4 +1,4 @@
-class ConstInt : NodeBase
+﻿class ConstInt : NodeBase
 {
     var _Value : NodeBase;
     function get_Value : NodeBase { return _Value; }

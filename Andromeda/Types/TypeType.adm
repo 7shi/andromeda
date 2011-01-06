@@ -1,4 +1,4 @@
-class TypeType : TypeReference
+﻿class TypeType : TypeReference
 {
     static var instance = new TypeType();
     static function get_Instance { return instance; }

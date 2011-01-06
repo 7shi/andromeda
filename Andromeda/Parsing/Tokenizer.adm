@@ -1,4 +1,4 @@
-class TokenData
+﻿class TokenData
 {
     int Pos;
     var String : string;

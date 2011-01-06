@@ -1,4 +1,4 @@
-class Do : BlockBase
+﻿class Do : BlockBase
 {
     var _Cond : Cond;
     function get_Cond : Cond { return _Cond; }

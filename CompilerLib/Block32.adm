@@ -1,4 +1,4 @@
-class Byte
+﻿class Byte
 {
     byte Value;
 

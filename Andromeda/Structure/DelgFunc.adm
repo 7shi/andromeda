@@ -1,4 +1,4 @@
-class DelgFunc : NodeBase
+﻿class DelgFunc : NodeBase
 {
     const string Alloc = "__jit_alloc";
     const string Free = "__jit_free";

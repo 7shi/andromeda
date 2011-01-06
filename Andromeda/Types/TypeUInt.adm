@@ -1,4 +1,4 @@
-class TypeUInt : TypeIntBase
+﻿class TypeUInt : TypeIntBase
 {
     function get_Name : string
     {

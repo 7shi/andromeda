@@ -1,4 +1,4 @@
-class Extern : Function
+﻿class Extern : Function
 {
     var module : string;
     var alias : string;

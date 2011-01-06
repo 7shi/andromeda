@@ -1,4 +1,4 @@
-class TypePointer : TypeVarBase
+﻿class TypePointer : TypeVarBase
 {
     function get_Name : string
     {

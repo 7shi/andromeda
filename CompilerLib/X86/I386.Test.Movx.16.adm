@@ -1,4 +1,4 @@
-class I386
+﻿class I386
 {
     static function TestMovx_16()
     {

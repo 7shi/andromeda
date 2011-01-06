@@ -1,4 +1,4 @@
-struct Table
+﻿struct Table
 {
     uint Address, Size;
 

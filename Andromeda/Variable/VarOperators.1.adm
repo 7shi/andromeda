@@ -1,4 +1,4 @@
-class VarOperator1 : VarOperator
+﻿class VarOperator1 : VarOperator
 {
     function Calculate(codes : OpModule) : Addr32
     {

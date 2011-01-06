@@ -1,4 +1,4 @@
-struct CallType
+﻿struct CallType
 {
     static function get_CDecl { return (CallType)0; }
     static function get_Std { return (CallType)1; }

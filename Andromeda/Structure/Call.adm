@@ -1,4 +1,4 @@
-class Call : NodeBase
+﻿class Call : NodeBase
 {
     var target : NodeBase;
     var args : ArrayList = new ArrayList();

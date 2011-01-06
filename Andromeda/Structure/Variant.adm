@@ -1,4 +1,4 @@
-class Variant : NodeBase
+﻿class Variant : NodeBase
 {
     var func : Function;
 

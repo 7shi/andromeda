@@ -1,4 +1,4 @@
-class VarOperator : NodeBase
+﻿class VarOperator : NodeBase
 {
     var _Tag : string;
     function get_Tag : string { return _Tag; }

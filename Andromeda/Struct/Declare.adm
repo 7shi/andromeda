@@ -1,4 +1,4 @@
-class Declare : VarDeclare
+﻿class Declare : VarDeclare
 {
     var values : ArrayList = new ArrayList();
     function get_Values : ArrayList

@@ -1,4 +1,4 @@
-class BreakBase : NodeBase
+﻿class BreakBase : NodeBase
 {
     var _UsingPointers : VarDeclare[];
     function get_UsingPointers { return _UsingPointers; }

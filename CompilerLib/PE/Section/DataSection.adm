@@ -1,4 +1,4 @@
-class DataBlock
+﻿class DataBlock
 {
     var address = Val32.NewB((uint)0, true);
     function get_Address { return address; }

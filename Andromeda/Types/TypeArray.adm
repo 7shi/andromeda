@@ -1,4 +1,4 @@
-class TypeArray : TypeBase
+ï»¿class TypeArray : TypeBase
 {
     function get_Name : string
     {
@@ -80,9 +80,9 @@ class TypeArray : TypeBase
         {
             var nb = count as NodeBase;
             if (nb != null)
-                raise(nb.Abort("”z—ñ‚ÌƒTƒCƒY‚ª’è”‚Å‚Í‚ ‚è‚Ü‚¹‚ñB"));
+                raise(nb.Abort("é…åˆ—ã®ã‚µã‚¤ã‚ºãŒå®šæ•°ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"));
             else
-                raise("”z—ñ‚ÌƒTƒCƒY‚ª’è”‚Å‚Í‚ ‚è‚Ü‚¹‚ñB");
+                raise("é…åˆ—ã®ã‚µã‚¤ã‚ºãŒå®šæ•°ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚");
         }
         return v.Value;
     }

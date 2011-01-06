@@ -1,4 +1,4 @@
-class Parser
+ï»¿class Parser
 {
     function ReadDeclare(isStatic : bool)
     {
@@ -39,7 +39,7 @@ class Parser
     function ConstDeclare()
     {
         if (!CanRead)
-            raise(Abort("const: Œ^‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"));
+            raise(Abort("const: å‹ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"));
         var t = Read();
         switch (t)
         {
@@ -50,17 +50,17 @@ class Parser
             ConstStringDeclare();
             return;
         }
-        raise(Abort("const: Œ^‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"));
+        raise(Abort("const: å‹ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"));
     }
 
     function ReadDeclareInternal(category : string, delg1, delg2)
     {
         if (!CanRead)
-            raise(Abort("%s: –¼‘O‚ª•K—v‚Å‚·B", category));
+            raise(Abort("%s: åå‰ãŒå¿…è¦ã§ã™ã€‚", category));
         var si = SrcInfo;
         var name = Read();
         if (!Tokenizer.IsWord(name))
-            raise(Abort("%s: –¼‘O‚ª•s“KØ‚Å‚·: %s", category, name));
+            raise(Abort("%s: åå‰ãŒä¸é©åˆ‡ã§ã™: %s", category, name));
         var array : NodeBase = null;
         var br1 = Read();
         if (br1 == "[")
@@ -93,9 +93,9 @@ class Parser
         ReadDeclareInternal("const int", null, \(name : string, eq : bool, si : SrcInfo, array : NodeBase) =>
         {
             if (array != null)
-                raise(parent.AbortInfo(si, "const int: ”z—ñ‚ÍéŒ¾‚Å‚«‚Ü‚¹‚ñB"));
+                raise(parent.AbortInfo(si, "const int: é…åˆ—ã¯å®£è¨€ã§ãã¾ã›ã‚“ã€‚"));
             if (!eq)
-                raise(Abort("const int: “™†‚ª‚ ‚è‚Ü‚¹‚ñB"));
+                raise(Abort("const int: ç­‰å·ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"));
             parent.AddInt(name, ReadExpression());
         }
         );
@@ -106,12 +106,12 @@ class Parser
         ReadDeclareInternal("const string", null, \(name : string, eq : bool, si : SrcInfo, array : NodeBase) =>
         {
             if (array != null)
-                raise(parent.AbortInfo(si, "const string: ”z—ñ‚ÍéŒ¾‚Å‚«‚Ü‚¹‚ñB"));
+                raise(parent.AbortInfo(si, "const string: é…åˆ—ã¯å®£è¨€ã§ãã¾ã›ã‚“ã€‚"));
             if (!eq)
-                raise(Abort("const string: “™†‚ª‚ ‚è‚Ü‚¹‚ñB"));
+                raise(Abort("const string: ç­‰å·ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"));
             var v = ReadString();
             if (v == null)
-                raise(Abort("const string: •¶š—ñ‚ª•K—v‚Å‚·B"));
+                raise(Abort("const string: æ–‡å­—åˆ—ãŒå¿…è¦ã§ã™ã€‚"));
             parent.AddString(name, v.Value);
         });
     }
@@ -132,11 +132,11 @@ class Parser
                 return;
             }
             if (!CanRead)
-                raise(Abort("var: Œ^‚ª•K—v‚Å‚·B"));
+                raise(Abort("var: å‹ãŒå¿…è¦ã§ã™ã€‚"));
             type = Read();
             if (!Tokenizer.IsWord(type))
             {
-                raise(Abort("var: Œ^‚ª•K—v‚Å‚·B"));
+                raise(Abort("var: å‹ãŒå¿…è¦ã§ã™ã€‚"));
             }
             var ar = Read();
             if (ar == "*")
@@ -172,7 +172,7 @@ class Parser
             else
             {
                 if (eq)
-                    raise(parent.AbortInfo(si, "var: ”z—ñ‚ğ‰Šú‰»‚Å‚«‚Ü‚¹‚ñB"));
+                    raise(parent.AbortInfo(si, "var: é…åˆ—ã‚’åˆæœŸåŒ–ã§ãã¾ã›ã‚“ã€‚"));
                 v = VarDeclare.Array(parent, name, Types.ToVarType(tb), array);
             }
             v.SrcInfo = si;
@@ -215,7 +215,7 @@ class Parser
             else
             {
                 if (eq)
-                    raise(parent.AbortInfo(si, "%s: ”z—ñ‚ğ‰Šú‰»‚Å‚«‚Ü‚¹‚ñB", type));
+                    raise(parent.AbortInfo(si, "%s: é…åˆ—ã‚’åˆæœŸåŒ–ã§ãã¾ã›ã‚“ã€‚", type));
                 if (tb == null)
                     tb = TypeInt.Instance;
                 v = VarDeclare.Array(parent, name, tb, array);
@@ -249,7 +249,7 @@ class Parser
                 break;
             else if (t != ",")
             {
-                raise(Abort("%s: } ‚ª•K—v‚Å‚·B", type));
+                raise(Abort("%s: } ãŒå¿…è¦ã§ã™ã€‚", type));
             }
         }
     }
@@ -271,7 +271,7 @@ class Parser
             else
             {
                 if (eq)
-                    raise(parent.AbortInfo(si, "var: ”z—ñ‚ğ‰Šú‰»‚Å‚«‚Ü‚¹‚ñB"));
+                    raise(parent.AbortInfo(si, "var: é…åˆ—ã‚’åˆæœŸåŒ–ã§ãã¾ã›ã‚“ã€‚"));
                 v = VarDeclare.Array(parent, name, type, array);
             }
             v.SrcInfo = si;

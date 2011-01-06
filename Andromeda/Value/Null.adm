@@ -1,4 +1,4 @@
-class Null : NodeBase
+﻿class Null : NodeBase
 {
     static function New(parent : BlockBase) : Null
     {

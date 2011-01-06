@@ -1,4 +1,4 @@
-class AndAlso : Operator
+﻿class AndAlso : Operator
 {
     function get_Tag : string
     {

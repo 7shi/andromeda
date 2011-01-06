@@ -1,4 +1,4 @@
-class Return : BreakBase
+﻿class Return : BreakBase
 {
     bool IsLast = false;
 

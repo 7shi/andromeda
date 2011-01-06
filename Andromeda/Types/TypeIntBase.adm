@@ -1,4 +1,4 @@
-class TypeVarBase : TypeBase
+﻿class TypeVarBase : TypeBase
 {
     function ctor
     {

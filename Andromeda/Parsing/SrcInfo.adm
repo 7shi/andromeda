@@ -1,4 +1,4 @@
-class SrcInfo
+﻿class SrcInfo
 {
     var _Source : string;
     function get_Source : string { return _Source; }

@@ -1,4 +1,4 @@
-class TypeBase
+﻿class TypeBase
 {
     var _Parent : BlockBase;
     function get_Parent : BlockBase { return _Parent; }

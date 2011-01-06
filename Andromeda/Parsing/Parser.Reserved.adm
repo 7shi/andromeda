@@ -1,4 +1,4 @@
-class Parser
+ï»¿class Parser
 {
     function Reserved() : NodeBase
     {
@@ -40,7 +40,7 @@ class Parser
                 Rewind();
             arg = ReadExpression();
             if (arg == null)
-                raise(parent.AbortInfo(si, "sizeof: ˆø”‚ª•K—v‚Å‚·B"));
+                raise(parent.AbortInfo(si, "sizeof: å¼•æ•°ãŒå¿…è¦ã§ã™ã€‚"));
             if (t2 == "(")
                 Check("sizeof", ")");
             return SizeOf.New(parent, arg);
@@ -52,7 +52,7 @@ class Parser
                 Rewind();
             arg = ReadExpression();
             if (arg == null)
-                raise(parent.AbortInfo(si, "typeof: ˆø”‚ª•K—v‚Å‚·B"));
+                raise(parent.AbortInfo(si, "typeof: å¼•æ•°ãŒå¿…è¦ã§ã™ã€‚"));
             if (t2 == "(")
                 Check("typeof", ")");
             if (arg is TypeOf)
@@ -81,7 +81,7 @@ class Parser
             if (t == "stdcall")
                 ct = CallType.Std;
             else
-                raise(Abort("delegate: •s–¾‚È‘®«‚Å‚·: %s", t));
+                raise(Abort("delegate: ä¸æ˜ãªå±æ€§ã§ã™: %s", t));
             Check("delegate", ")");
             Check("delegate", ")");
             Check("delegate", "(");
@@ -90,7 +90,7 @@ class Parser
             Rewind();
         var args = Arguments(",", ")", false);
         if (args == null)
-            raise(Abort("delegate: ˆø”‚ª•sŠ®‘S‚Å‚·B"));
+            raise(Abort("delegate: å¼•æ•°ãŒä¸å®Œå…¨ã§ã™ã€‚"));
         return DelgFunc.NewCurry(parent, ct, args);
     }
 
@@ -99,7 +99,7 @@ class Parser
         var t = Peek();
         if (t == null)
             return null;
-        var type = "ƒ‰ƒ€ƒ_®";
+        var type = "ãƒ©ãƒ ãƒ€å¼";
         var ret = Function.New(this.parent, "", false);
         if (t == "(")
             ReadArgs(type, ret);
@@ -120,7 +120,7 @@ class Parser
             this.parent = parent;
         }
         if (!ret.Parent.AddFunction(ret))
-            raise(Abort("%s: %s: ’è‹`‚ªd•¡‚µ‚Ä‚¢‚Ü‚·B", type, ret.Name));
+            raise(Abort("%s: %s: å®šç¾©ãŒé‡è¤‡ã—ã¦ã„ã¾ã™ã€‚", type, ret.Name));
         return ret;
     }
 
@@ -128,9 +128,9 @@ class Parser
     {
         var type = Read();
         if (type == null)
-            raise(Abort("new: Œ^‚ª•K—v‚Å‚·B"));
+            raise(Abort("new: å‹ãŒå¿…è¦ã§ã™ã€‚"));
         else if (!Tokenizer.IsWord(type))
-            raise(Abort("new: Œ^‚ª•s“KØ‚Å‚·: %s", type));
+            raise(Abort("new: å‹ãŒä¸é©åˆ‡ã§ã™: %s", type));
         var br = Read();
         if (br == "(")
             Check("new", ")");

@@ -1,4 +1,4 @@
-class Case : NodeBase
+﻿class Case : NodeBase
 {
     var values : ArrayList = new ArrayList();
 

@@ -1,4 +1,4 @@
-class IntValue : NodeBase
+﻿class IntValue : NodeBase
 {
     int value;
     function get_Value { return value; }

@@ -1,4 +1,4 @@
-class Function : Block
+﻿class Function : Block
 {
     var _CallType : CallType;
     function get_CallType : CallType { return _CallType; }

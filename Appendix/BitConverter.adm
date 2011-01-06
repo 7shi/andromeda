@@ -1,4 +1,4 @@
-class BitConverter
+﻿class BitConverter
 {
     static function ToString(b : byte[])
     {

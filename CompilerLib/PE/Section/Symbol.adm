@@ -1,4 +1,4 @@
-class Symbol
+﻿class Symbol
 {
     ushort Hint;
     var Name : string;

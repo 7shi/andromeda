@@ -1,4 +1,4 @@
-class OpCode
+﻿class OpCode
 {
     var Address : Val32 = Val32.NewI(0);
     var data : byte[];

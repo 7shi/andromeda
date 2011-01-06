@@ -1,4 +1,4 @@
-class Cast : Var
+﻿class Cast : Var
 {
     var _Source : NodeBase;
     function get_Source : NodeBase { return _Source; }

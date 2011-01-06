@@ -1,4 +1,4 @@
-class Is : Operator
+﻿class Is : Operator
 {
     function get_Tag : string
     {

@@ -1,4 +1,4 @@
-class Parser
+ï»¿class Parser
 {
     function ReadExpression() : NodeBase
     {
@@ -8,7 +8,7 @@ class Parser
     function ReadExpressionOrder(order : int) : NodeBase
     {
         if (!CanRead)
-            raise(Abort("®‚ª‚ ‚è‚Ü‚¹‚ñB"));
+            raise(Abort("å¼ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"));
         if (order >= orders.Length)
             return Factor();
         var ret = ReadExpressionOrder(order + 1);
@@ -61,7 +61,7 @@ class Parser
     function Unary() : NodeBase
     {
         if (!CanRead)
-            raise(Abort("®‚ª‚ ‚è‚Ü‚¹‚ñB"));
+            raise(Abort("å¼ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"));
         var si = SrcInfo;
         var t = Read();
         var ret = ReadUnary(t);
@@ -114,7 +114,7 @@ class Parser
     function Value() : NodeBase
     {
         if (!CanRead)
-            raise(Abort("®‚ª‚ ‚è‚Ü‚¹‚ñB"));
+            raise(Abort("å¼ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"));
         var iv = Integer();
         if (iv != null)
             return iv;
@@ -155,7 +155,7 @@ class Parser
             ret.SrcInfo = si;
             return ret;
         }
-        raise(Abort("•]‰¿‚Å‚«‚Ü‚¹‚ñ: %s", t));
+        raise(Abort("è©•ä¾¡ã§ãã¾ã›ã‚“: %s", t));
     }
 
     function Integer() : IntValue
@@ -218,7 +218,7 @@ class Parser
         }
         var s = GetString(t.Substring(1, t.Length - 2));
         if (s.Length != 1)
-            raise(Abort("1•¶š‚Å‚Í‚ ‚è‚Ü‚¹‚ñ: %s", t));
+            raise(Abort("1æ–‡å­—ã§ã¯ã‚ã‚Šã¾ã›ã‚“: %s", t));
         return CharValue.New(s[0], si);
     }
 

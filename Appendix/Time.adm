@@ -1,4 +1,4 @@
-class TimeSpan
+﻿class TimeSpan
 {
     var Ticks : UInt64;
 

@@ -1,4 +1,4 @@
-class AddrOf : NodeBase
+﻿class AddrOf : NodeBase
 {
     var _Target : NodeBase;
     function get_Target : NodeBase { return _Target; }

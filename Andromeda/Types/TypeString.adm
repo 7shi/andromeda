@@ -1,4 +1,4 @@
-class TypeString : TypeReference
+﻿class TypeString : TypeReference
 {
     const string Equal = "__string_equal";
     const string Add   = "__string_add";

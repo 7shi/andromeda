@@ -1,4 +1,4 @@
-class Member : Var
+﻿class Member : Var
 {
     var target : NodeBase;
     function get_Target : NodeBase

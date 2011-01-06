@@ -1,4 +1,4 @@
-class TypeFunction : TypeVarBase
+﻿class TypeFunction : TypeVarBase
 {
     function get_Name : string
     {

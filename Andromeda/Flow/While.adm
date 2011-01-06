@@ -1,4 +1,4 @@
-class While : Do
+﻿class While : Do
 {
     static function New(parent : BlockBase) : While
     {

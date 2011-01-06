@@ -1,4 +1,4 @@
-class DOSHeader : HeaderBase
+﻿class DOSHeader : HeaderBase
 {
     var signature : string = "MZ";
     ushort bytes_in_last_block = 0x90;

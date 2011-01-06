@@ -1,4 +1,4 @@
-class CondPair
+﻿class CondPair
 {
     var _Condition : Cc;
     function get_Condition : Cc { return _Condition; }

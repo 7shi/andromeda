@@ -1,4 +1,4 @@
-class CharValue : NodeBase
+﻿class CharValue : NodeBase
 {
     char value;
 

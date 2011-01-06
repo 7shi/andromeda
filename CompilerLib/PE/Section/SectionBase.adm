@@ -1,4 +1,4 @@
-class SectionBase
+﻿class SectionBase
 {
     var Header : SectionHeader;
 

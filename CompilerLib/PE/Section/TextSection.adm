@@ -1,4 +1,4 @@
-class TextSection : SectionBase
+﻿class TextSection : SectionBase
 {
     override get_Name { return ".text"; }
 

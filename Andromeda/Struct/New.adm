@@ -1,4 +1,4 @@
-class New : NodeBase
+﻿class New : NodeBase
 {
     const string Function = "__operator_new";
     const string DereferencePtr = "__dereference_ptr";

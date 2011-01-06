@@ -1,4 +1,4 @@
-class Define : Block
+﻿class Define : Block
 {
     const string Initializer = "izer";
     const string Constructor = "ctor";

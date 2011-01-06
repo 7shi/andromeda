@@ -1,4 +1,4 @@
-class SSE2
+﻿class SSE2
 {
     static function Test()
     {

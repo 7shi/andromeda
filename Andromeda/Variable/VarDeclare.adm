@@ -1,4 +1,4 @@
-class VarDeclare : NodeBase
+﻿class VarDeclare : NodeBase
 {
     var _Address : Addr32;
     function get_Address : Addr32 { return _Address; }

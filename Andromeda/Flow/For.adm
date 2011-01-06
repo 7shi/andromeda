@@ -1,4 +1,4 @@
-class For : BlockBase
+﻿class For : BlockBase
 {
     var Init : Block;
     var Cond : Cond;

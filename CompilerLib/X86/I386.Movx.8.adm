@@ -1,4 +1,4 @@
-class I386
+﻿class I386
 {
     static function MovzxB(op1 : Reg32, op2 : Reg8) : OpCode
     {

@@ -1,4 +1,4 @@
-class Convert
+﻿class Convert
 {
     static function ToInt32(s : string, n : int)
     {

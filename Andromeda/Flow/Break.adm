@@ -1,4 +1,4 @@
-class Break : BreakBase
+﻿class Break : BreakBase
 {
     static function New(parent : BlockBase) : Break
     {

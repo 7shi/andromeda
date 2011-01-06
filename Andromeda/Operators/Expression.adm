@@ -1,4 +1,4 @@
-class Expression : Operator
+﻿class Expression : Operator
 {
     function get_Tag : string
     {

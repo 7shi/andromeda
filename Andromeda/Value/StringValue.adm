@@ -1,4 +1,4 @@
-class StringValue : NodeBase
+﻿class StringValue : NodeBase
 {
     var _Value : string;
     function get_Value : string { return _Value; }

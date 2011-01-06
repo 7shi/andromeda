@@ -1,4 +1,4 @@
-class BlockBase : BreakBase
+﻿class BlockBase : BreakBase
 {
     const string Separator = ".";
 

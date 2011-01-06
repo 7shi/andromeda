@@ -1,4 +1,4 @@
-class WriterBase
+﻿class WriterBase
 {
     virtual WriteBlock(block : Block32) {}
 

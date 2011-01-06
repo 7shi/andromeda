@@ -1,4 +1,4 @@
-class NodeBase
+﻿class NodeBase
 {
     var parent : BlockBase;
     function get_Parent : BlockBase

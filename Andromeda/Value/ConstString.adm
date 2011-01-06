@@ -1,4 +1,4 @@
-class ConstString : StringValue
+﻿class ConstString : StringValue
 {
     static function New(parent : BlockBase, value : string) : ConstString
     {

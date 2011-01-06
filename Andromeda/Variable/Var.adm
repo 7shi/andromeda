@@ -1,4 +1,4 @@
-class Var : NodeBase
+﻿class Var : NodeBase
 {
     const int DefaultSize = 4;
     static var DestRegister = Reg32.ECX;

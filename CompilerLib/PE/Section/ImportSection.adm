@@ -1,4 +1,4 @@
-class ImportSection : SectionBase
+﻿class ImportSection : SectionBase
 {
     override get_Name { return ".idata"; }
 

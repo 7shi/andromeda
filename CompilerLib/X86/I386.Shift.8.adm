@@ -1,4 +1,4 @@
-class I386
+﻿class I386
 {
     static function ShlB(op1 : Reg8, op2 : byte) : OpCode
     {
