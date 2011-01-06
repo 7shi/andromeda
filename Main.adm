@@ -1,34 +1,25 @@
-﻿const string VERSION = "Andromeda ver.1.0.2011.0101";
-
-printfln(VERSION);
+﻿printfln("Andromeda ver.%s", Root.VERSION);
+println();
 var start = DateTime.Now;
 
+printfln("パースしています...");
+var root = new Root;
+root.ReadText("main", "extern \"user32.dll\" __stdcall __widecharset MessageBox(hWnd, lpText, lpCation, uType);");
+root.ReadText("main", "MessageBox(null, \"こんにちは、世界！\", \"だいあろぐ\", 0);");
+
+printfln("コンパイルしています...");
 var module = new Module;
-var c = new OpCodes;
-const int STD_OUTPUT_HANDLE = -11;
-var pGetStdHandle = module.GetFunction("kernel32.dll", "GetStdHandle");
-var pWriteConsole = module.GetFunction("kernel32.dll", "WriteConsoleW");
-var pExitProcess = module.GetFunction("kernel32.dll", "ExitProcess");
-// HANDLE stdout = GetStdHandle(STD_OUTPUT_HANDLE);
-var pstdout = Addr32.NewD(module.GetInt32("stdout"));
-c.Add(I386.PushD(Val32.NewI(STD_OUTPUT_HANDLE)));
-c.Add(I386.CallA(pGetStdHandle));
-c.Add(I386.MovAR(pstdout, Reg32.EAX));
-var dummy = module.GetInt32("dummy");
-var hello = "こんにちは、世界！\r\n";
-c.Add(I386.PushD(Val32.NewI(0)));
-c.Add(I386.PushD(Val32.NewI(hello.Length)));
-c.Add(I386.PushD(module.GetString(hello)));
-c.Add(I386.PushA(pstdout));
-c.Add(I386.CallA(pWriteConsole));
-c.Add(I386.PushD(Val32.NewI(0)));
-c.Add(I386.CallA(pExitProcess));
-module.Text.OpCodes = c.ToArray();
+module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_GUI;;
+var codes = OpModule.Create(module);
+root.AddCodes(codes);
+module.Text.OpCodes = codes.ToArray();
+
+printfln("リンクしています...");
 var output = "a.exe";
 module.Link(output);
-printfln("output: %s", output);
+printfln("出力しました: %s", output);
 
 var end = DateTime.Now;
-printfln("time: %dms", end.Sub(start).TotalMilliseconds);
+printfln("所要時間: %dms", end.Sub(start).TotalMilliseconds);
 
 { _Finish _finish; }

@@ -1,6 +1,6 @@
 ﻿class Root : Block
 {
-    const string VERSION = "1.0.2011.0107";
+    const string VERSION = "0.99.2011.0107";
     var Version = VERSION;
     var Output = "output.exe";
     ushort Subsystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
