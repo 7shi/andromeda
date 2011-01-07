@@ -1,9 +1,6 @@
 ﻿class TypeUInt : TypeIntBase
 {
-    function get_Name : string
-    {
-        return "uint";
-    }
+    override get_Name { return "uint"; }
 
     static var instance : TypeUInt = new TypeUInt();
     static function get_Instance { return instance; }
@@ -73,15 +70,8 @@
 
 class TypeUShort : TypeUInt
 {
-    function get_Name : string
-    {
-        return "ushort";
-    }
-
-    function get_Size : int
-    {
-        return 2;
-    }
+    override get_Name { return "ushort"; }
+    override get_Size { return 2; }
 
     static var instance : TypeUShort = new TypeUShort();
     static function get_Instance { return instance; }
@@ -110,26 +100,15 @@ class TypeUShort : TypeUInt
 
 class TypeChar : TypeUShort
 {
-    function get_Name : string
-    {
-        return "char";
-    }
-
+    override get_Name { return "char"; }
     static var instance : TypeChar = new TypeChar();
     static function get_Instance { return instance; }
 }
 
 class TypeByte : TypeUInt
 {
-    function get_Name : string
-    {
-        return "byte";
-    }
-
-    function get_Size : int
-    {
-        return 1;
-    }
+    override get_Name { return "byte"; }
+    override get_Size { return 1; }
 
     static var instance : TypeByte = new TypeByte();
     static function get_Instance { return instance; }

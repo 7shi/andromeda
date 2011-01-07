@@ -1,24 +1,9 @@
 ﻿class TypeArray : TypeBase
 {
-    function get_Name : string
-    {
-        return Type.Name + "[" + Count + "]";
-    }
-
-    function get_Size : int
-    {
-        return Type.Size * Count;
-    }
-
-    function get_IsArray : bool
-    {
-        return true;
-    }
-
-    function get_IsValue : bool
-    {
-        return false;
-    }
+    override get_Name { return _Type.Name + "[" + Count + "]"; }
+    override get_Size { return _Type.Size * Count; }
+    override get_IsArray { return true; }
+    override get_IsValue { return false; }
 
     override Cast(type : TypeBase) : TypeBase
     {
@@ -29,10 +14,7 @@
         return base.override_Cast(type);
     }
 
-    function get_NeedsCtor : bool
-    {
-        return Type.NeedsCtor;
-    }
+    override get_NeedsCtor { return _Type.NeedsCtor; }
 
     override AddConstructor(codes : OpModule)
     {
@@ -43,17 +25,14 @@
         codes.Add(I386.PushD(Val32.NewI(count)));
         codes.Add(I386.PushA(Addr32.NewRO(Reg32.ESP, 4)));
         codes.Add(loop);
-        get_Type().AddConstructor(codes);
-        codes.Add(I386.AddA(Addr32.New(Reg32.ESP), Val32.NewI(Type.Size)));
+        _Type.AddConstructor(codes);
+        codes.Add(I386.AddA(Addr32.New(Reg32.ESP), Val32.NewI(_Type.Size)));
         codes.Add(I386.DecA(Addr32.NewRO(Reg32.ESP, 4)));
         codes.Add(I386.Jcc(Cc.NZ, loop.Address));
         codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(8)));
     }
 
-    function get_NeedsDtor : bool
-    {
-        return Type.NeedsDtor;
-    }
+    override get_NeedsDtor { return _Type.NeedsDtor; }
 
     override AddDestructor(codes : OpModule)
     {
@@ -65,8 +44,8 @@
         codes.Add(I386.PushA(Addr32.NewRO(Reg32.ESP, 4)));
         codes.Add(I386.AddA(Addr32.New(Reg32.ESP), Val32.NewI(Size)));
         codes.Add(loop);
-        codes.Add(I386.SubA(Addr32.New(Reg32.ESP), Val32.NewI(Type.Size)));
-        get_Type().AddDestructor(codes);
+        codes.Add(I386.SubA(Addr32.New(Reg32.ESP), Val32.NewI(_Type.Size)));
+        _Type.AddDestructor(codes);
         codes.Add(I386.DecA(Addr32.NewRO(Reg32.ESP, 4)));
         codes.Add(I386.Jcc(Cc.NZ, loop.Address));
         codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(8)));
@@ -90,7 +69,7 @@
     static function New(type : TypeBase, count : NodeBase) : TypeArray
     {
         var ret = new TypeArray();
-        ret.Type = type;
+        ret._Type = type;
         ret.count = count;
         return ret;
     }

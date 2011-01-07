@@ -118,11 +118,7 @@
 
 class TypeConstString : TypeString
 {
-
-    function get_Name : string
-    {
-        return "var:(const string)";
-    }
+    override get_Name { return "var:(const string)"; }
 
     static var instance = new TypeConstString();
     static function get_Instance { return instance; }
@@ -130,11 +126,7 @@ class TypeConstString : TypeString
 
 class TypeConstChar : TypeChar
 {
-
-    function get_Name : string
-    {
-        return "(const char)";
-    }
+    override get_Name { return "(const char)"; }
 
     static var instance = new TypeConstChar();
     static function get_Instance { return instance; }

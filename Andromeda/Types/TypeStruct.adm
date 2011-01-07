@@ -1,20 +1,9 @@
 ﻿class TypeStruct : TypeBase
 {
     var name : string;
-    function get_Name : string
-    {
-        return name;
-    }
-
-    function get_Size : int
-    {
-        return GetStruct().GetSize();
-    }
-
-    function get_IsValue : bool
-    {
-        return false;
-    }
+    override get_Name { return name; }
+    override get_Size { return GetStruct().GetSize(); }
+    override get_IsValue { return false; }
 
     override GetCond(op : string) : CondPair
     {
@@ -41,7 +30,7 @@
             return null;
     }
 
-    function get_NeedsCtor : bool
+    override get_NeedsCtor : bool
     {
         var st = GetStruct();
         return st.NeedsInit || st.NeedsCtor;
@@ -56,7 +45,7 @@
         codes.Add(I386.CallD(f2.First));
     }
 
-    function get_NeedsDtor : bool
+    override get_NeedsDtor : bool
     {
         return GetStruct().NeedsDtor;
     }

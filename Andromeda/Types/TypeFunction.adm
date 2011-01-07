@@ -1,9 +1,6 @@
 ﻿class TypeFunction : TypeVarBase
 {
-    function get_Name : string
-    {
-        return GetName("function");
-    }
+    override get_Name { return GetName("function"); }
 
     function GetName(type : string) : string
     {
@@ -20,7 +17,7 @@
                 first = false;
             else
                 sb.Append(",");
-            sb.Append(arg.Type.Name);
+            sb.Append(arg.get_Type().Name);
         }
         sb.Append(")");
         if (RetType != null)
@@ -39,8 +36,8 @@
             raise(target.Abort("argument mismatched: %s", target.Name));
         for (int i = 0; i < _Args.Length; i++)
         {
-            var t1 = args[i].Type;
-            var t2 = _Args[i].Type;
+            var t1 = args[i].get_Type();
+            var t2 = _Args[i].get_Type();
             if (t1 != null && t1.Cast(t2) == null)
                 raise(target.Abort("can not cast arg %d: %s: %s => %s", i + 1, _Args[i].Name, t1.Name, t2.Name));
         }
@@ -93,10 +90,7 @@
 
 class TypeDelegate : TypeFunction
 {
-    function get_Name : string
-    {
-        return GetName("delegate");
-    }
+    override get_Name { return GetName("delegate"); }
 
     override AddSetCodes(codes : OpModule, ad : Addr32)
     {
@@ -114,10 +108,7 @@ class TypeDelegate : TypeFunction
         base.override_AddSetCodes(codes, ad);
     }
 
-    function get_NeedsCtor : bool
-    {
-        return true;
-    }
+    override get_NeedsCtor { return true; }
 
     override AddConstructor(codes : OpModule)
     {
@@ -125,10 +116,7 @@ class TypeDelegate : TypeFunction
         codes.Add(I386.MovA(Addr32.New(Reg32.EAX), Val32.NewI(0)));
     }
 
-    function get_NeedsDtor : bool
-    {
-        return true;
-    }
+    override get_NeedsDtor { return true; }
 
     override AddDestructor(codes : OpModule)
     {

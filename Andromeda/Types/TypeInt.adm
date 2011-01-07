@@ -1,9 +1,6 @@
 ﻿class TypeInt : TypeIntBase
 {
-    function get_Name : string
-    {
-        return "int";
-    }
+    override get_Name { return "int"; }
 
     static var instance : TypeInt = new TypeInt();
     static function get_Instance { return instance; }
@@ -73,10 +70,7 @@
 
 class TypeVar : TypeInt
 {
-    function get_Name : string
-    {
-        return "var";
-    }
+    override get_Name { return "var"; }
 
     static var instance : TypeVar = new TypeVar();
     static function get_Instance { return instance; }
@@ -89,10 +83,7 @@ class TypeVar : TypeInt
 
 class TypeBool : TypeInt
 {
-    function get_Name : string
-    {
-        return "bool";
-    }
+    override get_Name { return "bool"; }
 
     static var instance : TypeBool = new TypeBool();
     static function get_Instance { return instance; }
@@ -100,15 +91,8 @@ class TypeBool : TypeInt
 
 class TypeShort : TypeInt
 {
-    function get_Name : string
-    {
-        return "short";
-    }
-
-    function get_Size : int
-    {
-        return 2;
-    }
+    override get_Name { return "short"; }
+    override get_Size { return 2; }
 
     static var instance : TypeShort = new TypeShort();
     static function get_Instance { return instance; }
@@ -137,15 +121,8 @@ class TypeShort : TypeInt
 
 class TypeSByte : TypeInt
 {
-    function get_Name : string
-    {
-        return "sbyte";
-    }
-
-    function get_Size : int
-    {
-        return 1;
-    }
+    override get_Name { return "sbyte"; }
+    override get_Size { return 1; }
 
     static var instance : TypeSByte = new TypeSByte();
     static function get_Instance { return instance; }

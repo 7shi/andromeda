@@ -4,7 +4,7 @@
     const string Reference = "__reference";
     const string Dereference = "__dereference";
 
-    function get_Name : string
+    override get_Name : string
     {
         if (IsArray)
             return get_Type().Name + "[]";
@@ -99,10 +99,7 @@
         return base.override_get_Type();
     }
 
-    function get_NeedsCtor : bool
-    {
-        return UseGC;
-    }
+    override get_NeedsCtor { return UseGC; }
 
     override AddConstructor(codes : OpModule)
     {
@@ -112,10 +109,7 @@
         codes.Add(I386.MovA(Addr32.New(Reg32.EAX), Val32.NewI(0)));
     }
 
-    function get_NeedsDtor : bool
-    {
-        return UseGC;
-    }
+    override get_NeedsDtor { return UseGC; }
 
     override AddDestructor(codes : OpModule)
     {
@@ -142,17 +136,13 @@
 
     function get_UseGC : bool
     {
-        if (IsArray)
-            return true;
+        if (IsArray) return true;
         var t = get_Type() as TypeStruct;
         return t != null && t.IsClass;
     }
 
     bool isArray = false;
-    function get_IsArray : bool
-    {
-        return isArray;
-    }
+    override get_IsArray { return isArray; }
 
     static function New(type : TypeBase, isArray : bool) : TypeReference
     {

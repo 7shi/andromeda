@@ -1,14 +1,7 @@
 ﻿class TypePointer : TypeVarBase
 {
-    function get_Name : string
-    {
-        return "var:" + Type.Name + "*";
-    }
-
-    function get_IsArray : bool
-    {
-        return true;
-    }
+    override get_Name { return "var:" + _Type.Name + "*"; }
+    override get_IsArray { return true; }
 
     override Cast(type : TypeBase) : TypeBase
     {
@@ -22,7 +15,7 @@
     static function New(type : TypeBase) : TypePointer
     {
         var ret = new TypePointer();
-        ret.Type = type;
+        ret._Type = type;
         ret.conds.Add("greater", CondPair.New(Cc.A, Cc.NA));
         ret.conds.Add("greater-equal", CondPair.New(Cc.AE, Cc.NAE));
         ret.conds.Add("less", CondPair.New(Cc.B, Cc.NB));
@@ -52,25 +45,25 @@
         {
         case "inc":
         case "post-inc":
-            if (Type.Size == 1)
+            if (_Type.Size == 1)
                 codes.Add(I386.IncA(dest));
             else
-                codes.Add(I386.AddA(dest, Val32.NewI(Type.Size)));
+                codes.Add(I386.AddA(dest, Val32.NewI(_Type.Size)));
             break;
         case "dec":
         case "post-dec":
-            if (Type.Size == 1)
+            if (_Type.Size == 1)
                 codes.Add(I386.DecA(dest));
             else
-                codes.Add(I386.SubA(dest, Val32.NewI(Type.Size)));
+                codes.Add(I386.SubA(dest, Val32.NewI(_Type.Size)));
             break;
         case "add":
-            codes.Add(I386.MovR(Reg32.EDX, Val32.NewI(Type.Size)));
+            codes.Add(I386.MovR(Reg32.EDX, Val32.NewI(_Type.Size)));
             codes.Add(I386.Mul(Reg32.EDX));
             codes.Add(I386.AddAR(dest, Reg32.EAX));
             break;
         case "sub":
-            codes.Add(I386.MovR(Reg32.EDX, Val32.NewI(Type.Size)));
+            codes.Add(I386.MovR(Reg32.EDX, Val32.NewI(_Type.Size)));
             codes.Add(I386.Mul(Reg32.EDX));
             codes.Add(I386.SubAR(dest, Reg32.EAX));
             break;

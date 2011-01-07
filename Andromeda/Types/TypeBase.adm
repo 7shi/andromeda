@@ -4,13 +4,9 @@
     function get_Parent : BlockBase { return _Parent; }
     function set_Parent(value : BlockBase) { _Parent = value; }
 
-    var _Name : string;
-    function get_Name : string { return _Name; }
+    virtual get_Name : string { return null; }
 
-    function get_Size : int
-    {
-        return Var.DefaultSize;
-    }
+    virtual get_Size { return Var.DefaultSize; }
 
     virtual CheckFunc(op : string) : bool
     {
@@ -41,15 +37,8 @@
         raise("can not set value!");
     }
 
-    function get_IsArray : bool
-    {
-        return false;
-    }
-
-    function get_IsValue : bool
-    {
-        return true;
-    }
+    virtual get_IsArray { return false; }
+    virtual get_IsValue { return true; }
 
     var _Type : TypeBase;
     virtual get_Type : TypeBase { return _Type; }
@@ -77,14 +66,8 @@
         return null;
     }
 
-    function get_NeedsCtor : bool
-    {
-        return false;
-    }
-
-    virtual AddConstructor(codes : OpModule)
-    {
-    }
+    virtual get_NeedsCtor { return false; }
+    virtual AddConstructor(codes : OpModule) {}
 
     function AddConstructorA(codes : OpModule, ad : Addr32)
     {
@@ -95,14 +78,8 @@
         codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
     }
 
-    function get_NeedsDtor : bool
-    {
-        return false;
-    }
-
-    virtual AddDestructor(codes : OpModule)
-    {
-    }
+    virtual get_NeedsDtor { return false; }
+    virtual AddDestructor(codes : OpModule) {}
 
     function AddDestructorA(codes : OpModule, ad : Addr32)
     {
@@ -115,7 +92,8 @@
 
     virtual Check() : bool
     {
-        if (_Type != null) return _Type.Check();
+        var t = Type;
+        if (t != null) return t.Check();
         return true;
     }
 }
