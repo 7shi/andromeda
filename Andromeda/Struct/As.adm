@@ -1,9 +1,6 @@
 ﻿class As : Operator
 {
-    function get_Tag : string
-    {
-        return "__type_as";
-    }
+    override get_Tag { return "__type_as"; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : As
     {

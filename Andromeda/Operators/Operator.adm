@@ -1,7 +1,6 @@
 ﻿class Operator : NodeBase
 {
-    var _Tag : string;
-    function get_Tag : string { return _Tag; }
+    virtual get_Tag : string { return null; }
 
     var values : ArrayList = new ArrayList();
 

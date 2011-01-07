@@ -1,9 +1,6 @@
 ﻿class Cond : Operator
 {
-    function get_Tag : string
-    {
-        return "cond";
-    }
+    override get_Tag { return "cond"; }
 
     var First : Val32;
     var Next : Val32;

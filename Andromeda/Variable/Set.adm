@@ -1,9 +1,6 @@
 ﻿class Set : VarOperator
 {
-    function get_Tag : string
-    {
-        return "set";
-    }
+    override get_Tag { return "set"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : Set
     {

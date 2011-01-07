@@ -1,9 +1,6 @@
 ﻿class AndAlso : Operator
 {
-    function get_Tag : string
-    {
-        return "and-also";
-    }
+    override get_Tag { return "and-also"; }
 
     override get_Type : TypeBase
     {

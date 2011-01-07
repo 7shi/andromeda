@@ -21,7 +21,7 @@
 
 class Neg : Operator1
 {
-    function get_Tag { return "neg"; }
+    override get_Tag { return "neg"; }
     override Calculate(v : int) { return  -v; }
 
     static function New(parent : BlockBase, arg : NodeBase) : Neg
@@ -32,7 +32,7 @@ class Neg : Operator1
 
 class Rev : Operator1
 {
-    function get_Tag { return "rev"; }
+    override get_Tag { return "rev"; }
     override Calculate(v : int) { return ~v; }
 
     static function New(parent : BlockBase, arg : NodeBase) : Rev
@@ -43,7 +43,7 @@ class Rev : Operator1
 
 class Not : Operator1
 {
-    function get_Tag { return "not"; }
+    override get_Tag { return "not"; }
     override get_Type { return TypeBool.Instance; }
 
     override Calculate(v : int) : int

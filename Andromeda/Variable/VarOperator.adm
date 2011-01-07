@@ -1,7 +1,6 @@
 ﻿class VarOperator : NodeBase
 {
-    var _Tag : string;
-    function get_Tag { return _Tag; }
+    virtual get_Tag : string { return null; }
 
     var dest : NodeBase;
     var values = new ArrayList();

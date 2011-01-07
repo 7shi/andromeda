@@ -58,7 +58,7 @@
 
 class Equal : OperatorCmp
 {
-    function get_Tag { return "equal"; }
+    override get_Tag { return "equal"; }
     override Calculate(a : int, b : int) { return a == b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Equal
@@ -69,7 +69,7 @@ class Equal : OperatorCmp
 
 class NotEqual : OperatorCmp
 {
-    function get_Tag { return "not-equal"; }
+    override get_Tag { return "not-equal"; }
     override Calculate(a : int, b : int) { return a != b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : NotEqual
@@ -80,7 +80,7 @@ class NotEqual : OperatorCmp
 
 class Less : OperatorCmp
 {
-    function get_Tag { return "less"; }
+    override get_Tag { return "less"; }
     override Calculate(a : int, b : int) { return a < b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Less
@@ -91,7 +91,7 @@ class Less : OperatorCmp
 
 class Greater : OperatorCmp
 {
-    function get_Tag { return "greater"; }
+    override get_Tag { return "greater"; }
     override Calculate(a : int, b : int) { return a > b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Greater
@@ -102,7 +102,7 @@ class Greater : OperatorCmp
 
 class LessEqual : OperatorCmp
 {
-    function get_Tag { return "less-equal"; }
+    override get_Tag { return "less-equal"; }
     override Calculate(a : int, b : int) { return a <= b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : LessEqual
@@ -113,7 +113,7 @@ class LessEqual : OperatorCmp
 
 class GreaterEqual : OperatorCmp
 {
-    function get_Tag { return "greater-equal"; }
+    override get_Tag { return "greater-equal"; }
     override Calculate(a : int, b : int) { return a >= b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : GreaterEqual

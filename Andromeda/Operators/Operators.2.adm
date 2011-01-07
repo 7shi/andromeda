@@ -63,7 +63,7 @@
 
 class Add : Operator2
 {
-    function get_Tag { return "add"; }
+    override get_Tag { return "add"; }
     override Calculate(a : int, b : int) { return a + b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Add
@@ -74,7 +74,7 @@ class Add : Operator2
 
 class Sub : Operator2
 {
-    function get_Tag { return "sub"; }
+    override get_Tag { return "sub"; }
     override Calculate(a : int, b : int) { return a - b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Sub
@@ -85,7 +85,7 @@ class Sub : Operator2
 
 class And : Operator2
 {
-    function get_Tag { return "and"; }
+    override get_Tag { return "and"; }
     override Calculate(a : int, b : int) { return a & b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : And
@@ -96,7 +96,7 @@ class And : Operator2
 
 class Or : Operator2
 {
-    function get_Tag { return "or"; }
+    override get_Tag { return "or"; }
     override Calculate(a : int, b : int) { return a | b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Or
@@ -107,7 +107,7 @@ class Or : Operator2
 
 class Xor : Operator2
 {
-    function get_Tag { return "xor"; }
+    override get_Tag { return "xor"; }
     override Calculate(a : int, b : int) { return a ^ b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Xor
@@ -118,7 +118,7 @@ class Xor : Operator2
 
 class ShiftLeft : Operator2
 {
-    function get_Tag { return "shift-left"; }
+    override get_Tag { return "shift-left"; }
     override Calculate(a : int, b : int) { return a << b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : ShiftLeft
@@ -129,7 +129,7 @@ class ShiftLeft : Operator2
 
 class ShiftRight : Operator2
 {
-    function get_Tag { return "shift-right"; }
+    override get_Tag { return "shift-right"; }
     override Calculate(a : int, b : int) { return a >> b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : ShiftRight
@@ -140,7 +140,7 @@ class ShiftRight : Operator2
 
 class Mul : Operator2
 {
-    function get_Tag { return "mul"; }
+    override get_Tag { return "mul"; }
     override Calculate(a : int, b : int) { return a * b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Mul
@@ -151,7 +151,7 @@ class Mul : Operator2
 
 class Div : Operator2
 {
-    function get_Tag { return "div"; }
+    override get_Tag { return "div"; }
     override Calculate(a : int, b : int) { return a / b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Div
@@ -162,7 +162,7 @@ class Div : Operator2
 
 class Mod : Operator2
 {
-    function get_Tag { return "mod"; }
+    override get_Tag { return "mod"; }
     override Calculate(a : int, b : int) { return a % b; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Mod

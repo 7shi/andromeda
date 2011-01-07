@@ -1,9 +1,6 @@
 ﻿class OrElse : Operator
 {
-    function get_Tag : string
-    {
-        return "or-else";
-    }
+    override get_Tag { return "or-else"; }
 
     override get_Type : TypeBase
     {

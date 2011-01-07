@@ -38,7 +38,7 @@
 
 class Inc : VarOperatorPre
 {
-    function get_Tag { return "inc"; }
+    override get_Tag { return "inc"; }
 
     static function New(parent : BlockBase, dest : NodeBase) : Inc
     {
@@ -48,7 +48,7 @@ class Inc : VarOperatorPre
 
 class Dec : VarOperatorPre
 {
-    function get_Tag { return "dec"; }
+    override get_Tag { return "dec"; }
 
     static function New(parent : BlockBase, dest : NodeBase) : Dec
     {
@@ -84,7 +84,7 @@ class VarOperatorPost : VarOperatorPre
 
 class PostInc : VarOperatorPost
 {
-    function get_Tag { return "post-inc"; }
+    override get_Tag { return "post-inc"; }
 
     static function New(parent : BlockBase, dest : NodeBase) : PostInc
     {
@@ -94,7 +94,7 @@ class PostInc : VarOperatorPost
 
 class PostDec : VarOperatorPost
 {
-    function get_Tag { return "post-dec"; }
+    override get_Tag { return "post-dec"; }
 
     static function New(parent : BlockBase, dest : NodeBase) : PostDec
     {

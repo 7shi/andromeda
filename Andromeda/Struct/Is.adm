@@ -1,9 +1,6 @@
 ﻿class Is : Operator
 {
-    function get_Tag : string
-    {
-        return "__type_is";
-    }
+    override get_Tag { return "__type_is"; }
 
     static function New(parent : BlockBase, arg1 : NodeBase, arg2 : NodeBase) : Is
     {

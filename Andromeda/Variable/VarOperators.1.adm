@@ -64,7 +64,7 @@
 
 class VarAdd : VarOperator1
 {
-    function get_Tag { return "add"; }
+    override get_Tag { return "add"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarAdd
     {
@@ -74,7 +74,7 @@ class VarAdd : VarOperator1
 
 class VarSub : VarOperator1
 {
-    function get_Tag { return "sub"; }
+    override get_Tag { return "sub"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarSub
     {
@@ -84,7 +84,7 @@ class VarSub : VarOperator1
 
 class VarAnd : VarOperator1
 {
-    function get_Tag { return "and"; }
+    override get_Tag { return "and"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarAnd
     {
@@ -94,7 +94,7 @@ class VarAnd : VarOperator1
 
 class VarOr : VarOperator1
 {
-    function get_Tag { return "or"; }
+    override get_Tag { return "or"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarOr
     {
@@ -104,7 +104,7 @@ class VarOr : VarOperator1
 
 class VarXor : VarOperator1
 {
-    function get_Tag { return "xor"; }
+    override get_Tag { return "xor"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarXor
     {
@@ -114,7 +114,7 @@ class VarXor : VarOperator1
 
 class VarShiftLeft : VarOperator1
 {
-    function get_Tag { return "shift-left"; }
+    override get_Tag { return "shift-left"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarShiftLeft
     {
@@ -125,7 +125,7 @@ class VarShiftLeft : VarOperator1
 
 class VarShiftRight : VarOperator1
 {
-    function get_Tag { return "shift-right"; }
+    override get_Tag { return "shift-right"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarShiftRight
     {
@@ -135,7 +135,7 @@ class VarShiftRight : VarOperator1
 
 class VarMul : VarOperator1
 {
-    function get_Tag { return "mul"; }
+    override get_Tag { return "mul"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarMul
     {
@@ -145,7 +145,7 @@ class VarMul : VarOperator1
 
 class VarDiv : VarOperator1
 {
-    function get_Tag { return "div"; }
+    override get_Tag { return "div"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarDiv
     {
@@ -155,7 +155,7 @@ class VarDiv : VarOperator1
 
 class VarMod : VarOperator1
 {
-    function get_Tag { return "mod"; }
+    override get_Tag { return "mod"; }
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarMod
     {

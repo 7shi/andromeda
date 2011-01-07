@@ -1,9 +1,6 @@
 ﻿class Expression : Operator
 {
-    function get_Tag : string
-    {
-        return "expression";
-    }
+    override get_Tag { return "expression"; }
 
     static function New(parent : BlockBase, arg : NodeBase) : Expression
     {
