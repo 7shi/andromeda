@@ -13,7 +13,7 @@ root.ReadText("6", "MessageBox(null, buf, \"結果\", 0);");
 
 printfln("コンパイルしています...");
 var module = new Module;
-module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
+module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_GUI;
 var codes = OpModule.Create(module);
 root.AddCodes(codes);
 module.Text.OpCodes = codes.ToArray();
