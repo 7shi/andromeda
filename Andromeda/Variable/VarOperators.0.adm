@@ -42,7 +42,7 @@ class Inc : VarOperatorPre
 
     static function New(parent : BlockBase, dest : NodeBase) : Inc
     {
-        return Init0(new Inc(), parent, dest) as Inc;
+        var ret = new Inc(); Init0(ret, parent, dest); return ret;
     }
 }
 
@@ -52,7 +52,7 @@ class Dec : VarOperatorPre
 
     static function New(parent : BlockBase, dest : NodeBase) : Dec
     {
-        return Init0(new Dec(), parent, dest) as Dec;
+        var ret = new Dec(); Init0(ret, parent, dest); return ret;
     }
 }
 
@@ -88,7 +88,7 @@ class PostInc : VarOperatorPost
 
     static function New(parent : BlockBase, dest : NodeBase) : PostInc
     {
-        return Init0(new PostInc(), parent, dest) as PostInc;
+        var ret = new PostInc(); Init0(ret, parent, dest); return ret;
     }
 }
 
@@ -98,6 +98,6 @@ class PostDec : VarOperatorPost
 
     static function New(parent : BlockBase, dest : NodeBase) : PostDec
     {
-        return Init0(new PostDec(), parent, dest) as PostDec;
+        var ret = new PostDec(); Init0(ret, parent, dest); return ret;
     }
 }

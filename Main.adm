@@ -4,12 +4,13 @@ var start = DateTime.Now;
 
 printfln("パースしています...");
 var root = new Root;
-root.ReadText("main", "extern \"user32.dll\" __stdcall __widecharset MessageBox(hWnd, lpText, lpCation, uType);");
-root.ReadText("main", "MessageBox(null, \"こんにちは、世界！\", \"だいあろぐ\", 0);");
+//root.ReadText("main", "extern \"user32.dll\" __stdcall __widecharset MessageBox(hWnd, lpText, lpCation, uType);");
+//root.ReadText("main", "MessageBox(null, \"こんにちは、世界！\", \"だいあろぐ\", 4);");
+root.ReadText("main", "int a = 1;");
 
 printfln("コンパイルしています...");
 var module = new Module;
-module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_GUI;;
+module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
 var codes = OpModule.Create(module);
 root.AddCodes(codes);
 module.Text.OpCodes = codes.ToArray();

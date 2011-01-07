@@ -1,24 +1,22 @@
 ﻿class VarOperator : NodeBase
 {
     var _Tag : string;
-    function get_Tag : string { return _Tag; }
+    function get_Tag { return _Tag; }
 
     var dest : NodeBase;
-    var values : ArrayList = new ArrayList();
+    var values = new ArrayList();
 
-    static function Init0(op : VarOperator, parent : BlockBase, dest : NodeBase) : VarOperator
+    static function Init0(op : VarOperator, parent : BlockBase, dest : NodeBase)
     {
         op.Parent = parent;
         op.dest = dest;
-        return op;
     }
 
-    static function Init1(op : VarOperator, parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarOperator
+    static function Init1(op : VarOperator, parent : BlockBase, dest : NodeBase, arg : NodeBase)
     {
         op.Parent = parent;
         op.dest = dest;
         op.values.Add(arg);
-        return op;
     }
 
     function CheckFunc() : TypeBase

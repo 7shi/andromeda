@@ -68,7 +68,7 @@ class VarAdd : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarAdd
     {
-        return Init1(new VarAdd(), parent, dest, arg) as VarAdd;
+        var ret = new VarAdd(); Init1(ret, parent, dest, arg); return ret;
     }
 }
 
@@ -78,7 +78,7 @@ class VarSub : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarSub
     {
-        return Init1(new VarSub(), parent, dest, arg) as VarSub;
+        var ret = new VarSub(); Init1(ret, parent, dest, arg); return ret;
     }
 }
 
@@ -88,7 +88,7 @@ class VarAnd : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarAnd
     {
-        return Init1(new VarAnd(), parent, dest, arg) as VarAnd;
+        var ret = new VarAnd(); Init1(ret, parent, dest, arg); return ret;
     }
 }
 
@@ -98,7 +98,7 @@ class VarOr : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarOr
     {
-        return Init1(new VarOr(), parent, dest, arg) as VarOr;
+        var ret = new VarOr(); Init1(ret, parent, dest, arg); return ret;
     }
 }
 
@@ -108,7 +108,7 @@ class VarXor : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarXor
     {
-        return Init1(new VarXor(), parent, dest, arg) as VarXor;
+        var ret = new VarXor(); Init1(ret, parent, dest, arg); return ret;
     }
 }
 
@@ -118,6 +118,7 @@ class VarShiftLeft : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarShiftLeft
     {
+        var ret = new Inc(); Init1(ret, parent, dest, arg); return ret;
         return Init1(new VarShiftLeft(), parent, dest, arg) as VarShiftLeft;
     }
 }
@@ -128,7 +129,7 @@ class VarShiftRight : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarShiftRight
     {
-        return Init1(new VarShiftRight(), parent, dest, arg) as VarShiftRight;
+        var ret = new VarShiftRight(); Init1(ret, parent, dest, arg); return ret;
     }
 }
 
@@ -138,7 +139,7 @@ class VarMul : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarMul
     {
-        return Init1(new VarMul(), parent, dest, arg) as VarMul;
+        var ret = new VarMul(); Init1(ret, parent, dest, arg); return ret;
     }
 }
 
@@ -148,7 +149,7 @@ class VarDiv : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarDiv
     {
-        return Init1(new VarDiv(), parent, dest, arg) as VarDiv;
+        var ret = new VarDiv(); Init1(ret, parent, dest, arg); return ret;
     }
 }
 
@@ -158,6 +159,6 @@ class VarMod : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarMod
     {
-        return Init1(new VarMod(), parent, dest, arg) as VarMod;
+        var ret = new VarMod(); Init1(ret, parent, dest, arg); return ret;
     }
 }

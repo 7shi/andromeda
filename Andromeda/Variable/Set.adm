@@ -7,7 +7,7 @@
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : Set
     {
-        return Init1(new Set(), parent, dest, arg) as Set;
+        var ret = new Set(); Init1(ret, parent, dest, arg); return ret;
     }
 
     override AddCodes(codes : OpModule)
