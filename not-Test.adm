@@ -1,0 +1,9 @@
+﻿extern "user32.dll" __stdcall __widecharset MessageBox(hWnd, lpText, lpCation, uType);
+
+var id = MessageBox(null, "こんにちは、世界！", "だいあろぐ", 3);
+
+char buf[2];
+buf[0] = '0' + id;
+buf[1] = 0;
+
+MessageBox(null, buf, "結果", 0);

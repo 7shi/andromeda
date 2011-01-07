@@ -2,14 +2,8 @@
 println();
 var start = DateTime.Now;
 
-printfln("パースしています...");
 var root = new Root;
-root.ReadText("1", "extern \"user32.dll\" __stdcall __widecharset MessageBox(hWnd, lpText, lpCation, uType);");
-root.ReadText("2", "var id = MessageBox(null, \"こんにちは、世界！\", \"だいあろぐ\", 3);");
-root.ReadText("3", "char buf[2];");
-root.ReadText("4", "buf[0] = '0' + id;");
-root.ReadText("5", "buf[1] = 0;");
-root.ReadText("6", "MessageBox(null, buf, \"結果\", 0);");
+Parse("not-Test.adm");
 
 printfln("コンパイルしています...");
 var module = new Module;
@@ -27,3 +21,16 @@ var end = DateTime.Now;
 printfln("所要時間: %dms", end.Sub(start).TotalMilliseconds);
 
 { _Finish _finish; }
+
+function Parse(src : string)
+{
+    printfln("パースしています: %s", src);
+    var sr = new StreamReader;
+    if (sr.Open(src))
+    {
+        root.ReadText(src, sr.ReadToEnd());
+        sr.Close();
+    }
+    else
+        raise("ファイルが開けません。");
+}
