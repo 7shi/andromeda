@@ -64,7 +64,8 @@ class FileStream
 	{
 		if (handle == INVALID_HANDLE_VALUE)
 			return -1;
-		return SetFilePointer(handle, 0, null, FILE_CURRENT);
+		return pos;
+		//return SetFilePointer(handle, 0, null, FILE_CURRENT);
 	}
 	
 	function set_Position(pos)
