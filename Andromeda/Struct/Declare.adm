@@ -6,7 +6,7 @@
         return values;
     }
 
-    function get_NeedsInit : bool
+    override get_NeedsInit : bool
     {
         if (values != null)
             return true;
@@ -14,13 +14,13 @@
         return st != null && st.NeedsInit;
     }
 
-    function get_NeedsCtor : bool
+    override get_NeedsCtor : bool
     {
         var st = GetStruct();
         return st != null && st.NeedsCtor;
     }
 
-    function get_NeedsDtor : bool
+    override get_NeedsDtor : bool
     {
         var st = GetStruct();
         return st != null && st.NeedsDtor;

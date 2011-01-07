@@ -8,20 +8,9 @@
     function get_Block : Block { return _Block; }
     function set_Block(value : Block) { _Block = value; }
 
-    function get_AcceptsBreak : bool
-    {
-        return true;
-    }
-
-    function get_AcceptsContinue : bool
-    {
-        return true;
-    }
-
-    function get_Continue : Val32
-    {
-        return _Block.Last;
-    }
+    override get_AcceptsBreak { return true; }
+    override get_AcceptsContinue { return true; }
+    override get_Continue : Val32 { return _Block.Last; }
 
     static function New(parent : BlockBase) : Do
     {

@@ -16,20 +16,9 @@
     function get_IsStatic : bool { return _IsStatic; }
     function set_IsStatic(value : bool) { _IsStatic = value; }
 
-    function get_NeedsInit : bool
-    {
-        return Value != null;
-    }
-
-    function get_NeedsCtor : bool
-    {
-        return type.NeedsCtor;
-    }
-
-    function get_NeedsDtor : bool
-    {
-        return type.NeedsDtor;
-    }
+    virtual get_NeedsInit { return Value != null; }
+    virtual get_NeedsCtor { return type.NeedsCtor; }
+    virtual get_NeedsDtor { return type.NeedsDtor; }
 
     static function New(parent : BlockBase, name : string, type : TypeBase) : VarDeclare
     {

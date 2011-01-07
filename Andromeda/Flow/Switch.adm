@@ -84,16 +84,10 @@ class Switch : BlockBase
 {
     var expr : SwitchExpr;
 
-    var blocks : ArrayList = new ArrayList();
-    function get_Blocks : ArrayList
-    {
-        return blocks;
-    }
+    var blocks = new ArrayList();
+    function get_Blocks { return blocks; }
 
-    function get_AcceptsBreak : bool
-    {
-        return true;
-    }
+    override get_AcceptsBreak { return true; }
 
     static function New(parent : BlockBase, expr : NodeBase) : Switch
     {

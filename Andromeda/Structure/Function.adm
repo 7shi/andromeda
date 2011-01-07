@@ -117,12 +117,10 @@
             return 1;
         return base.override_get_Level();
     }
+
     ushort argStack;
 
-    function get_HasStackFrame : bool
-    {
-        return true;
-    }
+    override get_HasStackFrame { return true; }
 
     override AddCodes(codes : OpModule)
     {

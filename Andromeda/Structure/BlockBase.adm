@@ -32,20 +32,9 @@
         return last.Address;
     }
 
-    function get_AcceptsBreak : bool
-    {
-        return false;
-    }
-
-    function get_AcceptsContinue : bool
-    {
-        return false;
-    }
-
-    function get_Continue : Val32
-    {
-        return null;
-    }
+    virtual get_AcceptsBreak { return false; }
+    virtual get_AcceptsContinue { return false; }
+    virtual get_Continue : Val32 { return null; }
 
     var retVal : VarDeclare;
     function get_HasRetVal : bool
@@ -159,7 +148,7 @@
         return AddMember(s.Name, s);
     }
 
-    function get_HasStackFrame : bool
+    virtual get_HasStackFrame : bool
     {
         var ret = false;
         var pret = addrof ret;
@@ -330,7 +319,7 @@
         return root;
     }
 
-    function get_ThisStruct : Define
+    virtual get_ThisStruct : Define
     {
         if (Parent == null)
             return null;
@@ -392,7 +381,7 @@
     var returnType : TypeBase;
     bool doneInferReturnType = false;
 
-    function get_ReturnType : TypeBase
+    virtual get_ReturnType : TypeBase
     {
         if (doneInferReturnType || !root.IsCompiling)
             return returnType;

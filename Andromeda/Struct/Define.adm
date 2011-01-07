@@ -142,10 +142,7 @@
         return ret;
     }
 
-    function get_ThisStruct : Define
-    {
-        return this;
-    }
+    override get_ThisStruct { return this; }
 
     function CallBlock(codes : OpModule, ad : Addr32, b : Block, ct : CallType)
     {
@@ -215,10 +212,7 @@
             st.AddDestructor(codes, ad);
     }
 
-    function get_HasStackFrame : bool
-    {
-        return false;
-    }
+    override get_HasStackFrame { return false; }
 
     override BeforeAddCodes(codes : OpModule)
     {
