@@ -32,6 +32,12 @@
 		__reference(s);
 		base.Add(s);
 	}
+
+	function Insert(order, obj : object)
+	{
+		__reference(obj);
+		base.Insert(order, obj);
+	}
 	
 	function Remove(s : string)
 	{
