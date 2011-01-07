@@ -7,7 +7,7 @@ Parse("not-Test.adm");
 
 printfln("コンパイルしています...");
 var module = new Module;
-module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_GUI;
+module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
 var codes = OpModule.Create(module);
 root.AddCodes(codes);
 module.Text.OpCodes = codes.ToArray();

@@ -1,9 +1,51 @@
-﻿extern "user32.dll" __stdcall __widecharset MessageBox(hWnd, lpText, lpCation, uType);
+﻿class object {}
+class string {}
 
-var id = MessageBox(null, "こんにちは、世界！", "だいあろぐ", 3);
+extern "kernel32.dll" __stdcall
+{
+	GetStdHandle(nStdHandle);
+}
+extern "kernel32.dll" __stdcall __widecharset
+{
+	WriteConsole(hConsoleOutput, lpBuffer, nNumberOfCharsToWrite, lpNumberOfCharsWritten, lpReserved);
+	ReadConsole(hConsoleInput, lpBuffer, nNumberOfCharsToRead, lpNumberOfCharsRead, pInputControl);
+	lstrlen(lpString : char*);
+}
+extern "user32.dll" __widecharset
+{
+	wsprintf(lpOutput, lpFmt, args : params);
+}
 
-char buf[2];
-buf[0] = '0' + id;
-buf[1] = 0;
+const int STD_OUTPUT_HANDLE = -11;
+const int STD_INPUT_HANDLE  = -10;
 
-MessageBox(null, buf, "結果", 0);
+var stdout = GetStdHandle(STD_OUTPUT_HANDLE);
+var stdin  = GetStdHandle(STD_INPUT_HANDLE);
+
+function print(text)
+{
+	var length;
+	WriteConsole(stdout, text, lstrlen(text), addrof(length), null);
+}
+
+function println(text)
+{
+    print(text);
+    print("\r\n");
+}
+
+function pause()
+{
+    char buf[16];
+    int len;
+    ReadConsole(stdin, buf, 16, addrof len, null);
+}
+
+int a = 1, b = 2, c = a + b;
+char buf[256];
+wsprintf(buf, "%d + %d = %d", a, b, c);
+println(buf);
+
+println("");
+println("Press [Enter] to exit.");
+pause();
