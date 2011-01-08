@@ -6,14 +6,13 @@ var root = new Root;
 readDir("lib-Core");
 readDir("lib-System");
 parse("not-Test.adm");
-println();
 
+printfln("型をチェックしています...");
 var module = new Module;
 module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
 var codes = OpModule.Create(module);
 root.AddCodes(codes);
 module.Text.OpCodes = codes.ToArray();
-println();
 
 printfln("リンクしています...");
 var output = "a.exe";

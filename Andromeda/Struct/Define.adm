@@ -359,10 +359,4 @@
         if (b == null) return false;
         return b.CanUpCast(st);
     }
-
-    override AddCodes(codes : OpModule)
-    {
-        printfln("コンパイルしています: %s", FullName);
-        base.override_AddCodes(codes);
-    }
 }

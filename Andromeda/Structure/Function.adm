@@ -124,6 +124,7 @@
 
     override AddCodes(codes : OpModule)
     {
+        printfln("コンパイルしています: %s", FullName);
         if (IsVirtual)
         {
             var st = Parent as Define;
