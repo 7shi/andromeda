@@ -3,6 +3,9 @@ println();
 var start = DateTime.Now;
 
 var root = new Root;
+var files = Directory.GetFiles("lib-Core");
+for (int i = 0; i < files.Length; i++)
+    Parse(files[i]);
 Parse("not-Test.adm");
 
 printfln("コンパイルしています...");
@@ -24,11 +27,12 @@ printfln("所要時間: %dms", end.Sub(start).TotalMilliseconds);
 
 function Parse(src : string)
 {
-    printfln("パースしています: %s", src);
+    var src2 = src.Replace("\\", "/");
+    printfln("パースしています: %s", src2);
     var sr = new StreamReader;
     if (sr.Open(src))
     {
-        root.ReadText(src, sr.ReadToEnd());
+        root.ReadText(src2, sr.ReadToEnd());
         sr.Close();
     }
     else
