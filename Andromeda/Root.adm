@@ -14,11 +14,13 @@
 
     override BeforeAddCodes(codes : OpModule)
     {
-        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
         {
-            p.Address = Addr32.NewD(codes.Module.GetBuffer(p.Name, p.Type.Size));
-            return false;
-        }, null);
+            var p = GetDeclare(mems[i]);
+            if (p != null)
+                p.Address = Addr32.NewD(codes.Module.GetBuffer(p.Name, p.Type.Size));
+        }
     }
 
     override AfterAddCodes(codes : OpModule)

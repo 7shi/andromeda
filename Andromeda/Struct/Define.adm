@@ -48,12 +48,9 @@
         return st.GetMember(name);
     }
 
-    override GetMemberRecursive(name : string, conv) : object
+    override GetMemberRecursive(name : string, t : Type) : object
     {
-        var ret = conv(GetMember(name));
-        if (ret != null || Parent == null)
-            return ret;
-        ret = parent.GetMemberRecursive(name, conv);
+        var ret = base.override_GetMemberRecursive(name, t);
         if (ret == null || !(ret is VarDeclare || ret is Function))
             return ret;
         if ((ret as NodeBase).Parent is Root)
@@ -72,14 +69,9 @@
 
     function GetSizeInternal() : int
     {
-        int ret = 0;
-        ForEachMembers(null, \(size : int) =>
-        {
-            ret = size;
-        });
+        int ret = GetMemberSize();
         var st = GetBaseStruct();
-        if (st != null)
-            ret += st.GetSizeInternal();
+        if (st != null) ret += st.GetSizeInternal();
         return ret;
     }
 
@@ -92,14 +84,7 @@
 
     function GetOffset(name : string) : int
     {
-        int ret = -1;
-        ForEachMembers(\(p : VarDeclare, pos : int) =>
-        {
-            if (p.Name != name) return false;
-            ret = pos;
-            return true;
-        }
-        , null);
+        int ret = GetBlockMemberOffset(name);
         var st = GetBaseStruct();
         if (st == null) return ret;
         if (ret < 0) return st.GetOffset(name);
@@ -108,13 +93,7 @@
 
     function GetMemberDecl(name : string) : VarDeclare
     {
-        var ret : VarDeclare = null;
-        ForEachMembers(\(p : VarDeclare, pos : int) =>
-        {
-            if (p.Name != name) return false;
-            ret = p;
-            return true;
-        }, null);
+        var ret = GetBlockMember(name);
         if (ret != null) return ret;
         var st = GetBaseStruct();
         if (st == null) return null;
@@ -131,15 +110,13 @@
             for (int i = 0; i < stmd.Length; i++)
                 list.Add(stmd[i]);
         }
-        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
         {
-            list.Add(p);
-            return false;
-        }, null);
-        var ret = new VarDeclare[list.Count];
-        for (int i = 0; i < ret.Length; i++)
-            ret[i] = list.Get(i) as VarDeclare;
-        return ret;
+            var p = GetDeclare(mems[i]);
+            if (p != null) list.Add(p);
+        }
+        return ToVarDeclareArray(list);
     }
 
     override get_ThisStruct { return this; }
@@ -192,15 +169,25 @@
         var st = GetBaseStruct();
         if (st != null)
             offset = st.GetSizeInternal();
-        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        int pos = 0;
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
         {
-            if (!p.IsStatic && p.NeedsDtor)
+            var p = GetDeclare(mems[i]);
+            if (p != null)
             {
-                list.Add(p);
-                poslist.Add(offset + pos);
+                pos += GetMemberPadding(p, pos);
+                if (!p.IsStatic)
+                {
+                    if (p.NeedsDtor)
+                    {
+                        list.Add(p);
+                        poslist.Add(offset + pos);
+                    }
+                    pos += p.Type.Size;
+                }
             }
-            return false;
-        }, null);
+        }
         var ad = Addr32.NewRO(Reg32.EBP, 8);
         for (int i = list.Count - 1; i >= 0; i--)
         {
@@ -337,12 +324,17 @@
         int offset = 0;
         if (bst != null)
             offset = bst.GetSizeInternal();
-        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        int pos = 0;
+        for (int i = 0; i < mems.Length; i++)
         {
-            if (!p.IsStatic)
+            var p = GetDeclare(mems[i]);
+            if (p != null && !p.IsStatic)
+            {
+                pos += GetMemberPadding(p, pos);
                 p.Address = Addr32.NewRO(Var.DestRegister, offset + pos);
-            return false;
-        }, null);
+                pos += p.Type.Size;
+            }
+        }
     }
 
     override MakeUpInternal()

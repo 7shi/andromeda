@@ -81,10 +81,7 @@
                 else
                     list.Add(arg);
             }
-        var ret = new VarDeclare[list.Count];
-        for (int i = 0; i < ret.Length; i++)
-            ret[i] = list.Get(i) as VarDeclare;
-        _Args = ret;
+        _Args = ToVarDeclareArray(list);
     }
 }
 

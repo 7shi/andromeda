@@ -57,12 +57,12 @@
         return null;
     }
 
-    virtual GetMemberRecursive(name : string, conv) : object
+    virtual GetMemberRecursive(name : string, t : Type) : object
     {
-        var ret = conv(GetMember(name));
+        var ret : object = __type_as(GetMember(name), t);
         if (ret != null || Parent == null)
             return ret;
-        return parent.GetMemberRecursive(name, conv);
+        return parent.GetMemberRecursive(name, t);
     }
 
     function GetUsingPointers()
@@ -75,10 +75,7 @@
             if (mem is VarDeclare && !(mem is Arg))
                 list.Add(mem);
         }
-        var ret = new VarDeclare[list.Count];
-        for (int i = 0; i < list.Count; i++)
-            ret[i] = list.Get(i) as VarDeclare;
-        return ret;
+        return ToVarDeclareArray(list);
     }
 
     function AddMember(name : string, obj : object) : bool
@@ -106,8 +103,7 @@
 
     function GetString(name : string) : ConstString
     {
-        return GetMemberRecursive(name,
-            \(o : object) => o as ConstString) as ConstString;
+        return GetMemberRecursive(name, typeof(ConstString));
     }
 
     function AddString(name : string, value : string) : bool
@@ -117,8 +113,7 @@
 
     virtual GetVar(name : string) : VarDeclare
     {
-        return GetMemberRecursive(name,
-            \(o : object) => o as VarDeclare) as VarDeclare;
+        return GetMemberRecursive(name, typeof(VarDeclare));
     }
 
     function AddVar(v : VarDeclare) : bool
@@ -128,8 +123,7 @@
 
     function GetFunction(name : string) : Function
     {
-        return GetMemberRecursive(name,
-            \(o : object) => o as Function) as Function;
+        return GetMemberRecursive(name, typeof(Function));
     }
 
     function AddFunction(f : Function) : bool
@@ -139,8 +133,7 @@
 
     function GetStruct(name : string) : Define
     {
-        return GetMemberRecursive(name,
-            \(o : object) => o as Define) as Define;
+        return GetMemberRecursive(name, typeof(Define));
     }
 
     function AddStruct(s : Define) : bool
@@ -150,14 +143,13 @@
 
     virtual get_HasStackFrame : bool
     {
-        var ret = false;
-        var pret = addrof ret;
-        ForEachMembers(\(p : VarDeclare, pos : int) =>
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
         {
-            pret[0] = true;
-            return true;
-        }, null);
-        return ret;
+            var p = GetDeclare(mems[i]);
+            if (p != null) return true;
+        }
+        return false;
     }
 
     virtual get_Level : int
@@ -170,53 +162,86 @@
             return Parent.Level;
     }
 
-    function ForEachMembers(delg1, delg2)
+    static function GetDeclare(obj : object) : VarDeclare
+    {
+        var t = typeof obj;
+        if (t == typeof(VarDeclare) || t == typeof(Declare))
+            return obj;
+        return null;
+    }
+
+    static function GetMemberPadding(p : VarDeclare, pos : int)
+    {
+        if (p.IsStatic) return 0;
+        var len = p.Type.Size;
+        if (len > Var.DefaultSize)
+            len = Var.DefaultSize;
+        var pad = pos % len;
+        if (pad == 0) return 0;
+        return len - pad;
+    }
+
+    function GetMemberSize()
     {
         int pos = 0;
         var mems = members.Values;
         for (int i = 0; i < mems.Length; i++)
         {
-            var obj = mems[i];
-            var t = typeof obj;
-            if (t == typeof(VarDeclare) || t == typeof(Declare))
-            {
-                var p = obj as VarDeclare;
-                var len = p.Type.Size;
-                if (len > Var.DefaultSize)
-                    len = Var.DefaultSize;
-                var pad = pos % len;
-                if (pad > 0)
-                    pos += len - pad;
-                if (delg1 != null && delg1(p, pos))
-                    return;
-                if (!p.IsStatic)
-                    pos += p.Type.Size;
-            }
+            var p = GetDeclare(mems[i]);
+            if (p != null && !p.IsStatic)
+                pos += GetMemberPadding(p, pos) + p.Type.Size;
         }
         var padv = pos % Var.DefaultSize;
-        if (padv > 0)
-            pos += Var.DefaultSize - padv;
-        if (delg2 != null)
-            delg2(pos);
+        if (padv > 0) pos += Var.DefaultSize - padv;
+        return pos;
+    }
+
+    function GetBlockMember(name : string) : VarDeclare
+    {
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
+        {
+            var p = GetDeclare(mems[i]);
+            if (p != null && p.Name == name) return p;
+        }
+        return null;
+    }
+
+    function GetBlockMemberOffset(name : string) : int
+    {
+        int pos = 0;
+        var mems = members.Values;
+        for (int i = 0; i < mems.Length; i++)
+        {
+            var p = GetDeclare(mems[i]);
+            if (p != null)
+            {
+                if (p.IsStatic) return -1;
+                pos += GetMemberPadding(p, pos);
+                if (p.Name == name) return pos;
+                pos += p.Type.Size;
+            }
+        }
+        return -1;
     }
 
     virtual BeforeAddCodes(codes : OpModule)
     {
         if (HasStackFrame)
         {
-            int stackSize = Level * 4;
-            var pstackSize = addrof stackSize;
-            ForEachMembers(null, \(size : int) =>
+            int pos = 0;
+            int stackSize = Level * 4 + GetMemberSize();
+            var mems = members.Values;
+            for (int i = 0; i < mems.Length; i++)
             {
-                pstackSize[0] += size;
-            });
-            ForEachMembers(\(p : VarDeclare, pos : int) =>
-            {
-                var s = pstackSize[0];
-                if (!p.IsStatic)
-                    p.Address = Addr32.NewRO(Reg32.EBP, pos - s);
-                return false;
-            }, null);
+                var p = GetDeclare(mems[i]);
+                if (p != null && !p.IsStatic)
+                {
+                    pos += GetMemberPadding(p, pos);
+                    p.Address = Addr32.NewRO(Reg32.EBP, pos - stackSize);
+                    pos += p.Type.Size;
+                }
+            }
             codes.Add(I386.Enter((ushort)stackSize, (byte)Level));
         }
         var n = FullName;
@@ -237,15 +262,13 @@
         if (!IsTerminated)
         {
             var list = new ArrayList();
-            ForEachMembers(\(p : VarDeclare, pos : int) =>
+            var mems = members.Values;
+            for (int i = 0; i < mems.Length; i++)
             {
-                list.Add(p);
-                return false;
-            }, null);
-            var args = new VarDeclare[list.Count];
-            for (int i = 0; i < args.Length; i++)
-                args[i] = list.Get(i) as VarDeclare;
-            AddDestructors(codes, args);
+                var p = GetDeclare(mems[i]);
+                if (p != null) list.Add(p);
+            }
+            AddDestructors(codes, ToVarDeclareArray(list));
         }
         codes.Add(destruct);
         AfterAddCodes(codes);
