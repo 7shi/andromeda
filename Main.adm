@@ -4,6 +4,7 @@ var start = DateTime.Now;
 
 var root = new Root;
 readDir("lib-Core");
+readDir("lib-System");
 parse("not-Test.adm");
 
 printfln("コンパイルしています...");
