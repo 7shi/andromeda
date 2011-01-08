@@ -1,4 +1,4 @@
 syntax: glob
 _cleanup.bat
 output.exe
-admc.exe
+c*.exe

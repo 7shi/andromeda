@@ -1,0 +1,90 @@
+﻿/// バグチェック
+
+_Finish _finish;
+
+
+struct Test1 { var Data = new byte[10]; }
+Test1 t1;
+
+var rawaddr = \v => addrof t1.Data[v + 2];
+printfln("t1.Data = %p", addrof t1.Data);
+printfln("rawaddr(5) = %p", rawaddr(5));
+
+struct Test2
+{
+	Test1 t1;
+	
+	virtual get_Size
+	{
+		return sizeof t1;
+	}
+	
+	virtual get_Prop {}
+	
+	function Test
+	{
+		return Prop;
+	}
+}
+
+Test2 t2;
+printfln("t2.Size = %d", t2.Size);
+
+struct Test3
+{
+	function Test
+	{
+		return Size;
+	}
+}
+
+struct Test3 : Test2 {}
+
+
+var a = new ushort[5];
+for (int i = 0; i < 5; i++) a[i] = i + 1;
+
+function test
+{
+  return a;
+}
+
+printfln("((uint*)a)[0] = %x", ((uint*)a)[0]);
+printfln("((uint*)test())[0] = %x", ((uint*)test())[0]);
+var test_a = (uint*)test();
+printfln("test_a[0] = %x", test_a[0]);
+
+
+class StringMember
+{
+	var Name = "name";
+	function Test { printfln(__FUNCTION__); }
+}
+
+var smem = new StringMember;
+printfln("smem.Name.Length = %d", smem.Name.Length);
+
+var delg = \ => printfln("smem.Name.Length = %d", smem.Name.Length);
+delg();
+
+
+class InitTest
+{
+	init();
+	var a : object;
+	function init { a = new object; }
+}
+
+var it = new InitTest;
+printfln("it.a = %p", it.a);
+
+
+class LeakTest
+{
+	function dtor { printfln(__FUNCTION__); }
+	static function Show(lt : LeakTest) { printfln("%p: %s", lt, typeof(lt).Name); }
+	static function get_New { return new LeakTest; }
+}
+
+var lt = LeakTest.New;
+LeakTest.Show(LeakTest.New);

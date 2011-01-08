@@ -1,0 +1,19 @@
+﻿/// 部分クラス
+
+_Finish _finish;
+
+class Test
+{
+	function Show
+	{
+		printfln("%d", a);
+	}
+}
+
+var t = new Test;
+t.Show();
+
+class Test
+{
+	int a = 1234;
+}
