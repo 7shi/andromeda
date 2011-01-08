@@ -5,7 +5,9 @@ var start = DateTime.Now;
 var root = new Root;
 readDir("lib-Core");
 readDir("lib-System");
-parse("not-Test.adm");
+readDir("CompilerLib");
+readDir("Andromeda");
+parse("Main.adm");
 
 printfln("型をチェックしています...");
 var module = new Module;
@@ -15,7 +17,7 @@ root.AddCodes(codes);
 module.Text.OpCodes = codes.ToArray();
 
 printfln("リンクしています...");
-var output = "a.exe";
+var output = "admc.exe";
 module.Link(output);
 printfln("出力しました: %s", output);
 
