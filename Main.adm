@@ -3,10 +3,8 @@ println();
 var start = DateTime.Now;
 
 var root = new Root;
-var files = Directory.GetFiles("lib-Core");
-for (int i = 0; i < files.Length; i++)
-    Parse(files[i]);
-Parse("not-Test.adm");
+readDir("lib-Core");
+parse("not-Test.adm");
 
 printfln("コンパイルしています...");
 var module = new Module;
@@ -25,7 +23,7 @@ printfln("所要時間: %dms", end.Sub(start).TotalMilliseconds);
 
 { _Finish _finish; }
 
-function Parse(src : string)
+function parse(src : string)
 {
     var src2 = src.Replace("\\", "/");
     printfln("パースしています: %s", src2);
@@ -37,4 +35,18 @@ function Parse(src : string)
     }
     else
         raise("ファイルが開けません。");
+}
+
+function readDir(dir : string)
+{
+    var dirs = Directory.GetDirectories(dir);
+    for (int i = 0; i < dirs.Length; i++)
+        readDir(dirs[i]);
+    var files = Directory.GetFiles(dir);
+    for (int i = 0; i < files.Length; i++)
+    {
+        var file = files[i];
+        if (Path.GetExtension(file).ToLower() == ".adm")
+            parse(file);
+    }
 }
