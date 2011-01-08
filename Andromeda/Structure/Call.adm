@@ -165,26 +165,25 @@
         var cleanup = NeedsDtor(val);
         if (cleanup)
             codes.Add(I386.SubR(Reg32.ESP, Val32.NewI(4)));
-        AddCallCodes2(codes, args_array, callType, \() =>
+        AddCallCodes1(codes, args_array);
+        if (!cleanup)
         {
-            if (!cleanup)
-            {
-                val.AddCodesV(codes, "mov", null);
-                codes.Add(I386.Call(Reg32.EAX));
-            }
-            else
-            {
-                var ad = Addr32.NewRO(Reg32.ESP, args_array.Length * 4);
-                val.AddCodesV(codes, "mov", ad);
-                codes.Add(I386.CallA(ad));
-                codes.Add(I386.Push(Reg32.EAX));
-                var ad2 = Addr32.NewRO(Reg32.ESP, 4);
-                if (callType == CallType.CDecl)
-                    ad2.Add(args_array.Length * 4);
-                val.Type.AddDestructorA(codes, ad2);
-                codes.Add(I386.Pop(Reg32.EAX));
-            }
-        });
+            val.AddCodesV(codes, "mov", null);
+            codes.Add(I386.Call(Reg32.EAX));
+        }
+        else
+        {
+            var ad = Addr32.NewRO(Reg32.ESP, args_array.Length * 4);
+            val.AddCodesV(codes, "mov", ad);
+            codes.Add(I386.CallA(ad));
+            codes.Add(I386.Push(Reg32.EAX));
+            var ad2 = Addr32.NewRO(Reg32.ESP, 4);
+            if (callType == CallType.CDecl)
+                ad2.Add(args_array.Length * 4);
+            val.Type.AddDestructorA(codes, ad2);
+            codes.Add(I386.Pop(Reg32.EAX));
+        }
+        AddCallCodes2(codes, args_array, callType);
         if (cleanup)
             codes.Add(I386.AddR(Reg32.ESP, Val32.NewI(4)));
     }
@@ -197,10 +196,9 @@
 
     static function AddCallCodes(codes : OpModule, f : Function, args : NodeBase[])
     {
-        AddCallCodes2(codes, args, f.CallType, \() =>
-        {
-            codes.Add(I386.CallD(f.First));
-        });
+        AddCallCodes1(codes, args);
+        codes.Add(I386.CallD(f.First));
+        AddCallCodes2(codes, args, f.CallType);
     }
 
     static function NeedsDtor(arg : NodeBase) : bool
@@ -220,11 +218,14 @@
         return false;
     }
 
-    static function AddCallCodes2(codes : OpModule, args : NodeBase[], type : CallType, delg)
+    static function AddCallCodes1(codes : OpModule, args : NodeBase[])
     {
         for (int i = args.Length - 1; i >= 0; i--)
             args[i].AddCodesV(codes, "push", null);
-        delg();
+    }
+
+    static function AddCallCodes2(codes : OpModule, args : NodeBase[], type : CallType)
+    {
         if (type == CallType.CDecl && args.Length > 0)
         {
             int p = 4;
@@ -248,6 +249,7 @@
             codes.Add(I386.AddR(Reg32.ESP, Val32.New((byte)(args.Length * 4))));
         }
     }
+
     var type : TypeBase;
     bool doneInferType = false;
 
