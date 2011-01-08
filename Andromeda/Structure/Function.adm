@@ -122,9 +122,12 @@
 
     override get_HasStackFrame { return true; }
 
+    static var CompileVerbose = false;
+
     override AddCodes(codes : OpModule)
     {
-        printfln("コンパイルしています: %s", FullName);
+        if (CompileVerbose)
+            printfln("コンパイルしています: %s", FullName);
         if (IsVirtual)
         {
             var st = Parent as Define;

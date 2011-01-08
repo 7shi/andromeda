@@ -359,4 +359,13 @@
         if (b == null) return false;
         return b.CanUpCast(st);
     }
+
+    static var CompileVerbose = false;
+
+    override AddCodes(codes : OpModule)
+    {
+        if (CompileVerbose)
+            printfln("コンパイルしています: %s", FullName);
+        base.override_AddCodes(codes);
+    }
 }

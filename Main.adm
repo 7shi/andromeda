@@ -28,7 +28,7 @@ function compile(src : string)
     readDir(root, "lib-System");
     parse(root, src);
 
-    printfln("型をチェックしています...");
+    printfln("コンパイルしています...");
     var module = new Module;
     module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
     var codes = OpModule.Create(module);
