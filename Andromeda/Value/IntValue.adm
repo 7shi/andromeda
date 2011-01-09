@@ -1,7 +1,7 @@
 ﻿class IntValue : NodeBase
 {
     int value;
-    function get_Value { return value; }
+    virtual get_Value { return value; }
 
     static var zero : IntValue = New(0);
     static function get_Zero { return zero; }

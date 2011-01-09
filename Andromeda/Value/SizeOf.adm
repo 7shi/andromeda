@@ -10,7 +10,7 @@
         return ret;
     }
 
-    function get_Value : int
+    override get_Value : int
     {
         if (this.target is Variant)
         {
