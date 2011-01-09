@@ -23,6 +23,7 @@ function compile(src : string)
     println();
     var s = DateTime.Now;
 
+    printfln("パースしています...");
     var root = new Root;
     readDir(root, "lib-Core");
     //readDir(root, "lib-System");
@@ -46,7 +47,7 @@ function compile(src : string)
 function parse(root : Root, src : string)
 {
     var src2 = src.Replace("\\", "/");
-    printfln("パースしています: %s", src2);
+    //printfln("パースしています: %s", src2);
     var sr = new StreamReader;
     if (sr.Open(src))
     {
