@@ -1,0 +1,12 @@
+Hello, Pipe-Forward!
+Hello, Pipe-Back!
+Hello, Pipe-Forward!
+Hello, Pipe-Back!
+inc(5) = 6
+5 |> inc = 6
+div(12, sub(8, 2)) = 2
+2 |> sub(8) |> div(12) = 2
+div(sub(9, 3), 2) = 3
+9 |< sub(3) |< div(2) = 3
+
+Press [Enter] to exit.

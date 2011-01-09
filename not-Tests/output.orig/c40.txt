@@ -1,0 +1,5 @@
+a: 5
+a += 2: 7
+a += 3: 10
+
+Press [Enter] to exit.

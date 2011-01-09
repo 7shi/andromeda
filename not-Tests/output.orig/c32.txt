@@ -1,0 +1,11 @@
+t1.Value = 3
+t1.Value = 5
+GetTest1().Value = 5
+GetTest1().Value = 7
+Test1.test(9): Value = 9
+t2.get_Test1().Value = 9
+t2.get_Test1().Value = 11
+t2.Test1.Value = 11
+t2.Test1.Value = 11
+
+Press [Enter] to exit.

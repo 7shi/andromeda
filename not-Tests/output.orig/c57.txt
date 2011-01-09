@@ -1,0 +1,14 @@
+t1.Data = 0040C044
+rawaddr(5) = 0040C04B
+t2.Size = 4
+((uint*)a)[0] = 20001
+((uint*)test())[0] = 20001
+test_a[0] = 20001
+smem.Name.Length = 4
+smem.Name.Length = 4
+it.a = 00144648
+001446B0: LeakTest
+LeakTest.dtor
+LeakTest.dtor
+
+Press [Enter] to exit.

@@ -1,0 +1,7 @@
+p = ((1, 2), (3, 4))
+p = ((9, 2), (3, 8))
+Member Test
+Member Test
+Member Test
+
+Press [Enter] to exit.

@@ -1,0 +1,14 @@
+(a, b, c) = (-333 [fffffeb3], 100, 5)
+signed : unsigned
+a > b = 0 : 1
+a < b = 1 : 0
+a * b = ffff7dec : ffff7dec
+a / b = fffffffd : 028f5c25
+a % b = ffffffdf : 0000003f
+a << 5 = ffffd660 : ffffd660
+a >> 5 = fffffff5 : 07fffff5
+a << c = ffffd660 : ffffd660
+a >> c = fffffff5 : 07fffff5
+s = -1(ffffffff), us = 65535(ffff)
+
+Press [Enter] to exit.

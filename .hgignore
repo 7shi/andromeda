@@ -1,4 +1,6 @@
 syntax: glob
 _cleanup.bat
 output.exe
-c*.exe
+not-Tests/*.exe
+not-Tests/*.diff
+not-Tests/output/

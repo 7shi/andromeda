@@ -1,0 +1,4 @@
+addrof(a) = 00408018 [global]
+addrof(b) = 0012FFB8 [stack]
+
+Press [Enter] to exit.

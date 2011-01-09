@@ -1,0 +1,61 @@
+* new Test1
+00144420: Test1.ctor
+typeof t = Test1
+00144470: Test1.ctor
+00144470: Test2.ctor
+00144420: Test1.dtor
+typeof t = Test2
+__get_refcount(00144470) = 1
+00144420: Test1.ctor
+00144420: Test1.dtor
+00144470: Test2.dtor
+00144470: Test1.dtor
+
+* new Test2
+00144470: Test1.ctor
+00144470: Test2.ctor
+typeof t = Test2
+00144420: Test1.ctor
+00144420: Test2.ctor
+00144420: Test2.dtor
+00144420: Test1.dtor
+00144470: Test2.dtor
+00144470: Test1.dtor
+
+* new Test1[3]
+tt.Length = 3
+typeof tt = Test1[]
+00144470: Test1.ctor
+00144470: Test2.ctor
+tt[0] = 00000000 : (NULL)
+tt[1] = 00144470 : Test2
+tt[2] = 00000000 : (NULL)
+__get_refcount(00144398) = 1
+len(tt) = 3
+00144470: Test2.dtor
+00144470: Test1.dtor
+
+* ArrayList
+00144470: Test1.ctor
+00144420: Test1.ctor
+00144420: Test2.ctor
+00144470: Test1.dtor
+00144420: Test2.dtor
+00144420: Test1.dtor
+
+* argument
+00144420: Test1.ctor
+00144420: Test1.dtor
+__get_refcount(new Test1) = 1
+00144420: Test1.ctor
+00144420: Test1.dtor
+__get_refcount(newTest1()) = 1
+
+* return value
+00144420: Test1.ctor
+__get_refcount(00144420) = 1
+00144470: Test1.ctor
+00144470: Test1.dtor
+00144420: Test1.dtor
+
+Press [Enter] to exit.

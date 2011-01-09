@@ -1,0 +1,4 @@
+A.test
+test
+
+Press [Enter] to exit.

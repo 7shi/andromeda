@@ -1,0 +1,16 @@
+0040C030 [Test1.ctor] -> 0040C030 [Test1.Show] a = 1
+0012FFB8 [Test1.ctor] -> 0012FFB8 [Test1.Show] a = 4202608
+0012FFB0 [Test1.ctor] -> 0012FFB0 [Test1.Show] a = 2
+0012FFB0 [Test2.ctor] -> 0012FFB0 [Test2.Show] a, b = 2, 3 -> 0012FFB8 [Test1.Show] a = 4
+0012FFB0 [Test1.Show] a = 2
+0012FFB0 [Test1.Show] a = 2
+0012FFB0 [Test2.Show] a, b = 2, 3 -> 0012FFB8 [Test1.Show] a = 4
+0040C030 [Test1.Show] a = 1
+0012FFB0 [Test2.Show] a, b = 2, 3 -> 0012FFB8 [Test1.Show] a = 4
+test2: a, b, c = 2, 3, 4
+0012FFB0 [Test2.dtor] -> 0012FFB0 [Test2.Show] a, b = 2, 3 -> 0012FFB8 [Test1.Show] a = 4
+0012FFB8 [Test1.dtor] -> 0012FFB8 [Test1.Show] a = 4
+0012FFB0 [Test1.dtor] -> 0012FFB0 [Test1.Show] a = 2
+0040C030 [Test1.dtor] -> 0040C030 [Test1.Show] a = 1
+
+Press [Enter] to exit.

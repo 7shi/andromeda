@@ -1,0 +1,12 @@
+sizeof(Test1) = 4
+sizeof(Test2) = 4
+sizeof(Test3) = 8
+
+t2 = 0040C038
+addrof t2.a = 0040C038
+
+t3 = 0040C030
+addrof t3.a = 0040C030
+addrof t3.b = 0040C034
+
+Press [Enter] to exit.

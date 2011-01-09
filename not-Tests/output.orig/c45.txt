@@ -1,0 +1,16 @@
+typeof f = function(var,var):var
+typeof add = function(var,var):var
+f(2, 3) = 5
+
+typeof f2 = delegate(var):var
+f2 = 003B0040
+f2(3) = 5
+
+typeof f3 = delegate((stdcall))(var):var
+f3 = 003B00C0
+f3(2) = 5
+
+delegate(2, f) = 003B0100
+delegate(2, f)(3) = 5
+
+Press [Enter] to exit.

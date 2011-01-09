@@ -1,0 +1,41 @@
+a: addrof = 0012FFA4 (+ 00), sizeof = 4, typeof = var
+b: addrof = 0012FFA8 (+ 04), sizeof = 1, typeof = byte
+c: addrof = 0012FFA9 (+ 05), sizeof = 1, typeof = byte
+d: addrof = 0012FFAC (+ 08), sizeof = 4, typeof = var
+e: addrof = 0012FFB0 (+ 12), sizeof = 1, typeof = byte
+f: addrof = 0012FFB1 (+ 13), sizeof = 1, typeof = byte
+g: addrof = 0012FFB2 (+ 14), sizeof = 2, typeof = short
+
+e = 12, f = 34, g = 5678, h = cafebabe
+
+a = 12, b = 34, c = 56, d = 78
+int: 78563412
+a = 78, b = 56, c = 34, d = 12
+int: 12345678
+
+b[0] = 78, b[1] = 56, b[2] = 34, b[3] = 12
+int: 12345678
+
+b3[0] = 78, b3[1] = 56, b3[2] = 34, b3[3] = 12
+i[0] = 12345678
+i[0] = 1234ffff
+i[0] = 12777777
+
+a = 77, b = 77, c = 77, d = 12
+int: 12777777
+a = be, b = ba, c = fe, d = ca
+int: cafebabe
+b[0] = 78, b[1] = 56, b[2] = 34, b[3] = 12
+int: 12345678
+b[0] = ef, b[1] = be, b[2] = ad, b[3] = de
+int: deadbeef
+
+b1.a : byte = 255, b4 : byte = 0, i1 : int = 256
+a = ff, b = ba, c = fe, d = ca
+int: cafebaff
+a = 0, b = ba, c = fe, d = ca
+int: cafeba00
+a = f0, b = ba, c = fe, d = ca
+int: cafebaf0
+
+Press [Enter] to exit.

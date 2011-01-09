@@ -1,0 +1,4 @@
+[Point.Show] 2, 3
+[Point.Show] 2, 3
+
+Press [Enter] to exit.
