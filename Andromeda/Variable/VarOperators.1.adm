@@ -118,8 +118,7 @@ class VarShiftLeft : VarOperator1
 
     static function New(parent : BlockBase, dest : NodeBase, arg : NodeBase) : VarShiftLeft
     {
-        var ret = new Inc(); Init1(ret, parent, dest, arg); return ret;
-        return Init1(new VarShiftLeft(), parent, dest, arg) as VarShiftLeft;
+        var ret = new VarShiftLeft(); Init1(ret, parent, dest, arg); return ret;
     }
 }
 
