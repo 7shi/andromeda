@@ -132,6 +132,8 @@
         {
             var st = Parent as Define;
             var offset = st.GetOffset(virtptr.Name);
+            if (offset == -1)
+                raise(Abort("offset error: %s", virtptr.Name));
             codes.Add(first);
             codes.Add(I386.MovRA(Reg32.EAX, Addr32.NewRO(Reg32.ESP, 4)));
             codes.Add(I386.Jmp(Addr32.NewRO(Reg32.EAX, offset)));

@@ -216,10 +216,12 @@
             var p = GetDeclare(mems[i]);
             if (p != null)
             {
-                if (p.IsStatic) return -1;
                 pos += GetMemberPadding(p, pos);
-                if (p.Name == name) return pos;
-                pos += p.Type.Size;
+                if (p.Name == name)
+                {
+                    if (p.IsStatic) return -1; else return pos;
+                }
+                if (!p.IsStatic) pos += p.Type.Size;
             }
         }
         return -1;
