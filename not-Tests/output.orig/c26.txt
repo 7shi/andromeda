@@ -1,54 +1,54 @@
 var a[16]
 sizeof(a) = 64
-a = 0040C038
-addrof(a[ 0]) = 0040C038
-addrof(a[ 1]) = 0040C03C
-addrof(a[14]) = 0040C070
-addrof(a[15]) = 0040C074
+a = 0040C030
+addrof(a[ 0]) = 0040C030
+addrof(a[ 1]) = 0040C034
+addrof(a[14]) = 0040C068
+addrof(a[15]) = 0040C06C
 a = { 0, 1, 4, 9, ... }
 
 byte b[16]
 sizeof(b) = 16
-b = 0040C084
-addrof(b[ 0]) = 0040C084
-addrof(b[ 1]) = 0040C085
-addrof(b[14]) = 0040C092
-addrof(b[15]) = 0040C093
+b = 0040C070
+addrof(b[ 0]) = 0040C070
+addrof(b[ 1]) = 0040C071
+addrof(b[14]) = 0040C07E
+addrof(b[15]) = 0040C07F
 
 char c[16]
 sizeof(c) = 32
-c = 0040C000
-addrof(c[ 0]) = 0040C000
-addrof(c[ 1]) = 0040C002
-addrof(c[14]) = 0040C01C
-addrof(c[15]) = 0040C01E
+c = 0040C080
+addrof(c[ 0]) = 0040C080
+addrof(c[ 1]) = 0040C082
+addrof(c[14]) = 0040C09C
+addrof(c[15]) = 0040C09E
 
 struct Test1 { var a, b; }
 Test1 t1[16]
 sizeof(Test1) = 8
 sizeof(t1) = 128
-t1 = 0040C0A4
-addrof(t1[ 0]  ) = 0040C0A4
-addrof(t1[ 0].a) = 0040C0A4
-addrof(t1[ 0].b) = 0040C0A8
-addrof(t1[ 1]  ) = 0040C0AC
-addrof(t1[ 1].a) = 0040C0AC
-addrof(t1[ 1].b) = 0040C0B0
-addrof(t1[14]  ) = 0040C114
-addrof(t1[14].a) = 0040C114
-addrof(t1[14].b) = 0040C118
-addrof(t1[15]  ) = 0040C11C
-addrof(t1[15].a) = 0040C11C
-addrof(t1[15].b) = 0040C120
-0: 0040C0A4 [Test1.Show] a = 0, b = 1
-1: 0040C0AC [Test1.Show] a = 10, b = 11
-2: 0040C0B4 [Test1.Show] a = 20, b = 21
-3: 0040C0BC [Test1.Show] a = 30, b = 31
+t1 = 0040C0A0
+addrof(t1[ 0]  ) = 0040C0A0
+addrof(t1[ 0].a) = 0040C0A0
+addrof(t1[ 0].b) = 0040C0A4
+addrof(t1[ 1]  ) = 0040C0A8
+addrof(t1[ 1].a) = 0040C0A8
+addrof(t1[ 1].b) = 0040C0AC
+addrof(t1[14]  ) = 0040C110
+addrof(t1[14].a) = 0040C110
+addrof(t1[14].b) = 0040C114
+addrof(t1[15]  ) = 0040C118
+addrof(t1[15].a) = 0040C118
+addrof(t1[15].b) = 0040C11C
+0: 0040C0A0 [Test1.Show] a = 0, b = 1
+1: 0040C0A8 [Test1.Show] a = 10, b = 11
+2: 0040C0B0 [Test1.Show] a = 20, b = 21
+3: 0040C0B8 [Test1.Show] a = 30, b = 31
 t1 = { { 0, 1 }, { 10, 11 }, ... }
 
-p = 0040C0A4
-1: 0040C0AC [Test1.Show] a = 10, b = 11
-1: 0040C0AC [Test1.Show] a = 5, b = 7
+p = 0040C0A0
+1: 0040C0A8 [Test1.Show] a = 10, b = 11
+1: 0040C0A8 [Test1.Show] a = 5, b = 7
 
 struct Test2 { var a[2]; }
 Test2 t2[16]

@@ -1,5 +1,5 @@
-t1.Data = 0040C044
-rawaddr(5) = 0040C04B
+t1.Data = 0040C030
+rawaddr(5) = 0040C037
 t2.Size = 4
 ((uint*)a)[0] = 20001
 ((uint*)test())[0] = 20001

@@ -7,10 +7,10 @@
 0012FFB8 [Test.dtor] -> 0012FFB8 [Name.Show] "b"
 0012FFB8 [Name.dtor] -> 0012FFB8 [Name.Show] "b"
 0012FFB4 [Name.dtor] -> 0012FFB4 [Name.Show] "a"
-0040C018 [Name]
-0040C018 [Name.ctor] -> 0040C018 [Name.Show] "a"
-0040C028 [Name]
-0040C028 [Name.ctor] -> 0040C028 [Name.Show] "b"
+0040C030 [Name]
+0040C030 [Name.ctor] -> 0040C030 [Name.Show] "a"
+0040C034 [Name]
+0040C034 [Name.ctor] -> 0040C034 [Name.Show] "b"
 
 i = 0
 0012FF9C [Name]
@@ -55,7 +55,7 @@ test(0) = "stop"
 0012FFB0 [Name.dtor] -> 0012FFB0 [Name.Show] "h"
 0012FFA8 [Name.dtor] -> 0012FFA8 [Name.Show] "f"
 test(1) = "normal"
-0040C028 [Name.dtor] -> 0040C028 [Name.Show] "b"
-0040C018 [Name.dtor] -> 0040C018 [Name.Show] "a"
+0040C034 [Name.dtor] -> 0040C034 [Name.Show] "b"
+0040C030 [Name.dtor] -> 0040C030 [Name.Show] "a"
 
 Press [Enter] to exit.

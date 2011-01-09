@@ -1,32 +1,32 @@
 sizeof(Test) = 4
-Test.b: [0040C00C] 200
+Test.b: [0040C000] 200
 
-t1: [0040C000]
-t1.a: [0040C000] 100
-t1.b: [0040C00C] 200
-Test.Func1: a: [0040C000] 100
-Test.Func1: b: [0040C00C] 200
-Test.Func1: c: [0040C034] 300
-Test.Func2: b: [0040C00C] 201
-Test.Func1: a: [0040C000] 101
-Test.Func1: b: [0040C00C] 202
-Test.Func1: c: [0040C034] 301
-Test.Func2: b: [0040C00C] 203
-Test.Func2: b: [0040C00C] 204
-Test.Func2: b: [0040C00C] 205
+t1: [0040C038]
+t1.a: [0040C038] 100
+t1.b: [0040C000] 200
+Test.Func1: a: [0040C038] 100
+Test.Func1: b: [0040C000] 200
+Test.Func1: c: [0040C004] 300
+Test.Func2: b: [0040C000] 201
+Test.Func1: a: [0040C038] 101
+Test.Func1: b: [0040C000] 202
+Test.Func1: c: [0040C004] 301
+Test.Func2: b: [0040C000] 203
+Test.Func2: b: [0040C000] 204
+Test.Func2: b: [0040C000] 205
 
 t2: [0040C03C]
 t2.a: [0040C03C] 100
-t2.b: [0040C00C] 206
+t2.b: [0040C000] 206
 Test.Func1: a: [0040C03C] 100
-Test.Func1: b: [0040C00C] 206
-Test.Func1: c: [0040C034] 302
-Test.Func2: b: [0040C00C] 207
+Test.Func1: b: [0040C000] 206
+Test.Func1: c: [0040C004] 302
+Test.Func2: b: [0040C000] 207
 Test.Func1: a: [0040C03C] 101
-Test.Func1: b: [0040C00C] 208
-Test.Func1: c: [0040C034] 303
-Test.Func2: b: [0040C00C] 209
-Test.Func2: b: [0040C00C] 210
-Test.Func2: b: [0040C00C] 211
+Test.Func1: b: [0040C000] 208
+Test.Func1: c: [0040C004] 303
+Test.Func2: b: [0040C000] 209
+Test.Func2: b: [0040C000] 210
+Test.Func2: b: [0040C000] 211
 
 Press [Enter] to exit.
