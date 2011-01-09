@@ -177,16 +177,12 @@
                 TypeReference.AddReferenceCodes(codes);
             }
         }
-        if (thisptr == null)
-            return;
-        switch (name)
+        if (thisptr != null)
         {
-        case Define.Initializer:
-            get_ThisStruct().AddInit(codes, Addr32.NewRO(Reg32.EBP, 8));
-            break;
-        case Define.Constructor:
-            get_ThisStruct().AddBeforeCtor(codes);
-            break;
+            if (name == Define.Initializer)
+                get_ThisStruct().AddInit(codes, Addr32.NewRO(Reg32.EBP, 8));
+            else if (name == Define.Constructor)
+                get_ThisStruct().AddBeforeCtor(codes);
         }
     }
 

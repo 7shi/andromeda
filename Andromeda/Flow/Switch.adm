@@ -52,13 +52,8 @@
 
 class CaseBlock
 {
-    var _Case : Case;
-    function get_Case : Case { return _Case; }
-    function set_Case(value : Case) { _Case = value; }
-
-    var _Block : Block;
-    function get_Block : Block { return _Block; }
-    function set_Block(value : Block) { _Block = value; }
+    var Case : Case;
+    var Block : Block;
 }
 
 class SwitchExpr : NodeBase
@@ -106,7 +101,7 @@ class Switch : BlockBase
         for (int i = 0; i < blocks.Count; i++)
         {
             var cb = blocks.Get(i) as CaseBlock;
-            if (cb.Case.Values.Count == 0)
+            if (cb.Case.get_Values().Count == 0)
             {
                 if (def != null)
                     raise(cb.Case.Abort("switch: multiple defaults"));

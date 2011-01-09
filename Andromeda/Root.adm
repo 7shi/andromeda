@@ -31,22 +31,21 @@
 
     override AddExitCodes(codes : OpModule)
     {
-        switch (Subsystem)
+        if (Subsystem == IMAGE_SUBSYSTEM.WINDOWS_CUI ||
+            Subsystem == IMAGE_SUBSYSTEM.WINDOWS_GUI)
         {
-        case IMAGE_SUBSYSTEM.WINDOWS_CUI:
-        case IMAGE_SUBSYSTEM.WINDOWS_GUI:
             if (retVal != null)
                 GetRetVal(this).AddCodesV(codes, "push", null);
             else
                 codes.Add(I386.PushD(Val32.NewI(0)));
             codes.Add(I386.CallA(codes.Module.GetFunction("kernel32.dll", "ExitProcess")));
-            break;
-        default:
+        }
+        else
+        {
             if (retVal != null)
                 GetRetVal(this).AddCodesV(codes, "mov", null);
             else
                 codes.Add(I386.Xor(Reg32.EAX, Reg32.EAX));
-            break;
         }
     }
 
@@ -56,12 +55,10 @@
 
     override AddCodes(codes : OpModule)
     {
-        switch (Subsystem)
+        if (Subsystem == IMAGE_SUBSYSTEM.WINCE_GUI)
         {
-        case IMAGE_SUBSYSTEM.WINCE_GUI:
             codes.Module.Specific.ImageBase = 0x10000;
             codes.Module.Specific.SectionAlignment = 0x1000;
-            break;
         }
         IsCompiling = true;
         OpModule.Root = this;

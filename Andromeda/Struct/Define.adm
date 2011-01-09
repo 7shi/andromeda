@@ -123,7 +123,7 @@
 
     function CallBlock(codes : OpModule, ad : Addr32, b : Block, ct : CallType)
     {
-        if (ad!=null)
+        if (ad != null)
             codes.Add(I386.PushA(ad));
         else
             codes.Add(I386.Push(Reg32.EAX));
