@@ -11,7 +11,7 @@ for (int i = 0; i < tests.Length; i++)
 
 println();
 var end = DateTime.Now;
-printfln("総所要時間: %dms", end.Sub(start).TotalMilliseconds);
+printfln("総所要時間: %s", end.Sub(start).ToString());
 
 { _Finish _finish; }
 
@@ -41,7 +41,7 @@ function compile(src : string)
     printfln("出力しました: %s", output);
 
     var e = DateTime.Now;
-    printfln("所要時間: %dms", e.Sub(s).TotalMilliseconds);
+    printfln("所要時間: %s", e.Sub(s).ToString());
 }
 
 function parse(root : Root, src : string)

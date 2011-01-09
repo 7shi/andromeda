@@ -11,6 +11,16 @@
     {
         return Ticks.Div32((uint)10000);
     }
+
+    function ToString
+    {
+        var tsec = TotalSeconds;
+        var h = tsec / 3600;
+        var m = (tsec / 60) % 60;
+        var s = tsec % 60;
+        var s2 = Ticks.Low % 10000000;
+        return string.Format("%02d:%02d:%02d.%07d", h, m, s, s2);
+    }
 }
 
 class DateTime
