@@ -134,7 +134,7 @@
         codes.Add(I386.Pop(Reg32.EAX));
     }
 
-    function get_UseGC : bool
+    virtual get_UseGC : bool
     {
         if (IsArray) return true;
         var t = get_Type() as TypeStruct;

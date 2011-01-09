@@ -110,7 +110,7 @@
         return type = Types.GetTypeRoot("string");
     }
 
-    function get_UseGC : bool
+    override get_UseGC : bool
     {
         return true;
     }
