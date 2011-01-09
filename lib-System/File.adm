@@ -93,7 +93,7 @@ class Directory
             while (FindNextFile(h, fd));
             FindClose(h);
         }
-        ret.SortBy(string.Compare);
+        ret.Sort();
         return ret.ToArray();
     }
 

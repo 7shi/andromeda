@@ -68,4 +68,17 @@
 	{
 		return IndexOf(s) != -1;
 	}
+
+	static function FromArray(src : string[])
+	{
+		var ret = new StringList;
+		for (int i = 0; i < src.Length; i++)
+			ret.Add(src[i]);
+		return ret;
+	}
+
+	function Sort
+	{
+		SortBy(string.Compare);
+	}
 }
