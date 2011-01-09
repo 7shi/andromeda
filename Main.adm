@@ -6,8 +6,14 @@ for (int i = 0; i < tests.Length; i++)
 {
     var adm = tests[i];
     if (Path.GetExtension(adm) == ".adm")
-        compile(adm);
+        compile(adm, Path.ChangeExtension(adm, ".exe"), false);
 }
+
+println();
+var t1 = DateTime.Now;
+printfln("ここまでの所要時間: %s", t1.Sub(start).ToString());
+
+compile("Main.adm", "admc.exe", true);
 
 println();
 var end = DateTime.Now;
@@ -15,21 +21,30 @@ printfln("総所要時間: %s", end.Sub(start).ToString());
 
 { _Finish _finish; }
 
-function compile(src : string)
+function compile(src : string, output : string, verbose : bool)
 {
-    var output = Path.ChangeExtension(src, ".exe");
     if (File.Exists(output)) return;
 
     println();
     var s = DateTime.Now;
 
-    printfln("パースしています...");
+    if (!verbose)
+        printfln("パースしています...");
     var root = new Root;
-    readDir(root, "lib-Core");
-    //readDir(root, "lib-System");
-    parse(root, src);
+    readDir(root, verbose, "lib-Core");
+    if (verbose)
+    {
+        readDir(root, verbose, "lib-System");
+        readDir(root, verbose, "CompilerLib");
+        readDir(root, verbose, "Andromeda");
+    }
+    parse(root, verbose, src);
 
-    printfln("コンパイルしています...");
+    if (verbose)
+        printfln("型をチェックしています...");
+    else
+        printfln("コンパイルしています...");
+    Function.CompileVerbose = verbose;
     var module = new Module;
     module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
     var codes = OpModule.Create(module);
@@ -44,10 +59,11 @@ function compile(src : string)
     printfln("所要時間: %s", e.Sub(s).ToString());
 }
 
-function parse(root : Root, src : string)
+function parse(root : Root, verbose : bool, src : string)
 {
     var src2 = src.Replace("\\", "/");
-    //printfln("パースしています: %s", src2);
+    if (verbose)
+        printfln("パースしています: %s", src2);
     var sr = new StreamReader;
     if (sr.Open(src))
     {
@@ -58,16 +74,16 @@ function parse(root : Root, src : string)
         raise("ファイルが開けません。");
 }
 
-function readDir(root : Root, dir : string)
+function readDir(root : Root, verbose : bool, dir : string)
 {
     var dirs = Directory.GetDirectories(dir);
     for (int i = 0; i < dirs.Length; i++)
-        readDir(root, dirs[i]);
+        readDir(root, verbose, dirs[i]);
     var files = Directory.GetFiles(dir);
     for (int i = 0; i < files.Length; i++)
     {
         var file = files[i];
         if (Path.GetExtension(file).ToLower() == ".adm")
-            parse(root, file);
+            parse(root, verbose, file);
     }
 }
