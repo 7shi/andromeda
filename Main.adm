@@ -44,7 +44,7 @@ function compile(src : string, output : string, verbose : bool)
         printfln("型をチェックしています...");
     else
         printfln("コンパイルしています...");
-    Function.CompileVerbose = verbose;
+    Define.CompileVerbose = verbose;
     var module = new Module;
     module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
     var codes = OpModule.Create(module);
