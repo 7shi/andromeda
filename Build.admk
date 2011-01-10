@@ -1,6 +1,6 @@
 verbose
 dir Core/lib
-dir lib-System
+dir System/lib
 dir CompilerLib
 dir Andromeda
 src admc.adm
