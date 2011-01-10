@@ -1,7 +1,5 @@
 syntax: glob
-_cleanup.bat
-output.exe
 admc.exe
-not-Tests/*.exe
-not-Tests/*.diff
-not-Tests/output/
+Tests/*.exe
+Tests/*.diff
+Tests/output/
