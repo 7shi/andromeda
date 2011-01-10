@@ -49,7 +49,7 @@
         return Var.New(parent, retVal);
     }
 
-    var members : ListDictionary = new ListDictionary();
+    var members = new Hashtable();
     virtual GetMember(name : string) : object
     {
         if (members.ContainsKey(name))
@@ -481,40 +481,5 @@
     {
         for (int i = 0; i < nbs.Length; i++)
             AddSentence(nbs[i]);
-    }
-}
-
-class ListDictionary
-{
-    var dict : Hashtable = new Hashtable();
-    var list : ArrayList = new ArrayList();
-
-    function Add(key : string, value : object)
-    {
-        dict.Add(key, value);
-        list.Add(value);
-    }
-
-    function get_Count : int
-    {
-        return list.Count;
-    }
-
-    function get_Values
-    {
-        return list.ToArray();
-    }
-
-    function Get(name : string) : object
-    {
-        if (dict.ContainsKey(name))
-            return dict.Get(name);
-        else
-            return null;
-    }
-
-    function ContainsKey(name : string) : bool
-    {
-        return dict.ContainsKey(name);
     }
 }
