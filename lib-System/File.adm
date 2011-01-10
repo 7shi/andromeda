@@ -77,11 +77,11 @@ class Directory
         return attrs != -1 && (attrs & FILE_ATTRIBUTE_DIRECTORY) != 0;
     }
 
-    static function getFiles(path : string, delg)
+    static function getFiles(path : string, pattern : string, delg)
     {
         var ret = new StringList;
         var fd = new WIN32_FIND_DATA;
-        var h = FindFirstFile(Path.Combine(path, "*"), fd);
+        var h = FindFirstFile(Path.Combine(path, pattern), fd);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -99,12 +99,22 @@ class Directory
 
     static function GetFiles(path : string)
     {
-        return getFiles(path, \fn => File.Exists(fn));
+        return getFiles(path, "*", \fn => File.Exists(fn));
+    }
+
+    static function GetFilesWith(path : string, pattern : string)
+    {
+        return getFiles(path, pattern, \fn => File.Exists(fn));
     }
 
     static function GetDirectories(path : string)
     {
-        return getFiles(path, \fn => Directory.Exists(fn));
+        return getFiles(path, "*", \fn => Directory.Exists(fn));
+    }
+
+    static function GetDirectoriesWith(path : string, pattern : string)
+    {
+        return getFiles(path, pattern, \fn => Directory.Exists(fn));
     }
 }
 
