@@ -1,5 +1,5 @@
 verbose
-dir lib-Core
+dir Core/lib
 dir lib-System
 dir CompilerLib
 dir Andromeda
