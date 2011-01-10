@@ -6,5 +6,5 @@ dir lib-Core
 dir lib-System
 dir CompilerLib
 dir Andromeda
-src Main.adm
+src admc.adm
 exe admc.exe
