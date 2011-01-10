@@ -1,19 +1,14 @@
 ﻿printfln("Andromeda ver.%s", Root.VERSION);
 var start = DateTime.Now;
 
-var tests = Directory.GetFiles("Tests");
-for (int i = 0; i < tests.Length; i++)
+var admk = Directory.GetFilesWith(".", "*.admk");
+if (admk.Length > 0)
 {
-    var adm = tests[i];
-    if (Path.GetExtension(adm) == ".adm")
-        compile(adm, Path.ChangeExtension(adm, ".exe"), false);
+    for (int i = 0; i < admk.Length; i++)
+        readAdmk(admk[i]);
 }
-
-println();
-var t1 = DateTime.Now;
-printfln("ここまでの所要時間: %s", t1.Sub(start).ToString());
-
-compile("Main.adm", "admc.exe", true);
+else
+    compile(null, null, "output.exe", true);
 
 println();
 var end = DateTime.Now;
@@ -21,7 +16,70 @@ printfln("総所要時間: %s", end.Sub(start).ToString());
 
 { _Finish _finish; }
 
-function compile(src : string, output : string, verbose : bool)
+function readAdmk(admk : string)
+{
+    var sr = new StreamReader;
+    if (sr.Open(admk))
+    {
+        var line : string;
+        var srcs = new StringList;
+        var libs = new StringList;
+        var verbose = false;
+        var adms : string[];
+        var src = new string[1];
+        var libsa : string[];
+        while ((line = sr.ReadLine()) != null)
+        {
+            if (line.StartsWith("#")) continue;
+            int p = line.IndexOfChar(' ');
+            var cmd : string;
+            var tgt : string;
+            if (p < 0)
+            {
+                cmd = line;
+                tgt = null;
+            }
+            else
+            {
+                cmd = line.Substring(0, p);
+                tgt = line.SubstringFrom(p + 1);
+            }
+            switch (cmd)
+            {
+            case "verbose":
+                verbose = true;
+                break;
+            case "dir":
+                libs.Add(tgt);
+                break;
+            case "src":
+                srcs.Add(tgt);
+                break;
+            case "exe":
+                compile(srcs.ToArray(), libs.ToArray(), tgt, verbose);
+                srcs.Clear();
+                libs.Clear();
+                verbose = false;
+                break;
+            case "foreach":
+                adms = Directory.GetFilesWith(tgt, "*.adm");
+                libsa = libs.ToArray();
+                for (int i = 0; i < adms.Length; i++)
+                {
+                    src[0] = adms[i];
+                    compile(src, libsa, Path.ChangeExtension(src[0], ".exe"), verbose);
+                }
+                srcs.Clear();
+                libs.Clear();
+                verbose = false;
+                break;
+            }
+        }
+        sr.Close();
+    }
+}
+
+function compile(srcs : string[], libs : string[], output : string, verbose : bool)
 {
     if (File.Exists(output)) return;
 
@@ -31,14 +89,28 @@ function compile(src : string, output : string, verbose : bool)
     if (!verbose)
         printfln("パースしています...");
     var root = new Root;
-    readDir(root, verbose, "lib-Core");
-    if (verbose)
+    if (libs != null)
     {
-        readDir(root, verbose, "lib-System");
-        readDir(root, verbose, "CompilerLib");
-        readDir(root, verbose, "Andromeda");
+        for (int i = 0; i < libs.Length; i++)
+            readDir(root, verbose, libs[i]);
     }
-    parse(root, verbose, src);
+    else
+    {
+        var dirs = Directory.GetDirectories(".");
+        for (int i = 0; i < dirs.Length; i++)
+            readDir(root, verbose, Path.GetFileName(dirs[i]));
+    }
+    if (srcs != null)
+    {
+        for (int i = 0; i < srcs.Length; i++)
+            parse(root, verbose, srcs[i]);
+    }
+    else
+    {
+        var files = Directory.GetFilesWith(".", "*.adm");
+        for (int i = 0; i < files.Length; i++)
+            parse(root, verbose, Path.GetFileName(files[i]));
+    }
 
     if (verbose)
         printfln("型をチェックしています...");
@@ -53,7 +125,7 @@ function compile(src : string, output : string, verbose : bool)
 
     printfln("リンクしています...");
     module.Link(output);
-    printfln("出力しました: %s", output);
+    printfln("出力しました: %s", output.Replace("\\", "/"));
 
     var e = DateTime.Now;
     printfln("所要時間: %s", e.Sub(s).ToString());

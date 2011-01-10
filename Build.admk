@@ -1,0 +1,10 @@
+dir lib-Core
+foreach Tests
+
+verbose
+dir lib-Core
+dir lib-System
+dir CompilerLib
+dir Andromeda
+src Main.adm
+exe admc.exe
