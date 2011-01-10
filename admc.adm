@@ -62,11 +62,15 @@ function readAdmk(admk : string)
                 verbose = false;
                 break;
             case "foreach":
-                adms = Directory.GetFilesWith(tgt, "*.adm");
+                if (tgt != null)
+                    adms = Directory.GetFilesWith(tgt, "*.adm");
+                else
+                    adms = Directory.GetFilesWith(".", "*.adm");
                 libsa = libs.ToArray();
                 for (int i = 0; i < adms.Length; i++)
                 {
                     src[0] = adms[i];
+                    if (tgt == null) src[0] = Path.GetFileName(src[0]);
                     compile(src, libsa, Path.ChangeExtension(src[0], ".exe"), verbose);
                 }
                 srcs.Clear();
