@@ -1,5 +1,3 @@
 syntax: glob
 admc.exe
-Tests/*.exe
-Tests/*.diff
-Tests/output/
+Core/tests/*.exe
