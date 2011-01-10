@@ -1,4 +1,0 @@
-addrof(a) = 00408030 [global]
-addrof(b) = 0012FFB8 [stack]
-
-Press [Enter] to exit.

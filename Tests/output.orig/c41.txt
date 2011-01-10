@@ -1,6 +1,0 @@
-typeof p1 = Point
-typeof p2 = Point
-x = 1, y = 2
-x = 3, y = 4
-
-Press [Enter] to exit.

@@ -1,9 +1,0 @@
-mul2(3) = 6
-typeof curried = function(var):delegate(var):var
-
-typeof curried3 = delegate(var):var
-curried3(2) = 6
-
-curried(3)(2) = 6
-
-Press [Enter] to exit.

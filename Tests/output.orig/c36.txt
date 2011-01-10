@@ -1,3 +1,0 @@
-f(5, 3) = 2
-
-Press [Enter] to exit.

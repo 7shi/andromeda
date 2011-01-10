@@ -1,8 +1,0 @@
-Vendor: GenuineIntel
-Family: f
-Model: 2
-Stepping: 7
-Instruction: FPU CMOV MMX FXSR SSE SSE2
-Brand:               Intel(R) Pentium(R) 4 CPU 2.40GHz
-
-Press [Enter] to exit.

@@ -1,6 +1,0 @@
-a = 2, b = 3
-add(a * b, 4) = 10
-sub(9, 3) = 6
-sub(11, 3) = 8
-
-Press [Enter] to exit.

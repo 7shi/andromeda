@@ -1,7 +1,0 @@
-test1 = 0040C030
-0040C030 [Test.Show] a = 1
-test2 = 00144498
-00144498 [Test.Show] a = 1
-00144498 [Test.Show] a = 2
-
-Press [Enter] to exit.
