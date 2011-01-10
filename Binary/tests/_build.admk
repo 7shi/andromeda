@@ -1,0 +1,5 @@
+verbose
+dir ..\..\Core\lib
+dir ..\..\System\lib
+dir ..\lib
+exe test.exe

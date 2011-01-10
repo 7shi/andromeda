@@ -93,7 +93,7 @@ function compile(srcs : string[], libs : string[], output : string, verbose : bo
     if (!verbose)
         printfln("パースしています...");
     var root = new Root;
-    if (libs != null)
+    if (libs != null && libs.Length > 0)
     {
         for (int i = 0; i < libs.Length; i++)
             readDir(root, verbose, libs[i]);
@@ -104,7 +104,7 @@ function compile(srcs : string[], libs : string[], output : string, verbose : bo
         for (int i = 0; i < dirs.Length; i++)
             readDir(root, verbose, Path.GetFileName(dirs[i]));
     }
-    if (srcs != null)
+    if (srcs != null && srcs.Length > 0)
     {
         for (int i = 0; i < srcs.Length; i++)
             parse(root, verbose, srcs[i]);
