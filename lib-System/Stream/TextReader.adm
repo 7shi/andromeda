@@ -52,7 +52,7 @@
 		{
 			var ch = ReadChar();
 			if (ch == -1)
-				break;
+				return null;
 			else if (ch == '\n')
 				break;
 			else if (ch == '\r')
@@ -62,7 +62,6 @@
 			}
 			buffer.AppendChar(ch);
 		}
-		if (buffer.Length == 0) return null;
 		return buffer.ToString();
 	}
 }
