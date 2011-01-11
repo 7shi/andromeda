@@ -125,4 +125,16 @@
 		}
 		return false;
 	}
+	
+	function Sort()
+	{
+		var listk = keys.Clone();
+		var listv = new ArrayList();
+		listk.Sort();
+		for (int i = 0; i < listk.Count; i++)
+			listv.Add(Get(listk.Get(i)));
+		Clear();
+		for (int i = 0; i < listk.Count; i++)
+			Add(listk.Get(i), listv.Get(i));
+	}
 }
