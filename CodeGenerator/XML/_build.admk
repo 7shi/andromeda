@@ -1,0 +1,6 @@
+verbose
+dir ..\..\Core\lib
+dir ..\..\System\lib
+dir Excel
+dir Modules
+exe gen-XML.exe

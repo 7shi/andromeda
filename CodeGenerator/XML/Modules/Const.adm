@@ -1,0 +1,70 @@
+﻿class CodeGenerator
+{
+	AddModule("const", this.Const);
+	
+	function Const
+	{
+		var prefix = GetColumn(1);
+		if (prefix == null) prefix = "";
+		var types  = new StringList;
+		var names  = new StringList;
+		var values = new StringList;
+		int max_type = 0, max_name = 0, max_value = 0;
+		while (ReadLine())
+		{
+			var type = GetColumn(0);
+			var name = GetColumn(1);
+			var value = GetColumn(2);
+			if (string.IsNullOrEmpty(type)
+				|| string.IsNullOrEmpty(name)
+				|| string.IsNullOrEmpty(value))
+				break;
+			types.Add(type);
+			names.Add(name);
+			values.Add(value);
+			max_type  = Math.Max(max_type , type .Length);
+			max_name  = Math.Max(max_name , name .Length);
+			max_value = Math.Max(max_value, value.Length);
+		}
+		
+		for (int i = 0; i < types.Count; i++)
+		{
+			WriteLineFormat("const %s %s%s = %s;",
+				types.Get(i).PadRight(max_type),
+				prefix, names.Get(i).PadRight(max_name),
+				values.Get(i).PadLeft(max_value));
+		}
+		if (prefix == "") return;
+		
+		WriteLine("");
+		WriteLineFormat("function %sParse(s : string)", prefix);
+		WriteLine("{");
+		WriteLine("\tswitch (s)");
+		WriteLine("\t{");
+		for (int i = 0; i < types.Count; i++)
+		{
+			var n = names.Get(i);
+			WriteLineFormat("\t\tcase %s: return %s%s;",
+				("\"" + n + "\"").PadRight(max_name + 2),
+				prefix, n);
+		}
+		WriteLine("\t}");
+		WriteLine("\treturn -1;");
+		WriteLine("}");
+		
+		WriteLine("");
+		WriteLineFormat("function %sToString(value)", prefix);
+		WriteLine("{");
+		WriteLine("\tswitch (value)");
+		WriteLine("\t{");
+		for (int i = 0; i < types.Count; i++)
+		{
+			var n = names.Get(i);
+			WriteLineFormat("\t\tcase %s%s: return \"%s\";",
+				prefix, n.PadRight(max_name), n);
+		}
+		WriteLine("\t}");
+		WriteLine("\treturn string.Format(\"0x%%X\", value);");
+		WriteLine("}");
+	}
+}

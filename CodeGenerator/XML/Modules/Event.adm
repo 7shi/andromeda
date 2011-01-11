@@ -1,0 +1,171 @@
+﻿class CodeGenerator
+{
+	AddModule("event", this.Event);
+	
+	function Event()
+	{
+		if (LineLength < 2)
+		{
+			Error("event: 引数がありません。");
+			return;
+		}
+		
+		const string ovr = ":";
+		
+		class NameType
+		{
+			var name = "", type = "";
+			
+			function get_IsEmpty
+			{
+				return string.IsNullOrEmpty(name) || string.IsNullOrEmpty(type);
+			}
+			
+			function get_IsOverride
+			{
+				return name.StartsWith(ovr);
+			}
+			
+			function get_Name
+			{
+				if (IsOverride) return name.SubstringFrom(ovr.Length);
+				return name;
+			}
+		}
+		
+		class Message : StringList
+		{
+			var nmtp : NameType;
+			function get_Name { return nmtp.Name; }
+			function get_Type { return nmtp.type; }
+		}
+		
+		var className = GetColumn(1);
+		var procName  = GetColumn(2);
+		
+		var nmts = new ArrayList;
+		var msgs = new ArrayList;
+		var cmds = new ArrayList;
+		
+		var prevm : Message = null;
+		int max_type = 0, max_name = 0;
+		while (ReadLine())
+		{
+			var nmtp = new NameType;
+			nmtp.name = GetColumn(0);
+			nmtp.type = GetColumn(1);
+			var msg1 = GetColumn(2);
+			var msg2 = GetColumn(3);
+			if (nmtp.IsEmpty)
+			{
+				if (string.IsNullOrEmpty(msg1))
+					break;
+				else
+				{
+					if (prevm == null)
+						Error("event: 引数がありません。");
+					else
+						prevm.Add(msg1);
+					continue;
+				}
+			}
+			nmts.Add(nmtp);
+			max_name = Math.Max(max_name, nmtp.Name.Length);
+			max_type = Math.Max(max_type, nmtp.type.Length);
+			prevm = null;
+			if (string.IsNullOrEmpty(msg1)) continue;
+			var m = new Message;
+			m.nmtp = nmtp;
+			if (msg1 == "WM_COMMAND")
+			{
+				m.Add(msg2);
+				cmds.Add(m);
+			}
+			else
+			{
+				m.Add(msg1);
+				msgs.Add(m);
+				prevm = m;
+			}
+		}
+		
+		WriteLineFormat("class %s", className);
+		WriteLine("{");
+		bool addl = false;
+		for (int i = 0; i < nmts.Count; i++)
+		{
+			var nmtp = (NameType)nmts.Get(i);
+			if (nmtp.IsOverride) continue;
+			WriteLineFormat(
+				"\tvar %s = new Event;", nmtp.Name.PadRight(max_name));
+			addl = true;
+		}
+		if (addl) WriteLine("");
+		for (int i = 0; i < nmts.Count; i++)
+		{
+			var nmtp = (NameType)nmts.Get(i);
+			if (nmtp.IsOverride) continue;
+			var name = nmtp.Name;
+			WriteLineFormat(
+				"\tvirtual On%s(e : %s) { %s.Invoke(this, e); if (e != null) e.Default(); }",
+				name.PadRight(max_name), nmtp.type.PadRight(max_type), name);
+		}
+		if (procName != null)
+		{
+			if (addl) WriteLine("");
+			var pt = "virtual";
+			if (procName.StartsWith(ovr))
+			{
+				pt = "override";
+				procName = procName.SubstringFrom(1);
+			}
+			WriteLineFormat("\t%s %s(uMsg, wParam, lParam)", pt, procName);
+			WriteLine("\t{");
+			WriteLineFormat("\t\tswitch (uMsg)");
+			WriteLine("\t\t{");
+			if (cmds.Count > 0)
+			{
+				WriteLine("\t\t\tcase WM_COMMAND:");
+				WriteLine("\t\t\t\tswitch (HIWORD(wParam))");
+				WriteLine("\t\t\t\t{");
+				for (int i = 0; i < cmds.Count; i++)
+				{
+					var m = (Message)cmds.Get(i);
+					for (int j = 0; j < m.Count; j++)
+						WriteLineFormat("\t\t\t\t\tcase %s:", m.Get(j));
+					var name = m.Name;
+					if (name != "")
+					{
+						WriteLineFormat(
+							"\t\t\t\t\t\tOn%s(%s.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));",
+							name, m.Type);
+					}
+					WriteLine("\t\t\t\t\t\treturn 0;");
+				}
+				WriteLine("\t\t\t\t}");
+				WriteLine("\t\t\t\tbreak;");
+			}
+			for (int i = 0; i < msgs.Count; i++)
+			{
+				var m = (Message)msgs.Get(i);
+				for (int j = 0; j < m.Count; j++)
+					WriteLineFormat("\t\t\tcase %s:", m.Get(j));
+				var name = m.Name;
+				if (name != "")
+				{
+					WriteLineFormat(
+						"\t\t\t\tOn%s(%s.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));",
+						name, m.Type);
+				}
+				WriteLine("\t\t\t\treturn 0;");
+			}
+			WriteLine("\t\t}");
+			if (pt == "virtual")
+				WriteLine("\t\treturn 1;");
+			else
+				WriteLineFormat("\t\treturn base.%s(uMsg, wParam, lParam);", procName);
+			WriteLine("\t}");
+		}
+		WriteLine("}");
+	}
+}

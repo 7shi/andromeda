@@ -1,0 +1,81 @@
+﻿class CodeGenerator
+{
+	AddModule("extern", this.Extern);
+	
+	function Extern
+	{
+		if (LineLength < 2)
+		{
+			Error("extern: 引数がありません。");
+			return;
+		}
+		
+		var dll = GetColumn(1);
+		var list = new ArrayList;
+		while (ReadLine())
+		{
+			var d = LineToData();
+			if (d == null) break;
+			list.Add(d);
+		}
+		
+		WriteLineFormat("extern \"%s\"", dll);
+		WriteLine("{");
+		for (int i = 0; i < list.Count; i++)
+			WriteLineFormat("\t%s;", ((Data)list.Get(i)).ToString());
+		WriteLine("}");
+		
+		class Data
+		{
+			var CallType = "";
+			var Charset = "";
+			var Name = "";
+			var Args = new StringList;
+			
+			function ToString
+			{
+				var sb = new StringBuilder;
+				if (!string.IsNullOrEmpty(CallType))
+					sb.AppendFormat("__%s ", CallType);
+				if (!string.IsNullOrEmpty(Charset))
+					sb.AppendFormat("__%scharset ", Charset);
+				var p = Name.IndexOf(":");
+				if (p < 0)
+					sb.AppendFormat("%s(", Name);
+				else
+					sb.AppendFormat("%s(", Name.Left(p).Trim());
+				for (int i = 0; i < Args.Count; i++)
+				{
+					if (i > 0) sb.Append(", ");
+					var arg = Args.Get(i);
+					var ap = arg.IndexOf(":");
+					if (ap < 0)
+						sb.AppendFormat("%s", arg);
+					else
+						sb.AppendFormat("%s : %s",
+							arg.Left(ap).Trim(),
+							arg.SubstringFrom(ap + 1).Trim());
+				}
+				sb.Append(")");
+				if (p >= 0)
+					sb.AppendFormat(" : %s", Name.SubstringFrom(p + 1).Trim());
+				return sb.ToString();
+			}
+		}
+		
+		function LineToData
+		{
+			var n = GetColumn(2);
+			if (string.IsNullOrEmpty(n)) return null;
+			
+			var ret = new Data;
+			ret.CallType = GetColumn(0);
+			ret.Charset = GetColumn(1);
+			ret.Name = n;
+			var len = LineLength;
+			for (int i = 3; i < len; i++)
+				ret.Args.Add(GetColumn(i));
+			return ret;
+		}
+	}
+}

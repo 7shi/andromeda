@@ -1,0 +1,6 @@
+﻿var args = Environment.GetCommandLineArgs();
+for (int i = 1; i < args.Length; i++)
+{
+	var cg = new CodeGenerator;
+	if (cg.Open(args[i])) cg.Generate();
+}

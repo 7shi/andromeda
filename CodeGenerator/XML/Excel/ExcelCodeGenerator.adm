@@ -1,0 +1,138 @@
+﻿class ExcelCodeGenerator
+{
+	var xx = new ExcelXML;
+	var tw : TextWriter;
+	var line : string[];
+	int head;
+	var typeFormat = new StringDictionary;
+
+	function ctor
+	{
+		typeFormat.Add("var",    "%08x");
+		typeFormat.Add("int",    "%08x");
+		typeFormat.Add("uint",   "%08x");
+		typeFormat.Add("short",  "%04x");
+		typeFormat.Add("ushort", "%04x");
+		typeFormat.Add("byte",   "%02x");
+		typeFormat.Add("char",   "'%c'");
+		xx.WorksheetClosed.Add(\(sender, e) => head = 0);
+	}
+	
+	function dtor
+	{
+		Close();
+	}
+	
+	function Open(path : string)
+	{
+		Close();
+		if (!xx.Open(path))
+		{
+			printfln("ファイルが開けません: %s", path);
+			return false;
+		}
+		if (this.tw == null)
+		{
+			var tw = new StreamWriter;
+			var adm = Path.ChangeExtension(path, ".adm");
+			if (!tw.Open(adm))
+			{
+				printfln("ファイルに書き込めません: %s", adm);
+				return false;
+			}
+			this.tw = tw;
+			//printfln("%s => %s", path, adm);
+		}
+		WriteLineFormat("// このファイルは %s から生成されました。", Path.GetFileName(path));
+		WriteLine("// 再生成で変更内容が失われるため直接編集しないでください。");
+		return true;
+	}
+	
+	function Close
+	{
+		xx.Close();
+		line = null;
+		if (tw != null)
+		{
+			tw.Close();
+			tw = null;
+		}
+	}
+	
+	function ReadLine()
+	{
+		if (xx == null) return false;
+		line = xx.ReadLine();
+		if (line == null) return false;
+		return true;
+	}
+	
+	function Write(text : string)
+	{
+		if (tw != null) tw.Write(text);
+	}
+	
+	function WriteFormat(format : string, args : params)
+	{
+		if (tw != null) tw.WriteVFormat(format, args);
+	}
+	
+	function WriteLineOnly()
+	{
+		if (tw != null) tw.WriteLineOnly();
+	}
+	
+	function WriteLine(text : string)
+	{
+		if (tw != null) tw.WriteLine(text);
+	}
+	
+	function WriteLineFormat(format : string, args : params)
+	{
+		if (tw != null) tw.WriteLineVFormat(format, args);
+	}
+	
+	function GetColumn(n)
+	{
+		if (line == null || line.Length < head + n) return null;
+		return line[head + n];
+	}
+	
+	function get_LineLength
+	{
+		if (line == null) return -1;
+		return line.Length - head;
+	}
+	
+	function Error(format : string, args : params)
+	{
+		var msg = string.VFormat(format, args);
+		printfln("%s: %d: %s", xx.Worksheet, xx.Row, msg);
+		WriteLineFormat("// %s: %d: %s", xx.Worksheet, xx.Row, msg);
+	}
+	
+	function Generate()
+	{
+		while (ReadLine())
+		{
+			var cmd = GetColumn(0);
+			if (!string.IsNullOrEmpty(cmd)) ReadCommand(cmd);
+		}
+		Close();
+	}
+	
+	virtual ReadCommand(cmd : string)
+	{
+		if (cmd == "head")
+		{
+			if (LineLength < 2)
+				Error("%s: 引数がありません。", cmd);
+			else
+			{
+				head = GetColumn(1).ToInt();
+				return true;
+			}
+		}
+		return false;
+	}
+}

@@ -1,5 +1,6 @@
 syntax: glob
 admc.exe
+CodeGenerator/XML/*.exe
 Core/tests/*.exe
 Compiler/tests/*.exe
 GUI/tests/*.exe

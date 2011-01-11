@@ -1,0 +1,71 @@
+﻿class CodeGenerator
+{
+	AddModule("enum", this.Enum);
+	
+	function Enum
+	{
+		if (LineLength < 2)
+		{
+			Error("enum: 引数がありません。");
+			return;
+		}
+		
+		var enumName = GetColumn(1);
+		var names  = new StringList;
+		var values = new StringList;
+		int max_name = 0, max_value = 0, v = 0;
+		while (ReadLine())
+		{
+			var name = GetColumn(1);
+			var value = GetColumn(2);
+			if (string.IsNullOrEmpty(name)) break;
+			names.Add(name);
+			if (string.IsNullOrEmpty(value))
+				value = string.Format("%d", v);
+			else
+				v = value.ToInt();
+			values.Add(value);
+			max_name  = Math.Max(max_name , name .Length);
+			max_value = Math.Max(max_value, value.Length);
+			v++;
+		}
+		
+		WriteLineFormat("struct %s", enumName);
+		WriteLine("{");
+		for (int i = 0; i < names.Count; i++)
+		{
+			WriteLineFormat("\tstatic function get_%s { return (%s)%s; }",
+				names.Get(i).PadRight(max_name),
+				enumName, values.Get(i).PadLeft(max_value));
+		}
+		WriteLine("");
+		WriteLineFormat("\tstatic function Parse(s : string) : %s", enumName);
+		WriteLine("\t{");
+		WriteLine("\t\tswitch (s)");
+		WriteLine("\t\t{");
+		for (int i = 0; i < names.Count; i++)
+		{
+			var name = "\"" + names.Get(i) + "\"";
+			WriteLineFormat("\t\t\tcase %s: return %s;",
+				name.PadRight(max_name + 2),
+				values.Get(i).PadLeft(max_value));
+		}
+		WriteLine("\t\t}");
+		WriteLine("\t\treturn -1;");
+		WriteLine("\t}");
+		WriteLine("");
+		WriteLine("\tfunction ToString");
+		WriteLine("\t{");
+		WriteLine("\t\tswitch (this)");
+		WriteLine("\t\t{");
+		for (int i = 0; i < names.Count; i++)
+		{
+			WriteLineFormat("\t\t\tcase %s: return \"%s\";",
+				values.Get(i).PadLeft(max_value), names.Get(i));
+		}
+		WriteLine("\t\t}");
+		WriteLine("\t\treturn null;");
+		WriteLine("\t}");
+		WriteLine("}");
+	}
+}

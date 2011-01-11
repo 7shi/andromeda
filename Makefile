@@ -6,6 +6,7 @@ install: all
 	cp admc.exe COMPILER.exe
 
 tests:
+	cd CodeGenerator/XML && echo | ../../COMPILER.exe
 	cd Core/tests && echo | ../../COMPILER.exe
 	cd Compiler/tests && echo | ../../COMPILER.exe
 	cd GUI/tests && echo | ../../COMPILER.exe
@@ -15,6 +16,7 @@ tests:
 
 clean:
 	rm -f admc.exe
+	cd CodeGenerator/XML && rm -f *.exe
 	cd Core/tests && rm -f *.exe
 	cd Compiler/tests && rm -f *.exe
 	cd GUI/tests && rm -f *.exe
