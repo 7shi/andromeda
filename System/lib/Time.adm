@@ -58,4 +58,9 @@ class DateTime
         var epoch = New(1970, 1, 1);
         return Sub(epoch).TotalSeconds;
     }
+
+    function IsNewerThan(dt : DateTime)
+    {
+        return ft.ToUInt64().IsGreaterThan(dt.ft.ToUInt64());
+    }
 }

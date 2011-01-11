@@ -148,4 +148,9 @@
         }
         return ret;
     }
+
+    function IsGreaterThan(v : UInt64)
+    {
+        return High > v.High || (High == v.High && Low > v.Low);
+    }
 }
