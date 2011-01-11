@@ -4,3 +4,4 @@ Core/tests/*.exe
 Compiler/tests/*.exe
 GUI/tests/*.exe
 Zip/tests/*.exe
+ConsoleBox/tests/*.exe

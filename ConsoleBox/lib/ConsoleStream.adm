@@ -1,0 +1,31 @@
+﻿class ConsoleStream
+{
+	var sb = new StringBuilder;
+	delegate delg;
+	
+	function ctor
+	{
+		delg = this.Write;
+		__stdout_func = delg;
+	}
+	
+	function Write(text : char*)
+	{
+		sb.AppendWithLength(text, -1);
+	}
+	
+	function dtor
+	{
+		Dispose();
+	}
+	
+	function Dispose
+	{
+		__stdout_func = null;
+	}
+	
+	function ToString
+	{
+		return sb.ToString();
+	}
+}

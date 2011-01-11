@@ -1,0 +1,49 @@
+﻿class ConsoleBox : TextBox
+{
+	static var defaultFont : Font;
+	
+	static function get_DefaultFont
+	{
+		if (defaultFont == null)
+		{
+			// TODO:check fixedsys
+			defaultFont = Font.FromFaceHeight("ＭＳ ゴシック", 9);
+		}
+		return defaultFont;
+	}
+	
+	function ctor
+	{
+		Font = DefaultFont;
+		Multiline = true;
+		ScrollBars = ScrollBars.Both;
+	}
+	
+	virtual Evaluate(cmd : string) : string
+	{
+		return null;
+	}
+	
+	override OnKeyPress(e : KeyPressEventArgs)
+	{
+		if (e.KeyChar == 13)
+		{
+			var cur = CurrentLine;
+			var line = GetLine(cur);
+			var eval = Evaluate(line);
+			if (eval != null)
+			{
+				SelectionStart = LineIndex(cur) + line.Length;
+				SelectedText = "\r\n" + eval;
+				if (SelectionStart < TextLength)
+				{
+					e.Handled = true;
+					// TODO:SelectionStart += 2;
+					SelectionStart = SelectionStart + 2;
+					ScrollToCaret();
+				}
+			}
+		}
+		base.OnKeyPress(e);
+	}
+}

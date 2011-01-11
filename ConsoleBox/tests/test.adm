@@ -1,0 +1,5 @@
+﻿#pragma subsystem(WINDOWS_GUI)
+
+ConsoleDialog _ConsoleDialog;
+
+printfln("こんにちは、世界！");

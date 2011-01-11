@@ -1,0 +1,17 @@
+﻿struct ConsoleDialog
+{
+	var cs = new ConsoleStream;
+	
+	function dtor
+	{
+		var f = new Form;
+		f.Text = "Andromeda Console";
+		f.SetClientSize(400, 400);
+		var cbx = new TextBox;
+		cbx.Text = cs.ToString();
+		cbx.Dock = DockStyle.Fill;
+		f.AddControl(cbx);
+		cs.Dispose();
+		Application.Run(f);
+	}
+}

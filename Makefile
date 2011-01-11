@@ -12,6 +12,7 @@ tests:
 	cd Compiler/tests && echo | ../../COMPILER.exe
 	cd GUI/tests && echo | ../../COMPILER.exe
 	cd Zip/tests && echo | ../../COMPILER.exe
+	cd ConsoleBox/tests && echo | ../../COMPILER.exe
 
 clean:
 	rm -f admc.exe
@@ -19,3 +20,4 @@ clean:
 	rm -f Compiler/tests/*.exe
 	rm -f GUI/tests/*.exe
 	rm -f Zip/tests/*.exe
+	rm -f ConsoleBox/tests/*.exe

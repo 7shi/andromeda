@@ -3,4 +3,5 @@ del Core\tests\*.exe
 del Compiler\tests\*.exe
 del GUI\tests\*.exe
 del Zip\tests\*.exe
+del ConsoleBox\tests\*.exe
 pause
