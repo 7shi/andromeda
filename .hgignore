@@ -2,3 +2,4 @@ syntax: glob
 admc.exe
 Core/tests/*.exe
 Binary/tests/*.exe
+GUI/tests/*.exe

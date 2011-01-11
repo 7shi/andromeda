@@ -1,0 +1,76 @@
+﻿class Font
+{
+	LOGFONT lf;
+	var hFont;
+	
+	function dtor
+	{
+		Dispose();
+	}
+	
+	function Dispose
+	{
+		if (hFont != null)
+		{
+			DeleteObject(hFont);
+			hFont = null;
+		}
+	}
+	
+	function get_Handle
+	{
+		Create();
+		return hFont;
+	}
+	
+	function get_Name
+	{
+		return string.FromCharArray(lf.lfFaceName, -1);
+	}
+	
+	function set_Name(name : string)
+	{
+		int len = Math.Min(name.Length, LF_FACESIZE - 1);
+		__movsw(lf.lfFaceName, name, len);
+		lf.lfFaceName[len] = 0;
+	}
+	
+	function set_Size(size)
+	{
+		var hdc = CreateCompatibleDC(null);
+		lf.lfHeight = -MulDiv(size, GetDeviceCaps(hdc, LOGPIXELSY), 72);
+		DeleteDC(hdc);
+	}
+	
+	function Create
+	{
+		if (hFont != null) return;
+		hFont = CreateFontIndirect(lf);
+	}
+	
+	function get_Height
+	{
+		if (hFont == null) Create();
+		var hdc = CreateCompatibleDC(null);
+		TEXTMETRIC tm;
+		GetTextMetrics(hdc, tm);
+		var ret = MulDiv(tm.tmHeight, 72, GetDeviceCaps(hdc, LOGPIXELSY));
+		DeleteDC(hdc);
+		return ret;
+	}
+	
+	static function FromFaceHeight(name : string, size)
+	{
+		var ret = new Font;
+		ret.Name = name;
+		ret.Size = size;
+		return ret;
+	}
+	
+	static function FromLogFont(lf : LOGFONT)
+	{
+		var ret = new Font;
+		__movsb(ret.lf, lf, sizeof(LOGFONT));
+		return ret;
+	}
+}

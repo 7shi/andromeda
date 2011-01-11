@@ -1,0 +1,62 @@
+﻿class Control
+{
+	function get_Width
+	{
+		if (nWidth == CW_USEDEFAULT) return 0;
+		return nWidth;
+	}
+	function set_Width (width ) { SetSize(width, nHeight); }
+	
+	function get_Height { return nHeight; }
+	function set_Height(height) { SetSize(nWidth, height); }
+	
+	function SetBounds(x, y, w, h)
+	{
+		X = x;
+		Y = y;
+		if (hWnd == null)
+		{
+			nWidth  = w;
+			nHeight = h;
+		}
+		else
+		{
+			SetWindowPos(hWnd, null, x, y, w, h, SWP_NOZORDER);
+			if (nWidth != w || nHeight != h) OnResize(EventArgs.Empty);
+		}
+	}
+	
+	function SetBoundsWithRect(r : RECT)
+	{
+		SetBounds(r.left, r.top, r.right - r.left, r.bottom - r.top);
+	}
+	
+	function SetLocation(x, y)
+	{
+		X = x;
+		Y = y;
+		if (hWnd != null)
+			SetWindowPos(hWnd, null, x, y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+	}
+	
+	function SetSize(w, h)
+	{
+		if (hWnd == null)
+		{
+			nWidth  = w;
+			nHeight = h;
+		}
+		else
+		{
+			SetWindowPos(hWnd, null, 0, 0, w, h, SWP_NOMOVE | SWP_NOZORDER);
+			if (nWidth != w || nHeight != h) OnResize(EventArgs.Empty);
+		}
+	}
+	
+	virtual SetClientSize(w, h)
+	{
+		RECT r = { 0, 0, w, h };
+		r.AdjustWindowRectEx(dwStyle, false, 0);
+		SetSize(r.right - r.left, r.bottom - r.top);
+	}
+}

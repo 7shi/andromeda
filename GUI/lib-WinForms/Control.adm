@@ -1,0 +1,281 @@
+﻿class Control
+{
+	WNDCLASSEX wcex;
+	var controls = new ArrayList;
+	var Dock;
+	var font = DefaultFont;
+	delegate wndProc;
+	var prevWndProc;
+	
+	function ctor
+	{
+		//wcex.style         = CS_VREDRAW | CS_HREDRAW;
+		wcex.lpfnWndProc   = DefWindowProc;
+		wcex.hInstance     = _get_instance();
+		wcex.hCursor       = LoadCursor(null, IDC_ARROW);
+		wcex.hbrBackground = COLOR_3DFACE + 1;
+	}
+	
+	function dtor
+	{
+		Dispose();
+	}
+	
+	virtual Dispose
+	{
+		if (hWnd == null) return;
+		Capture = false;
+		Hide();
+		for (int i = 0; i < controls.Count; i++)
+		{
+			var c = (Control)controls.Get(i);
+			c.Dispose();
+		}
+		controls.Clear();
+		hWnd.DestroyWindow();
+		hWnd = null;
+		if (wcex.lpszClassName != null)
+			UnregisterClass(wcex.lpszClassName, _get_instance());
+	}
+	
+	virtual Create()
+	{
+		if (hWnd != null) return;
+		
+		if (lpClassName == null)
+		{
+			lpClassName = string.Format("Andromeda-%s-%p", typeof(this).Name, this);
+			wcex.lpszClassName = lpClassName;
+			RegisterClassEx(wcex);
+		}
+		
+		hWnd = CreateWindowEx(
+			dwExStyle, lpClassName, lpWindowName,
+			dwStyle, X, Y, nWidth, nHeight,
+			hWndParent, hMenu, hInstance, lpParam);
+		if (hWnd == null) return;
+		
+		wndProc = function __stdcall(hWnd, uMsg, wParam, lParam)
+		{
+			if (this.hWnd == null) this.hWnd = hWnd;
+			if (this.hWnd == hWnd)
+			{
+				var c = this;
+				if (uMsg == WM_COMMAND && lParam != 0 && hWnd != lParam)
+					c = GetChildHandle(lParam);
+				if (c != null && c.WndProc(uMsg, wParam, lParam) == 0)
+					return 0;
+			}
+			return CallWindowProc(prevWndProc, hWnd, uMsg, wParam, lParam);
+		};
+		prevWndProc = SetWindowLong(hWnd, GWL_WNDPROC, wndProc);
+		
+		if (font != null)
+		{
+			var h = font.Handle;
+			if (h != null) SendMessage(hWnd, WM_SETFONT, h, 0);
+		}
+		var focused = false;
+		for (int i = 0; i < controls.Count; i++)
+		{
+			var c = (Control)controls.Get(i);
+			c.hWndParent = hWnd;
+			c.Create();
+			if (!focused && (c.dwStyle & WS_TABSTOP) != 0)
+			{
+				c.Focus();
+				focused = true;
+			}
+		}
+	}
+	
+	function GetChildHandle(hWnd)
+	{
+		for (int i = 0; i < controls.Count; i++)
+		{
+			var c = (Control)controls.Get(i);
+			if (c.hWnd == hWnd) return c;
+		}
+		return null;
+	}
+	
+	function Show()
+	{
+		if (hWnd == null) Create();
+		hWnd.ShowWindow(SW_SHOWNORMAL);
+		hWnd.UpdateWindow();
+	}
+	
+	function Hide()
+	{
+		if (hWnd == null) Create();
+		hWnd.ShowWindow(SW_HIDE);
+	}
+	
+	function Close()
+	{
+		if (hWnd == null) return;
+		Dispose();
+	}
+	
+	function Invalidate(rect : RECT)
+	{
+		if (hWnd == null) return;
+		InvalidateRect(hWnd, rect, false);
+	}
+	
+	function Refresh
+	{
+		if (hWnd == null) return;
+		RedrawWindow(hWnd, null, null,
+			RDW_ERASE | RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
+	}
+	
+	function get_TextLength
+	{
+		if (hWnd == null) return lpWindowName.Length;
+		return GetWindowTextLength(hWnd);
+	}
+	
+	function get_Text
+	{
+		if (hWnd != null)
+		{
+			var len = TextLength;
+			var buf = new char[len + 1];
+			GetWindowText(hWnd, buf, buf.Length);
+			lpWindowName = string.FromCharArray(buf, len);
+		}
+		return lpWindowName;
+	}
+	
+	function set_Text(text)
+	{
+		lpWindowName = text;
+		if (hWnd != null) SetWindowText(hWnd, text);
+		return text;
+	}
+	
+	function SetStyle(flag, value)
+	{
+		if (value)
+			dwStyle |= flag;
+		else
+			dwStyle &= ~flag;
+	}
+	
+	function SetExStyle(flag, value)
+	{
+		if (value)
+			dwExStyle |= flag;
+		else
+			dwExStyle &= ~flag;
+	}
+	
+	function set_ScrollBars(value)
+	{
+		switch (value)
+		{
+			case ScrollBars.None:
+				SetStyle(WS_HSCROLL | WS_VSCROLL, false);
+				break;
+			case ScrollBars.Horizontal:
+				SetStyle(WS_VSCROLL, false);
+				SetStyle(WS_HSCROLL, true);
+				break;
+			case ScrollBars.Vertical:
+				SetStyle(WS_HSCROLL, false);
+				SetStyle(WS_VSCROLL, true);
+				break;
+			case ScrollBars.Both:
+				SetStyle(WS_HSCROLL | WS_VSCROLL, true);
+				break;
+		}
+	}
+	
+	function AddControl(c : Control)
+	{
+		c.SetStyle(WS_CHILD | WS_VISIBLE, true);
+		controls.Add(c);
+		if (hWnd == null) return;
+		
+		c.hWndParent = hWnd;
+		c.Create();
+	}
+	
+	function Focus()
+	{
+		if (hWnd != null) SetFocus(hWnd);
+	}
+	
+	function get_Font { return font; }
+	
+	function set_Font(f : Font)
+	{
+		if (font == f) return;
+		font = f;
+		if (hWnd == null) return;
+		var h = f.Handle;
+		if (h == null) return;
+		SendMessage(hWnd, WM_SETFONT, h, 0);
+	}
+	
+	static var defaultFont : Font;
+	
+	static function get_DefaultFont
+	{
+		if (defaultFont == null)
+		{
+			NONCLIENTMETRICS ncm;
+			SystemParametersInfo(
+				SPI_GETNONCLIENTMETRICS,
+				sizeof NONCLIENTMETRICS, ncm, 0);
+			defaultFont = Font.FromLogFont(ncm.lfMessageFont);
+		}
+		return defaultFont;
+	}
+	
+	static var captures : ArrayList;
+	var capture = false;
+	
+	function get_Capture { return capture; }
+	function set_Capture(cap : bool)
+	{
+		if (capture == cap || hWnd == null) return;
+		if (captures == null) captures = new ArrayList;
+		if (cap)
+		{
+			SetCapture(hWnd);
+			captures.Add(this);
+		}
+		else
+		{
+			int last = captures.Count - 1;
+			int p = captures.Remove(this);
+			if (p >= 0 && p == last)
+			{
+				if (p == 0)
+					ReleaseCapture();
+				else
+				{
+					var c : Control = captures.Get(p - 1);
+					SetCapture(c.hWnd);
+				}
+			}
+		}
+		capture = cap;
+	}
+	
+	function CreateGraphics
+	{
+		if (hWnd == null) Create();
+		var ret = new Graphics
+		{
+			var hWnd;
+			override Dispose { Reset(); ReleaseDC(hWnd, Handle); base.Dispose(); }
+		};
+		ret.hWnd = hWnd;
+		ret.Handle = GetDC(hWnd);
+		return ret;
+	}
+}

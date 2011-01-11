@@ -1,0 +1,124 @@
+﻿class EventArgs
+{
+	static var Empty : EventArgs;
+	var wndProc, hWnd, uMsg, wParam, lParam;
+	
+	function SetMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		this.wndProc = wndProc;
+		this.hWnd    = hWnd;
+		this.uMsg    = uMsg;
+		this.wParam  = wParam;
+		this.lParam  = lParam;
+	}
+	
+	virtual Default()
+	{
+		if (wndProc != null)
+			CallWindowProc(wndProc, hWnd, uMsg, wParam, lParam);
+	}
+	
+	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		var ret = new EventArgs;
+		ret.SetMessage(wndProc, hWnd, uMsg, wParam, lParam);
+		return ret;
+	}
+}
+
+class PaintEventArgs : EventArgs
+{
+	PAINTSTRUCT lpPaint;
+	var graphics : Graphics;
+	
+	function get_Graphics
+	{
+		if (graphics == null)
+		{
+			graphics = new Graphics;
+			graphics.Handle = BeginPaint(hWnd, lpPaint);
+		}
+		return graphics;
+	}
+	
+	function dtor
+	{
+		if (graphics != null)
+		{
+			graphics.Reset();
+			EndPaint(hWnd, lpPaint);
+			graphics.Dispose();
+		}
+	}
+	
+	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		var ret = new PaintEventArgs;
+		ret.SetMessage(wndProc, hWnd, uMsg, wParam, lParam);
+		return ret;
+	}
+}
+
+class MouseEventArgs : EventArgs
+{
+	int Button, X, Y;
+	
+	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		var ret = new MouseEventArgs;
+		ret.SetMessage(wndProc, hWnd, uMsg, wParam, lParam);
+		switch (uMsg)
+		{
+			case WM_LBUTTONDOWN:
+			case WM_LBUTTONUP:
+			case WM_LBUTTONDBLCLK:
+				ret.Button = MouseButtons.Left;
+				break;
+			case WM_RBUTTONDOWN:
+			case WM_RBUTTONUP:
+			case WM_RBUTTONDBLCLK:
+				ret.Button = MouseButtons.Right;
+				break;
+			case WM_MBUTTONDOWN:
+			case WM_MBUTTONUP:
+			case WM_MBUTTONDBLCLK:
+				ret.Button = MouseButtons.Middle;
+				break;
+			case WM_MOUSEMOVE:
+				ret.Button = wParam;
+				break;
+		}
+		ret.X = GET_X_LPARAM(lParam);
+		ret.Y = GET_Y_LPARAM(lParam);
+		return ret;
+	}
+}
+
+class KeyEventArgs : EventArgs
+{
+	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		var ret = new KeyEventArgs;
+		ret.SetMessage(wndProc, hWnd, uMsg, wParam, lParam);
+		return ret;
+	}
+}
+
+class KeyPressEventArgs : EventArgs
+{
+	bool Handled;
+	char KeyChar;
+	
+	override Default()
+	{
+		if (!Handled) base.Default();
+	}
+	
+	static function FromMessage(wndProc, hWnd, uMsg, wParam, lParam)
+	{
+		var ret = new KeyPressEventArgs;
+		ret.SetMessage(wndProc, hWnd, uMsg, wParam, lParam);
+		ret.KeyChar = wParam;
+		return ret;
+	}
+}

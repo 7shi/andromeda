@@ -1,0 +1,33 @@
+﻿class MainMenu
+{
+	var hMenu;
+	var MenuItems = new ArrayList;
+	
+	function ctor()
+	{
+		hMenu = CreateMenu();
+	}
+	
+	function dtor()
+	{
+		hMenu.DestroyMenu();
+	}
+	
+	function Append(menuItem : MenuItem)
+	{
+		MenuItems.Add(menuItem);
+		menuItem.hMenu = hMenu;
+		hMenu.InsertMenuItem(-1, true, menuItem);
+	}
+	
+	function FindMenuItem(id)
+	{
+		for (int i = 0; i < MenuItems.Count; i++)
+		{
+			var mi : MenuItem = MenuItems.Get(i);
+			var ret = mi.FindMenuItem(id);
+			if (ret != null) return ret;
+		}
+		return null;
+	}
+}

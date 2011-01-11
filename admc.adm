@@ -122,7 +122,7 @@ function compile(srcs : string[], libs : string[], output : string, verbose : bo
         printfln("コンパイルしています...");
     Define.CompileVerbose = verbose;
     var module = new Module;
-    module.Specific.SubSystem = IMAGE_SUBSYSTEM.WINDOWS_CUI;
+    module.Specific.SubSystem = root.Subsystem;
     var codes = OpModule.Create(module);
     root.AddCodes(codes);
     module.Text.OpCodes = codes.ToArray();

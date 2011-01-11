@@ -1,0 +1,44 @@
+﻿class Form : Panel
+{
+	var Menu : MainMenu;
+	
+	function ctor()
+	{
+		dwStyle = WS_OVERLAPPEDWINDOW;
+		X = CW_USEDEFAULT;
+		nWidth = CW_USEDEFAULT;
+	}
+	
+	override Create
+	{
+		if (hWnd != null) return;
+		if (Menu != null) hMenu = Menu.hMenu;
+		base.Create();
+	}
+	
+	override SetClientSize(w, h)
+	{
+		RECT r = { 0, 0, w, h };
+		r.AdjustWindowRectEx(dwStyle, Menu != null, 0);
+		SetSize(r.right - r.left, r.bottom - r.top);
+	}
+	
+	override WndProc(uMsg, wParam, lParam)
+	{
+		switch (uMsg)
+		{
+			case WM_COMMAND:
+				if (lParam == 0 && Menu != null)
+				{
+					var mi = Menu.FindMenuItem(LOWORD(wParam));
+					if (mi != null)
+					{
+						mi.OnClick(EventArgs.Empty);
+						return 0;
+					}
+				}
+				break;
+		}
+		return base.WndProc(uMsg, wParam, lParam);
+	}
+}

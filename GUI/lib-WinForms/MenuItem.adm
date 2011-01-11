@@ -1,0 +1,113 @@
+﻿class MenuItem
+{
+	MENUITEMINFO inf;
+	var hMenu = null;
+	var MenuItems = new ArrayList;
+	var Click = new Event;
+	var text = (string)null;
+	
+	function ctor()
+	{
+		inf.cbSize = sizeof MENUITEMINFO;
+		inf.fMask  = MIIM_STATE | MIIM_ID;
+		inf.fState = MFS_ENABLED;
+		inf.wID    = (((var)this) >> 4) & 0xffff;
+	}
+	
+	function dtor()
+	{
+		if (inf.hSubMenu != null)
+			inf.hSubMenu.DestroyMenu();
+	}
+	
+	function set_Text(text)
+	{
+		if (text == "-")
+		{
+			inf.fMask &= ~MIIM_STRING;
+			inf.fType |= MFT_SEPARATOR;
+			inf.dwTypeData = 0;
+			this.text = null;
+		}
+		else
+		{
+			inf.fMask |= MIIM_STRING;
+			inf.dwTypeData = text;
+			this.text = text;
+		}
+		Refresh();
+		return text;
+	}
+	
+	function set_Enabled(enabled)
+	{
+		if (enabled)
+			inf.fState &= ~MFS_DISABLED;
+		else
+			inf.fState |= MFS_DISABLED;
+		Refresh();
+		return enabled;
+	}
+	
+	function set_Checked(checked)
+	{
+		if (checked)
+			inf.fState |= MFS_CHECKED;
+		else
+			inf.fState &= ~MFS_CHECKED;
+		Refresh();
+		return checked;
+	}
+	
+	function UseRadio()
+	{
+		inf.fMask |= MIIM_FTYPE;
+		inf.fType |= MFT_RADIOCHECK;
+		Refresh();
+	}
+	
+	function Append(menuItem : MenuItem)
+	{
+		MenuItems.Add(menuItem);
+		if (inf.hSubMenu == null)
+		{
+			inf.fMask |= MIIM_SUBMENU;
+			inf.hSubMenu = CreatePopupMenu();
+		}
+		menuItem.hMenu = inf.hSubMenu;
+		inf.hSubMenu.InsertMenuItem(-1, true, menuItem);
+		Refresh();
+	}
+	
+	function Refresh()
+	{
+		if (hMenu != null)
+			hMenu.SetMenuItemInfo(inf.wID, false, this);
+	}
+	
+	virtual OnClick(e : EventArgs)
+	{
+		Click.Invoke(this, e);
+	}
+	
+	function FindMenuItem(id)
+	{
+		if (id == inf.wID) return this;
+		for (int i = 0; i < MenuItems.Count; i++)
+		{
+			var mi : MenuItem = MenuItems.Get(i);
+			var ret = mi.FindMenuItem(id);
+			if (ret != null) return ret;
+		}
+		return null;
+	}
+	
+	function AppendItem(text : string, func)
+	{
+		var ret = new MenuItem;
+		ret.Text = text;
+		if (func != null) ret.Click.Add(func);
+		Append(ret);
+		return ret;
+	}
+}

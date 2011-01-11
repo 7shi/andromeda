@@ -1,0 +1,450 @@
+﻿// このファイルは src-WinForms.xml から生成されました。
+// 再生成で変更内容が失われるため直接編集しないでください。
+
+struct ScrollBars
+{
+	static function get_None       { return (ScrollBars)0; }
+	static function get_Horizontal { return (ScrollBars)1; }
+	static function get_Vertical   { return (ScrollBars)2; }
+	static function get_Both       { return (ScrollBars)3; }
+
+	static function Parse(s : string) : ScrollBars
+	{
+		switch (s)
+		{
+			case "None"      : return 0;
+			case "Horizontal": return 1;
+			case "Vertical"  : return 2;
+			case "Both"      : return 3;
+		}
+		return -1;
+	}
+
+	function ToString
+	{
+		switch (this)
+		{
+			case 0: return "None";
+			case 1: return "Horizontal";
+			case 2: return "Vertical";
+			case 3: return "Both";
+		}
+		return null;
+	}
+}
+
+struct DockStyle
+{
+	static function get_None   { return (DockStyle)0; }
+	static function get_Top    { return (DockStyle)1; }
+	static function get_Bottom { return (DockStyle)2; }
+	static function get_Left   { return (DockStyle)3; }
+	static function get_Right  { return (DockStyle)4; }
+	static function get_Fill   { return (DockStyle)5; }
+
+	static function Parse(s : string) : DockStyle
+	{
+		switch (s)
+		{
+			case "None"  : return 0;
+			case "Top"   : return 1;
+			case "Bottom": return 2;
+			case "Left"  : return 3;
+			case "Right" : return 4;
+			case "Fill"  : return 5;
+		}
+		return -1;
+	}
+
+	function ToString
+	{
+		switch (this)
+		{
+			case 0: return "None";
+			case 1: return "Top";
+			case 2: return "Bottom";
+			case 3: return "Left";
+			case 4: return "Right";
+			case 5: return "Fill";
+		}
+		return null;
+	}
+}
+
+struct Orientation
+{
+	static function get_Horizontal { return (Orientation)0; }
+	static function get_Vertical   { return (Orientation)1; }
+
+	static function Parse(s : string) : Orientation
+	{
+		switch (s)
+		{
+			case "Horizontal": return 0;
+			case "Vertical"  : return 1;
+		}
+		return -1;
+	}
+
+	function ToString
+	{
+		switch (this)
+		{
+			case 0: return "Horizontal";
+			case 1: return "Vertical";
+		}
+		return null;
+	}
+}
+
+struct MouseButtons
+{
+	static function get_None     { return (MouseButtons)0; }
+	static function get_Left     { return (MouseButtons)1; }
+	static function get_Right    { return (MouseButtons)2; }
+	static function get_Middle   { return (MouseButtons)3; }
+	static function get_XButton1 { return (MouseButtons)4; }
+	static function get_XButton2 { return (MouseButtons)5; }
+
+	static function Parse(s : string) : MouseButtons
+	{
+		switch (s)
+		{
+			case "None"    : return 0;
+			case "Left"    : return 1;
+			case "Right"   : return 2;
+			case "Middle"  : return 3;
+			case "XButton1": return 4;
+			case "XButton2": return 5;
+		}
+		return -1;
+	}
+
+	function ToString
+	{
+		switch (this)
+		{
+			case 0: return "None";
+			case 1: return "Left";
+			case 2: return "Right";
+			case 3: return "Middle";
+			case 4: return "XButton1";
+			case 5: return "XButton2";
+		}
+		return null;
+	}
+}
+
+class Control
+{
+	int dwExStyle;
+	var lpClassName  =    (string)null;
+	var lpWindowName =              "";
+	int dwStyle;
+	int X;
+	int Y;
+	int nWidth       =              16;
+	int nHeight      =              16;
+	var hWndParent;
+	var hMenu;
+	var hInstance    = _get_instance();
+	var lpParam;
+	var hWnd;
+}
+
+class Control
+{
+	var Click     = new Event;
+	var Closed    = new Event;
+	var Resize    = new Event;
+	var Paint     = new Event;
+	var MouseDown = new Event;
+	var MouseUp   = new Event;
+	var MouseMove = new Event;
+	var KeyDown   = new Event;
+	var KeyUp     = new Event;
+	var KeyPress  = new Event;
+
+	virtual OnClick    (e : EventArgs        ) { Click.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnClosed   (e : EventArgs        ) { Closed.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnResize   (e : EventArgs        ) { Resize.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnPaint    (e : PaintEventArgs   ) { Paint.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnMouseDown(e : MouseEventArgs   ) { MouseDown.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnMouseUp  (e : MouseEventArgs   ) { MouseUp.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnMouseMove(e : MouseEventArgs   ) { MouseMove.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnKeyDown  (e : KeyEventArgs     ) { KeyDown.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnKeyUp    (e : KeyEventArgs     ) { KeyUp.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnKeyPress (e : KeyPressEventArgs) { KeyPress.Invoke(this, e); if (e != null) e.Default(); }
+
+	virtual WndProc(uMsg, wParam, lParam)
+	{
+		switch (uMsg)
+		{
+			case WM_DESTROY:
+				OnClosed(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+				return 0;
+			case WM_SIZE:
+				OnResize(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+				return 0;
+			case WM_PAINT:
+				OnPaint(PaintEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+				return 0;
+			case WM_LBUTTONDOWN:
+			case WM_RBUTTONDOWN:
+			case WM_MBUTTONDOWN:
+				OnMouseDown(MouseEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+				return 0;
+			case WM_LBUTTONUP:
+			case WM_RBUTTONUP:
+			case WM_MBUTTONUP:
+				OnMouseUp(MouseEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+				return 0;
+			case WM_MOUSEMOVE:
+				OnMouseMove(MouseEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+				return 0;
+			case WM_KEYDOWN:
+				OnKeyDown(KeyEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+				return 0;
+			case WM_KEYUP:
+				OnKeyUp(KeyEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+				return 0;
+			case WM_CHAR:
+				OnKeyPress(KeyPressEventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+				return 0;
+		}
+		return 1;
+	}
+}
+
+class Button
+{
+	override WndProc(uMsg, wParam, lParam)
+	{
+		switch (uMsg)
+		{
+			case WM_COMMAND:
+				switch (HIWORD(wParam))
+				{
+					case BN_CLICKED:
+						OnClick(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+						return 0;
+				}
+				break;
+		}
+		return base.WndProc(uMsg, wParam, lParam);
+	}
+}
+
+class ListBox
+{
+	var SelectedIndexChanged = new Event;
+
+	virtual OnSelectedIndexChanged(e : EventArgs) { SelectedIndexChanged.Invoke(this, e); if (e != null) e.Default(); }
+
+	override WndProc(uMsg, wParam, lParam)
+	{
+		switch (uMsg)
+		{
+			case WM_COMMAND:
+				switch (HIWORD(wParam))
+				{
+					case LBN_SELCHANGE:
+						OnSelectedIndexChanged(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+						return 0;
+				}
+				break;
+		}
+		return base.WndProc(uMsg, wParam, lParam);
+	}
+}
+
+class TextBox
+{
+	var TextChanged = new Event;
+
+	virtual OnTextChanged(e : EventArgs) { TextChanged.Invoke(this, e); if (e != null) e.Default(); }
+
+	override WndProc(uMsg, wParam, lParam)
+	{
+		switch (uMsg)
+		{
+			case WM_COMMAND:
+				switch (HIWORD(wParam))
+				{
+					case EN_CHANGE:
+						OnTextChanged(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+						return 0;
+				}
+				break;
+		}
+		return base.WndProc(uMsg, wParam, lParam);
+	}
+}
+
+class ComboBox
+{
+	var SelectionChanged = new Event;
+	var TextChanged      = new Event;
+	var DropDown         = new Event;
+
+	virtual OnSelectionChanged(e : EventArgs) { SelectionChanged.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnTextChanged     (e : EventArgs) { TextChanged.Invoke(this, e); if (e != null) e.Default(); }
+	virtual OnDropDown        (e : EventArgs) { DropDown.Invoke(this, e); if (e != null) e.Default(); }
+
+	override WndProc(uMsg, wParam, lParam)
+	{
+		switch (uMsg)
+		{
+			case WM_COMMAND:
+				switch (HIWORD(wParam))
+				{
+					case CBN_SELCHANGE:
+						OnSelectionChanged(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+						return 0;
+					case CBN_EDITCHANGE:
+						OnTextChanged(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+						return 0;
+					case CBN_DROPDOWN:
+						OnDropDown(EventArgs.FromMessage(prevWndProc, hWnd, uMsg, wParam, lParam));
+						return 0;
+				}
+				break;
+		}
+		return base.WndProc(uMsg, wParam, lParam);
+	}
+}
+
+class TextBox
+{
+	function CanUndo() { return SendMessage(hWnd, EM_CANUNDO, 0, 0); }
+	function CharFromPos(x, y) { return SendMessage(hWnd, EM_CHARFROMPOS, 0, MAKELPARAM(x, y) ); }
+	function EmptyUndoBuffer() { return SendMessage(hWnd, EM_EMPTYUNDOBUFFER, 0, 0); }
+	function FormatLines(fAddEOL : bool) { return SendMessage(hWnd, EM_FMTLINES, fAddEOL, 0); }
+	function GetFirstVisibleLine() { return SendMessage(hWnd, EM_GETFIRSTVISIBLELINE, 0, 0); }
+	function GetHandle() { return SendMessage(hWnd, EM_GETHANDLE, 0, 0); }
+	function GetLimitText() { return SendMessage(hWnd, EM_GETLIMITTEXT, 0, 0); }
+	function GetLineToArray(line, lpch : char*) { return SendMessage(hWnd, EM_GETLINE, line, lpch); }
+	function GetLineCount() { return SendMessage(hWnd, EM_GETLINECOUNT, 0, 0); }
+	function GetMargins() { return SendMessage(hWnd, EM_GETMARGINS, 0, 0); }
+	function GetModify() { return SendMessage(hWnd, EM_GETMODIFY, 0, 0); }
+	function GetPasswordChar() { return SendMessage(hWnd, EM_GETPASSWORDCHAR, 0, 0); }
+	function GetRect(lprc : RECT) { return SendMessage(hWnd, EM_GETRECT, 0, lprc); }
+	function GetSelection(lpdwStart : var*, lpdwEnd : var*) { return SendMessage(hWnd, EM_GETSEL, lpdwStart, lpdwEnd); }
+	function GetThumb() { return SendMessage(hWnd, EM_GETTHUMB, 0, 0); }
+	function GetWordBreakProc() { return SendMessage(hWnd, EM_GETWORDBREAKPROC, 0, 0); }
+	function LimitText(cchMax) { return SendMessage(hWnd, EM_LIMITTEXT, cchMax, 0); }
+	function LineFromChar(ich) { return SendMessage(hWnd, EM_LINEFROMCHAR, ich, 0); }
+	function LineIndex(line) { return SendMessage(hWnd, EM_LINEINDEX, line, 0); }
+	function LineLength(ich) { return SendMessage(hWnd, EM_LINELENGTH, ich, 0); }
+	function LineScroll(cxScroll, cyScroll) { return SendMessage(hWnd, EM_LINESCROLL, cxScroll, cyScroll); }
+	function PosFromChar(lpPoint : POINT, wCharIndex) { return SendMessage(hWnd, EM_POSFROMCHAR, lpPoint, wCharIndex); }
+	function ReplaceSelection(fCanUndo : bool, lpszReplace : string) { return SendMessage(hWnd, EM_REPLACESEL, fCanUndo, lpszReplace); }
+	function Scroll(nScroll) { return SendMessage(hWnd, EM_SCROLL, nScroll, 0); }
+	function ScrollToCaret() { return SendMessage(hWnd, EM_SCROLLCARET, 0, 0); }
+	function SetHandle(hloc) { return SendMessage(hWnd, EM_SETHANDLE, hloc, 0); }
+	function SetLimitText(cbMax) { return SendMessage(hWnd, EM_SETLIMITTEXT, cbMax, 0); }
+	function SetMargins(fwMargin, wLeft, wRight) { return SendMessage(hWnd, EM_SETMARGINS, fwMargin, MAKELONG(wLeft, wRight)); }
+	function SetModify(fModified : bool) { return SendMessage(hWnd, EM_SETMODIFY, fModified, 0); }
+	function SetPasswordChar(ch : char) { return SendMessage(hWnd, EM_SETPASSWORDCHAR, ch, 0); }
+	function SetReadOnly(fReadOnly : bool) { return SendMessage(hWnd, EM_SETREADONLY, fReadOnly, 0); }
+	function SetRect(lprc : RECT) { return SendMessage(hWnd, EM_SETRECT, 0, lprc); }
+	function SetRectNP(lprc : RECT) { return SendMessage(hWnd, EM_SETRECTNP, 0, lprc); }
+	function SetSelection(nStart, nEnd) { return SendMessage(hWnd, EM_SETSEL, nStart, nEnd); }
+	function SetTabStops(cTabs, lpdwTabs) { return SendMessage(hWnd, EM_SETTABSTOPS, cTabs, lpdwTabs); }
+	function SetWordBreakProc(ewbprc) { return SendMessage(hWnd, EM_SETWORDBREAKPROC, 0, ewbprc); }
+	function Undo() { return SendMessage(hWnd, EM_UNDO, 0, 0); }
+}
+
+class Button
+{
+	function PerformClick() { return SendMessage(hWnd, BM_CLICK, 0, 0); }
+	function GetCheck() { return SendMessage(hWnd, BM_GETCHECK, 0, 0); }
+	function GetImage(fImageType) { return SendMessage(hWnd, BM_GETIMAGE, fImageType, 0); }
+	function GetState() { return SendMessage(hWnd, BM_GETSTATE, 0, 0); }
+	function SetCheck(fCheck) { return SendMessage(hWnd, BM_SETCHECK, fCheck, 0); }
+	function SetImage(fImageType, hImage) { return SendMessage(hWnd, BM_SETIMAGE, fImageType, hImage); }
+	function SetState(fState) { return SendMessage(hWnd, BM_SETSTATE, fState, 0); }
+	function SetButtonStyle(dwStyle, fRedraw) { return SendMessage(hWnd, BM_SETSTYLE, LOWORD(dwStyle), MAKELPARAM(fRedraw, 0)); }
+}
+
+class ListBox
+{
+	function AddFile(lpszFilename) { return SendMessage(hWnd, LB_ADDFILE, 0, lpszFilename); }
+	function AddString(lpsz) { return SendMessage(hWnd, LB_ADDSTRING, 0, lpsz); }
+	function DeleteString(index) { return SendMessage(hWnd, LB_DELETESTRING, index, 0); }
+	function Dir(uAttrs, lpszFileSpec) { return SendMessage(hWnd, LB_DIR, uAttrs, lpszFileSpec); }
+	function FindString(indexStart, lpszFind) { return SendMessage(hWnd, LB_FINDSTRING, indexStart, lpszFind); }
+	function FindStringExact(indexStart, lpszFind) { return SendMessage(hWnd, LB_FINDSTRINGEXACT, indexStart, lpszFind); }
+	function GetAnchorIndex() { return SendMessage(hWnd, LB_GETANCHORINDEX, 0, 0); }
+	function GetCaretIndex() { return SendMessage(hWnd, LB_GETCARETINDEX, 0, 0); }
+	function get_Count() { return SendMessage(hWnd, LB_GETCOUNT, 0, 0); }
+	function GetCurSel() { return SendMessage(hWnd, LB_GETCURSEL, 0, 0); }
+	function GetHorizontalExtent() { return SendMessage(hWnd, LB_GETHORIZONTALEXTENT, 0, 0); }
+	function GetItemData(index) { return SendMessage(hWnd, LB_GETITEMDATA, index, 0); }
+	function GetItemHeight(index) { return SendMessage(hWnd, LB_GETITEMHEIGHT, index, 0); }
+	function GetItemRect(index, lprc : RECT) { return SendMessage(hWnd, LB_GETITEMRECT, index, lprc); }
+	function GetLocale() { return SendMessage(hWnd, LB_GETLOCALE, 0, 0); }
+	function GetSel(index) { return SendMessage(hWnd, LB_GETSEL, index, 0); }
+	function GetSelCount() { return SendMessage(hWnd, LB_GETSELCOUNT, 0, 0); }
+	function GetSelItems(cItems, lpnItems) { return SendMessage(hWnd, LB_GETSELITEMS, cItems, lpnItems); }
+	function GetTextToArray(index, lpszBuffer : char*) { return SendMessage(hWnd, LB_GETTEXT, index, lpszBuffer); }
+	function GetTextLen(index) { return SendMessage(hWnd, LB_GETTEXTLEN, index, 0); }
+	function GetTopIndex() { return SendMessage(hWnd, LB_GETTOPINDEX, 0, 0); }
+	function InitStorage(cItems, cb) { return SendMessage(hWnd, LB_INITSTORAGE, cItems, cb); }
+	function InsertString(index, lpsz) { return SendMessage(hWnd, LB_INSERTSTRING, index, lpsz); }
+	function ItemFromPoint(xPos, yPos) { return SendMessage(hWnd, LB_ITEMFROMPOINT, 0, MAKELPARAM(xPos, yPos)); }
+	function ResetContent() { return SendMessage(hWnd, LB_RESETCONTENT, 0, 0); }
+	function SelectString(indexStart, lpszFind) { return SendMessage(hWnd, LB_SELECTSTRING, indexStart, lpszFind); }
+	function SelItemRange(fSelect, wFirst, wLast) { return SendMessage(hWnd, LB_SELITEMRANGE, fSelect, MAKELPARAM(wFirst, wLast)); }
+	function SelItemRangeEx(wFirst, wLast) { return SendMessage(hWnd, LB_SELITEMRANGEEX, wFirst, wLast); }
+	function SetAnchorIndex(index) { return SendMessage(hWnd, LB_SETANCHORINDEX, index, 0); }
+	function SetCaretIndex(index, fScroll) { return SendMessage(hWnd, LB_SETCARETINDEX, index, MAKELPARAM(fScroll, 0)); }
+	function SetColumnWidth(cxColumn) { return SendMessage(hWnd, LB_SETCOLUMNWIDTH, cxColumn, 0); }
+	function SetCount(cItems) { return SendMessage(hWnd, LB_SETCOUNT, cItems, 0); }
+	function SetCurSel(index) { return SendMessage(hWnd, LB_SETCURSEL, index, 0); }
+	function SetHorizontalExtent(cxExtent) { return SendMessage(hWnd, LB_SETHORIZONTALEXTENT, cxExtent, 0); }
+	function SetItemData(index, dwData) { return SendMessage(hWnd, LB_SETITEMDATA, index, dwData); }
+	function SetItemHeight(index, cyItem) { return SendMessage(hWnd, LB_SETITEMHEIGHT, index, MAKELPARAM(cyItem, 0)); }
+	function SetLocale(wLocaleID) { return SendMessage(hWnd, LB_SETLOCALE, wLocaleID, 0); }
+	function SetSel(fSelect, index) { return SendMessage(hWnd, LB_SETSEL, fSelect, index); }
+	function SetTabStops(cTabs, lpnTabs) { return SendMessage(hWnd, LB_SETTABSTOPS, cTabs, lpnTabs); }
+	function SetTopIndex(index) { return SendMessage(hWnd, LB_SETTOPINDEX, index, 0); }
+}
+
+class ComboBox
+{
+	function AddString(lpsz) { return SendMessage(hWnd, CB_ADDSTRING, 0, lpsz); }
+	function DeleteString(index) { return SendMessage(hWnd, CB_DELETESTRING, index, 0); }
+	function Dir(uAttrs, lpszFileSpec) { return SendMessage(hWnd, CB_DIR, uAttrs, lpszFileSpec); }
+	function FindString(indexStart, lpszFind) { return SendMessage(hWnd, CB_FINDSTRING, indexStart, lpszFind); }
+	function FindStringExact(indexStart, lpszFind) { return SendMessage(hWnd, CB_FINDSTRINGEXACT, indexStart, lpszFind); }
+	function get_Count() { return SendMessage(hWnd, CB_GETCOUNT, 0, 0); }
+	function GetCurSel() { return SendMessage(hWnd, CB_GETCURSEL, 0, 0); }
+	function GetDroppedControlRect(lprc : RECT) { return SendMessage(hWnd, CB_GETDROPPEDCONTROLRECT, 0, lprc); }
+	function GetDroppedState() { return SendMessage(hWnd, CB_GETDROPPEDSTATE, 0, 0); }
+	function GetDroppedWidth() { return SendMessage(hWnd, CB_GETDROPPEDWIDTH, 0, 0); }
+	function GetEditSel(lpdwStart, lpdwEnd) { return SendMessage(hWnd, CB_GETEDITSEL, lpdwStart, lpdwEnd); }
+	function GetExtendedUI() { return SendMessage(hWnd, CB_GETEXTENDEDUI, 0, 0); }
+	function GetHorizontalExtent() { return SendMessage(hWnd, CB_GETHORIZONTALEXTENT, 0, 0); }
+	function GetItemData(index) { return SendMessage(hWnd, CB_GETITEMDATA, index, 0); }
+	function GetItemHeight(index) { return SendMessage(hWnd, CB_GETITEMHEIGHT, index, 0); }
+	function GetListBoxTextToArray(index, lpszBuffer) { return SendMessage(hWnd, CB_GETLBTEXT, index, lpszBuffer); }
+	function GetListBoxTextLen(index) { return SendMessage(hWnd, CB_GETLBTEXTLEN, index, 0); }
+	function GetLocale() { return SendMessage(hWnd, CB_GETLOCALE, 0, 0); }
+	function GetTopIndex() { return SendMessage(hWnd, CB_GETTOPINDEX, 0, 0); }
+	function InitStorage(cItems, cb) { return SendMessage(hWnd, CB_INITSTORAGE, cItems, cb); }
+	function InsertString(index, lpsz) { return SendMessage(hWnd, CB_INSERTSTRING, index, lpsz); }
+	function LimitText(cchLimit) { return SendMessage(hWnd, CB_LIMITTEXT, cchLimit, 0); }
+	function ResetContent() { return SendMessage(hWnd, CB_RESETCONTENT, 0, 0); }
+	function SelectString(indexStart, lpszSelect) { return SendMessage(hWnd, CB_SELECTSTRING, indexStart, lpszSelect); }
+	function SetCurSel(index) { return SendMessage(hWnd, CB_SETCURSEL, index, 0); }
+	function SetDroppedWidth(wWidth) { return SendMessage(hWnd, CB_SETDROPPEDWIDTH, wWidth, 0); }
+	function SetEditSel(ichStart, ichEnd) { return SendMessage(hWnd, CB_SETEDITSEL, 0, MAKELPARAM(ichStart, ichEnd)); }
+	function SetExtendedUI(fExtended) { return SendMessage(hWnd, CB_SETEXTENDEDUI, fExtended, 0); }
+	function SetHorizontalExtent(cxExtent) { return SendMessage(hWnd, CB_SETHORIZONTALEXTENT, cxExtent, 0); }
+	function SetItemData(index, dwData) { return SendMessage(hWnd, CB_SETITEMDATA, index, dwData); }
+	function SetItemHeight(index, height) { return SendMessage(hWnd, CB_SETITEMHEIGHT, index, height); }
+	function SetLocale(wLocaleID) { return SendMessage(hWnd, CB_SETLOCALE, wLocaleID, 0); }
+	function SetTopIndex(index) { return SendMessage(hWnd, CB_SETTOPINDEX, index, 0); }
+	function ShowDropDown(fShow) { return SendMessage(hWnd, CB_SHOWDROPDOWN, fShow, 0); }
+}

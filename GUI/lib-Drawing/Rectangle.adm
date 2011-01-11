@@ -1,0 +1,12 @@
+﻿struct Rectangle : RECT
+{
+	function get_Width
+	{
+		return right - left;
+	}
+	
+	function get_Height
+	{
+		return bottom - top;
+	}
+}

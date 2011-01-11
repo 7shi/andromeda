@@ -1,0 +1,65 @@
+﻿class Brush
+{
+	var Handle;
+	
+	function dtor { Dispose(); }
+	function Dispose { DeleteObject(Handle); Handle = null; }
+}
+
+class SolidBrush : Brush
+{
+	var color;
+	
+	function get_Color : Color { return color; }
+	
+	static function Create(color : Color)
+	{
+		var ret = new SolidBrush;
+		ret.Handle = CreateSolidBrush(color);
+		ret.color = color;
+		return ret;
+	}
+}
+
+class Brushes
+{
+	static var black : SolidBrush;
+	static function get_Black
+	{
+		if (black == null) black = SolidBrush.Create(Color.Black);
+		return black;
+	}
+	
+	static var white : SolidBrush;
+	static function get_White
+	{
+		if (white == null) white = SolidBrush.Create(Color.White);
+		return white;
+	}
+	
+	static var red : SolidBrush;
+	static function get_Red
+	{
+		if (red == null) red = SolidBrush.Create(Color.Red);
+		return red;
+	}
+	
+	static var green : SolidBrush;
+	static function get_Green
+	{
+		if (green == null) green = SolidBrush.Create(Color.Green);
+		return green;
+	}
+	
+	static var blue : SolidBrush;
+	static function get_Blue
+	{
+		if (blue == null) blue = SolidBrush.Create(Color.Blue);
+		return blue;
+	}
+	
+	static function get_Cyan    { return SolidBrush.Create(Color.Cyan   ); }
+	static function get_Magenta { return SolidBrush.Create(Color.Magenta); }
+	static function get_Yellow  { return SolidBrush.Create(Color.Yellow ); }
+	static function get_Gray    { return SolidBrush.Create(Color.Gray   ); }
+}

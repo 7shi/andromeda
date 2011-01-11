@@ -1,0 +1,45 @@
+﻿var g_hInstance;
+function _get_instance()
+{
+	if (g_hInstance == null)
+		g_hInstance = GetModuleHandle(null);
+	return g_hInstance;
+}
+
+function MAKELONG(hw, lw)
+{
+	return lw | (hw << 16);
+}
+
+function LOWORD(l)
+{
+	return l & 0xffff;
+}
+
+function HIWORD(l)
+{
+	return (l >> 16) & 0xffff;
+}
+
+function MAKELPARAM(x, y)
+{
+	var x1 = (short)x;
+	var x2 = (ushort)x1;
+	var y1 = (short)y;
+	var y2 = (ushort)y1;
+	return x2 | (y2 << 16);
+}
+
+function GET_X_LPARAM(l)
+{
+	// TODO:one line cast
+	short ret = l & 0xffff;
+	return (var)ret;
+}
+
+function GET_Y_LPARAM(l)
+{
+	// TODO:one line cast
+	short ret = (l >> 16) & 0xffff;
+	return (var)ret;
+}

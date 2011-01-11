@@ -1,0 +1,7 @@
+﻿class RadioButton : Button
+{
+	function ctor()
+	{
+		SetStyle(BS_AUTORADIOBUTTON, true);
+	}
+}

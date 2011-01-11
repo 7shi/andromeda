@@ -1,0 +1,120 @@
+﻿class SplitContainer : Control
+{
+	var SplitterWidth = 4;
+
+	var panel1 = new Panel;
+	var panel2 = new Panel;
+	function get_Panel1 { return panel1; }
+	function get_Panel2 { return panel2; }
+	
+	var sizes = new VarList;
+	var p1, p2;
+	
+	var orientation = Orientation.Horizontal;
+	function get_Orientation : Orientation { return orientation; }
+	function set_Orientation(o : Orientation) { orientation = o; Adjust(); }
+	
+	function ctor
+	{
+		AddControl(panel1);
+		AddControl(panel2);
+	}
+	
+	override Create
+	{
+		if (orientation == Orientation.Horizontal)
+			wcex.hCursor = LoadCursor(null, IDC_SIZEWE);
+		else
+			wcex.hCursor = LoadCursor(null, IDC_SIZENS);
+		base.Create();
+	}
+	
+	function Adjust
+	{
+		if (hWnd == null) return;
+		if (orientation == Orientation.Horizontal)
+		{
+			if (p1 == 0 && p2 == 0)
+				p1 = panel1.Width, p2 = panel2.Width;
+			if (p1 == 0 && p2 == 0) p1 = 1, p2 = 1;
+			var sum = p1 + p2;
+			var ww = nWidth - SplitterWidth;
+			var p1w = ww * p1 / sum;
+			panel1.SetBounds(0, 0, p1w, nHeight);
+			panel2.SetBounds(p1w + SplitterWidth, 0, ww - p1w, nHeight);
+		}
+		else
+		{
+			if (p1 == 0 && p2 == 0)
+				p1 = panel1.Height, p2 = panel2.Height;
+			if (p1 == 0 && p2 == 0) p1 = 1, p2 = 1;
+			var sum = p1 + p2;
+			var hh = nHeight - SplitterWidth;
+			var p1h = hh * p1 / sum;
+			panel1.SetBounds(0, 0, nWidth, p1h);
+			panel2.SetBounds(0, p1h + SplitterWidth, nWidth, hh - p1h);
+		}
+	}
+	
+	override OnResize(e : EventArgs)
+	{
+		RECT r;
+		GetClientRect(hWnd, r);
+		if (r.right - r.left == nWidth && r.bottom - r.top == nHeight)
+			return;
+		
+		nWidth  = r.right - r.left;
+		nHeight = r.bottom - r.top;
+		
+		Adjust();
+		base.OnResize(e);
+	}
+	
+	var state, clickX, clickY, offset;
+	
+	override OnMouseDown(e : MouseEventArgs)
+	{
+		base.OnMouseDown(e);
+		if (e.Button != MouseButtons.Left) return;
+		Capture = true;
+		state = 1;
+		offset = -1;
+		clickX = e.X;
+		clickY = e.Y;
+	}
+	
+	override OnMouseMove(e : MouseEventArgs)
+	{
+		base.OnMouseMove(e);
+		if (state == 1)
+		{
+			if (Math.Abs(e.X - clickX) > 3 || Math.Abs(e.Y - clickY) > 3)
+				state = 2;
+		}
+		if (state != 2) return;
+		if (orientation == Orientation.Horizontal)
+		{
+			if (offset == -1) offset = clickX - panel1.Width;
+			var ww = nWidth - SplitterWidth;
+			p1 = Math.Min(Math.Max(e.X - offset, 0), ww);
+			p2 = ww - p1;
+			Adjust();
+		}
+		else
+		{
+			if (offset == -1) offset = clickY - panel1.Height;
+			var hh = nHeight - SplitterWidth;
+			p1 = Math.Min(Math.Max(e.Y - offset, 0), hh);
+			p2 = hh - p1;
+			Adjust();
+		}
+	}
+	
+	override OnMouseUp(e : MouseEventArgs)
+	{
+		base.OnMouseUp(e);
+		if (e.Button != MouseButtons.Left) return;
+		Capture = false;
+		state = 0;
+	}
+}
