@@ -14,6 +14,14 @@
 		return ret;
 	}
 	
+	function Clone
+	{
+		var ret = new StringList;
+		for (int i = 0; i < Count; i++)
+			ret.Add(buffer[i]);
+		return ret;
+	}
+	
 	function Get(order)
 	{
 		return (string)base.Get(order);

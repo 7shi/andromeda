@@ -20,6 +20,16 @@
 		return ret;
 	}
 	
+	function Clone
+	{
+		var ret = new VarList;
+		ret.Count = Count;
+		ret.Capacity = Capacity;
+		ret.buffer = new var[buffer.Length];
+		__movsd(ret.buffer, buffer, Count);
+		return ret;
+	}
+	
 	function Get(order)
 	{
 		if (order < 0 || order >= Count) return 0;
