@@ -65,7 +65,7 @@
         case "__LINE__":
             return IntValue.New(si.Number);
         case "__VERSION__":
-            return StringValue.New("LLPML ver." + Root.VERSION);
+            return StringValue.New("Andromeda ver." + Root.VERSION);
         default:
             return null;
         }
