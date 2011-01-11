@@ -5,6 +5,11 @@
 		return (string[])base.Values;
 	}
 	
+	function Get(key : string) : string
+	{
+		return base.Get(key);
+	}
+	
 	function Add(key : string, v : string)
 	{
 		base.Add(key, v);
