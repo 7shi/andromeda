@@ -1,7 +1,7 @@
 verbose
 dir Core/lib
 dir System/lib
-dir Binary/lib
+dir Compiler/lib
 dir Andromeda
 src admc.adm
 exe admc.exe

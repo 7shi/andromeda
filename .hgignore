@@ -1,5 +1,5 @@
 syntax: glob
 admc.exe
 Core/tests/*.exe
-Binary/tests/*.exe
+Compiler/tests/*.exe
 GUI/tests/*.exe
