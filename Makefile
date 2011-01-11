@@ -1,9 +1,7 @@
-all: admc.exe
-
-admc.exe:
+all:
 	echo | ./COMPILER.exe
 
-install: admc.exe
+install: all
 	sleep 1
 	cp admc.exe COMPILER.exe
 
