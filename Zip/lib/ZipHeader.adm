@@ -1,0 +1,89 @@
+﻿class ZipHeader
+{
+	short version, flags, compression, dos_time, dos_date;
+	uint crc32, compressed_size, uncompressed_size;
+	short filename_length, extra_field_length;
+	var _fname : byte[];
+	uint _attrs, _pos;
+
+	static function New(path : string, rel : string, data : byte[], pos : uint)
+	{
+		var ret = new ZipHeader;
+		var ft = File.GetLastWriteTime(path);
+		uint dd, dt;
+		FileTimeToDosDateTime(ft, addrof dd, addrof dt);
+		uint crc = 0, size = 0;
+		if (data != null)
+		{
+			crc = CRC.Get32(data);
+			size = data.Length;
+		}
+		var fn = rel.ToByteString();
+		ret.version            = 10;
+		ret.flags              = 0;
+		ret.compression        = 0;
+		ret.dos_time           = dt;
+		ret.dos_date           = dd;
+		ret.crc32              = crc;
+		ret.compressed_size    = size;
+		ret.uncompressed_size  = size;
+		ret.filename_length    = fn.Length;
+		ret.extra_field_length = 0;
+		ret._fname             = fn;
+		ret._attrs             = GetFileAttributes(path);
+		ret._pos               = pos;
+		return ret;
+	}
+
+	function Write(fs:FileStream)
+	{
+		fs.writeShort(version);
+		fs.writeShort(flags);
+		fs.writeShort(compression);
+		fs.writeShort(dos_time);
+		fs.writeShort(dos_date);
+		fs.writeUInt(crc32);
+		fs.writeUInt(compressed_size);
+		fs.writeUInt(uncompressed_size);
+		fs.writeShort(filename_length);
+		fs.writeShort(extra_field_length);
+	}
+}
+
+class ZipDirHeader
+{
+	ushort version;
+	var header : ZipHeader;
+	short _1; // file comment length
+	short _2; // disk number start
+	short _3; // internal file attributes
+	uint attrs, pos;
+	var fname : byte[];
+	
+	static function New(path : string, rel : string, data : byte[], pos : uint)
+	{
+		var ret = new ZipDirHeader;
+		var relb = rel.ToByteString();
+		ret.version = 20;
+		ret.header  = ZipHeader.New(path, rel, data, pos);
+		ret._1      = 0;
+		ret._2      = 0;
+		ret._3      = 0;
+		ret.attrs   = GetFileAttributes(path);
+		ret.pos     = pos;
+		ret.fname   = relb;
+		return ret;
+	}
+	
+	function Write(fs:FileStream)
+	{
+		fs.writeShort(version);
+		header.Write(fs);
+		fs.writeShort(_1);
+		fs.writeShort(_2);
+		fs.writeShort(_3);
+		fs.writeUInt(attrs);
+		fs.writeUInt(pos);
+		fs.Write(fname);
+	}
+}

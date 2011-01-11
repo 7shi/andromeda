@@ -3,3 +3,4 @@ admc.exe
 Core/tests/*.exe
 Compiler/tests/*.exe
 GUI/tests/*.exe
+Zip/tests/*.exe

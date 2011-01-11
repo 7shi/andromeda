@@ -1,0 +1,97 @@
+﻿class Zip
+{
+	static function mkrel(reldir : string, name : string)
+	{
+		if (reldir == "") return name;
+		return reldir + "/" + name;
+	}
+
+	static function writeFile(list : ArrayList, fs : FileStream, path : string, rel : string)
+	{
+		var fs2 = new FileStream;
+		fs2.OpenRead(path);
+		uint len = fs2.Length;
+		var data = fs2.ReadToEnd();
+		fs2.Close();
+		
+		uint p = fs.Position;
+		var ziph = ZipDirHeader.New(path, rel, data, p);
+		fs.WriteByte('P');
+		fs.WriteByte('K');
+		fs.WriteByte(3);
+		fs.WriteByte(4);
+		ziph.header.Write(fs);
+		fs.Write(ziph.fname);
+		fs.Write(data);
+		list.Add(ziph);
+	}
+
+	static function writeDir(list : ArrayList, fs : FileStream, path : string, rel : string)
+	{
+		uint p = fs.Position;
+		var ziph = ZipDirHeader.New(path, rel + "/", null, p);
+		fs.WriteByte('P');
+		fs.WriteByte('K');
+		fs.WriteByte(3);
+		fs.WriteByte(4);
+		ziph.header.Write(fs);
+		fs.Write(ziph.fname);
+		list.Add(ziph);
+		
+		var files = Directory.GetFiles(path);
+		for (int i = 0; i < files.Length; i++)
+		{
+			var f = files[i];
+			writeFile(list, fs, f, mkrel(rel, Path.GetFileName(f)));
+		}
+		var dirs = Directory.GetDirectories(path);
+		for (int i = 0; i < dirs.Length; i++)
+		{
+			var d = dirs[i];
+			writeDir(list, fs, d, mkrel(rel, Path.GetFileName(d)));
+		}
+	}
+
+	static function write(list : ArrayList, fs : FileStream, path : string, rel : string)
+	{
+		if (File.Exists(path))
+			writeFile(list, fs, path, rel);
+		else
+			writeDir(list, fs, path, rel);
+	}
+
+	static function WriteUncompressed(fs : FileStream, files : string[])
+	{
+		var list = new ArrayList;
+		
+		for (int i = 0; i < files.Length; i++)
+		{
+			var f = files[i];
+			write(list, fs, f, Path.GetFileName(f));
+		}
+		
+		uint dir_start = fs.Position;
+		for (int i = 0; i < list.Count; i++)
+		{
+			var ziph = list.Get(i) as ZipDirHeader;
+			fs.WriteByte('P');
+			fs.WriteByte('K');
+			fs.WriteByte(1);
+			fs.WriteByte(2);
+			ziph.Write(fs);
+		}
+		uint dir_len = fs.Position - dir_start;
+		
+		fs.WriteByte('P');
+		fs.WriteByte('K');
+		fs.WriteByte(5);
+		fs.WriteByte(6);
+		fs.writeShort(0); // number of this disk
+		fs.writeShort(0); // number of the disk with the start of the central directory
+		fs.writeShort(list.Count);
+		fs.writeShort(list.Count);
+		fs.writeUInt(dir_len);
+		fs.writeUInt(dir_start);
+		fs.writeShort(0); // zipfile comment length
+	}
+}

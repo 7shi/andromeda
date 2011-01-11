@@ -1,0 +1,7 @@
+verbose
+dir ..\..\Core\lib
+dir ..\..\System\lib
+dir ..\..\GUI\lib-Drawing
+dir ..\..\GUI\lib-WinForms
+dir ..\lib
+foreach

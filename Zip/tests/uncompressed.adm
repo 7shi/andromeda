@@ -1,0 +1,32 @@
+﻿#pragma subsystem(WINDOWS_GUI)
+
+class Form1 : Form
+{
+	function ctor
+	{
+		Text = "ZIP";
+		SetClientSize(256, 256);
+	}
+	
+	override Create
+	{
+		base.Create();
+		DragAcceptFiles(hWnd, true);
+	}
+	
+	override WndProc(uMsg, wParam, lParam)
+	{
+		if (uMsg == WM_DROPFILES)
+		{
+			var files = GetDropFiles(wParam);
+			var zip = Path.ChangeExtension(files[0], ".zip");
+			var fs = new FileStream;
+			fs.OpenWrite(zip);
+			Zip.WriteUncompressed(fs, files);
+			fs.Close();
+		}
+		return base.WndProc(uMsg, wParam, lParam);
+	}
+}
+
+Application.Run(new Form1);

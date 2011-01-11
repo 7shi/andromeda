@@ -1,0 +1,32 @@
+﻿var crc32_table = \ =>
+{
+	var ret = new uint[256];
+	for (uint i = 0; i < 256; i++)
+	{
+		var crc = i;
+		for (int j = 0; j < 8; j++)
+		{
+			var crc2 = crc >> 1;
+			if ((crc & 1) == 0)
+				crc = crc2;
+			else
+				crc = crc2 ^ 0xedb88320;
+		}
+		ret[i] = crc;
+	}
+	return ret;
+}();
+
+class CRC
+{
+	static function Get32(buf : byte[])
+	{
+		uint crc = ~0;
+		for (int i = 0; i < buf.Length; i++)
+		{
+			var b = buf[i];
+			crc = (crc >> 8) ^ crc32_table[(crc ^ b) & 0xff];
+		}
+		return ~crc;
+	}
+}
