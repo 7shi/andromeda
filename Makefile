@@ -1,5 +1,11 @@
-all:
+all: admc.exe
+
+admc.exe:
 	echo | ./COMPILER.exe
+
+install: admc.exe
+	sleep 1
+	cp admc.exe COMPILER.exe
 
 tests:
 	cd Core/tests && echo | ../../COMPILER.exe
