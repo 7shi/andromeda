@@ -34,6 +34,13 @@ class DateTime
         return ret;
     }
 
+    static function FromFileTime(ft : FILETIME)
+    {
+        var ret = new DateTime;
+        ret.ft = ft;
+        return ret;
+    }
+
     static function New(year, month, day)
     {
         var ret = new DateTime;
