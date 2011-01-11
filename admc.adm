@@ -85,7 +85,6 @@ function readAdmk(admk : string)
 
 function compile(srcs : string[], libs : string[], output : string, verbose : bool)
 {
-    println();
     var s = DateTime.Now;
 
     var list = new StringList;
@@ -127,6 +126,7 @@ function compile(srcs : string[], libs : string[], output : string, verbose : bo
         if (ok) return;
     }
 
+    println();
     if (!verbose)
         printfln("パースしています...");
     var root = new Root;
