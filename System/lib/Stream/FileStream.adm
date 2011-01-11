@@ -144,6 +144,7 @@ class FileStream
 		var len;
 		if (WriteFile(handle, data, length, addrof len, null) == 0)
 			return -1;
+		pos += len;
 		return len;
 	}
 	
