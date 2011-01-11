@@ -1,0 +1,21 @@
+verbose
+dir ..\..\Core\lib
+dir ..\..\System\lib
+dir ..\lib
+dir ..\lib-PE
+dir ..\lib-x86
+src make-dll.adm
+exe make-dll.exe
+
+verbose
+dir ..\..\Core\lib
+dir ..\..\System\lib
+dir ..\..\GUI\lib-WinForms
+dir ..\..\GUI\lib-Drawing
+dir ..\..\ConsoleBox\lib
+dir ..\lib
+dir ..\lib-PE
+dir ..\lib-x86
+dir ..\lib-ARM
+src test.adm
+exe test.exe

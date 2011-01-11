@@ -1,0 +1,447 @@
+﻿// このファイルは src-Headers.xml から生成されました。
+// 再生成で変更内容が失われるため直接編集しないでください。
+
+const int IMAGE_FILE_RELOCS_STRIPPED         = 0x0001;
+const int IMAGE_FILE_EXECUTABLE_IMAGE        = 0x0002;
+const int IMAGE_FILE_LINE_NUMS_STRIPPED      = 0x0004;
+const int IMAGE_FILE_LOCAL_SYMS_STRIPPED     = 0x0008;
+const int IMAGE_FILE_AGGRESSIVE_WS_TRIM      = 0x0010;
+const int IMAGE_FILE_LARGE_ADDRESS_AWARE     = 0x0020;
+const int IMAGE_FILE_16BIT_MACHINE           = 0x0040;
+const int IMAGE_FILE_BYTES_REVERSED_LO       = 0x0080;
+const int IMAGE_FILE_32BIT_MACHINE           = 0x0100;
+const int IMAGE_FILE_DEBUG_STRIPPED          = 0x0200;
+const int IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP = 0x0400;
+const int IMAGE_FILE_SYSTEM                  = 0x1000;
+const int IMAGE_FILE_DLL                     = 0x2000;
+const int IMAGE_FILE_UP_SYSTEM_ONLY          = 0x4000;
+const int IMAGE_FILE_BYTES_REVERSED_HI       = 0x8000;
+
+function IMAGE_FILE_Parse(s : string)
+{
+	switch (s)
+	{
+		case "RELOCS_STRIPPED"        : return IMAGE_FILE_RELOCS_STRIPPED;
+		case "EXECUTABLE_IMAGE"       : return IMAGE_FILE_EXECUTABLE_IMAGE;
+		case "LINE_NUMS_STRIPPED"     : return IMAGE_FILE_LINE_NUMS_STRIPPED;
+		case "LOCAL_SYMS_STRIPPED"    : return IMAGE_FILE_LOCAL_SYMS_STRIPPED;
+		case "AGGRESSIVE_WS_TRIM"     : return IMAGE_FILE_AGGRESSIVE_WS_TRIM;
+		case "LARGE_ADDRESS_AWARE"    : return IMAGE_FILE_LARGE_ADDRESS_AWARE;
+		case "16BIT_MACHINE"          : return IMAGE_FILE_16BIT_MACHINE;
+		case "BYTES_REVERSED_LO"      : return IMAGE_FILE_BYTES_REVERSED_LO;
+		case "32BIT_MACHINE"          : return IMAGE_FILE_32BIT_MACHINE;
+		case "DEBUG_STRIPPED"         : return IMAGE_FILE_DEBUG_STRIPPED;
+		case "REMOVABLE_RUN_FROM_SWAP": return IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP;
+		case "SYSTEM"                 : return IMAGE_FILE_SYSTEM;
+		case "DLL"                    : return IMAGE_FILE_DLL;
+		case "UP_SYSTEM_ONLY"         : return IMAGE_FILE_UP_SYSTEM_ONLY;
+		case "BYTES_REVERSED_HI"      : return IMAGE_FILE_BYTES_REVERSED_HI;
+	}
+	return -1;
+}
+
+function IMAGE_FILE_ToString(value)
+{
+	switch (value)
+	{
+		case IMAGE_FILE_RELOCS_STRIPPED        : return "RELOCS_STRIPPED";
+		case IMAGE_FILE_EXECUTABLE_IMAGE       : return "EXECUTABLE_IMAGE";
+		case IMAGE_FILE_LINE_NUMS_STRIPPED     : return "LINE_NUMS_STRIPPED";
+		case IMAGE_FILE_LOCAL_SYMS_STRIPPED    : return "LOCAL_SYMS_STRIPPED";
+		case IMAGE_FILE_AGGRESSIVE_WS_TRIM     : return "AGGRESSIVE_WS_TRIM";
+		case IMAGE_FILE_LARGE_ADDRESS_AWARE    : return "LARGE_ADDRESS_AWARE";
+		case IMAGE_FILE_16BIT_MACHINE          : return "16BIT_MACHINE";
+		case IMAGE_FILE_BYTES_REVERSED_LO      : return "BYTES_REVERSED_LO";
+		case IMAGE_FILE_32BIT_MACHINE          : return "32BIT_MACHINE";
+		case IMAGE_FILE_DEBUG_STRIPPED         : return "DEBUG_STRIPPED";
+		case IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP: return "REMOVABLE_RUN_FROM_SWAP";
+		case IMAGE_FILE_SYSTEM                 : return "SYSTEM";
+		case IMAGE_FILE_DLL                    : return "DLL";
+		case IMAGE_FILE_UP_SYSTEM_ONLY         : return "UP_SYSTEM_ONLY";
+		case IMAGE_FILE_BYTES_REVERSED_HI      : return "BYTES_REVERSED_HI";
+	}
+	return string.Format("0x%%X", value);
+}
+
+const int IMAGE_FILE_MACHINE_UNKNOWN =    0x0;
+const int IMAGE_FILE_MACHINE_ALPHA   =  0x184;
+const int IMAGE_FILE_MACHINE_AMD64   = 0x8664;
+const int IMAGE_FILE_MACHINE_ARM     =  0x1C0;
+const int IMAGE_FILE_MACHINE_I386    =  0x14C;
+const int IMAGE_FILE_MACHINE_M68K    =  0x268;
+const int IMAGE_FILE_MACHINE_POWERPC =  0x1F0;
+const int IMAGE_FILE_MACHINE_R10000  =  0x168;
+const int IMAGE_FILE_MACHINE_R3000   =  0x162;
+const int IMAGE_FILE_MACHINE_R4000   =  0x166;
+const int IMAGE_FILE_MACHINE_SH3     =  0x1A2;
+const int IMAGE_FILE_MACHINE_SH4     =  0x1A6;
+
+function IMAGE_FILE_MACHINE_Parse(s : string)
+{
+	switch (s)
+	{
+		case "UNKNOWN": return IMAGE_FILE_MACHINE_UNKNOWN;
+		case "ALPHA"  : return IMAGE_FILE_MACHINE_ALPHA;
+		case "AMD64"  : return IMAGE_FILE_MACHINE_AMD64;
+		case "ARM"    : return IMAGE_FILE_MACHINE_ARM;
+		case "I386"   : return IMAGE_FILE_MACHINE_I386;
+		case "M68K"   : return IMAGE_FILE_MACHINE_M68K;
+		case "POWERPC": return IMAGE_FILE_MACHINE_POWERPC;
+		case "R10000" : return IMAGE_FILE_MACHINE_R10000;
+		case "R3000"  : return IMAGE_FILE_MACHINE_R3000;
+		case "R4000"  : return IMAGE_FILE_MACHINE_R4000;
+		case "SH3"    : return IMAGE_FILE_MACHINE_SH3;
+		case "SH4"    : return IMAGE_FILE_MACHINE_SH4;
+	}
+	return -1;
+}
+
+function IMAGE_FILE_MACHINE_ToString(value)
+{
+	switch (value)
+	{
+		case IMAGE_FILE_MACHINE_UNKNOWN: return "UNKNOWN";
+		case IMAGE_FILE_MACHINE_ALPHA  : return "ALPHA";
+		case IMAGE_FILE_MACHINE_AMD64  : return "AMD64";
+		case IMAGE_FILE_MACHINE_ARM    : return "ARM";
+		case IMAGE_FILE_MACHINE_I386   : return "I386";
+		case IMAGE_FILE_MACHINE_M68K   : return "M68K";
+		case IMAGE_FILE_MACHINE_POWERPC: return "POWERPC";
+		case IMAGE_FILE_MACHINE_R10000 : return "R10000";
+		case IMAGE_FILE_MACHINE_R3000  : return "R3000";
+		case IMAGE_FILE_MACHINE_R4000  : return "R4000";
+		case IMAGE_FILE_MACHINE_SH3    : return "SH3";
+		case IMAGE_FILE_MACHINE_SH4    : return "SH4";
+	}
+	return string.Format("0x%%X", value);
+}
+
+const int IMAGE_SUBSYSTEM_UNKNOWN        = 0;
+const int IMAGE_SUBSYSTEM_NATIVE         = 1;
+const int IMAGE_SUBSYSTEM_WINDOWS_GUI    = 2;
+const int IMAGE_SUBSYSTEM_WINDOWS_CUI    = 3;
+const int IMAGE_SUBSYSTEM_POSIX_CUI      = 7;
+const int IMAGE_SUBSYSTEM_WINDOWS_CE_GUI = 9;
+
+function IMAGE_SUBSYSTEM_Parse(s : string)
+{
+	switch (s)
+	{
+		case "UNKNOWN"       : return IMAGE_SUBSYSTEM_UNKNOWN;
+		case "NATIVE"        : return IMAGE_SUBSYSTEM_NATIVE;
+		case "WINDOWS_GUI"   : return IMAGE_SUBSYSTEM_WINDOWS_GUI;
+		case "WINDOWS_CUI"   : return IMAGE_SUBSYSTEM_WINDOWS_CUI;
+		case "POSIX_CUI"     : return IMAGE_SUBSYSTEM_POSIX_CUI;
+		case "WINDOWS_CE_GUI": return IMAGE_SUBSYSTEM_WINDOWS_CE_GUI;
+	}
+	return -1;
+}
+
+function IMAGE_SUBSYSTEM_ToString(value)
+{
+	switch (value)
+	{
+		case IMAGE_SUBSYSTEM_UNKNOWN       : return "UNKNOWN";
+		case IMAGE_SUBSYSTEM_NATIVE        : return "NATIVE";
+		case IMAGE_SUBSYSTEM_WINDOWS_GUI   : return "WINDOWS_GUI";
+		case IMAGE_SUBSYSTEM_WINDOWS_CUI   : return "WINDOWS_CUI";
+		case IMAGE_SUBSYSTEM_POSIX_CUI     : return "POSIX_CUI";
+		case IMAGE_SUBSYSTEM_WINDOWS_CE_GUI: return "WINDOWS_CE_GUI";
+	}
+	return string.Format("0x%%X", value);
+}
+
+struct DOSHeader
+{
+	byte   signature1           =    'M';
+	byte   signature2           =    'Z';
+	ushort bytes_in_last_block  =   0x90;
+	ushort blocks_in_file       =      3;
+	ushort num_relocs           =      0;
+	ushort header_paragraphs    =      4;
+	ushort min_extra_paragraphs =      0;
+	ushort max_extra_paragraphs = 0xFFFF;
+	ushort ss                   =      0;
+	ushort sp                   =   0xB8;
+	ushort checksum             =      0;
+	ushort ip                   =      0;
+	ushort cs                   =      0;
+	ushort reloc_table_offset   =   0x40;
+	ushort overlay_number       =      0;
+
+	function Show
+	{
+		printfln("signature1          : %02x", signature1);
+		printfln("signature2          : %02x", signature2);
+		printfln("bytes_in_last_block : %04x", bytes_in_last_block);
+		printfln("blocks_in_file      : %04x", blocks_in_file);
+		printfln("num_relocs          : %04x", num_relocs);
+		printfln("header_paragraphs   : %04x", header_paragraphs);
+		printfln("min_extra_paragraphs: %04x", min_extra_paragraphs);
+		printfln("max_extra_paragraphs: %04x", max_extra_paragraphs);
+		printfln("ss                  : %04x", ss);
+		printfln("sp                  : %04x", sp);
+		printfln("checksum            : %04x", checksum);
+		printfln("ip                  : %04x", ip);
+		printfln("cs                  : %04x", cs);
+		printfln("reloc_table_offset  : %04x", reloc_table_offset);
+		printfln("overlay_number      : %04x", overlay_number);
+	}
+}
+
+struct PEFileHeader
+{
+	ushort Machine              = 0x14C;
+	ushort NumberOfSections     =     0;
+	int    TimeDateStamp        =     0;
+	int    PointerToSymbolTable =     0;
+	int    NumberOfSymbols      =     0;
+	ushort OptionalHeaderSize   =  0xE0;
+	ushort Characteristics      = 0x10E;
+
+	function Show
+	{
+		printfln("Machine             : %04x", Machine);
+		printfln("NumberOfSections    : %04x", NumberOfSections);
+		printfln("TimeDateStamp       : %08x", TimeDateStamp);
+		printfln("PointerToSymbolTable: %08x", PointerToSymbolTable);
+		printfln("NumberOfSymbols     : %08x", NumberOfSymbols);
+		printfln("OptionalHeaderSize  : %04x", OptionalHeaderSize);
+		printfln("Characteristics     : %04x", Characteristics);
+	}
+}
+
+struct PEHeaderStandardFields
+{
+	ushort Magic                 = 0x10B;
+	byte   LMajor                =     6;
+	byte   LMinor                =     0;
+	int    CodeSize              =     0;
+	int    InitializedDataSize   =     0;
+	int    UninitializedDataSize =     0;
+	int    EntryPoint            =     0;
+	int    BaseOfCode            =     0;
+	int    BaseOfData            =     0;
+
+	function Show
+	{
+		printfln("Magic                : %04x", Magic);
+		printfln("LMajor               : %02x", LMajor);
+		printfln("LMinor               : %02x", LMinor);
+		printfln("CodeSize             : %08x", CodeSize);
+		printfln("InitializedDataSize  : %08x", InitializedDataSize);
+		printfln("UninitializedDataSize: %08x", UninitializedDataSize);
+		printfln("EntryPoint           : %08x", EntryPoint);
+		printfln("BaseOfCode           : %08x", BaseOfCode);
+		printfln("BaseOfData           : %08x", BaseOfData);
+	}
+}
+
+struct PEHeaderWindowsNTSpecificFields
+{
+	int    ImageBase               = 0x400000;
+	int    SectionAlignment        =   0x1000;
+	int    FileAlignment           =    0x200;
+	ushort OSMajor                 =        4;
+	ushort OSMinor                 =        0;
+	ushort UserMajor               =        0;
+	ushort UserMinor               =        0;
+	ushort SubSysMajor             =        4;
+	ushort SubSysMinor             =        0;
+	int    Reserved                =        0;
+	int    ImageSize               =        0;
+	int    HeaderSize              =        0;
+	int    FileChecksum            =        0;
+	ushort SubSystem               =        3;
+	ushort DLLFlags                =        0;
+	int    StackReserveSize        = 0x100000;
+	int    StackCommitSize         =   0x1000;
+	int    HeapReserveSize         = 0x100000;
+	int    HeapCommitSize          =   0x1000;
+	int    LoaderFlags             =        0;
+	int    NumberOfDataDirectories =     0x10;
+
+	function Show
+	{
+		printfln("ImageBase              : %08x", ImageBase);
+		printfln("SectionAlignment       : %08x", SectionAlignment);
+		printfln("FileAlignment          : %08x", FileAlignment);
+		printfln("OSMajor                : %04x", OSMajor);
+		printfln("OSMinor                : %04x", OSMinor);
+		printfln("UserMajor              : %04x", UserMajor);
+		printfln("UserMinor              : %04x", UserMinor);
+		printfln("SubSysMajor            : %04x", SubSysMajor);
+		printfln("SubSysMinor            : %04x", SubSysMinor);
+		printfln("Reserved               : %08x", Reserved);
+		printfln("ImageSize              : %08x", ImageSize);
+		printfln("HeaderSize             : %08x", HeaderSize);
+		printfln("FileChecksum           : %08x", FileChecksum);
+		printfln("SubSystem              : %04x", SubSystem);
+		printfln("DLLFlags               : %04x", DLLFlags);
+		printfln("StackReserveSize       : %08x", StackReserveSize);
+		printfln("StackCommitSize        : %08x", StackCommitSize);
+		printfln("HeapReserveSize        : %08x", HeapReserveSize);
+		printfln("HeapCommitSize         : %08x", HeapCommitSize);
+		printfln("LoaderFlags            : %08x", LoaderFlags);
+		printfln("NumberOfDataDirectories: %08x", NumberOfDataDirectories);
+	}
+}
+
+struct PEHeaderDataDirectories
+{
+	int ExportTable_Address           = 0;
+	int ExportTable_Size              = 0;
+	int ImportTable_Address           = 0;
+	int ImportTable_Size              = 0;
+	int ResourceTable_Address         = 0;
+	int ResourceTable_Size            = 0;
+	int ExceptionTable_Address        = 0;
+	int ExceptionTable_Size           = 0;
+	int CertificateTable_Address      = 0;
+	int CertificateTable_Size         = 0;
+	int BaseRelocationTable_Address   = 0;
+	int BaseRelocationTable_Size      = 0;
+	int Debug_Address                 = 0;
+	int Debug_Size                    = 0;
+	int Copyright_Address             = 0;
+	int Copyright_Size                = 0;
+	int GlobalPtr_Address             = 0;
+	int GlobalPtr_Size                = 0;
+	int TLSTable_Address              = 0;
+	int TLSTable_Size                 = 0;
+	int LoadConfigTable_Address       = 0;
+	int LoadConfigTable_Size          = 0;
+	int BoundImport_Address           = 0;
+	int BoundImport_Size              = 0;
+	int IAT_Address                   = 0;
+	int IAT_Size                      = 0;
+	int DelayImportDescriptor_Address = 0;
+	int DelayImportDescriptor_Size    = 0;
+	int CLIHeader_Address             = 0;
+	int CLIHeader_Size                = 0;
+	int Reserved_Address              = 0;
+	int Reserved_Size                 = 0;
+
+	function Show
+	{
+		printfln("ExportTable_Address          : %08x", ExportTable_Address);
+		printfln("ExportTable_Size             : %08x", ExportTable_Size);
+		printfln("ImportTable_Address          : %08x", ImportTable_Address);
+		printfln("ImportTable_Size             : %08x", ImportTable_Size);
+		printfln("ResourceTable_Address        : %08x", ResourceTable_Address);
+		printfln("ResourceTable_Size           : %08x", ResourceTable_Size);
+		printfln("ExceptionTable_Address       : %08x", ExceptionTable_Address);
+		printfln("ExceptionTable_Size          : %08x", ExceptionTable_Size);
+		printfln("CertificateTable_Address     : %08x", CertificateTable_Address);
+		printfln("CertificateTable_Size        : %08x", CertificateTable_Size);
+		printfln("BaseRelocationTable_Address  : %08x", BaseRelocationTable_Address);
+		printfln("BaseRelocationTable_Size     : %08x", BaseRelocationTable_Size);
+		printfln("Debug_Address                : %08x", Debug_Address);
+		printfln("Debug_Size                   : %08x", Debug_Size);
+		printfln("Copyright_Address            : %08x", Copyright_Address);
+		printfln("Copyright_Size               : %08x", Copyright_Size);
+		printfln("GlobalPtr_Address            : %08x", GlobalPtr_Address);
+		printfln("GlobalPtr_Size               : %08x", GlobalPtr_Size);
+		printfln("TLSTable_Address             : %08x", TLSTable_Address);
+		printfln("TLSTable_Size                : %08x", TLSTable_Size);
+		printfln("LoadConfigTable_Address      : %08x", LoadConfigTable_Address);
+		printfln("LoadConfigTable_Size         : %08x", LoadConfigTable_Size);
+		printfln("BoundImport_Address          : %08x", BoundImport_Address);
+		printfln("BoundImport_Size             : %08x", BoundImport_Size);
+		printfln("IAT_Address                  : %08x", IAT_Address);
+		printfln("IAT_Size                     : %08x", IAT_Size);
+		printfln("DelayImportDescriptor_Address: %08x", DelayImportDescriptor_Address);
+		printfln("DelayImportDescriptor_Size   : %08x", DelayImportDescriptor_Size);
+		printfln("CLIHeader_Address            : %08x", CLIHeader_Address);
+		printfln("CLIHeader_Size               : %08x", CLIHeader_Size);
+		printfln("Reserved_Address             : %08x", Reserved_Address);
+		printfln("Reserved_Size                : %08x", Reserved_Size);
+	}
+}
+
+struct SectionHeader
+{
+	byte   name[8];
+	int    VirtualSize          = 0;
+	int    VirtualAddress       = 0;
+	int    SizeOfRawData        = 0;
+	int    PointerToRawData     = 0;
+	int    PointerToRelocations = 0;
+	int    PointerToLinenumbers = 0;
+	ushort NumberOfRelocations  = 0;
+	ushort NumberOfLinenumbers  = 0;
+	int    Characteristics      = 0;
+
+	function Show
+	{
+		printfln("VirtualSize         : %08x", VirtualSize);
+		printfln("VirtualAddress      : %08x", VirtualAddress);
+		printfln("SizeOfRawData       : %08x", SizeOfRawData);
+		printfln("PointerToRawData    : %08x", PointerToRawData);
+		printfln("PointerToRelocations: %08x", PointerToRelocations);
+		printfln("PointerToLinenumbers: %08x", PointerToLinenumbers);
+		printfln("NumberOfRelocations : %04x", NumberOfRelocations);
+		printfln("NumberOfLinenumbers : %04x", NumberOfLinenumbers);
+		printfln("Characteristics     : %08x", Characteristics);
+	}
+}
+
+struct ImportTable
+{
+	int ImportLookupTable  = 0;
+	int DateTimeStamp      = 0;
+	int ForwarderChain     = 0;
+	int Name               = 0;
+	int ImportAddressTable = 0;
+
+	function Show
+	{
+		printfln("ImportLookupTable : %08x", ImportLookupTable);
+		printfln("DateTimeStamp     : %08x", DateTimeStamp);
+		printfln("ForwarderChain    : %08x", ForwarderChain);
+		printfln("Name              : %08x", Name);
+		printfln("ImportAddressTable: %08x", ImportAddressTable);
+	}
+}
+
+struct ExportTable
+{
+	int    ExportFlags          = 0;
+	int    TimeDateStamp        = 0;
+	ushort MajorVersion         = 0;
+	ushort MinorVersion         = 0;
+	int    Name                 = 0;
+	int    OrdinalBase          = 1;
+	int    AddressTableEntries  = 0;
+	int    NumberOfNamePointers = 0;
+	int    ExportAddressTable   = 0;
+	int    NamePointer          = 0;
+	int    OrdinalTable         = 0;
+
+	function Show
+	{
+		printfln("ExportFlags         : %08x", ExportFlags);
+		printfln("TimeDateStamp       : %08x", TimeDateStamp);
+		printfln("MajorVersion        : %04x", MajorVersion);
+		printfln("MinorVersion        : %04x", MinorVersion);
+		printfln("Name                : %08x", Name);
+		printfln("OrdinalBase         : %08x", OrdinalBase);
+		printfln("AddressTableEntries : %08x", AddressTableEntries);
+		printfln("NumberOfNamePointers: %08x", NumberOfNamePointers);
+		printfln("ExportAddressTable  : %08x", ExportAddressTable);
+		printfln("NamePointer         : %08x", NamePointer);
+		printfln("OrdinalTable        : %08x", OrdinalTable);
+	}
+}
+
+struct FixupHeader
+{
+	int Page      = 0;
+	int BlockSize = 0;
+
+	function Show
+	{
+		printfln("Page     : %08x", Page);
+		printfln("BlockSize: %08x", BlockSize);
+	}
+}

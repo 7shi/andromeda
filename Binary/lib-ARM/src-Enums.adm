@@ -1,0 +1,91 @@
+﻿// このファイルは src-Enums.xml から生成されました。
+// 再生成で変更内容が失われるため直接編集しないでください。
+
+struct ARMReg
+{
+	static function get_R0  { return (ARMReg) 0; }
+	static function get_R1  { return (ARMReg) 1; }
+	static function get_R2  { return (ARMReg) 2; }
+	static function get_R3  { return (ARMReg) 3; }
+	static function get_R4  { return (ARMReg) 4; }
+	static function get_R5  { return (ARMReg) 5; }
+	static function get_R6  { return (ARMReg) 6; }
+	static function get_R7  { return (ARMReg) 7; }
+	static function get_R8  { return (ARMReg) 8; }
+	static function get_R9  { return (ARMReg) 9; }
+	static function get_SB  { return (ARMReg) 9; }
+	static function get_R10 { return (ARMReg)10; }
+	static function get_SL  { return (ARMReg)10; }
+	static function get_FP  { return (ARMReg)11; }
+	static function get_R11 { return (ARMReg)11; }
+	static function get_IP  { return (ARMReg)12; }
+	static function get_R12 { return (ARMReg)12; }
+	static function get_SP  { return (ARMReg)13; }
+	static function get_R13 { return (ARMReg)13; }
+	static function get_LR  { return (ARMReg)14; }
+	static function get_R14 { return (ARMReg)14; }
+	static function get_PC  { return (ARMReg)15; }
+	static function get_R15 { return (ARMReg)15; }
+
+	static function Parse(s : string) : ARMReg
+	{
+		switch (s)
+		{
+			case "R0" : return  0;
+			case "R1" : return  1;
+			case "R2" : return  2;
+			case "R3" : return  3;
+			case "R4" : return  4;
+			case "R5" : return  5;
+			case "R6" : return  6;
+			case "R7" : return  7;
+			case "R8" : return  8;
+			case "R9" : return  9;
+			case "SB" : return  9;
+			case "R10": return 10;
+			case "SL" : return 10;
+			case "FP" : return 11;
+			case "R11": return 11;
+			case "IP" : return 12;
+			case "R12": return 12;
+			case "SP" : return 13;
+			case "R13": return 13;
+			case "LR" : return 14;
+			case "R14": return 14;
+			case "PC" : return 15;
+			case "R15": return 15;
+		}
+		return -1;
+	}
+
+	function ToString
+	{
+		switch (this)
+		{
+			case  0: return "R0";
+			case  1: return "R1";
+			case  2: return "R2";
+			case  3: return "R3";
+			case  4: return "R4";
+			case  5: return "R5";
+			case  6: return "R6";
+			case  7: return "R7";
+			case  8: return "R8";
+			case  9: return "R9";
+			case  9: return "SB";
+			case 10: return "R10";
+			case 10: return "SL";
+			case 11: return "FP";
+			case 11: return "R11";
+			case 12: return "IP";
+			case 12: return "R12";
+			case 13: return "SP";
+			case 13: return "R13";
+			case 14: return "LR";
+			case 14: return "R14";
+			case 15: return "PC";
+			case 15: return "R15";
+		}
+		return null;
+	}
+}

@@ -1,0 +1,380 @@
+﻿// このファイルは src-x86.xml から生成されました。
+// 再生成で変更内容が失われるため直接編集しないでください。
+
+struct Reg32
+{
+	static function get_EAX { return (Reg32)0; }
+	static function get_ECX { return (Reg32)1; }
+	static function get_EDX { return (Reg32)2; }
+	static function get_EBX { return (Reg32)3; }
+	static function get_ESP { return (Reg32)4; }
+	static function get_EBP { return (Reg32)5; }
+	static function get_ESI { return (Reg32)6; }
+	static function get_EDI { return (Reg32)7; }
+
+	static function Parse(s : string) : Reg32
+	{
+		switch (s)
+		{
+			case "EAX": return 0;
+			case "ECX": return 1;
+			case "EDX": return 2;
+			case "EBX": return 3;
+			case "ESP": return 4;
+			case "EBP": return 5;
+			case "ESI": return 6;
+			case "EDI": return 7;
+		}
+		return -1;
+	}
+
+	function ToString
+	{
+		switch (this)
+		{
+			case 0: return "EAX";
+			case 1: return "ECX";
+			case 2: return "EDX";
+			case 3: return "EBX";
+			case 4: return "ESP";
+			case 5: return "EBP";
+			case 6: return "ESI";
+			case 7: return "EDI";
+		}
+		return null;
+	}
+}
+
+struct Reg16
+{
+	static function get_AX { return (Reg16)0; }
+	static function get_CX { return (Reg16)1; }
+	static function get_DX { return (Reg16)2; }
+	static function get_BX { return (Reg16)3; }
+	static function get_SP { return (Reg16)4; }
+	static function get_BP { return (Reg16)5; }
+	static function get_SI { return (Reg16)6; }
+	static function get_DI { return (Reg16)7; }
+
+	static function Parse(s : string) : Reg16
+	{
+		switch (s)
+		{
+			case "AX": return 0;
+			case "CX": return 1;
+			case "DX": return 2;
+			case "BX": return 3;
+			case "SP": return 4;
+			case "BP": return 5;
+			case "SI": return 6;
+			case "DI": return 7;
+		}
+		return -1;
+	}
+
+	function ToString
+	{
+		switch (this)
+		{
+			case 0: return "AX";
+			case 1: return "CX";
+			case 2: return "DX";
+			case 3: return "BX";
+			case 4: return "SP";
+			case 5: return "BP";
+			case 6: return "SI";
+			case 7: return "DI";
+		}
+		return null;
+	}
+}
+
+struct Reg8
+{
+	static function get_AL { return (Reg8)0; }
+	static function get_CL { return (Reg8)1; }
+	static function get_DL { return (Reg8)2; }
+	static function get_BL { return (Reg8)3; }
+	static function get_AH { return (Reg8)4; }
+	static function get_CH { return (Reg8)5; }
+	static function get_DH { return (Reg8)6; }
+	static function get_BH { return (Reg8)7; }
+
+	static function Parse(s : string) : Reg8
+	{
+		switch (s)
+		{
+			case "AL": return 0;
+			case "CL": return 1;
+			case "DL": return 2;
+			case "BL": return 3;
+			case "AH": return 4;
+			case "CH": return 5;
+			case "DH": return 6;
+			case "BH": return 7;
+		}
+		return -1;
+	}
+
+	function ToString
+	{
+		switch (this)
+		{
+			case 0: return "AL";
+			case 1: return "CL";
+			case 2: return "DL";
+			case 3: return "BL";
+			case 4: return "AH";
+			case 5: return "CH";
+			case 6: return "DH";
+			case 7: return "BH";
+		}
+		return null;
+	}
+}
+
+struct Cc
+{
+	static function get_O   { return (Cc) 0; }
+	static function get_NO  { return (Cc) 1; }
+	static function get_C   { return (Cc) 2; }
+	static function get_B   { return (Cc) 2; }
+	static function get_NAE { return (Cc) 2; }
+	static function get_NC  { return (Cc) 3; }
+	static function get_AE  { return (Cc) 3; }
+	static function get_NB  { return (Cc) 3; }
+	static function get_Z   { return (Cc) 4; }
+	static function get_E   { return (Cc) 4; }
+	static function get_NZ  { return (Cc) 5; }
+	static function get_NE  { return (Cc) 5; }
+	static function get_BE  { return (Cc) 6; }
+	static function get_NA  { return (Cc) 6; }
+	static function get_NBE { return (Cc) 7; }
+	static function get_A   { return (Cc) 7; }
+	static function get_S   { return (Cc) 8; }
+	static function get_NS  { return (Cc) 9; }
+	static function get_P   { return (Cc)10; }
+	static function get_PE  { return (Cc)10; }
+	static function get_NP  { return (Cc)11; }
+	static function get_PO  { return (Cc)11; }
+	static function get_L   { return (Cc)12; }
+	static function get_NGE { return (Cc)12; }
+	static function get_NL  { return (Cc)13; }
+	static function get_GE  { return (Cc)13; }
+	static function get_LE  { return (Cc)14; }
+	static function get_NG  { return (Cc)14; }
+	static function get_NLE { return (Cc)15; }
+	static function get_G   { return (Cc)15; }
+
+	static function Parse(s : string) : Cc
+	{
+		switch (s)
+		{
+			case "O"  : return  0;
+			case "NO" : return  1;
+			case "C"  : return  2;
+			case "B"  : return  2;
+			case "NAE": return  2;
+			case "NC" : return  3;
+			case "AE" : return  3;
+			case "NB" : return  3;
+			case "Z"  : return  4;
+			case "E"  : return  4;
+			case "NZ" : return  5;
+			case "NE" : return  5;
+			case "BE" : return  6;
+			case "NA" : return  6;
+			case "NBE": return  7;
+			case "A"  : return  7;
+			case "S"  : return  8;
+			case "NS" : return  9;
+			case "P"  : return 10;
+			case "PE" : return 10;
+			case "NP" : return 11;
+			case "PO" : return 11;
+			case "L"  : return 12;
+			case "NGE": return 12;
+			case "NL" : return 13;
+			case "GE" : return 13;
+			case "LE" : return 14;
+			case "NG" : return 14;
+			case "NLE": return 15;
+			case "G"  : return 15;
+		}
+		return -1;
+	}
+
+	function ToString
+	{
+		switch (this)
+		{
+			case  0: return "O";
+			case  1: return "NO";
+			case  2: return "C";
+			case  2: return "B";
+			case  2: return "NAE";
+			case  3: return "NC";
+			case  3: return "AE";
+			case  3: return "NB";
+			case  4: return "Z";
+			case  4: return "E";
+			case  5: return "NZ";
+			case  5: return "NE";
+			case  6: return "BE";
+			case  6: return "NA";
+			case  7: return "NBE";
+			case  7: return "A";
+			case  8: return "S";
+			case  9: return "NS";
+			case 10: return "P";
+			case 10: return "PE";
+			case 11: return "NP";
+			case 11: return "PO";
+			case 12: return "L";
+			case 12: return "NGE";
+			case 13: return "NL";
+			case 13: return "GE";
+			case 14: return "LE";
+			case 14: return "NG";
+			case 15: return "NLE";
+			case 15: return "G";
+		}
+		return null;
+	}
+}
+// 8086: 1: 処理できません: x86asm
+// 8086: 2: 処理できません: ADC
+// 8086: 3: 処理できません: ADC
+// 8086: 4: 処理できません: ADC
+// 8086: 5: 処理できません: ADD
+// 8086: 6: 処理できません: ADD
+// 8086: 7: 処理できません: ADD
+// 8086: 8: 処理できません: AND
+// 8086: 9: 処理できません: AND
+// 8086: 10: 処理できません: AND
+// 8086: 11: 処理できません: OR
+// 8086: 12: 処理できません: OR
+// 8086: 13: 処理できません: OR
+// 8086: 14: 処理できません: SBB
+// 8086: 15: 処理できません: SBB
+// 8086: 16: 処理できません: SBB
+// 8086: 17: 処理できません: SUB
+// 8086: 18: 処理できません: SUB
+// 8086: 19: 処理できません: SUB
+// 8086: 20: 処理できません: XOR
+// 8086: 21: 処理できません: XOR
+// 8086: 22: 処理できません: XOR
+// 8086: 24: 処理できません: AAA
+// 8086: 25: 処理できません: AAD
+// 8086: 26: 処理できません: AAM
+// 8086: 27: 処理できません: AAS
+// 8086: 28: 処理できません: CALL
+// 8086: 29: 処理できません: CALL
+// 8086: 30: 処理できません: CALLF
+// 8086: 31: 処理できません: CALLF
+// 8086: 32: 処理できません: CBW
+// 8086: 33: 処理できません: CLC
+// 8086: 34: 処理できません: CLD
+// 8086: 35: 処理できません: CLI
+// 8086: 36: 処理できません: CMC
+// 8086: 37: 処理できません: CMP
+// 8086: 38: 処理できません: CMP
+// 8086: 39: 処理できません: CMP
+// 8086: 40: 処理できません: CMPSB
+// 8086: 41: 処理できません: CMPSW
+// 8086: 42: 処理できません: CWD
+// 8086: 43: 処理できません: DAA
+// 8086: 44: 処理できません: DAS
+// 8086: 45: 処理できません: DEC
+// 8086: 46: 処理できません: DEC
+// 8086: 47: 処理できません: DIV
+// 8086: 48: 処理できません: HLT
+// 8086: 49: 処理できません: IDIV
+// 8086: 50: 処理できません: IMUL
+// 8086: 51: 処理できません: IN
+// 8086: 52: 処理できません: IN
+// 8086: 53: 処理できません: INC
+// 8086: 54: 処理できません: INC
+// 8086: 55: 処理できません: INT
+// 8086: 56: 処理できません: INT
+// 8086: 57: 処理できません: INTO
+// 8086: 58: 処理できません: IRET
+// 8086: 59: 処理できません: Jcc
+// 8086: 60: 処理できません: JCXZ
+// 8086: 61: 処理できません: JMP
+// 8086: 62: 処理できません: JMP
+// 8086: 63: 処理できません: JMP
+// 8086: 64: 処理できません: JMPF
+// 8086: 65: 処理できません: JMPF
+// 8086: 66: 処理できません: LAHF
+// 8086: 67: 処理できません: LDS
+// 8086: 68: 処理できません: LEA
+// 8086: 69: 処理できません: LES
+// 8086: 70: 処理できません: LODSB
+// 8086: 71: 処理できません: LODSW
+// 8086: 72: 処理できません: LOOP
+// 8086: 73: 処理できません: LOOPZ/LOOPE
+// 8086: 74: 処理できません: LOOPNZ/LOOPNE
+// 8086: 75: 処理できません: MOV
+// 8086: 76: 処理できません: MOV
+// 8086: 77: 処理できません: MOV
+// 8086: 78: 処理できません: MOV
+// 8086: 79: 処理できません: MOV
+// 8086: 80: 処理できません: MOV
+// 8086: 81: 処理できません: MOV
+// 8086: 82: 処理できません: MOVSB
+// 8086: 83: 処理できません: MOVSW
+// 8086: 84: 処理できません: MUL
+// 8086: 85: 処理できません: NEG
+// 8086: 86: 処理できません: NOP
+// 8086: 87: 処理できません: NOT
+// 8086: 88: 処理できません: OUT
+// 8086: 89: 処理できません: OUT
+// 8086: 90: 処理できません: POP
+// 8086: 91: 処理できません: POP
+// 8086: 92: 処理できません: POP
+// 8086: 93: 処理できません: POPF
+// 8086: 94: 処理できません: PUSH
+// 8086: 95: 処理できません: PUSH
+// 8086: 96: 処理できません: PUSH
+// 8086: 97: 処理できません: PUSHF
+// 8086: 98: 処理できません: RCL
+// 8086: 99: 処理できません: RCL
+// 8086: 100: 処理できません: RCR
+// 8086: 101: 処理できません: RCR
+// 8086: 102: 処理できません: RET
+// 8086: 103: 処理できません: RET
+// 8086: 104: 処理できません: RETF
+// 8086: 105: 処理できません: RETF
+// 8086: 106: 処理できません: ROL
+// 8086: 107: 処理できません: ROL
+// 8086: 108: 処理できません: ROR
+// 8086: 109: 処理できません: ROR
+// 8086: 110: 処理できません: SAHF
+// 8086: 111: 処理できません: SAR
+// 8086: 112: 処理できません: SAR
+// 8086: 113: 処理できません: SCASB
+// 8086: 114: 処理できません: SCASW
+// 8086: 115: 処理できません: SHL/SAL
+// 8086: 116: 処理できません: SHL/SAL
+// 8086: 117: 処理できません: SHR
+// 8086: 118: 処理できません: SHR
+// 8086: 119: 処理できません: STC
+// 8086: 120: 処理できません: STD
+// 8086: 121: 処理できません: STI
+// 8086: 122: 処理できません: STOSB
+// 8086: 123: 処理できません: STOSW
+// 8086: 124: 処理できません: TEST
+// 8086: 125: 処理できません: TEST
+// 8086: 126: 処理できません: TEST
+// 8086: 127: 処理できません: WAIT
+// 8086: 128: 処理できません: XCHG
+// 8086: 129: 処理できません: XCHG
+// 8086: 130: 処理できません: XLAT/XLATB
+// 8086: 131: 処理できません: CS:
+// 8086: 132: 処理できません: DS:
+// 8086: 133: 処理できません: ES:
+// 8086: 134: 処理できません: SS:
+// 8086: 135: 処理できません: LOCK
+// 8086: 136: 処理できません: REPNE/REPNZ
+// 8086: 137: 処理できません: REP/REPE/REPZ

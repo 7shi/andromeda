@@ -1,0 +1,96 @@
+﻿class Block
+{
+	int Address, Length;
+	var values = new VarList;
+	var sizes  = new VarList;
+	var objs   = new ArrayList;
+	
+	function get_CurrentAddress
+	{
+		return Addr32.FromPointer(addrof Address, Length);
+	}
+	
+	function get_Count
+	{
+		return values.Count;
+	}
+	
+	function Add(v : int, s : int, ad : object)
+	{
+		values.Add(v);
+		sizes .Add(s);
+		objs  .Add(ad);
+		Length += s;
+	}
+	
+	function AddInt   (v : int   ) { Add(v, 4, null); }
+	function AddUInt  (v : uint  ) { Add((int)v, 4, null); }
+	function AddShort (v : short ) { Add(v, 2, null); }
+	function AddUShort(v : ushort) { Add(v, 2, null); }
+	function AddByte  (v : byte  ) { Add(v, 1, null); }
+	function AddString(v : string) { Add(0, v.Length * 2, v); }
+	function AddBytes (v : byte[]) { Add(0, v.Length, (object)v); }
+	function AddAddress(v : Addr32) { Add(0, 4, v); }
+	function AddOpCode(v : OpCode)
+	{
+		v.address = addrof Address;
+		v.position = Length;
+		Add(0, v.Length, v);
+	}
+	
+	function Write(ms : MemoryStream)
+	{
+		for (int i = 0; i < values.Count; i++)
+		{
+			var obj = objs.Get(i);
+			if (obj == null)
+			{
+				var v = values.Get(i);
+				ms.WriteWithLength(addrof v, sizes.Get(i));
+			}
+			else if (obj is string)
+			{
+				var s = (string)obj;
+				ms.WriteString(s);
+			}
+			else if (obj is Addr32)
+			{
+				var ad = (Addr32)obj;
+				ms.WriteInt(ad.Value);
+			}
+			else if (obj is OpCode)
+			{
+				var op = (OpCode)obj;
+				op.Write(ms);
+			}
+			else
+			{
+				var b = (byte[])obj;
+				ms.Write(b);
+			}
+		}
+	}
+	
+	function ToArray
+	{
+		var ms = new MemoryStream;
+		Write(ms);
+		return ms.ToArray();
+	}
+	
+	function GetRelocs()
+	{
+		var list = new VarList;
+		int pos = 0;
+		for (int i = 0; i < values.Count; i++)
+		{
+			var obj = objs.Get(i);
+			if (obj is Addr32)
+				list.Add(pos);
+			else if (obj is OpCode)
+				((OpCode)obj).AddRelocs(list);
+			pos += sizes.Get(i);
+		}
+		return list.ToArray();
+	}
+}

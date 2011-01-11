@@ -1,0 +1,27 @@
+﻿var exe = new PEModule;
+exe.File.Characteristics |= IMAGE_FILE_DLL;
+
+var text = new Block;
+var MessageBoxW = new OpCode;
+
+// DllMain()
+text.AddOpCode(I386.Ret);
+
+// hello()
+exe.Export("hello", text.CurrentAddress);
+text.AddOpCode(I386.PushD(1));
+text.AddOpCode(I386.PushAd(exe.GetString("だいあろぐ")));
+text.AddOpCode(I386.PushAd(exe.GetString("こんにちは、世界！")));
+text.AddOpCode(I386.PushD(0));
+text.AddOpCode(I386.Call(MessageBoxW));
+text.AddOpCode(I386.Ret);
+text.AddOpCode(MessageBoxW);
+text.AddOpCode(I386.JmpAd(exe.Import("USER32.DLL", "MessageBoxW")));
+
+var dll = "hello.dll";
+exe.WriteFile(dll, text, true);
+
+println();
+printfln(dll + " を出力しました。");
+
+{ _Finish _; }

@@ -1,0 +1,114 @@
+﻿#pragma subsystem(WINDOWS_GUI)
+
+Application.Run(new Form1);
+
+class Form1 : Form
+{
+	var tb1 = new TextBox;
+	var ofd = new OpenFileDialog;
+	
+	function ctor
+	{
+		Text = "Andromeda Test";
+		Menu = new MainMenu;
+		SetClientSize(300, 400);
+		
+		tb1.Font = ConsoleBox.DefaultFont;
+		tb1.Multiline = true;
+		tb1.ScrollBars = ScrollBars.Both;
+		tb1.Dock = DockStyle.Fill;
+		AddControl(tb1);
+		
+		ofd.Filter = "PE モジュール (*.exe;*.dll)|*.exe;*.dll|" + ofd.Filter;
+		
+		var miFile = new MenuItem { Text = "ファイル(&F)"; };
+		miFile.AppendItem("開く(&O)", \ =>
+		{
+			if (ofd.ShowDialog(this)) OpenPE(ofd.FileName);
+			tb1.Focus();
+		});
+		miFile.AppendItem("-", null);
+		miFile.AppendItem("終了(&X)", \ => Close());
+		Menu.Append(miFile);
+		
+		var miBuild = new MenuItem { Text = "ビルド(&B)"; };
+		miBuild.AppendItem("&i386 実行ファイル", \ =>
+		{
+			var cs = new ConsoleStream;
+			BuildI386();
+			tb1.Text = cs.ToString();
+		});
+		miBuild.AppendItem("&ARM 実行ファイル", \ =>
+		{
+			var cs = new ConsoleStream;
+			BuildARM();
+			tb1.Text = cs.ToString();
+		});
+		Menu.Append(miBuild);
+		
+		var miHelp = new MenuItem { Text = "ヘルプ(&H)"; };
+		miHelp.AppendItem("バージョン情報(&A)", \ =>
+		{
+			MessageBox(hWnd, __VERSION__, "バージョン情報", MB_OK);
+			tb1.Focus();
+		});
+		Menu.Append(miHelp);
+		
+		var args = Environment.GetCommandLineArgs();
+		if (args.Length > 1) OpenPE(args[1]);
+	}
+	
+	function OpenPE(path : string)
+	{
+		var cs = new ConsoleStream;
+		PEModule.ReadFile(path, true);
+		tb1.Text = cs.ToString();
+	}
+}
+
+function BuildI386
+{
+	var exe = new PEModule;
+	exe.WinNT.SubSystem = IMAGE_SUBSYSTEM_WINDOWS_GUI;
+
+	var text = new Block;
+	var MessageBoxW = new OpCode;
+	exe.Export("main", text.CurrentAddress);
+	text.AddOpCode(I386.PushD(1));
+	text.AddOpCode(I386.PushAd(exe.GetString("だいあろぐ")));
+	text.AddOpCode(I386.PushAd(exe.GetString("こんにちは、世界！")));
+	text.AddOpCode(I386.PushD(0));
+	text.AddOpCode(I386.Call(MessageBoxW));
+	text.AddOpCode(I386.Ret);
+	text.AddOpCode(MessageBoxW);
+	text.AddOpCode(I386.JmpAd(exe.Import("USER32.DLL", "MessageBoxW")));
+	
+	exe.WriteFile("a.i386.exe", text, true);
+}
+
+function BuildARM
+{
+	var exe = new PEModule;
+	exe.File.Machine = IMAGE_FILE_MACHINE_ARM;
+	exe.WinNT.SubSystem = IMAGE_SUBSYSTEM_WINDOWS_CE_GUI;
+	exe.WinNT.ImageBase = 0x10000;
+
+	var text = new Block;
+	exe.Export("main", text.CurrentAddress);
+	text.AddInt(0xe1a0c00d); // 00: mov ip, sp
+	text.AddInt(0xe92dd800); // 04: stmfd sp!, {fp, ip, lr, pc}
+	text.AddInt(0xe24cb004); // 08: sub fp, ip, #4
+	text.AddInt(0xe3a00000); // 0c: mov r0, #0
+	text.AddInt(0xe59f100c); // 10: ldr r1, [pc, #12] ; 0x24
+	text.AddInt(0xe59f200c); // 14: ldr r2, [pc, #12] ; 0x28
+	text.AddInt(0xe3a03001); // 18: mov r3, #1
+	text.AddInt(0xeb000002); // 1c: bl 8 ; 0x2c
+	text.AddInt(0xe89da800); // 20: ldmfd sp, {fp, sp, pc}
+	text.AddAddress(exe.GetString("こんにちは、世界！")); // 24:
+	text.AddAddress(exe.GetString("だいあろぐ")); // 28:
+	text.AddInt(0xe59fc000); // 2c: ldr ip, [pc, #0] ; 0x34
+	text.AddInt(0xe59cf000); // 30: ldr pc, [ip]
+	text.AddAddress(exe.Import("COREDLL.DLL", "MessageBoxW")); // 34:
+	
+	exe.WriteFile("a.arm.exe", text, true);
+}

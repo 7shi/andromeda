@@ -5,3 +5,4 @@ Compiler/tests/*.exe
 GUI/tests/*.exe
 Zip/tests/*.exe
 ConsoleBox/tests/*.exe
+Binary/tests/*.exe

@@ -1,0 +1,81 @@
+﻿class ExportData
+{
+	var Name : string = "a.dll";
+	var symbols = new Hashtable;
+	
+	function Add(name : string, ad : Addr32)
+	{
+		symbols.Add(name, ad);
+	}
+	
+	function get_Length
+	{
+		if (symbols.Count == 0) return 0;
+		
+		var ret = sizeof(ExportTable) + symbols.Count * 10 + Name.Length + 1;
+		var symnames = symbols.Keys;
+		for (int i = 0; i < symnames.Length; i++)
+			ret += symnames[i].Length + 1;
+		return ret;
+	}
+	
+	function Create(m : PEModule)
+	{
+		if (symbols.Count == 0)
+		{
+			m.Dir.ExportTable_Address = 0;
+			m.Dir.ExportTable_Size    = 0;
+			return null;
+		}
+		
+		var edata = m.GetSection(".edata").Header;
+		m.Dir.ExportTable_Address = edata.VirtualAddress;
+		m.Dir.ExportTable_Size    = edata.VirtualSize;
+		
+		ExportTable et;
+		et.AddressTableEntries = et.NumberOfNamePointers = symbols.Count;
+		var vad = edata.VirtualAddress + sizeof(ExportTable);
+		et.ExportAddressTable = vad;
+		vad += symbols.Count * 4;
+		et.NamePointer = vad;
+		vad += symbols.Count * 4;
+		et.OrdinalTable = vad;
+		vad += symbols.Count * 2;
+		et.Name = vad;
+		vad += Name.Length + 1;
+		
+		var ms = new MemoryStream;
+		ms.WriteWithLength(et, sizeof et);
+		symbols.Sort();
+		var keys = symbols.Keys;
+		var values = symbols.Values;
+		for (int i = 0; i < keys.Length; i++)
+		{
+			var ad : Addr32 = values[i];
+			ms.WriteInt(ad.Value - m.WinNT.ImageBase);
+		}
+		for (int i = 0; i < keys.Length; i++)
+		{
+			ms.WriteInt(vad);
+			vad += keys[i].Length + 1;
+		}
+		for (int i = 0; i < keys.Length; i++)
+			ms.WriteShort(i);
+		ms.Write(convert(Name));
+		for (int i = 0; i < keys.Length; i++)
+			ms.Write(convert(keys[i]));
+		return ms.ToArray();
+		
+		function convert(s : string)
+		{
+			var ret = new byte[s.Length + 1];
+			for (int i = 0; i < s.Length; i++)
+			{
+				char ch = s[i];
+				if (ch >= 128) ch = '?';
+				ret[i] = ch;
+			}
+			return ret;
+		}
+	}
+}

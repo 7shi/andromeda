@@ -1,0 +1,69 @@
+﻿class Library
+{
+	ImportTable table;
+	var Name : string;
+	var symbols = new Block;
+	var hash = new Hashtable;
+	int address;
+	
+	function Add(symbol : string)
+	{
+		var ret = (Addr32)hash.Get(symbol);
+		if (ret == null)
+		{
+			ret = Addr32.FromPointer(
+				addrof address, symbols.Count * 4);
+			var cs = cstr(symbol);
+			var padlen = Align(cs.Length + 1, 2);
+			var buf = new byte[2 + padlen];
+			__movsb(addrof buf[2], cs, cs.Length);
+			symbols.AddBytes(buf);
+			hash.Add(symbol, ret);
+		}
+		return ret;
+	}
+	
+	function get_TableSize
+	{
+		return (symbols.Count + 1) * sizeof(var);
+	}
+	
+	function get_NameSize
+	{
+		var name = cstr(Name);
+		return Align(name.Length + 1, 2);
+	}
+	
+	function get_StringSize
+	{
+		return NameSize + symbols.Length;
+	}
+	
+	function SetAddress(m : PEModule, size, lookup, name)
+	{
+		table.ImportLookupTable = lookup;
+		table.ImportAddressTable = lookup + size;
+		table.Name = name;
+		address = m.WinNT.ImageBase + lookup + size;
+	}
+	
+	function WriteTable(ms : MemoryStream)
+	{
+		var ad = table.Name + NameSize;
+		for (int i = 0; i < symbols.Count; i++)
+		{
+			ms.WriteInt(ad);
+			ad += symbols.sizes.Get(i);
+		}
+		ms.WriteInt(0);
+	}
+	
+	function WriteString(ms : MemoryStream)
+	{
+		var name = cstr(Name);
+		var padlen = Align(name.Length + 1, 2);
+		ms.Write(name);
+		ms.Write(new byte[padlen - name.Length]);
+		symbols.Write(ms);
+	}
+}
