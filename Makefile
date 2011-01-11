@@ -15,9 +15,9 @@ tests:
 
 clean:
 	rm -f admc.exe
-	rm -f Core/tests/*.exe
-	rm -f Compiler/tests/*.exe
-	rm -f GUI/tests/*.exe
-	rm -f Zip/tests/*.exe
-	rm -f ConsoleBox/tests/*.exe
-	rm -f Binary/tests/*.exe
+	cd Core/tests && rm -f *.exe
+	cd Compiler/tests && rm -f *.exe
+	cd GUI/tests && rm -f *.exe
+	cd Zip/tests && rm -f *.exe
+	cd ConsoleBox/tests && rm -f *.exe
+	cd Binary/tests && rm -f *.exe *.dll

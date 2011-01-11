@@ -6,3 +6,4 @@ GUI/tests/*.exe
 Zip/tests/*.exe
 ConsoleBox/tests/*.exe
 Binary/tests/*.exe
+Binary/tests/*.dll
