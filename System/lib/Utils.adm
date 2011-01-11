@@ -3,7 +3,7 @@
 function raise(msg : string)
 {
     printfln(msg);
-    { _Finish _finish; }
+    { _Finish _; }
     ExitProcess(1);
 }
 

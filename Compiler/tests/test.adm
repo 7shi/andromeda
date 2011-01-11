@@ -32,4 +32,4 @@ var output = "a.exe";
 module.Link(output);
 printfln("output: %s", output);
 
-{ _Finish _finish; }
+{ _Finish _; }

@@ -14,7 +14,7 @@ println();
 var end = DateTime.Now;
 printfln("総所要時間: %s", end.Sub(start).ToString());
 
-{ _Finish _finish; }
+{ _Finish _; }
 
 function readAdmk(admk : string)
 {
