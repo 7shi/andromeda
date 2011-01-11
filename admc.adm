@@ -85,36 +85,53 @@ function readAdmk(admk : string)
 
 function compile(srcs : string[], libs : string[], output : string, verbose : bool)
 {
-    if (File.Exists(output)) return;
-
     println();
     var s = DateTime.Now;
 
-    if (!verbose)
-        printfln("パースしています...");
-    var root = new Root;
+    var list = new StringList;
     if (libs != null && libs.Length > 0)
     {
         for (int i = 0; i < libs.Length; i++)
-            readDir(root, verbose, libs[i]);
+            readDir(list, libs[i]);
     }
     else
     {
         var dirs = Directory.GetDirectories(".");
         for (int i = 0; i < dirs.Length; i++)
-            readDir(root, verbose, Path.GetFileName(dirs[i]));
+            readDir(list, Path.GetFileName(dirs[i]));
     }
     if (srcs != null && srcs.Length > 0)
     {
         for (int i = 0; i < srcs.Length; i++)
-            parse(root, verbose, srcs[i]);
+            list.Add(srcs[i]);
     }
     else
     {
         var files = Directory.GetFilesWith(".", "*.adm");
         for (int i = 0; i < files.Length; i++)
-            parse(root, verbose, Path.GetFileName(files[i]));
+            list.Add(Path.GetFileName(files[i]));
     }
+    if (File.Exists(output))
+    {
+        var outt = File.GetLastWriteTime(output);
+        var ok = true;
+        for (int i = 0; i < list.Count; i++)
+        {
+            var dt = File.GetLastWriteTime(list.Get(i));
+            if (dt.IsNewerThan(outt))
+            {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) return;
+    }
+
+    if (!verbose)
+        printfln("パースしています...");
+    var root = new Root;
+    for (int i = 0; i < list.Count; i++)
+        parse(root, verbose, list.Get(i));
 
     if (verbose)
         printfln("型をチェックしています...");
@@ -150,16 +167,12 @@ function parse(root : Root, verbose : bool, src : string)
         raise("ファイルが開けません。");
 }
 
-function readDir(root : Root, verbose : bool, dir : string)
+function readDir(list : StringList, dir : string)
 {
     var dirs = Directory.GetDirectories(dir);
     for (int i = 0; i < dirs.Length; i++)
-        readDir(root, verbose, dirs[i]);
-    var files = Directory.GetFiles(dir);
+        readDir(list, dirs[i]);
+    var files = Directory.GetFilesWith(dir, "*.adm");
     for (int i = 0; i < files.Length; i++)
-    {
-        var file = files[i];
-        if (Path.GetExtension(file).ToLower() == ".adm")
-            parse(root, verbose, file);
-    }
+        list.Add(files[i]);
 }
