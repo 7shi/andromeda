@@ -9,9 +9,9 @@
 	static function New(path : string, rel : string, data : byte[], pos : uint)
 	{
 		var ret = new ZipHeader;
-		var ft = File.GetLastWriteTime(path);
+		var time = File.GetLastWriteTime(path);
 		uint dd, dt;
-		FileTimeToDosDateTime(ft, addrof dd, addrof dt);
+		FileTimeToDosDateTime(time.ft, addrof dd, addrof dt);
 		uint crc = 0, size = 0;
 		if (data != null)
 		{

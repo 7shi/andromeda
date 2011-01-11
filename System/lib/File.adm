@@ -57,9 +57,9 @@ class File
             GetFileTime(handle, null, null, ft);
             CloseHandle(handle);
         }
-        var ret = new FILETIME;
-        FileTimeToLocalFileTime(ft, ret);
-        return ret;
+        var lft = new FILETIME;
+        FileTimeToLocalFileTime(ft, lft);
+        return DateTime.FromFileTime(lft);
     }
 
     static function Exists(path : string)
