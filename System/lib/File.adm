@@ -82,13 +82,17 @@ class Directory
         var ret = new StringList;
         var fd = new WIN32_FIND_DATA;
         var h = FindFirstFile(Path.Combine(path, pattern), fd);
+        var sfx : string = null;
+        if (pattern.Length > 1 && pattern.StartsWith("*"))
+            sfx = pattern.SubstringFrom(1).ToLower();
         if (h != INVALID_HANDLE_VALUE)
         {
             do
             {
                 var name = string.FromCharArray(fd.cFileName, -1);
                 var fn = Path.Combine(path, name);
-                if (name != "." && name != ".." && delg(fn)) ret.Add(fn);
+                if (name != "." && name != ".." && delg(fn)
+                    && (sfx == null || name.ToLower().EndsWith(sfx))) ret.Add(fn);
             }
             while (FindNextFile(h, fd));
             FindClose(h);
