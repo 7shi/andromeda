@@ -83,8 +83,9 @@ class Directory
         var fd = new WIN32_FIND_DATA;
         var h = FindFirstFile(Path.Combine(path, pattern), fd);
         var sfx : string = null;
-        if (pattern.Length > 1 && pattern.StartsWith("*"))
-            sfx = pattern.SubstringFrom(1).ToLower();
+        var p = pattern.LastIndexOf("*");
+        if (0 <= p && p < pattern.Length - 1)
+            sfx = pattern.SubstringFrom(p + 1).ToLower();
         if (h != INVALID_HANDLE_VALUE)
         {
             do
